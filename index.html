@@ -62,6 +62,7 @@ button {
     display: none !important;
 }
 
+
 /* =========================
    HOME
 ========================= */
@@ -100,6 +101,7 @@ button {
     font-size: 32px;
     margin-bottom: 8px;
 }
+
 
 /* =========================
    PRODUCTS
@@ -183,6 +185,7 @@ button {
     padding: 10px;
     background: white;
 }
+
 
 /* =========================
    CART
@@ -268,6 +271,7 @@ button {
     margin-bottom: 15px;
 }
 
+
 /* =========================
    FORM
 ========================= */
@@ -344,6 +348,7 @@ button {
     font-size: 14px;
 }
 
+
 /* =========================
    PROFILE
 ========================= */
@@ -404,6 +409,7 @@ button {
 
     font-size: 15px;
 }
+
 
 /* =========================
    ADMIN
@@ -474,6 +480,7 @@ button {
     color: white;
 }
 
+
 /* =========================
    BOTTOM NAV
 ========================= */
@@ -518,6 +525,7 @@ button {
     font-size: 22px;
 }
 
+
 /* =========================
    SUCCESS
 ========================= */
@@ -532,6 +540,7 @@ button {
 .success-icon {
     font-size: 60px;
 }
+
 
 /* =========================
    MOBILE
@@ -552,9 +561,7 @@ button {
 <body>
 
 
-<!-- =========================
-     HEADER
-========================= -->
+<!-- HEADER -->
 
 <div class="header">
 
@@ -569,16 +576,16 @@ button {
 </div>
 
 
-<!-- =========================
-     HOME
-========================= -->
+<!-- HOME -->
 
 <div id="homePage" class="container">
 
     <div class="welcome">
 
+        <!-- FAQAT SHU MATN O'ZGARTIRILDI -->
+
         <h2 id="welcomeText">
-            Xush kelibsiz! 👋
+            Salom 👋
         </h2>
 
         <p>
@@ -676,9 +683,7 @@ button {
 </div>
 
 
-<!-- =========================
-     PRODUCTS
-========================= -->
+<!-- PRODUCTS -->
 
 <div
     id="productsPage"
@@ -704,9 +709,7 @@ button {
 </div>
 
 
-<!-- =========================
-     CART
-========================= -->
+<!-- CART -->
 
 <div
     id="cartPage"
@@ -749,9 +752,7 @@ button {
 </div>
 
 
-<!-- =========================
-     ORDER
-========================= -->
+<!-- ORDER -->
 
 <div
     id="orderPage"
@@ -770,8 +771,6 @@ button {
         📦 Buyurtma berish
     </h2>
 
-
-    <!-- PHONE -->
 
     <div class="form-card">
 
@@ -794,8 +793,6 @@ button {
     </div>
 
 
-    <!-- LOCATION -->
-
     <div class="form-card">
 
         <h3>
@@ -817,8 +814,6 @@ button {
     </div>
 
 
-    <!-- ADDRESS -->
-
     <div class="form-card">
 
         <label class="form-label">
@@ -836,8 +831,6 @@ button {
 
     </div>
 
-
-    <!-- NOTE -->
 
     <div class="form-card">
 
@@ -857,8 +850,6 @@ button {
     </div>
 
 
-    <!-- PAYMENT -->
-
     <div class="form-card">
 
         <h3>
@@ -867,6 +858,7 @@ button {
 
 
         <label>
+
             <input
                 type="radio"
                 name="payment"
@@ -882,6 +874,7 @@ button {
 
 
         <label>
+
             <input
                 type="radio"
                 name="payment"
@@ -893,8 +886,6 @@ button {
 
     </div>
 
-
-    <!-- SUMMARY -->
 
     <div class="form-card">
 
@@ -914,11 +905,8 @@ button {
         </strong>
 
 
-        <strong
-            id="orderTotal">
-
+        <strong id="orderTotal">
             0 so‘m
-
         </strong>
 
     </div>
@@ -935,9 +923,7 @@ button {
 </div>
 
 
-<!-- =========================
-     PROFILE
-========================= -->
+<!-- PROFILE -->
 
 <div
     id="profilePage"
@@ -1011,9 +997,7 @@ button {
 </div>
 
 
-<!-- =========================
-     ORDERS
-========================= -->
+<!-- ORDERS -->
 
 <div
     id="ordersPage"
@@ -1034,8 +1018,7 @@ button {
     </h2>
 
 
-    <div
-        id="ordersList">
+    <div id="ordersList">
 
         <div class="form-card">
 
@@ -1048,9 +1031,7 @@ button {
 </div>
 
 
-<!-- =========================
-     ADMIN
-========================= -->
+<!-- ADMIN -->
 
 <div
     id="adminPage"
@@ -1076,9 +1057,7 @@ button {
 </div>
 
 
-<!-- =========================
-     SUCCESS
-========================= -->
+<!-- SUCCESS -->
 
 <div
     id="successPage"
@@ -1115,9 +1094,7 @@ button {
 </div>
 
 
-<!-- =========================
-     BOTTOM NAV
-========================= -->
+<!-- BOTTOM NAV -->
 
 <div class="bottom-nav">
 
@@ -1158,6 +1135,7 @@ button {
 
 
 <script>
+
 
 /*
 ==================================================
@@ -1226,10 +1204,18 @@ if (
         user.username || "";
 
 
+    /*
+    ==============================================
+    SALOM + TELEGRAM ISMI
+    ==============================================
+    */
+
     document
         .getElementById("welcomeText")
         .textContent =
-        `Xush kelibsiz, ${customer.first_name}! 👋`;
+        customer.first_name
+        ? `Salom, ${customer.first_name}! 👋`
+        : "Salom! 👋";
 
 }
 
@@ -1384,7 +1370,6 @@ CATEGORY
 */
 
 function openCategory(category) {
-
 
     hideAll();
 
@@ -1958,13 +1943,6 @@ PHONE
 function requestPhone() {
 
 
-    /*
-    Telegram contact olishni
-    backend/bot orqali keyingi
-    bosqichda to‘liq ulaymiz.
-    */
-
-
     if (!tg) {
 
         const phone =
@@ -2143,19 +2121,6 @@ function confirmOrder() {
     };
 
 
-    /*
-    Hozircha lokal test.
-
-    Keyinchalik:
-
-    Mini App
-       ↓
-    Backend
-       ↓
-    YesPOS
-
-    */
-
     orders.push(order);
 
 
@@ -2224,7 +2189,6 @@ function renderProfile() {
         customer.username
         ? `@${customer.username}`
         : "Telegram foydalanuvchi";
-
 
 }
 
