@@ -2,442 +2,673 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yulduz Market</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<title>Yulduz Market</title>
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            color: #222;
-            padding-bottom: 90px;
-        }
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-        button,
-        input,
-        textarea,
-        select {
-            font-family: inherit;
-        }
+<style>
 
-        .header {
-            background: white;
-            padding: 18px 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        .logo {
-            font-size: 26px;
-            font-weight: bold;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #222;
+    padding-bottom: 90px;
+}
 
-        .subtitle {
-            color: #777;
-            margin-top: 5px;
-        }
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}
 
-        .container {
-            padding: 20px;
-        }
+button {
+    cursor: pointer;
+}
 
-        .welcome {
-            background: white;
-            border-radius: 18px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
+.header {
+    background: white;
+    padding: 18px 20px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
 
-        .welcome h2 {
-            margin-top: 0;
-        }
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+}
 
-        .categories {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
+.subtitle {
+    color: #777;
+    margin-top: 5px;
+}
 
-        .category {
-            border: none;
-            background: white;
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            font-size: 17px;
-            cursor: pointer;
-        }
+.container {
+    padding: 20px;
+}
 
-        .category:active {
-            transform: scale(0.97);
-        }
+.hidden {
+    display: none !important;
+}
 
-        .category-icon {
-            font-size: 30px;
-            margin-bottom: 8px;
-        }
+/* =========================
+   HOME
+========================= */
 
-        .products {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
+.welcome {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
 
-        .product {
-            background: white;
-            border-radius: 16px;
-            padding: 12px;
-        }
+.welcome h2 {
+    margin-top: 0;
+}
 
-        .product-image {
-            height: 110px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 55px;
-            background: #f7f7f7;
-            border-radius: 12px;
-            margin-bottom: 10px;
-        }
+.categories {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 12px;
+}
 
-        .product-name {
-            font-weight: bold;
-            min-height: 40px;
-        }
+.category {
+    border: none;
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    font-size: 16px;
+}
 
-        .product-unit {
-            color: #777;
-            font-size: 13px;
-            margin-top: 5px;
-        }
+.category:active {
+    transform: scale(.97);
+}
 
-        .product-price {
-            margin-top: 7px;
-            font-weight: bold;
-            font-size: 17px;
-        }
+.category-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
 
-        .add-button {
-            width: 100%;
-            margin-top: 10px;
-            border: none;
-            background: #222;
-            color: white;
-            padding: 11px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+/* =========================
+   PRODUCTS
+========================= */
 
-        .weight-box {
-            margin-top: 10px;
-        }
+.products {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 12px;
+}
 
-        .weight-row {
-            display: flex;
-            gap: 5px;
-        }
+.product {
+    background: white;
+    border-radius: 16px;
+    padding: 12px;
+}
 
-        .weight-input {
-            width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 9px;
-            padding: 10px;
-            font-size: 15px;
-        }
+.product-image {
+    height: 110px;
+    background: #f5f5f5;
+    border-radius: 12px;
 
-        .unit-select {
-            border: 1px solid #ddd;
-            border-radius: 9px;
-            padding: 10px;
-            background: white;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        .back-button {
-            border: none;
-            background: white;
-            padding: 10px 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            font-size: 15px;
-        }
+    font-size: 55px;
 
-        .cart {
-            position: fixed;
-            bottom: 15px;
-            left: 15px;
-            right: 15px;
-            background: #222;
-            color: white;
-            padding: 16px;
-            border-radius: 16px;
-            text-align: center;
-            font-size: 17px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 20;
-        }
+    overflow: hidden;
+}
 
-        .cart-page {
-            display: none;
-        }
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-        .cart-item {
-            background: white;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 10px;
-        }
+.product-name {
+    font-weight: bold;
+    margin-top: 10px;
+}
 
-        .cart-item-name {
-            font-weight: bold;
-            margin-bottom: 6px;
-        }
+.product-unit {
+    color: #777;
+    font-size: 13px;
+    margin-top: 5px;
+}
 
-        .cart-item-price {
-            color: #555;
-            font-size: 14px;
-        }
+.product-price {
+    font-weight: bold;
+    font-size: 17px;
+    margin-top: 7px;
+}
 
-        .quantity {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: 10px;
-        }
+.add-button {
+    width: 100%;
+    border: none;
+    background: #222;
+    color: white;
+    padding: 11px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
 
-        .quantity button {
-            width: 35px;
-            height: 35px;
-            border: none;
-            border-radius: 10px;
-            background: #eee;
-            font-size: 20px;
-            cursor: pointer;
-        }
+.weight-row {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
 
-        .total {
-            background: white;
-            padding: 18px;
-            border-radius: 15px;
-            margin-top: 15px;
-            font-size: 20px;
-            font-weight: bold;
-        }
+.weight-input {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    padding: 10px;
+}
 
-        .order-button {
-            width: 100%;
-            border: none;
-            background: #222;
-            color: white;
-            padding: 16px;
-            border-radius: 14px;
-            margin-top: 15px;
-            font-size: 17px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.unit-select {
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    padding: 10px;
+    background: white;
+}
 
-        .empty {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            text-align: center;
-            color: #777;
-        }
+/* =========================
+   CART
+========================= */
 
-        .hidden {
-            display: none !important;
-        }
+.cart {
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
 
-        .form-card {
-            background: white;
-            padding: 18px;
-            border-radius: 16px;
-            margin-bottom: 15px;
-        }
+    background: #222;
+    color: white;
 
-        .form-card h3 {
-            margin-top: 0;
-        }
+    padding: 16px;
+    border-radius: 16px;
 
-        .form-label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 7px;
-        }
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
 
-        .form-input,
-        .form-textarea {
-            width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 12px;
-            font-size: 15px;
-            outline: none;
-        }
+    z-index: 30;
+}
 
-        .form-textarea {
-            min-height: 90px;
-            resize: vertical;
-        }
+.cart-item {
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
 
-        .telegram-button {
-            width: 100%;
-            border: none;
-            background: #229ED9;
-            color: white;
-            padding: 13px;
-            border-radius: 11px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.cart-item-name {
+    font-weight: bold;
+}
 
-        .location-button {
-            width: 100%;
-            border: none;
-            background: #4CAF50;
-            color: white;
-            padding: 13px;
-            border-radius: 11px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.cart-item-price {
+    color: #666;
+    margin-top: 5px;
+}
 
-        .received {
-            margin-top: 10px;
-            padding: 10px;
-            background: #eef8ee;
-            border-radius: 10px;
-            color: #287a28;
-            font-size: 14px;
-        }
+.remove-button {
+    margin-top: 10px;
+    border: none;
+    background: #eee;
+    padding: 8px 12px;
+    border-radius: 9px;
+}
 
-        .payment-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+.total {
+    background: white;
+    padding: 18px;
+    border-radius: 15px;
+    margin-top: 15px;
 
-        .payment-option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 13px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            cursor: pointer;
-        }
+    font-size: 20px;
+    font-weight: bold;
+}
 
-        .confirm-box {
-            background: white;
-            padding: 18px;
-            border-radius: 16px;
-            margin-bottom: 15px;
-        }
+.order-button {
+    width: 100%;
+    border: none;
 
-        .confirm-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
+    background: #222;
+    color: white;
 
-        .confirm-row:last-child {
-            border-bottom: none;
-        }
+    padding: 16px;
+    border-radius: 14px;
 
-        .success {
-            text-align: center;
-            background: white;
-            padding: 30px 20px;
-            border-radius: 18px;
-        }
+    margin-top: 15px;
 
-        .success-icon {
-            font-size: 60px;
-        }
+    font-size: 17px;
+    font-weight: bold;
+}
 
-        @media (max-width: 380px) {
-            .products {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+.back-button {
+    border: none;
+    background: white;
+
+    padding: 10px 15px;
+
+    border-radius: 10px;
+
+    margin-bottom: 15px;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-card {
+    background: white;
+    padding: 18px;
+    border-radius: 16px;
+    margin-bottom: 15px;
+}
+
+.form-card h3 {
+    margin-top: 0;
+}
+
+.form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 15px;
+}
+
+.form-textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.telegram-button {
+    width: 100%;
+    border: none;
+
+    background: #229ED9;
+    color: white;
+
+    padding: 13px;
+
+    border-radius: 11px;
+
+    font-weight: bold;
+}
+
+.location-button {
+    width: 100%;
+    border: none;
+
+    background: #4CAF50;
+    color: white;
+
+    padding: 13px;
+
+    border-radius: 11px;
+
+    font-weight: bold;
+}
+
+.received {
+    margin-top: 10px;
+
+    background: #eef8ee;
+    color: #287a28;
+
+    padding: 10px;
+    border-radius: 10px;
+
+    font-size: 14px;
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile-card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 75px;
+    height: 75px;
+
+    border-radius: 50%;
+
+    background: #eee;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: auto;
+
+    font-size: 35px;
+}
+
+.profile-name {
+    font-size: 21px;
+    font-weight: bold;
+    margin-top: 12px;
+}
+
+.profile-username {
+    color: #777;
+    margin-top: 5px;
+}
+
+.profile-menu {
+    margin-top: 20px;
+}
+
+.profile-menu button {
+    width: 100%;
+
+    background: white;
+
+    border: 1px solid #eee;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    margin-bottom: 8px;
+
+    text-align: left;
+
+    font-size: 15px;
+}
+
+/* =========================
+   ADMIN
+========================= */
+
+.admin-card {
+    background: white;
+    padding: 16px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+}
+
+.admin-product {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.admin-image {
+    width: 65px;
+    height: 65px;
+
+    background: #eee;
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 30px;
+
+    overflow: hidden;
+}
+
+.admin-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.admin-info {
+    flex: 1;
+}
+
+.admin-actions {
+    margin-top: 12px;
+    display: grid;
+    gap: 8px;
+}
+
+.admin-actions button {
+    border: none;
+    padding: 10px;
+    border-radius: 9px;
+}
+
+.edit-button {
+    background: #eee;
+}
+
+.hide-button {
+    background: #ffe6e6;
+}
+
+.save-button {
+    background: #222;
+    color: white;
+}
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 65px;
+
+    background: white;
+
+    border-top: 1px solid #eee;
+
+    display: flex;
+
+    justify-content: space-around;
+
+    align-items: center;
+
+    z-index: 25;
+}
+
+.nav-button {
+    border: none;
+    background: transparent;
+
+    color: #666;
+
+    font-size: 12px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 3px;
+}
+
+.nav-button span {
+    font-size: 22px;
+}
+
+/* =========================
+   SUCCESS
+========================= */
+
+.success {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 18px;
+    text-align: center;
+}
+
+.success-icon {
+    font-size: 60px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:380px) {
+
+    .products {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
 </head>
+
 
 <body>
 
-<!-- HEADER -->
+
+<!-- =========================
+     HEADER
+========================= -->
 
 <div class="header">
-    <div class="logo">⭐ Yulduz Market</div>
-    <div class="subtitle">Onlayn xarid</div>
+
+    <div class="logo">
+        ⭐ Yulduz Market
+    </div>
+
+    <div class="subtitle">
+        Onlayn xarid
+    </div>
+
 </div>
 
 
-<!-- ========================= -->
-<!-- BOSH SAHIFA -->
-<!-- ========================= -->
+<!-- =========================
+     HOME
+========================= -->
 
 <div id="homePage" class="container">
 
     <div class="welcome">
-        <h2>Xush kelibsiz! 👋</h2>
-        <p>Kerakli mahsulotlarni tanlang va savatga qo‘shing.</p>
+
+        <h2 id="welcomeText">
+            Xush kelibsiz! 👋
+        </h2>
+
+        <p>
+            Kerakli mahsulotlarni tanlang
+            va savatga qo‘shing.
+        </p>
+
     </div>
+
 
     <h3>Kategoriyalar</h3>
 
+
     <div class="categories">
 
-        <button class="category"
-                onclick="openCategory('Ichimliklar')">
-            <div class="category-icon">🥤</div>
+        <button
+            class="category"
+            onclick="openCategory('Ichimliklar')">
+
+            <div class="category-icon">
+                🥤
+            </div>
+
             Ichimliklar
+
         </button>
 
-        <button class="category"
-                onclick="openCategory('Shirinliklar')">
-            <div class="category-icon">🍫</div>
+
+        <button
+            class="category"
+            onclick="openCategory('Shirinliklar')">
+
+            <div class="category-icon">
+                🍫
+            </div>
+
             Shirinliklar
+
         </button>
 
-        <button class="category"
-                onclick="openCategory('Sut mahsulotlari')">
-            <div class="category-icon">🥛</div>
+
+        <button
+            class="category"
+            onclick="openCategory('Sut mahsulotlari')">
+
+            <div class="category-icon">
+                🥛
+            </div>
+
             Sut mahsulotlari
+
         </button>
 
-        <button class="category"
-                onclick="openCategory('Meva va sabzavot')">
-            <div class="category-icon">🍎</div>
+
+        <button
+            class="category"
+            onclick="openCategory('Meva va sabzavot')">
+
+            <div class="category-icon">
+                🍎
+            </div>
+
             Meva va sabzavot
+
         </button>
 
-        <button class="category"
-                onclick="openCategory('Muzqaymoqlar')">
-            <div class="category-icon">🍦</div>
+
+        <button
+            class="category"
+            onclick="openCategory('Muzqaymoqlar')">
+
+            <div class="category-icon">
+                🍦
+            </div>
+
             Muzqaymoqlar
+
         </button>
 
-        <button class="category"
-                onclick="openCategory('Maishiy mahsulotlar')">
-            <div class="category-icon">🧴</div>
+
+        <button
+            class="category"
+            onclick="openCategory('Maishiy mahsulotlar')">
+
+            <div class="category-icon">
+                🧴
+            </div>
+
             Maishiy mahsulotlar
+
         </button>
 
     </div>
@@ -445,73 +676,118 @@
 </div>
 
 
-<!-- ========================= -->
-<!-- MAHSULOTLAR -->
-<!-- ========================= -->
+<!-- =========================
+     PRODUCTS
+========================= -->
 
-<div id="productsPage" class="container hidden">
+<div
+    id="productsPage"
+    class="container hidden">
 
-    <button class="back-button" onclick="goHome()">
+    <button
+        class="back-button"
+        onclick="goHome()">
+
         ← Orqaga
+
     </button>
+
 
     <h2 id="categoryTitle"></h2>
 
-    <div id="products" class="products"></div>
+
+    <div
+        id="products"
+        class="products">
+    </div>
 
 </div>
 
 
-<!-- ========================= -->
-<!-- SAVAT -->
-<!-- ========================= -->
+<!-- =========================
+     CART
+========================= -->
 
-<div id="cartPage" class="container cart-page">
+<div
+    id="cartPage"
+    class="container hidden">
 
-    <button class="back-button" onclick="goHome()">
+    <button
+        class="back-button"
+        onclick="goHome()">
+
         ← Bosh sahifa
+
     </button>
 
-    <h2>🛒 Savat</h2>
+
+    <h2>
+        🛒 Savat
+    </h2>
+
 
     <div id="cartItems"></div>
 
-    <div id="cartTotal" class="total">
+
+    <div
+        id="cartTotal"
+        class="total">
+
         Jami: 0 so‘m
+
     </div>
 
-    <button class="order-button" onclick="startOrder()">
+
+    <button
+        class="order-button"
+        onclick="startOrder()">
+
         📦 Buyurtma berish
+
     </button>
 
 </div>
 
 
-<!-- ========================= -->
-<!-- BUYURTMA -->
-<!-- ========================= -->
+<!-- =========================
+     ORDER
+========================= -->
 
-<div id="orderPage" class="container hidden">
+<div
+    id="orderPage"
+    class="container hidden">
 
-    <button class="back-button" onclick="openCart()">
+    <button
+        class="back-button"
+        onclick="openCart()">
+
         ← Savatga qaytish
+
     </button>
 
-    <h2>📦 Buyurtma berish</h2>
+
+    <h2>
+        📦 Buyurtma berish
+    </h2>
 
 
-    <!-- TELEFON -->
+    <!-- PHONE -->
 
     <div class="form-card">
 
-        <h3>📞 Telefon raqami</h3>
+        <h3>
+            📞 Telefon raqami
+        </h3>
 
-        <p>Buyurtma bo‘yicha siz bilan bog‘lanishimiz uchun telefon raqamingizni yuboring.</p>
 
-        <button class="telegram-button"
-                onclick="requestPhone()">
+        <button
+            class="telegram-button"
+            onclick="requestPhone()">
+
             📱 Telegramdan telefon raqamimni yuborish
+
         </button>
+
 
         <div id="phoneReceived"></div>
 
@@ -522,44 +798,55 @@
 
     <div class="form-card">
 
-        <h3>📍 Yetkazib berish manzili</h3>
+        <h3>
+            📍 Yetkazib berish manzili
+        </h3>
 
-        <p>Yetkazib berish joyingizni Telegram orqali yuboring.</p>
 
-        <button class="location-button"
-                onclick="requestLocation()">
+        <button
+            class="location-button"
+            onclick="requestLocation()">
+
             📍 Lokatsiyamni yuborish
+
         </button>
+
 
         <div id="locationReceived"></div>
 
     </div>
 
 
-    <!-- MANZIL QO‘SHIMCHA -->
+    <!-- ADDRESS -->
 
     <div class="form-card">
 
         <label class="form-label">
-            🏠 Manzilga qo‘shimcha ma'lumot
+
+            🏠 Manzilga qo‘shimcha
+
         </label>
+
 
         <textarea
             id="addressExtra"
             class="form-textarea"
-            placeholder="Masalan: 3-dom, 2-qavat, 15-xonadon yoki ko‘k darvoza yonida">
+            placeholder="3-dom, 2-qavat, 15-xonadon...">
         </textarea>
 
     </div>
 
 
-    <!-- IZOH -->
+    <!-- NOTE -->
 
     <div class="form-card">
 
         <label class="form-label">
+
             📝 Buyurtmaga izoh
+
         </label>
+
 
         <textarea
             id="orderNote"
@@ -570,79 +857,257 @@
     </div>
 
 
-    <!-- TO‘LOV -->
+    <!-- PAYMENT -->
 
     <div class="form-card">
 
-        <h3>💰 To‘lov turi</h3>
+        <h3>
+            💰 To‘lov turi
+        </h3>
 
-        <div class="payment-options">
 
-            <label class="payment-option">
-                <input
-                    type="radio"
-                    name="payment"
-                    value="naqd"
-                    checked>
-                💵 Naqd pul
-            </label>
+        <label>
+            <input
+                type="radio"
+                name="payment"
+                value="naqd"
+                checked>
 
-            <label class="payment-option">
-                <input
-                    type="radio"
-                    name="payment"
-                    value="karta">
-                💳 Karta
-            </label>
+            💵 Naqd pul
 
-        </div>
+        </label>
+
+
+        <br><br>
+
+
+        <label>
+            <input
+                type="radio"
+                name="payment"
+                value="karta">
+
+            💳 Karta
+
+        </label>
 
     </div>
 
 
-    <!-- BUYURTMA XULOSASI -->
+    <!-- SUMMARY -->
 
-    <div class="confirm-box">
+    <div class="form-card">
 
-        <h3>🛍️ Buyurtma xulosasi</h3>
+        <h3>
+            🛍 Buyurtma
+        </h3>
+
 
         <div id="orderSummary"></div>
 
-        <div class="confirm-row">
-            <strong>Jami:</strong>
-            <strong id="orderTotal">0 so‘m</strong>
-        </div>
+
+        <hr>
+
+
+        <strong>
+            Jami:
+        </strong>
+
+
+        <strong
+            id="orderTotal">
+
+            0 so‘m
+
+        </strong>
 
     </div>
 
 
-    <button class="order-button"
-            onclick="confirmOrder()">
+    <button
+        class="order-button"
+        onclick="confirmOrder()">
+
         ✅ Buyurtmani tasdiqlash
+
     </button>
 
 </div>
 
 
-<!-- ========================= -->
-<!-- MUVAFFAQIYAT -->
-<!-- ========================= -->
+<!-- =========================
+     PROFILE
+========================= -->
 
-<div id="successPage" class="container hidden">
+<div
+    id="profilePage"
+    class="container hidden">
+
+
+    <h2>
+        👤 Mening profilim
+    </h2>
+
+
+    <div class="profile-card">
+
+
+        <div
+            id="profileAvatar"
+            class="profile-avatar">
+
+            👤
+
+        </div>
+
+
+        <div
+            id="profileName"
+            class="profile-name">
+
+            Telegram foydalanuvchi
+
+        </div>
+
+
+        <div
+            id="profileUsername"
+            class="profile-username">
+
+            @username
+
+        </div>
+
+
+        <div class="profile-menu">
+
+
+            <button onclick="showOrders()">
+
+                📦 Mening buyurtmalarim
+
+            </button>
+
+
+            <button onclick="editProfile()">
+
+                ✏️ Profil ma'lumotlarini o‘zgartirish
+
+            </button>
+
+
+            <button onclick="showSavedAddress()">
+
+                📍 Saqlangan manzil
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     ORDERS
+========================= -->
+
+<div
+    id="ordersPage"
+    class="container hidden">
+
+
+    <button
+        class="back-button"
+        onclick="openProfile()">
+
+        ← Profil
+
+    </button>
+
+
+    <h2>
+        📦 Buyurtmalarim
+    </h2>
+
+
+    <div
+        id="ordersList">
+
+        <div class="form-card">
+
+            Hozircha buyurtmalar mavjud emas.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     ADMIN
+========================= -->
+
+<div
+    id="adminPage"
+    class="container hidden">
+
+
+    <button
+        class="back-button"
+        onclick="goHome()">
+
+        ← Bosh sahifa
+
+    </button>
+
+
+    <h2>
+        🔐 Admin panel
+    </h2>
+
+
+    <div id="adminProducts"></div>
+
+</div>
+
+
+<!-- =========================
+     SUCCESS
+========================= -->
+
+<div
+    id="successPage"
+    class="container hidden">
+
 
     <div class="success">
 
-        <div class="success-icon">✅</div>
+        <div class="success-icon">
+            ✅
+        </div>
 
-        <h2>Buyurtmangiz qabul qilindi!</h2>
+
+        <h2>
+            Buyurtmangiz qabul qilindi!
+        </h2>
+
 
         <p>
             Tez orada operatorimiz siz bilan bog‘lanadi.
         </p>
 
-        <button class="order-button"
-                onclick="goHome()">
-            🏠 Bosh sahifaga qaytish
+
+        <button
+            class="order-button"
+            onclick="goHome()">
+
+            🏠 Bosh sahifa
+
         </button>
 
     </div>
@@ -650,15 +1115,44 @@
 </div>
 
 
-<!-- ========================= -->
-<!-- PASTKI SAVAT -->
-<!-- ========================= -->
+<!-- =========================
+     BOTTOM NAV
+========================= -->
 
-<div id="cartButton"
-     class="cart"
-     onclick="openCart()">
+<div class="bottom-nav">
 
-    🛒 Savat — 0 so‘m
+
+    <button
+        class="nav-button"
+        onclick="goHome()">
+
+        <span>🏠</span>
+
+        Bosh sahifa
+
+    </button>
+
+
+    <button
+        class="nav-button"
+        onclick="openCart()">
+
+        <span>🛒</span>
+
+        Savat
+
+    </button>
+
+
+    <button
+        class="nav-button"
+        onclick="openProfile()">
+
+        <span>👤</span>
+
+        Profil
+
+    </button>
 
 </div>
 
@@ -667,43 +1161,107 @@
 
 /*
 ==================================================
-TEST MAHSULOTLAR
+TELEGRAM
 ==================================================
+*/
 
-unit:
-"dona"  -> dona bilan sotiladi
+const tg =
+    window.Telegram
+    ? window.Telegram.WebApp
+    : null;
 
-"kg" -> vazn bilan sotiladi
 
-Vaznli mahsulotlarda mijoz gramm yoki kg tanlaydi.
+if (tg) {
+
+    tg.ready();
+
+    tg.expand();
+
+}
+
+
+/*
+==================================================
+CUSTOMER
+==================================================
+*/
+
+let customer = {
+
+    telegram_id: null,
+
+    first_name: "",
+
+    last_name: "",
+
+    username: "",
+
+    phone: "",
+
+    location: null
+
+};
+
+
+if (
+    tg &&
+    tg.initDataUnsafe &&
+    tg.initDataUnsafe.user
+) {
+
+    const user =
+        tg.initDataUnsafe.user;
+
+
+    customer.telegram_id =
+        user.id;
+
+    customer.first_name =
+        user.first_name || "";
+
+    customer.last_name =
+        user.last_name || "";
+
+    customer.username =
+        user.username || "";
+
+
+    document
+        .getElementById("welcomeText")
+        .textContent =
+        `Xush kelibsiz, ${customer.first_name}! 👋`;
+
+}
+
+
+/*
+==================================================
+TEST PRODUCTS
+==================================================
 */
 
 const products = {
 
+
     "Ichimliklar": [
 
         {
-            id: 1,
+            id: 549,
             name: "Coca-Cola 0.5L",
             price: 8000,
             unit: "dona",
-            icon: "🥤"
+            icon: "🥤",
+            visible: true
         },
 
+
         {
-            id: 2,
+            id: 550,
             name: "Coca-Cola 1L",
             price: 12000,
             unit: "dona",
-            icon: "🥤"
-        },
-
-        {
-            id: 3,
-            name: "Fanta 0.5L",
-            price: 8000,
-            unit: "dona",
-            icon: "🥤"
+            icon: "🥤",
+            visible: true
         }
 
     ],
@@ -712,19 +1270,12 @@ const products = {
     "Shirinliklar": [
 
         {
-            id: 4,
+            id: 3,
             name: "Shokolad",
             price: 10000,
             unit: "dona",
-            icon: "🍫"
-        },
-
-        {
-            id: 5,
-            name: "Pechenye",
-            price: 12000,
-            unit: "dona",
-            icon: "🍪"
+            icon: "🍫",
+            visible: true
         }
 
     ],
@@ -733,19 +1284,12 @@ const products = {
     "Sut mahsulotlari": [
 
         {
-            id: 6,
+            id: 4,
             name: "Sut 1L",
             price: 11000,
             unit: "dona",
-            icon: "🥛"
-        },
-
-        {
-            id: 7,
-            name: "Qatiq",
-            price: 9000,
-            unit: "dona",
-            icon: "🥛"
+            icon: "🥛",
+            visible: true
         }
 
     ],
@@ -754,35 +1298,32 @@ const products = {
     "Meva va sabzavot": [
 
         {
-            id: 8,
+            id: 5,
             name: "Olma",
             price: 18000,
             unit: "kg",
-            icon: "🍎"
+            icon: "🍎",
+            visible: true
         },
 
+
         {
-            id: 9,
+            id: 6,
             name: "Banan",
             price: 22000,
             unit: "kg",
-            icon: "🍌"
+            icon: "🍌",
+            visible: true
         },
 
+
         {
-            id: 10,
+            id: 7,
             name: "Kartoshka",
             price: 8000,
             unit: "kg",
-            icon: "🥔"
-        },
-
-        {
-            id: 11,
-            name: "Pomidor",
-            price: 15000,
-            unit: "kg",
-            icon: "🍅"
+            icon: "🥔",
+            visible: true
         }
 
     ],
@@ -791,11 +1332,12 @@ const products = {
     "Muzqaymoqlar": [
 
         {
-            id: 12,
+            id: 8,
             name: "Muzqaymoq",
             price: 10000,
             unit: "dona",
-            icon: "🍦"
+            icon: "🍦",
+            visible: true
         }
 
     ],
@@ -804,11 +1346,12 @@ const products = {
     "Maishiy mahsulotlar": [
 
         {
-            id: 13,
+            id: 9,
             name: "Kir yuvish kukuni",
             price: 25000,
             unit: "dona",
-            icon: "🧴"
+            icon: "🧴",
+            visible: true
         }
 
     ]
@@ -818,7 +1361,7 @@ const products = {
 
 /*
 ==================================================
-SAVAT
+CART
 ==================================================
 */
 
@@ -827,98 +1370,78 @@ let cart = [];
 
 /*
 ==================================================
-BUYURTMA MA'LUMOTLARI
+ORDERS
 ==================================================
 */
 
-let customerPhone = "";
-let customerLocation = null;
+let orders = [];
 
 
 /*
 ==================================================
-TELEGRAM WEB APP
+CATEGORY
 ==================================================
 */
 
-const tg = window.Telegram
-    ? window.Telegram.WebApp
-    : null;
-
-if (tg) {
-    tg.ready();
-    tg.expand();
-}
+function openCategory(category) {
 
 
-/*
-==================================================
-KATEGORIYA
-==================================================
-*/
+    hideAll();
 
-function openCategory(categoryName) {
-
-    document
-        .getElementById("homePage")
-        .classList.add("hidden");
-
-    document
-        .getElementById("cartPage")
-        .style.display = "none";
-
-    document
-        .getElementById("orderPage")
-        .classList.add("hidden");
-
-    document
-        .getElementById("successPage")
-        .classList.add("hidden");
 
     document
         .getElementById("productsPage")
         .classList.remove("hidden");
 
+
     document
         .getElementById("categoryTitle")
-        .textContent = categoryName;
+        .textContent =
+        category;
 
 
     const container =
         document.getElementById("products");
 
+
     container.innerHTML = "";
 
 
-    const categoryProducts =
-        products[categoryName] || [];
+    products[category]
+        .filter(product => product.visible)
+        .forEach(product => {
 
 
-    categoryProducts.forEach(product => {
-
-        const card =
-            document.createElement("div");
-
-        card.className = "product";
+            const card =
+                document.createElement("div");
 
 
-        if (product.unit === "kg") {
+            card.className =
+                "product";
 
-            card.innerHTML = `
 
-                <div class="product-image">
-                    ${product.icon}
-                </div>
+            let image =
+                product.image
+                ? `<img src="${product.image}">`
+                : product.icon;
 
-                <div class="product-name">
-                    ${product.name}
-                </div>
 
-                <div class="product-unit">
-                    ${formatPrice(product.price)} / kg
-                </div>
+            if (product.unit === "kg") {
 
-                <div class="weight-box">
+
+                card.innerHTML = `
+
+                    <div class="product-image">
+                        ${image}
+                    </div>
+
+                    <div class="product-name">
+                        ${product.name}
+                    </div>
+
+                    <div class="product-unit">
+                        ${formatPrice(product.price)} / kg
+                    </div>
 
                     <div class="weight-row">
 
@@ -926,8 +1449,7 @@ function openCategory(categoryName) {
                             id="weight-${product.id}"
                             class="weight-input"
                             type="number"
-                            min="0.001"
-                            step="0.001"
+                            min="1"
                             value="1"
                         >
 
@@ -947,6 +1469,7 @@ function openCategory(categoryName) {
 
                     </div>
 
+
                     <button
                         class="add-button"
                         onclick="addWeightProduct(${product.id})">
@@ -955,121 +1478,96 @@ function openCategory(categoryName) {
 
                     </button>
 
-                </div>
+                `;
 
-            `;
-
-        } else {
-
-            card.innerHTML = `
-
-                <div class="product-image">
-                    ${product.icon}
-                </div>
-
-                <div class="product-name">
-                    ${product.name}
-                </div>
-
-                <div class="product-unit">
-                    ${formatPrice(product.price)} / dona
-                </div>
-
-                <button
-                    class="add-button"
-                    onclick="addToCart(${product.id})">
-
-                    🛒 Savatga qo‘shish
-
-                </button>
-
-            `;
-
-        }
+            }
 
 
-        container.appendChild(card);
-
-    });
-
-}
+            else {
 
 
-/*
-==================================================
-BOSH SAHIFA
-==================================================
-*/
+                card.innerHTML = `
 
-function goHome() {
+                    <div class="product-image">
+                        ${image}
+                    </div>
 
-    document
-        .getElementById("homePage")
-        .classList.remove("hidden");
+                    <div class="product-name">
+                        ${product.name}
+                    </div>
 
-    document
-        .getElementById("productsPage")
-        .classList.add("hidden");
+                    <div class="product-unit">
+                        ${formatPrice(product.price)} / dona
+                    </div>
 
-    document
-        .getElementById("cartPage")
-        .style.display = "none";
+                    <button
+                        class="add-button"
+                        onclick="addToCart(${product.id})">
 
-    document
-        .getElementById("orderPage")
-        .classList.add("hidden");
+                        🛒 Savatga qo‘shish
 
-    document
-        .getElementById("successPage")
-        .classList.add("hidden");
+                    </button>
+
+                `;
+
+            }
+
+
+            container.appendChild(card);
+
+        });
 
 }
 
 
 /*
 ==================================================
-MAHSULOT TOPISH
+FIND PRODUCT
 ==================================================
 */
 
-function findProduct(productId) {
+function findProduct(id) {
 
-    for (const category in products) {
+    for (
+        const category in products
+    ) {
 
         const product =
-            products[category].find(
-                item => item.id === productId
-            );
+            products[category]
+            .find(item => item.id === id);
 
-        if (product) {
+
+        if (product)
             return product;
-        }
 
     }
 
     return null;
+
 }
 
 
 /*
 ==================================================
-DONA MAHSULOT
+ADD PRODUCT
 ==================================================
 */
 
-function addToCart(productId) {
+function addToCart(id) {
 
     const product =
-        findProduct(productId);
+        findProduct(id);
 
-    if (!product) return;
+
+    if (!product)
+        return;
 
 
     const existing =
         cart.find(
             item =>
-                item.id === productId &&
-                item.unit === "dona"
+            item.id === id &&
+            item.unit === "dona"
         );
 
 
@@ -1077,7 +1575,9 @@ function addToCart(productId) {
 
         existing.quantity++;
 
-    } else {
+    }
+
+    else {
 
         cart.push({
 
@@ -1096,8 +1596,7 @@ function addToCart(productId) {
 
 
     alert(
-        product.name +
-        " savatga qo‘shildi! 🛒"
+        `${product.name} savatga qo‘shildi! 🛒`
     );
 
 }
@@ -1105,58 +1604,45 @@ function addToCart(productId) {
 
 /*
 ==================================================
-KG / GRAMM MAHSULOT
+ADD WEIGHT
 ==================================================
 */
 
-function addWeightProduct(productId) {
+function addWeightProduct(id) {
 
     const product =
-        findProduct(productId);
-
-    if (!product) return;
+        findProduct(id);
 
 
-    const input =
-        document.getElementById(
-            `weight-${productId}`
+    const amount =
+        parseFloat(
+            document
+            .getElementById(`weight-${id}`)
+            .value
         );
 
+
     const unit =
-        document.getElementById(
-            `unit-${productId}`
-        ).value;
+        document
+        .getElementById(`unit-${id}`)
+        .value;
 
 
-    let value =
-        parseFloat(input.value);
-
-
-    if (!value || value <= 0) {
+    if (!amount || amount <= 0) {
 
         alert(
             "Miqdorni to‘g‘ri kiriting."
         );
 
         return;
-    }
-
-
-    /*
-    Gramm bo‘lsa kg ga aylantiramiz.
-    */
-
-    let kg;
-
-    if (unit === "g") {
-
-        kg = value / 1000;
-
-    } else {
-
-        kg = value;
 
     }
+
+
+    const kg =
+        unit === "g"
+        ? amount / 1000
+        : amount;
 
 
     cart.push({
@@ -1167,7 +1653,7 @@ function addWeightProduct(productId) {
 
         selectedUnit: unit,
 
-        enteredAmount: value
+        enteredAmount: amount
 
     });
 
@@ -1176,10 +1662,7 @@ function addWeightProduct(productId) {
 
 
     alert(
-        product.name +
-        " " +
-        formatWeight(value, unit) +
-        " savatga qo‘shildi! 🛒"
+        `${product.name} ${amount} ${unit} savatga qo‘shildi! 🛒`
     );
 
 }
@@ -1187,34 +1670,13 @@ function addWeightProduct(productId) {
 
 /*
 ==================================================
-VAZN KO‘RINISHI
-==================================================
-*/
-
-function formatWeight(value, unit) {
-
-    if (unit === "g") {
-
-        return value + " g";
-
-    }
-
-    return value + " kg";
-
-}
-
-
-/*
-==================================================
-SAVATNI YANGILASH
+UPDATE CART
 ==================================================
 */
 
 function updateCart() {
 
     let total = 0;
-
-    let count = 0;
 
 
     cart.forEach(item => {
@@ -1223,46 +1685,31 @@ function updateCart() {
             item.price *
             item.quantity;
 
-        count++;
-
     });
 
 
     document
-        .getElementById("cartButton")
+        .querySelector(".cart")
         .textContent =
-        `🛒 Savat (${count}) — ${formatPrice(total)}`;
+        `🛒 Savat (${cart.length}) — ${formatPrice(total)}`;
 
 }
 
 
 /*
 ==================================================
-SAVATNI OCHISH
+OPEN CART
 ==================================================
 */
 
 function openCart() {
 
-    document
-        .getElementById("homePage")
-        .classList.add("hidden");
+    hideAll();
 
-    document
-        .getElementById("productsPage")
-        .classList.add("hidden");
-
-    document
-        .getElementById("orderPage")
-        .classList.add("hidden");
-
-    document
-        .getElementById("successPage")
-        .classList.add("hidden");
 
     document
         .getElementById("cartPage")
-        .style.display = "block";
+        .classList.remove("hidden");
 
 
     renderCart();
@@ -1272,7 +1719,7 @@ function openCart() {
 
 /*
 ==================================================
-SAVATNI CHIZISH
+RENDER CART
 ==================================================
 */
 
@@ -1281,106 +1728,88 @@ function renderCart() {
     const container =
         document.getElementById("cartItems");
 
+
     container.innerHTML = "";
+
+
+    let total = 0;
 
 
     if (cart.length === 0) {
 
         container.innerHTML = `
 
-            <div class="empty">
+            <div class="form-card">
 
-                🛒<br><br>
-
-                Savatingiz hozircha bo‘sh.
+                🛒 Savat hozircha bo‘sh.
 
             </div>
 
         `;
 
-        document
-            .getElementById("cartTotal")
-            .textContent =
-            "Jami: 0 so‘m";
-
-        return;
     }
 
 
-    let total = 0;
+    cart.forEach(
+        (item,index) => {
 
 
-    cart.forEach((item, index) => {
-
-        const itemTotal =
-            item.price *
-            item.quantity;
+            const itemTotal =
+                item.price *
+                item.quantity;
 
 
-        total += itemTotal;
+            total += itemTotal;
 
 
-        const div =
-            document.createElement("div");
-
-        div.className =
-            "cart-item";
+            let amount;
 
 
-        let quantityText;
+            if (item.unit === "kg") {
+
+                amount =
+                    `${item.enteredAmount} ${item.selectedUnit}`;
+
+            }
+
+            else {
+
+                amount =
+                    `${item.quantity} dona`;
+
+            }
 
 
-        if (item.unit === "kg") {
+            container.innerHTML += `
 
-            quantityText =
-                formatWeight(
-                    item.enteredAmount,
-                    item.selectedUnit
-                );
+                <div class="cart-item">
 
-        } else {
+                    <div class="cart-item-name">
+                        ${item.name}
+                    </div>
 
-            quantityText =
-                item.quantity + " dona";
+                    <div class="cart-item-price">
+                        ${amount}
+                    </div>
+
+                    <div style="margin-top:7px;">
+                        ${formatPrice(itemTotal)}
+                    </div>
+
+                    <button
+                        class="remove-button"
+                        onclick="removeCartItem(${index})">
+
+                        🗑 O‘chirish
+
+                    </button>
+
+                </div>
+
+            `;
 
         }
-
-
-        div.innerHTML = `
-
-            <div class="cart-item-name">
-                ${item.name}
-            </div>
-
-            <div class="cart-item-price">
-                ${formatPrice(item.price)} / ${item.unit}
-            </div>
-
-            <div style="margin-top:8px;">
-                ${quantityText}
-            </div>
-
-            <div style="margin-top:8px; font-weight:bold;">
-                ${formatPrice(itemTotal)}
-            </div>
-
-            <div class="quantity">
-
-                <button
-                    onclick="removeCartItem(${index})">
-
-                    🗑️
-
-                </button>
-
-            </div>
-
-        `;
-
-
-        container.appendChild(div);
-
-    });
+    );
 
 
     document
@@ -1393,13 +1822,13 @@ function renderCart() {
 
 /*
 ==================================================
-SAVATDAN O‘CHIRISH
+REMOVE CART
 ==================================================
 */
 
 function removeCartItem(index) {
 
-    cart.splice(index, 1);
+    cart.splice(index,1);
 
     updateCart();
 
@@ -1410,7 +1839,7 @@ function removeCartItem(index) {
 
 /*
 ==================================================
-BUYURTMA BOSHLASH
+ORDER
 ==================================================
 */
 
@@ -1419,16 +1848,16 @@ function startOrder() {
     if (cart.length === 0) {
 
         alert(
-            "Avval savatga mahsulot qo‘shing."
+            "Avval mahsulot tanlang."
         );
 
         return;
+
     }
 
 
-    document
-        .getElementById("cartPage")
-        .style.display = "none";
+    hideAll();
+
 
     document
         .getElementById("orderPage")
@@ -1442,16 +1871,15 @@ function startOrder() {
 
 /*
 ==================================================
-BUYURTMA XULOSASI
+ORDER SUMMARY
 ==================================================
 */
 
 function renderOrderSummary() {
 
     const container =
-        document.getElementById(
-            "orderSummary"
-        );
+        document.getElementById("orderSummary");
+
 
     container.innerHTML = "";
 
@@ -1461,55 +1889,54 @@ function renderOrderSummary() {
 
     cart.forEach(item => {
 
+
         const itemTotal =
             item.price *
             item.quantity;
 
+
         total += itemTotal;
 
 
-        let quantityText;
+        let amount;
+
 
         if (item.unit === "kg") {
 
-            quantityText =
-                formatWeight(
-                    item.enteredAmount,
-                    item.selectedUnit
-                );
+            amount =
+                `${item.enteredAmount} ${item.selectedUnit}`;
 
-        } else {
+        }
 
-            quantityText =
-                item.quantity +
-                " dona";
+        else {
+
+            amount =
+                `${item.quantity} dona`;
 
         }
 
 
-        const row =
-            document.createElement("div");
+        container.innerHTML += `
 
-        row.className =
-            "confirm-row";
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                margin-bottom:10px;
+            ">
 
+                <span>
+                    ${item.name}
+                    <br>
+                    <small>${amount}</small>
+                </span>
 
-        row.innerHTML = `
+                <strong>
+                    ${formatPrice(itemTotal)}
+                </strong>
 
-            <span>
-                ${item.name}
-                <br>
-                <small>${quantityText}</small>
-            </span>
-
-            <strong>
-                ${formatPrice(itemTotal)}
-            </strong>
+            </div>
 
         `;
-
-
-        container.appendChild(row);
 
     });
 
@@ -1524,54 +1951,51 @@ function renderOrderSummary() {
 
 /*
 ==================================================
-TELEFON
+PHONE
 ==================================================
-
-Hozir Telegram WebApp ichida demo holatda.
-
-Keyingi bosqichda bot bilan WebApp orqali
-haqiqiy contact request qilamiz.
 */
 
 function requestPhone() {
+
+
+    /*
+    Telegram contact olishni
+    backend/bot orqali keyingi
+    bosqichda to‘liq ulaymiz.
+    */
+
 
     if (!tg) {
 
         const phone =
             prompt(
-                "Telefon raqamingizni kiriting:"
+                "Telefon raqamingiz:"
             );
+
 
         if (phone) {
 
-            customerPhone = phone;
+            customer.phone =
+                phone;
 
             document
                 .getElementById(
                     "phoneReceived"
                 )
-                .innerHTML = `
-
-                    <div class="received">
-                        ✅ ${phone}
-                    </div>
-
-                `;
+                .innerHTML =
+                `<div class="received">
+                    ✅ ${phone}
+                </div>`;
 
         }
 
         return;
+
     }
 
 
-    /*
-    Telegram Mini App'da
-    contact olish uchun keyinchalik
-    bot/backend bilan bog‘laymiz.
-    */
-
     alert(
-        "Telefon raqamini Telegram orqali olish funksiyasi keyingi backend bosqichida ulanadi."
+        "Telegram contact olish funksiyasi bot bilan keyingi bosqichda ulanadi."
     );
 
 }
@@ -1585,23 +2009,6 @@ LOCATION
 
 function requestLocation() {
 
-    if (!tg) {
-
-        alert(
-            "Telegram Mini App ichida oching."
-        );
-
-        return;
-    }
-
-
-    /*
-    Browser geolocation hozircha test uchun.
-
-    Keyingi bosqichda Telegram Bot API orqali
-    haqiqiy Telegram location yuborishni
-    backend bilan bog‘laymiz.
-    */
 
     if (!navigator.geolocation) {
 
@@ -1610,14 +2017,18 @@ function requestLocation() {
         );
 
         return;
+
     }
 
 
-    navigator.geolocation.getCurrentPosition(
+    navigator
+    .geolocation
+    .getCurrentPosition(
 
-        function(position) {
+        position => {
 
-            customerLocation = {
+
+            customer.location = {
 
                 latitude:
                     position.coords.latitude,
@@ -1632,20 +2043,18 @@ function requestLocation() {
                 .getElementById(
                     "locationReceived"
                 )
-                .innerHTML = `
-
-                    <div class="received">
-                        ✅ Lokatsiya olindi
-                    </div>
-
-                `;
+                .innerHTML =
+                `<div class="received">
+                    ✅ Lokatsiya olindi
+                </div>`;
 
         },
 
-        function() {
+
+        () => {
 
             alert(
-                "Lokatsiyani olishga ruxsat bering."
+                "Lokatsiyani olish uchun ruxsat bering."
             );
 
         }
@@ -1657,85 +2066,107 @@ function requestLocation() {
 
 /*
 ==================================================
-BUYURTMANI TASDIQLASH
+CONFIRM ORDER
 ==================================================
 */
 
 function confirmOrder() {
 
-    if (!customerPhone) {
+
+    if (!customer.phone) {
 
         alert(
-            "Iltimos, telefon raqamingizni yuboring."
+            "Telefon raqamingizni yuboring."
         );
 
         return;
+
     }
 
 
-    if (!customerLocation) {
+    if (!customer.location) {
 
         alert(
-            "Iltimos, yetkazib berish lokatsiyasini yuboring."
+            "Lokatsiyangizni yuboring."
         );
 
         return;
+
     }
 
 
-    const addressExtra =
-        document
+    const order = {
+
+        id:
+            Date.now(),
+
+        telegram_user_id:
+            customer.telegram_id,
+
+        customer_name:
+            `${customer.first_name} ${customer.last_name}`,
+
+        username:
+            customer.username,
+
+        phone:
+            customer.phone,
+
+        location:
+            customer.location,
+
+        address_extra:
+            document
             .getElementById("addressExtra")
             .value
-            .trim();
+            .trim(),
 
-
-    const orderNote =
-        document
+        note:
+            document
             .getElementById("orderNote")
             .value
-            .trim();
+            .trim(),
 
+        payment:
+            document
+            .querySelector(
+                'input[name="payment"]:checked'
+            )
+            .value,
 
-    const payment =
-        document.querySelector(
-            'input[name="payment"]:checked'
-        ).value;
+        items:
+            [...cart],
 
-
-    const orderData = {
-
-        phone: customerPhone,
-
-        location: customerLocation,
-
-        address_extra: addressExtra,
-
-        note: orderNote,
-
-        payment: payment,
-
-        items: cart
+        created_at:
+            new Date().toISOString()
 
     };
 
 
     /*
-    Hozircha demo.
+    Hozircha lokal test.
 
-    Keyingi bosqichda shu orderData
-    backend orqali YesPOS'ga yuboriladi.
+    Keyinchalik:
+
+    Mini App
+       ↓
+    Backend
+       ↓
+    YesPOS
+
     */
 
-    console.log(
-        "BUYURTMA:",
-        orderData
-    );
+    orders.push(order);
 
 
-    document
-        .getElementById("orderPage")
-        .classList.add("hidden");
+    cart = [];
+
+
+    updateCart();
+
+
+    hideAll();
+
 
     document
         .getElementById("successPage")
@@ -1746,7 +2177,433 @@ function confirmOrder() {
 
 /*
 ==================================================
-NARX FORMAT
+PROFILE
+==================================================
+*/
+
+function openProfile() {
+
+    hideAll();
+
+
+    document
+        .getElementById("profilePage")
+        .classList.remove("hidden");
+
+
+    renderProfile();
+
+}
+
+
+/*
+==================================================
+PROFILE DATA
+==================================================
+*/
+
+function renderProfile() {
+
+
+    if (!customer.first_name) {
+
+        return;
+
+    }
+
+
+    document
+        .getElementById("profileName")
+        .textContent =
+        `${customer.first_name} ${customer.last_name}`;
+
+
+    document
+        .getElementById("profileUsername")
+        .textContent =
+        customer.username
+        ? `@${customer.username}`
+        : "Telegram foydalanuvchi";
+
+
+}
+
+
+/*
+==================================================
+ORDERS
+==================================================
+*/
+
+function showOrders() {
+
+    hideAll();
+
+
+    document
+        .getElementById("ordersPage")
+        .classList.remove("hidden");
+
+
+    const list =
+        document.getElementById("ordersList");
+
+
+    if (orders.length === 0) {
+
+        list.innerHTML = `
+
+            <div class="form-card">
+
+                📦 Hozircha buyurtmalar mavjud emas.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    list.innerHTML = "";
+
+
+    orders
+    .slice()
+    .reverse()
+    .forEach(order => {
+
+
+        let total = 0;
+
+
+        order.items.forEach(item => {
+
+            total +=
+                item.price *
+                item.quantity;
+
+        });
+
+
+        list.innerHTML += `
+
+            <div class="form-card">
+
+                <strong>
+                    📦 Buyurtma #${order.id}
+                </strong>
+
+                <p>
+                    ${formatPrice(total)}
+                </p>
+
+                <div>
+                    🟡 Qabul qilindi
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+/*
+==================================================
+EDIT PROFILE
+==================================================
+*/
+
+function editProfile() {
+
+    alert(
+        "Profilni tahrirlash funksiyasi backend bilan keyingi bosqichda ulanadi."
+    );
+
+}
+
+
+/*
+==================================================
+SAVED ADDRESS
+==================================================
+*/
+
+function showSavedAddress() {
+
+    alert(
+        "Saqlangan manzil keyingi bosqichda database bilan ulanadi."
+    );
+
+}
+
+
+/*
+==================================================
+ADMIN
+==================================================
+*/
+
+function openAdmin() {
+
+    hideAll();
+
+
+    document
+        .getElementById("adminPage")
+        .classList.remove("hidden");
+
+
+    renderAdmin();
+
+}
+
+
+/*
+==================================================
+ADMIN PRODUCTS
+==================================================
+*/
+
+function renderAdmin() {
+
+    const container =
+        document.getElementById(
+            "adminProducts"
+        );
+
+
+    container.innerHTML = "";
+
+
+    for (
+        const category in products
+    ) {
+
+
+        products[category]
+        .forEach(product => {
+
+
+            container.innerHTML += `
+
+                <div class="admin-card">
+
+                    <div class="admin-product">
+
+                        <div class="admin-image">
+
+                            ${
+                                product.image
+                                ? `<img src="${product.image}">`
+                                : product.icon
+                            }
+
+                        </div>
+
+
+                        <div class="admin-info">
+
+                            <strong>
+                                ${product.name}
+                            </strong>
+
+                            <br>
+
+                            ${formatPrice(product.price)}
+
+                            /
+
+                            ${product.unit}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-actions">
+
+                        <button
+                            class="edit-button"
+                            onclick="editProduct(${product.id})">
+
+                            ✏️ Tahrirlash
+
+                        </button>
+
+
+                        <button
+                            class="hide-button"
+                            onclick="toggleProduct(${product.id})">
+
+                            ${
+                                product.visible
+                                ? "👁 Yashirish"
+                                : "👁 Ko‘rsatish"
+                            }
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+    }
+
+}
+
+
+/*
+==================================================
+EDIT PRODUCT
+==================================================
+*/
+
+function editProduct(id) {
+
+    const product =
+        findProduct(id);
+
+
+    if (!product)
+        return;
+
+
+    const newPrice =
+        prompt(
+            `Yangi narx (${product.name}):`,
+            product.price
+        );
+
+
+    if (
+        newPrice !== null &&
+        !isNaN(newPrice)
+    ) {
+
+        product.price =
+            Number(newPrice);
+
+    }
+
+
+    const newName =
+        prompt(
+            "Mahsulot nomi:",
+            product.name
+        );
+
+
+    if (
+        newName &&
+        newName.trim()
+    ) {
+
+        product.name =
+            newName.trim();
+
+    }
+
+
+    renderAdmin();
+
+}
+
+
+/*
+==================================================
+TOGGLE PRODUCT
+==================================================
+*/
+
+function toggleProduct(id) {
+
+    const product =
+        findProduct(id);
+
+
+    if (!product)
+        return;
+
+
+    product.visible =
+        !product.visible;
+
+
+    renderAdmin();
+
+}
+
+
+/*
+==================================================
+HIDE ALL
+==================================================
+*/
+
+function hideAll() {
+
+    const pages = [
+
+        "homePage",
+
+        "productsPage",
+
+        "cartPage",
+
+        "orderPage",
+
+        "profilePage",
+
+        "ordersPage",
+
+        "adminPage",
+
+        "successPage"
+
+    ];
+
+
+    pages.forEach(id => {
+
+        document
+            .getElementById(id)
+            .classList.add("hidden");
+
+    });
+
+}
+
+
+/*
+==================================================
+HOME
+==================================================
+*/
+
+function goHome() {
+
+    hideAll();
+
+
+    document
+        .getElementById("homePage")
+        .classList.remove("hidden");
+
+}
+
+
+/*
+==================================================
+PRICE
 ==================================================
 */
 
@@ -1758,12 +2615,18 @@ function formatPrice(price) {
 
 }
 
+
+/*
+==================================================
+INITIAL
+==================================================
+*/
+
+goHome();
+
+updateCart();
+
 </script>
-
-
-<!-- TELEGRAM WEB APP SCRIPT -->
-
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 </body>
 </html>
