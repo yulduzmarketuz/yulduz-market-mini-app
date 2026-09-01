@@ -4643,53 +4643,35 @@ function deleteAddress(index) {
    CONFIRM ORDER
 ========================================================= */
 
-function confirmOrder() {
+async function confirmOrder() {
 
-    if (
-        !customer.phone
-    ) {
-
-        showToast(
-            "Telefon raqamingizni yuboring."
-        );
-
+    if (!customer.phone) {
+        showToast("Telefon raqamingizni yuboring.");
         return;
-
     }
 
-
-    if (
-        !customer.location
-    ) {
-
-        showToast(
-            "Lokatsiyangizni yuboring."
-        );
-
+    if (!customer.location) {
+        showToast("Lokatsiyangizni yuboring.");
         return;
-
     }
 
+    if (!cart || cart.length === 0) {
+        showToast("Savat bo‘sh.");
+        return;
+    }
 
-    const orderNumber =
-        Date.now()
-        .toString()
-        .slice(-6);
-
+    const orderNumber = Date.now().toString().slice(-6);
 
     const order = {
+        id: orderNumber,
 
-        id:
-            orderNumber,
-
-        telegram_user_id:
-            customer.telegram_id,
+        telegram_user_id: customer.telegram_id || null,
 
         customer_name:
-            `${customer.first_name} ${customer.last_name}`.trim(),
+            `${customer.first_name || ""} ${customer.last_name || ""}`.trim(),
 
         username:
-            customer.username,
+            customer.username || "",
 
         phone:
             customer.phone,
@@ -4698,97 +4680,134 @@ function confirmOrder() {
             customer.location,
 
         address_extra:
-            document
-            .getElementById(
-                "addressExtra"
-            )
-            .value
-            .trim(),
+            document.getElementById("addressExtra")?.value.trim() || "",
 
         note:
-            document
-            .getElementById(
-                "orderNote"
-            )
-            .value
-            .trim(),
+            document.getElementById("orderNote")?.value.trim() || "",
 
         payment:
-            document
-            .querySelector(
+            document.querySelector(
                 'input[name="payment"]:checked'
-            )
-            .value,
+            )?.value || "naqd",
 
         items:
-            JSON.parse(
-                JSON.stringify(
-                    cart
-                )
-            ),
+            JSON.parse(JSON.stringify(cart)),
 
         status:
             "qabul_qilindi",
 
         created_at:
-            new Date()
-            .toISOString()
-
+            new Date().toISOString()
     };
 
 
-    orders.push(
-        order
-    );
-
-
-    localStorage.setItem(
-        "yulduz_orders",
-        JSON.stringify(
-            orders
-        )
-    );
-
-
-    cart = [];
-
-
-    updateCart();
-
-
-    document
-        .getElementById(
-            "successOrderNumber"
-        )
-        .textContent =
-        `#${orderNumber}`;
-
-
-    hideAll();
-
-
-    document
-        .getElementById(
-            "successPage"
-        )
-        .classList
-        .remove("hidden");
-
-
     /*
-    ========================================================
-    BACKEND ULANISH JOYI
-
-    Keyinchalik shu yerda:
-
-    sendOrderToBackend(order);
-
-    bo‘ladi.
-
-    Backend:
-    Mini App → Server → Database → Admin
-    ========================================================
+    ==========================================
+    YULDUZ MARKET BACKEND
+    ==========================================
     */
+
+    const BACKEND_URL =
+        "BU_YERGA_CLOUDFLARE_WORKER_URL";
+
+
+    try {
+
+        showToast("⏳ Buyurtma yuborilmoqda...");
+
+
+        const response = await fetch(
+            BACKEND_URL,
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(order)
+            }
+        );
+
+
+        if (!response.ok) {
+            throw new Error(
+                "Server xatosi: " + response.status
+            );
+        }
+
+
+        const result =
+            await response.json();
+
+
+        /*
+        ==========================================
+        LOCAL TARIXGA SAQLASH
+        ==========================================
+        */
+
+        orders.push(order);
+
+        localStorage.setItem(
+            "yulduz_orders",
+            JSON.stringify(orders)
+        );
+
+
+        /*
+        ==========================================
+        SAVATNI TOZALASH
+        ==========================================
+        */
+
+        cart = [];
+
+        updateCart();
+
+
+        /*
+        ==========================================
+        SUCCESS PAGE
+        ==========================================
+        */
+
+        document
+            .getElementById("successOrderNumber")
+            .textContent = `#${orderNumber}`;
+
+
+        hideAll();
+
+
+        document
+            .getElementById("successPage")
+            .classList
+            .remove("hidden");
+
+
+        showToast("✅ Buyurtma qabul qilindi!");
+
+
+        console.log(
+            "BUYURTMA YUBORILDI:",
+            result
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "BUYURTMA YUBORISH XATOSI:",
+            error
+        );
+
+
+        showToast(
+            "❌ Buyurtmani yuborishda xatolik."
+        );
+
+    }
 
 }
 
