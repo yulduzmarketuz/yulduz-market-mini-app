@@ -15,12 +15,17 @@
     box-sizing: border-box;
 }
 
+html {
+    background: #f5f5f5;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: #f5f5f5;
     color: #222;
     padding-bottom: 90px;
+    transition: background .25s ease, color .25s ease;
 }
 
 button,
@@ -32,6 +37,7 @@ select {
 
 button {
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .header {
@@ -42,6 +48,7 @@ button {
     position: sticky;
     top: 0;
     z-index: 20;
+    transition: background .25s ease;
 }
 
 .logo {
@@ -482,6 +489,224 @@ button {
 
 
 /* =========================
+   HOME QUICK MENU
+========================= */
+
+.home-menu {
+    margin-top: 22px;
+}
+
+.home-menu-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.home-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+}
+
+.home-menu-button {
+    border: none;
+    background: white;
+    border-radius: 16px;
+    padding: 15px 8px;
+    text-align: center;
+}
+
+.home-menu-button:active {
+    transform: scale(.97);
+}
+
+.home-menu-icon {
+    font-size: 27px;
+    margin-bottom: 7px;
+}
+
+.home-menu-text {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+.settings-card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.settings-item {
+    width: 100%;
+    min-height: 70px;
+    border: none;
+    border-bottom: 1px solid #eee;
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+
+    padding: 14px 16px;
+
+    text-align: left;
+}
+
+.settings-item:last-child {
+    border-bottom: none;
+}
+
+.settings-icon {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 12px;
+
+    background: #f5f5f5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 23px;
+
+    margin-right: 13px;
+
+    flex-shrink: 0;
+}
+
+.settings-info {
+    flex: 1;
+}
+
+.settings-title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.settings-description {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+}
+
+.settings-arrow {
+    color: #999;
+    font-size: 25px;
+    margin-left: 10px;
+}
+
+
+/* =========================
+   IPHONE SWITCH
+========================= */
+
+.theme-switch {
+    position: relative;
+    width: 51px;
+    height: 31px;
+
+    flex-shrink: 0;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.theme-slider {
+    position: absolute;
+    inset: 0;
+
+    background: #d1d1d6;
+
+    border-radius: 31px;
+
+    transition: .25s;
+}
+
+.theme-slider:before {
+    content: "";
+
+    position: absolute;
+
+    width: 27px;
+    height: 27px;
+
+    left: 2px;
+    top: 2px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    box-shadow: 0 2px 5px rgba(0,0,0,.2);
+
+    transition: .25s;
+}
+
+.theme-switch input:checked + .theme-slider {
+    background: #34c759;
+}
+
+.theme-switch input:checked + .theme-slider:before {
+    transform: translateX(20px);
+}
+
+
+/* =========================
+   LANGUAGE
+========================= */
+
+.language-list {
+    display: none;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.language-list.open {
+    display: block;
+}
+
+.language-button {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #eee;
+    background: white;
+    padding: 16px;
+    text-align: left;
+    font-size: 15px;
+}
+
+.language-button:last-child {
+    border-bottom: none;
+}
+
+.language-button:active {
+    background: #f5f5f5;
+}
+
+
+/* =========================
+   HELP
+========================= */
+
+.help-icon {
+    font-size: 55px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+
+/* =========================
    BOTTOM NAV
 ========================= */
 
@@ -543,6 +768,131 @@ button {
 
 
 /* =========================
+   DARK MODE
+========================= */
+
+body.dark-mode,
+html.dark-mode {
+    background: #111111;
+    color: #f5f5f5;
+}
+
+body.dark-mode .header {
+    background: #1c1c1e;
+    box-shadow: 0 2px 10px rgba(0,0,0,.35);
+}
+
+body.dark-mode .logo {
+    color: #fff;
+}
+
+body.dark-mode .subtitle {
+    color: #999;
+}
+
+body.dark-mode .welcome,
+body.dark-mode .category,
+body.dark-mode .product,
+body.dark-mode .form-card,
+body.dark-mode .profile-card,
+body.dark-mode .admin-card,
+body.dark-mode .success,
+body.dark-mode .settings-card,
+body.dark-mode .home-menu-button,
+body.dark-mode .cart-item,
+body.dark-mode .total {
+    background: #1c1c1e;
+    color: #f5f5f5;
+}
+
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode p,
+body.dark-mode .product-name,
+body.dark-mode .product-price,
+body.dark-mode .settings-title,
+body.dark-mode .home-menu-text,
+body.dark-mode .profile-name {
+    color: #f5f5f5;
+}
+
+body.dark-mode .product-unit,
+body.dark-mode .profile-username,
+body.dark-mode .settings-description,
+body.dark-mode .cart-item-price {
+    color: #999;
+}
+
+body.dark-mode .product-image,
+body.dark-mode .admin-image,
+body.dark-mode .profile-avatar,
+body.dark-mode .settings-icon {
+    background: #2c2c2e;
+}
+
+body.dark-mode .back-button {
+    background: #1c1c1e;
+    color: white;
+}
+
+body.dark-mode .settings-item {
+    border-color: #38383a;
+}
+
+body.dark-mode .profile-menu button {
+    background: #1c1c1e;
+    color: white;
+    border-color: #38383a;
+}
+
+body.dark-mode .weight-input,
+body.dark-mode .unit-select,
+body.dark-mode .form-input,
+body.dark-mode .form-textarea,
+body.dark-mode .form-select {
+    background: #2c2c2e;
+    color: white;
+    border-color: #444;
+}
+
+body.dark-mode .bottom-nav {
+    background: #1c1c1e;
+    border-color: #38383a;
+}
+
+body.dark-mode .nav-button {
+    color: #aaa;
+}
+
+body.dark-mode .cart {
+    background: #2c2c2e;
+}
+
+body.dark-mode .remove-button {
+    background: #2c2c2e;
+    color: white;
+}
+
+body.dark-mode .language-list {
+    background: #1c1c1e;
+}
+
+body.dark-mode .language-button {
+    background: #1c1c1e;
+    color: white;
+    border-color: #38383a;
+}
+
+body.dark-mode .language-button:active {
+    background: #2c2c2e;
+}
+
+body.dark-mode hr {
+    border-color: #38383a;
+}
+
+
+/* =========================
    MOBILE
 ========================= */
 
@@ -550,6 +900,18 @@ button {
 
     .products {
         grid-template-columns: 1fr;
+    }
+
+    .home-menu-grid {
+        gap: 7px;
+    }
+
+    .home-menu-button {
+        padding: 13px 5px;
+    }
+
+    .home-menu-text {
+        font-size: 12px;
     }
 
 }
@@ -581,8 +943,6 @@ button {
 <div id="homePage" class="container">
 
     <div class="welcome">
-
-        <!-- FAQAT SHU MATN O'ZGARTIRILDI -->
 
         <h2 id="welcomeText">
             Salom 👋
@@ -677,6 +1037,66 @@ button {
             Maishiy mahsulotlar
 
         </button>
+
+    </div>
+
+
+    <!-- QUICK MENU -->
+
+    <div class="home-menu">
+
+        <div class="home-menu-title">
+            Tezkor bo‘limlar
+        </div>
+
+
+        <div class="home-menu-grid">
+
+            <button
+                class="home-menu-button"
+                onclick="openSettings()">
+
+                <div class="home-menu-icon">
+                    ⚙️
+                </div>
+
+                <div class="home-menu-text">
+                    Sozlamalar
+                </div>
+
+            </button>
+
+
+            <button
+                class="home-menu-button"
+                onclick="openHelp()">
+
+                <div class="home-menu-icon">
+                    🆘
+                </div>
+
+                <div class="home-menu-text">
+                    Yordam
+                </div>
+
+            </button>
+
+
+            <button
+                class="home-menu-button"
+                onclick="showOrders()">
+
+                <div class="home-menu-icon">
+                    📦
+                </div>
+
+                <div class="home-menu-text">
+                    Tarix
+                </div>
+
+            </button>
+
+        </div>
 
     </div>
 
@@ -997,6 +1417,274 @@ button {
 </div>
 
 
+<!-- SETTINGS -->
+
+<div
+    id="settingsPage"
+    class="container hidden">
+
+
+    <button
+        class="back-button"
+        onclick="goHome()">
+
+        ← Bosh sahifa
+
+    </button>
+
+
+    <h2>
+        ⚙️ Sozlamalar
+    </h2>
+
+
+    <div class="settings-card">
+
+
+        <!-- DARK MODE -->
+
+        <div class="settings-item">
+
+            <div class="settings-icon">
+                🌙
+            </div>
+
+
+            <div class="settings-info">
+
+                <div class="settings-title">
+                    Tungi rejim
+                </div>
+
+                <div class="settings-description">
+                    Qorong‘i mavzu
+                </div>
+
+            </div>
+
+
+            <label class="theme-switch">
+
+                <input
+                    type="checkbox"
+                    id="darkModeSwitch"
+                    onchange="toggleDarkMode()">
+
+                <span class="theme-slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <!-- SUPPORT -->
+
+        <button
+            class="settings-item"
+            onclick="openSupport()">
+
+            <div class="settings-icon">
+                🛟
+            </div>
+
+
+            <div class="settings-info">
+
+                <div class="settings-title">
+                    Qo‘llab-quvvatlash
+                </div>
+
+                <div class="settings-description">
+                    Savol va muammolar bo‘yicha yordam
+                </div>
+
+            </div>
+
+
+            <div class="settings-arrow">
+                ›
+            </div>
+
+        </button>
+
+
+        <!-- LANGUAGE -->
+
+        <button
+            class="settings-item"
+            onclick="toggleLanguageList()">
+
+            <div class="settings-icon">
+                🌐
+            </div>
+
+
+            <div class="settings-info">
+
+                <div class="settings-title">
+                    Til
+                </div>
+
+                <div
+                    id="currentLanguage"
+                    class="settings-description">
+
+                    O‘zbek tili
+
+                </div>
+
+            </div>
+
+
+            <div class="settings-arrow">
+                ›
+            </div>
+
+        </button>
+
+    </div>
+
+
+    <!-- LANGUAGE OPTIONS -->
+
+    <div
+        id="languageList"
+        class="language-list">
+
+
+        <button
+            class="language-button"
+            onclick="selectLanguage('uz','O‘zbek tili')">
+
+            🇺🇿 O‘zbek tili
+
+        </button>
+
+
+        <button
+            class="language-button"
+            onclick="selectLanguage('ru','Русский')">
+
+            🇷🇺 Русский
+
+        </button>
+
+
+        <button
+            class="language-button"
+            onclick="selectLanguage('en','English')">
+
+            🇬🇧 English
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- HELP -->
+
+<div
+    id="helpPage"
+    class="container hidden">
+
+
+    <button
+        class="back-button"
+        onclick="goHome()">
+
+        ← Bosh sahifa
+
+    </button>
+
+
+    <div class="form-card">
+
+        <div class="help-icon">
+            🆘
+        </div>
+
+
+        <h2 style="text-align:center;">
+            Yordam
+        </h2>
+
+
+        <p>
+            Yulduz Market Mini App'dan foydalanish
+            bo‘yicha yordam kerakmi?
+        </p>
+
+
+        <p>
+            Mahsulotni tanlang, savatga qo‘shing
+            va buyurtma berish bo‘limidan
+            ma'lumotlarni kiriting.
+        </p>
+
+    </div>
+
+
+    <div class="form-card">
+
+        <h3>
+            🛒 Buyurtma berish
+        </h3>
+
+        <p>
+            Kerakli mahsulotlarni tanlang va
+            “Savatga qo‘shish” tugmasini bosing.
+        </p>
+
+    </div>
+
+
+    <div class="form-card">
+
+        <h3>
+            📍 Yetkazib berish
+        </h3>
+
+        <p>
+            Buyurtma vaqtida lokatsiyangizni
+            yuboring. Bu yetkazib beruvchiga
+            manzilni aniqlashda yordam beradi.
+        </p>
+
+    </div>
+
+
+    <div class="form-card">
+
+        <h3>
+            🌙 Tungi rejim
+        </h3>
+
+        <p>
+            Sozlamalar bo‘limidan tungi rejimni
+            yoqishingiz yoki o‘chirishingiz mumkin.
+        </p>
+
+    </div>
+
+
+    <div class="form-card">
+
+        <h3>
+            🛟 Qo‘llab-quvvatlash
+        </h3>
+
+        <p>
+            Qo‘llab-quvvatlash Telegram profili
+            keyingi bosqichda ulanadi.
+        </p>
+
+    </div>
+
+</div>
+
+
 <!-- ORDERS -->
 
 <div
@@ -1006,15 +1694,15 @@ button {
 
     <button
         class="back-button"
-        onclick="openProfile()">
+        onclick="goHome()">
 
-        ← Profil
+        ← Bosh sahifa
 
     </button>
 
 
     <h2>
-        📦 Buyurtmalarim
+        📦 Buyurtmalar tarixi
     </h2>
 
 
@@ -1022,7 +1710,7 @@ button {
 
         <div class="form-card">
 
-            Hozircha buyurtmalar mavjud emas.
+            📦 Hozircha buyurtmalar mavjud emas.
 
         </div>
 
@@ -1203,12 +1891,6 @@ if (
     customer.username =
         user.username || "";
 
-
-    /*
-    ==============================================
-    SALOM + TELEGRAM ISMI
-    ==============================================
-    */
 
     document
         .getElementById("welcomeText")
@@ -1599,6 +2281,10 @@ function addWeightProduct(id) {
         findProduct(id);
 
 
+    if (!product)
+        return;
+
+
     const amount =
         parseFloat(
             document
@@ -1673,10 +2359,16 @@ function updateCart() {
     });
 
 
-    document
-        .querySelector(".cart")
-        .textContent =
-        `🛒 Savat (${cart.length}) — ${formatPrice(total)}`;
+    const cartElement =
+        document.querySelector(".cart");
+
+
+    if (cartElement) {
+
+        cartElement.textContent =
+            `🛒 Savat (${cart.length}) — ${formatPrice(total)}`;
+
+    }
 
 }
 
@@ -2073,6 +2765,12 @@ function confirmOrder() {
     }
 
 
+    const paymentElement =
+        document.querySelector(
+            'input[name="payment"]:checked'
+        );
+
+
     const order = {
 
         id:
@@ -2106,11 +2804,9 @@ function confirmOrder() {
             .trim(),
 
         payment:
-            document
-            .querySelector(
-                'input[name="payment"]:checked'
-            )
-            .value,
+            paymentElement
+            ? paymentElement.value
+            : "naqd",
 
         items:
             [...cart],
@@ -2206,7 +2902,8 @@ function showOrders() {
 
     document
         .getElementById("ordersPage")
-        .classList.remove("hidden");
+        .classList
+        .remove("hidden");
 
 
     const list =
@@ -2308,6 +3005,299 @@ function showSavedAddress() {
 
 /*
 ==================================================
+SETTINGS
+==================================================
+*/
+
+function openSettings() {
+
+    hideAll();
+
+
+    document
+        .getElementById("settingsPage")
+        .classList
+        .remove("hidden");
+
+
+    loadDarkMode();
+
+    loadLanguage();
+
+}
+
+
+/*
+==================================================
+HELP
+==================================================
+*/
+
+function openHelp() {
+
+    hideAll();
+
+
+    document
+        .getElementById("helpPage")
+        .classList
+        .remove("hidden");
+
+}
+
+
+/*
+==================================================
+SUPPORT
+==================================================
+*/
+
+function openSupport() {
+
+    alert(
+        "Qo‘llab-quvvatlash Telegram profili keyingi bosqichda ulanadi."
+    );
+
+}
+
+
+/*
+==================================================
+LANGUAGE MENU
+==================================================
+*/
+
+function toggleLanguageList() {
+
+    const list =
+        document.getElementById(
+            "languageList"
+        );
+
+
+    list.classList.toggle("open");
+
+}
+
+
+/*
+==================================================
+SELECT LANGUAGE
+==================================================
+*/
+
+function selectLanguage(code, name) {
+
+    localStorage.setItem(
+        "language",
+        code
+    );
+
+
+    const element =
+        document.getElementById(
+            "currentLanguage"
+        );
+
+
+    if (element) {
+
+        element.textContent =
+            name;
+
+    }
+
+
+    document
+        .getElementById(
+            "languageList"
+        )
+        .classList
+        .remove("open");
+
+}
+
+
+/*
+==================================================
+LOAD LANGUAGE
+==================================================
+*/
+
+function loadLanguage() {
+
+    const language =
+        localStorage.getItem(
+            "language"
+        );
+
+
+    const element =
+        document.getElementById(
+            "currentLanguage"
+        );
+
+
+    if (!element)
+        return;
+
+
+    if (language === "ru") {
+
+        element.textContent =
+            "Русский";
+
+    }
+
+    else if (language === "en") {
+
+        element.textContent =
+            "English";
+
+    }
+
+    else {
+
+        element.textContent =
+            "O‘zbek tili";
+
+    }
+
+}
+
+
+/*
+==================================================
+DARK MODE
+==================================================
+*/
+
+function toggleDarkMode() {
+
+    const switchElement =
+        document.getElementById(
+            "darkModeSwitch"
+        );
+
+
+    if (!switchElement)
+        return;
+
+
+    const enabled =
+        switchElement.checked;
+
+
+    if (enabled) {
+
+        document
+            .body
+            .classList
+            .add("dark-mode");
+
+        document
+            .documentElement
+            .classList
+            .add("dark-mode");
+
+        localStorage.setItem(
+            "darkMode",
+            "on"
+        );
+
+    }
+
+    else {
+
+        document
+            .body
+            .classList
+            .remove("dark-mode");
+
+        document
+            .documentElement
+            .classList
+            .remove("dark-mode");
+
+        localStorage.setItem(
+            "darkMode",
+            "off"
+        );
+
+    }
+
+}
+
+
+/*
+==================================================
+LOAD DARK MODE
+==================================================
+*/
+
+function loadDarkMode() {
+
+    const mode =
+        localStorage.getItem(
+            "darkMode"
+        );
+
+
+    const switchElement =
+        document.getElementById(
+            "darkModeSwitch"
+        );
+
+
+    if (mode === "on") {
+
+        document
+            .body
+            .classList
+            .add("dark-mode");
+
+        document
+            .documentElement
+            .classList
+            .add("dark-mode");
+
+
+        if (switchElement) {
+
+            switchElement.checked =
+                true;
+
+        }
+
+    }
+
+    else {
+
+        document
+            .body
+            .classList
+            .remove("dark-mode");
+
+        document
+            .documentElement
+            .classList
+            .remove("dark-mode");
+
+
+        if (switchElement) {
+
+            switchElement.checked =
+                false;
+
+        }
+
+    }
+
+}
+
+
+/*
+==================================================
 ADMIN
 ==================================================
 */
@@ -2319,7 +3309,8 @@ function openAdmin() {
 
     document
         .getElementById("adminPage")
-        .classList.remove("hidden");
+        .classList
+        .remove("hidden");
 
 
     renderAdmin();
@@ -2527,6 +3518,10 @@ function hideAll() {
 
         "profilePage",
 
+        "settingsPage",
+
+        "helpPage",
+
         "ordersPage",
 
         "adminPage",
@@ -2538,9 +3533,17 @@ function hideAll() {
 
     pages.forEach(id => {
 
-        document
-            .getElementById(id)
-            .classList.add("hidden");
+        const page =
+            document.getElementById(id);
+
+
+        if (page) {
+
+            page
+                .classList
+                .add("hidden");
+
+        }
 
     });
 
@@ -2560,7 +3563,8 @@ function goHome() {
 
     document
         .getElementById("homePage")
-        .classList.remove("hidden");
+        .classList
+        .remove("hidden");
 
 }
 
@@ -2585,6 +3589,10 @@ function formatPrice(price) {
 INITIAL
 ==================================================
 */
+
+loadDarkMode();
+
+loadLanguage();
 
 goHome();
 
