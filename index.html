@@ -840,44 +840,77 @@ button {
 }
 
 
-/* =========================================================
-   BOTTOM NAV
-========================================================= */
+<!-- =====================================================
+     BOTTOM NAV
+===================================================== -->
 
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+<div class="bottom-nav">
 
-    height: 65px;
+    <button
+        class="nav-button"
+        onclick="goHome()">
 
-    background: var(--card);
+        <span>🏠</span>
 
-    border-top: 1px solid var(--border);
+        <span data-i18n="home">
+            Bosh sahifa
+        </span>
 
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    </button>
 
-    z-index: 25;
-}
 
-.nav-button {
-    border: none;
-    background: transparent;
-    color: var(--muted);
-    font-size: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-}
+    <button
+        class="nav-button"
+        onclick="openCategories()">
 
-.nav-button span {
-    font-size: 22px;
-}
+        <span>📂</span>
 
+        <span data-i18n="categories">
+            Kategoriya
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-button"
+        onclick="openCart()">
+
+        <span>🛒</span>
+
+        <span data-i18n="cart">
+            Savat
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-button"
+        onclick="showOrders()">
+
+        <span>📦</span>
+
+        <span data-i18n="myOrders">
+            Buyurtmalar
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-button"
+        onclick="openProfile()">
+
+        <span>👤</span>
+
+        <span data-i18n="profile">
+            Profil
+        </span>
+
+    </button>
+
+</div>
 
 /* =========================================================
    TOAST
@@ -917,7 +950,51 @@ button {
     }
 
 }
+/* =====================================================
+   PREMIUM BOTTOM NAV
+===================================================== */
 
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 68px;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    z-index: 9999;
+    padding: 5px 4px;
+}
+
+.nav-button {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 2px;
+}
+
+.nav-button span:first-child {
+    font-size: 21px;
+    line-height: 22px;
+}
+
+.nav-button:active {
+    transform: scale(0.94);
+}
+   
 </style>
 </head>
 
@@ -5382,6 +5459,21 @@ function goHome() {
 
 }
 
+   function openCategories() {
+    hideAll();
+    document.getElementById("homePage").classList.remove("hidden");
+
+    setTimeout(() => {
+        const categories = document.querySelector(".categories");
+
+        if (categories) {
+            categories.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+    }, 50);
+}
 
 /* =========================================================
    PRICE
