@@ -1813,206 +1813,111 @@ button {
 
 </div>
 
+/* =========================================================
+   SUPPORT
+========================================================= */
+
+.support-button {
+    width: 100%;
+    border: none;
+    background: #229ED9;
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+    left: 20px;
+    right: 20px;
+    bottom: 145px;
+    background: #222;
+    color: white;
+    padding: 13px 16px;
+    border-radius: 12px;
+    text-align: center;
+    z-index: 100;
+    opacity: 0;
+    transform: translateY(15px);
+    pointer-events: none;
+    transition: .25s;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:380px) {
+
+    .products {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =====================================================
+   PREMIUM BOTTOM NAV
+===================================================== */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 68px;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    z-index: 9999;
+    padding: 5px 4px;
+}
+
+.nav-button {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 2px;
+}
+
+.nav-button span:first-child {
+    font-size: 21px;
+    line-height: 22px;
+}
+
+.nav-button:active {
+    transform: scale(0.94);
+}
+
+</style>
+</head>
 
-<!-- =====================================================
-     SUPPORT
-===================================================== -->
-
-<div
-    id="supportPage"
-    class="container hidden">
-
-    <button
-        class="back-button"
-        onclick="openSettings()">
-
-        ← Sozlamalar
-
-    </button>
-
-
-    <div class="card">
-
-        <h2>
-            🆘 <span data-i18n="support">Qo‘llab-quvvatlash</span>
-        </h2>
-
-        <p data-i18n="supportText">
-            Savolingiz yoki muammoingiz bo‘lsa, biz bilan bog‘laning.
-        </p>
-
-
-        <button
-            class="support-button"
-            onclick="contactSupport()">
-
-            💬 Telegram orqali bog‘lanish
-
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     HELP
-===================================================== -->
-
-<div
-    id="helpPage"
-    class="container hidden">
-
-    <button
-        class="back-button"
-        onclick="openSettings()">
-
-        ← Sozlamalar
-
-    </button>
-
-
-    <div class="card">
-
-        <h2>
-            ❓ <span data-i18n="help">Yordam</span>
-        </h2>
-
-
-        <h3 data-i18n="faq1Title">
-            Buyurtma qanday beriladi?
-        </h3>
-
-        <p data-i18n="faq1Text">
-            Mahsulotlarni savatga qo‘shing, manzil va telefon raqamingizni kiriting va buyurtmani tasdiqlang.
-        </p>
-
-
-        <h3 data-i18n="faq2Title">
-            Buyurtmam qayerda?
-        </h3>
-
-        <p data-i18n="faq2Text">
-            Buyurtma holati buyurtmalar bo‘limida ko‘rsatiladi.
-        </p>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     ORDERS
-===================================================== -->
-
-<div
-    id="ordersPage"
-    class="container hidden">
-
-
-    <button
-        class="back-button"
-        onclick="openProfile()">
-
-        ← Profil
-
-    </button>
-
-
-    <h2>
-        📦 <span data-i18n="myOrders">Buyurtmalarim</span>
-    </h2>
-
-
-    <div id="ordersList"></div>
-
-</div>
-
-
-<!-- =====================================================
-     ORDER DETAILS
-===================================================== -->
-
-<div
-    id="orderDetailsPage"
-    class="container hidden">
-
-    <button
-        class="back-button"
-        onclick="showOrders()">
-
-        ← Buyurtmalar
-
-    </button>
-
-
-    <div id="orderDetails"></div>
-
-</div>
-
-
-<!-- =====================================================
-     SUCCESS
-===================================================== -->
-
-<div
-    id="successPage"
-    class="container hidden">
-
-
-    <div class="success">
-
-        <div class="success-icon">
-            ✅
-        </div>
-
-
-        <h2 data-i18n="orderAccepted">
-            Buyurtmangiz qabul qilindi!
-        </h2>
-
-
-        <p>
-            <span data-i18n="orderNumber">
-                Buyurtma raqami:
-            </span>
-
-            <strong id="successOrderNumber">
-                —
-            </strong>
-        </p>
-
-
-        <p data-i18n="operatorContact">
-            Tez orada operatorimiz siz bilan bog‘lanadi.
-        </p>
-
-
-        <button
-            class="order-button"
-            onclick="goHome()">
-
-            🏠 <span data-i18n="home">Bosh sahifa</span>
-
-        </button>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     CART BAR
-===================================================== -->
-
-<div
-    id="cartBar"
-    class="cart empty"
-    onclick="openCart()">
-
-    🛒 Savat (0) — 0 so‘m
-
-</div>
+<body>
 
 
 <!-- =====================================================
@@ -2021,60 +1926,32 @@ button {
 
 <div class="bottom-nav">
 
-
-    <button
-        class="nav-button"
-        onclick="goHome()">
-
+    <button class="nav-button" onclick="goHome()">
         <span>🏠</span>
-
-        <span data-i18n="home">
-            Bosh sahifa
-        </span>
-
+        <span data-i18n="home">Bosh sahifa</span>
     </button>
 
+    <button class="nav-button" onclick="openCategories()">
+        <span>📂</span>
+        <span data-i18n="categories">Kategoriya</span>
+    </button>
 
-    <button
-        class="nav-button"
-        onclick="openCart()">
-
+    <button class="nav-button" onclick="openCart()">
         <span>🛒</span>
-
-        <span data-i18n="cart">
-            Savat
-        </span>
-
+        <span data-i18n="cart">Savat</span>
     </button>
 
+    <button class="nav-button" onclick="showOrders()">
+        <span>📦</span>
+        <span data-i18n="myOrders">Buyurtmalar</span>
+    </button>
 
-    <button
-        class="nav-button"
-        onclick="openProfile()">
-
+    <button class="nav-button" onclick="openProfile()">
         <span>👤</span>
-
-        <span data-i18n="profile">
-            Profil
-        </span>
-
+        <span data-i18n="profile">Profil</span>
     </button>
 
 </div>
-
-
-<!-- =====================================================
-     TOAST
-===================================================== -->
-
-<div
-    id="toast"
-    class="toast">
-</div>
-
-
-<script>
-
 
 /* =========================================================
    TELEGRAM
