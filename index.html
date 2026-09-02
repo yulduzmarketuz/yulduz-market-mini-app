@@ -1178,7 +1178,49 @@ button {
     </div>
 
 </div>
+<!-- =====================================================
+     CATEGORIES PAGE
+===================================================== -->
 
+<div id="categoriesPage" class="container hidden">
+
+    <h2>📂 Kategoriyalar</h2>
+
+    <div class="categories">
+
+        <div class="category" onclick="openCategory('Ichimliklar')">
+            <div class="category-icon">🥤</div>
+            <strong>Ichimliklar</strong>
+        </div>
+
+        <div class="category" onclick="openCategory('Shirinliklar')">
+            <div class="category-icon">🍫</div>
+            <strong>Shirinliklar</strong>
+        </div>
+
+        <div class="category" onclick="openCategory('Sut mahsulotlari')">
+            <div class="category-icon">🥛</div>
+            <strong>Sut mahsulotlari</strong>
+        </div>
+
+        <div class="category" onclick="openCategory('Meva va sabzavot')">
+            <div class="category-icon">🍎</div>
+            <strong>Meva va sabzavot</strong>
+        </div>
+
+        <div class="category" onclick="openCategory('Muzqaymoqlar')">
+            <div class="category-icon">🍦</div>
+            <strong>Muzqaymoqlar</strong>
+        </div>
+
+        <div class="category" onclick="openCategory('Maishiy mahsulotlar')">
+            <div class="category-icon">🧴</div>
+            <strong>Maishiy mahsulotlar</strong>
+        </div>
+
+    </div>
+
+</div>
 
 <!-- =====================================================
      PRODUCTS
@@ -5387,9 +5429,11 @@ function openHelp() {
 
 function hideAll() {
 
-    const pages = [
+  const pages = [
 
         "homePage",
+
+        "categoriesPage",
 
         "productsPage",
 
@@ -5461,20 +5505,8 @@ function goHome() {
 
    function openCategories() {
     hideAll();
-    document.getElementById("homePage").classList.remove("hidden");
-
-    setTimeout(() => {
-        const categories = document.querySelector(".categories");
-
-        if (categories) {
-            categories.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-        }
-    }, 50);
+    document.getElementById("homePage").classList.add("hidden");("categoriesPage").classList.remove("hidden");
 }
-
 /* =========================================================
    PRICE
 ========================================================= */
