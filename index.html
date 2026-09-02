@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Yulduz Market</title>
 
@@ -845,6 +840,78 @@ button {
 }
 
 
+<!-- =====================================================
+     BOTTOM NAV
+===================================================== -->
+
+<div class="bottom-nav">
+
+    <button
+        class="nav-button"
+        onclick="goHome()">
+
+        <span>🏠</span>
+
+        <span data-i18n="home">
+            Bosh sahifa
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-button"
+        onclick="openCategories()">
+
+        <span>📂</span>
+
+        <span data-i18n="categories">
+            Kategoriya
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-button"
+        onclick="openCart()">
+
+        <span>🛒</span>
+
+        <span data-i18n="cart">
+            Savat
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-button"
+        onclick="showOrders()">
+
+        <span>📦</span>
+
+        <span data-i18n="myOrders">
+            Buyurtmalar
+        </span>
+
+    </button>
+
+
+    <button
+        class="nav-button"
+        onclick="openProfile()">
+
+        <span>👤</span>
+
+        <span data-i18n="profile">
+            Profil
+        </span>
+
+    </button>
+
+</div>
+
 /* =========================================================
    TOAST
 ========================================================= */
@@ -859,7 +926,7 @@ button {
     padding: 13px 16px;
     border-radius: 12px;
     text-align: center;
-    z-index: 10000;
+    z-index: 100;
     opacity: 0;
     transform: translateY(15px);
     pointer-events: none;
@@ -873,72 +940,6 @@ button {
 
 
 /* =========================================================
-   PREMIUM BOTTOM NAV
-========================================================= */
-
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    height: 68px;
-
-    display: flex;
-    align-items: stretch;
-    justify-content: space-around;
-
-    background: var(--card);
-    border-top: 1px solid var(--border);
-
-    z-index: 9999;
-
-    padding: 5px 4px;
-
-    box-shadow:
-        0 -3px 15px rgba(0,0,0,.06);
-}
-
-.nav-button {
-    flex: 1;
-    min-width: 0;
-
-    border: none;
-    background: transparent;
-
-    color: var(--muted);
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 3px;
-
-    font-size: 11px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    padding: 4px 2px;
-
-    transition:
-        transform .15s,
-        color .15s;
-}
-
-.nav-button span:first-child {
-    font-size: 21px;
-    line-height: 22px;
-}
-
-.nav-button:active {
-    transform: scale(.94);
-}
-
-
-/* =========================================================
    MOBILE
 ========================================================= */
 
@@ -948,16 +949,52 @@ button {
         grid-template-columns: 1fr;
     }
 
-    .nav-button {
-        font-size: 10px;
-    }
+}
+/* =====================================================
+   PREMIUM BOTTOM NAV
+===================================================== */
 
-    .nav-button span:first-child {
-        font-size: 20px;
-    }
-
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 68px;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    z-index: 9999;
+    padding: 5px 4px;
 }
 
+.nav-button {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 2px;
+}
+
+.nav-button span:first-child {
+    font-size: 21px;
+    line-height: 22px;
+}
+
+.nav-button:active {
+    transform: scale(0.94);
+}
+   
 </style>
 </head>
 
@@ -975,10 +1012,7 @@ button {
         ⭐ Yulduz Market
     </div>
 
-    <div
-        class="subtitle"
-        data-i18n="onlineShopping"
-    >
+    <div class="subtitle" data-i18n="onlineShopping">
         Onlayn xarid
     </div>
 
@@ -989,10 +1023,7 @@ button {
      HOME
 ===================================================== -->
 
-<div
-    id="homePage"
-    class="container"
->
+<div id="homePage" class="container">
 
     <div class="welcome">
 
@@ -1027,9 +1058,10 @@ button {
         <button
             id="clearSearch"
             class="clear-search"
-            onclick="clearSearch()"
-        >
+            onclick="clearSearch()">
+
             ✕
+
         </button>
 
     </div>
@@ -1039,23 +1071,15 @@ button {
 
     <div
         id="searchResults"
-        class="hidden"
-    >
+        class="hidden">
 
         <h3 class="search-result-title">
-
-            🔎
-
-            <span data-i18n="searchResults">
-                Qidiruv natijalari
-            </span>
-
+            🔎 <span data-i18n="searchResults">Qidiruv natijalari</span>
         </h3>
 
         <div
             id="searchProducts"
-            class="products"
-        >
+            class="products">
         </div>
 
     </div>
@@ -1074,8 +1098,7 @@ button {
 
             <button
                 class="category"
-                onclick="openCategory('Ichimliklar')"
-            >
+                onclick="openCategory('Ichimliklar')">
 
                 <div class="category-icon">
                     🥤
@@ -1088,8 +1111,7 @@ button {
 
             <button
                 class="category"
-                onclick="openCategory('Shirinliklar')"
-            >
+                onclick="openCategory('Shirinliklar')">
 
                 <div class="category-icon">
                     🍫
@@ -1102,8 +1124,7 @@ button {
 
             <button
                 class="category"
-                onclick="openCategory('Sut mahsulotlari')"
-            >
+                onclick="openCategory('Sut mahsulotlari')">
 
                 <div class="category-icon">
                     🥛
@@ -1116,8 +1137,7 @@ button {
 
             <button
                 class="category"
-                onclick="openCategory('Meva va sabzavot')"
-            >
+                onclick="openCategory('Meva va sabzavot')">
 
                 <div class="category-icon">
                     🍎
@@ -1130,8 +1150,7 @@ button {
 
             <button
                 class="category"
-                onclick="openCategory('Muzqaymoqlar')"
-            >
+                onclick="openCategory('Muzqaymoqlar')">
 
                 <div class="category-icon">
                     🍦
@@ -1144,8 +1163,7 @@ button {
 
             <button
                 class="category"
-                onclick="openCategory('Maishiy mahsulotlar')"
-            >
+                onclick="openCategory('Maishiy mahsulotlar')">
 
                 <div class="category-icon">
                     🧴
@@ -1160,110 +1178,49 @@ button {
     </div>
 
 </div>
-
-
 <!-- =====================================================
      CATEGORIES PAGE
 ===================================================== -->
 
-<div
-    id="categoriesPage"
-    class="container hidden"
->
+<div id="categoriesPage" class="container hidden">
 
-    <h2>
-        📂 Kategoriyalar
-    </h2>
+    <h2>📂 Kategoriyalar</h2>
 
     <div class="categories">
 
-        <div
-            class="category"
-            onclick="openCategory('Ichimliklar')"
-        >
-            <div class="category-icon">
-                🥤
-            </div>
-
-            <strong>
-                Ichimliklar
-            </strong>
+        <div class="category" onclick="openCategory('Ichimliklar')">
+            <div class="category-icon">🥤</div>
+            <strong>Ichimliklar</strong>
         </div>
 
-
-        <div
-            class="category"
-            onclick="openCategory('Shirinliklar')"
-        >
-            <div class="category-icon">
-                🍫
-            </div>
-
-            <strong>
-                Shirinliklar
-            </strong>
+        <div class="category" onclick="openCategory('Shirinliklar')">
+            <div class="category-icon">🍫</div>
+            <strong>Shirinliklar</strong>
         </div>
 
-
-        <div
-            class="category"
-            onclick="openCategory('Sut mahsulotlari')"
-        >
-            <div class="category-icon">
-                🥛
-            </div>
-
-            <strong>
-                Sut mahsulotlari
-            </strong>
+        <div class="category" onclick="openCategory('Sut mahsulotlari')">
+            <div class="category-icon">🥛</div>
+            <strong>Sut mahsulotlari</strong>
         </div>
 
-
-        <div
-            class="category"
-            onclick="openCategory('Meva va sabzavot')"
-        >
-            <div class="category-icon">
-                🍎
-            </div>
-
-            <strong>
-                Meva va sabzavot
-            </strong>
+        <div class="category" onclick="openCategory('Meva va sabzavot')">
+            <div class="category-icon">🍎</div>
+            <strong>Meva va sabzavot</strong>
         </div>
 
-
-        <div
-            class="category"
-            onclick="openCategory('Muzqaymoqlar')"
-        >
-            <div class="category-icon">
-                🍦
-            </div>
-
-            <strong>
-                Muzqaymoqlar
-            </strong>
+        <div class="category" onclick="openCategory('Muzqaymoqlar')">
+            <div class="category-icon">🍦</div>
+            <strong>Muzqaymoqlar</strong>
         </div>
 
-
-        <div
-            class="category"
-            onclick="openCategory('Maishiy mahsulotlar')"
-        >
-            <div class="category-icon">
-                🧴
-            </div>
-
-            <strong>
-                Maishiy mahsulotlar
-            </strong>
+        <div class="category" onclick="openCategory('Maishiy mahsulotlar')">
+            <div class="category-icon">🧴</div>
+            <strong>Maishiy mahsulotlar</strong>
         </div>
 
     </div>
 
 </div>
-
 
 <!-- =====================================================
      PRODUCTS
@@ -1271,19 +1228,13 @@ button {
 
 <div
     id="productsPage"
-    class="container hidden"
->
+    class="container hidden">
 
     <button
         class="back-button"
-        onclick="goHome()"
-    >
+        onclick="goHome()">
 
-        ←
-
-        <span data-i18n="back">
-            Orqaga
-        </span>
+        ← <span data-i18n="back">Orqaga</span>
 
     </button>
 
@@ -1293,8 +1244,7 @@ button {
 
     <div
         id="products"
-        class="products"
-    >
+        class="products">
     </div>
 
 
@@ -1302,23 +1252,15 @@ button {
 
     <div
         id="recommendations"
-        class="recommendations hidden"
-    >
+        class="recommendations hidden">
 
         <div class="recommendation-title">
-
-            🛍
-
-            <span data-i18n="youMayLike">
-                Sizga yoqishi mumkin
-            </span>
-
+            🛍 <span data-i18n="youMayLike">Sizga yoqishi mumkin</span>
         </div>
 
         <div
             id="recommendationList"
-            class="recommendation-list"
-        >
+            class="recommendation-list">
         </div>
 
     </div>
@@ -1332,31 +1274,19 @@ button {
 
 <div
     id="cartPage"
-    class="container hidden"
->
+    class="container hidden">
 
     <button
         class="back-button"
-        onclick="goHome()"
-    >
+        onclick="goHome()">
 
-        ←
-
-        <span data-i18n="home">
-            Bosh sahifa
-        </span>
+        ← <span data-i18n="home">Bosh sahifa</span>
 
     </button>
 
 
     <h2>
-
-        🛒
-
-        <span data-i18n="cart">
-            Savat
-        </span>
-
+        🛒 <span data-i18n="cart">Savat</span>
     </h2>
 
 
@@ -1365,8 +1295,7 @@ button {
 
     <div
         id="cartTotal"
-        class="total"
-    >
+        class="total">
 
         Jami: 0 so‘m
 
@@ -1375,14 +1304,9 @@ button {
 
     <button
         class="order-button"
-        onclick="startOrder()"
-    >
+        onclick="startOrder()">
 
-        📦
-
-        <span data-i18n="placeOrder">
-            Buyurtma berish
-        </span>
+        📦 <span data-i18n="placeOrder">Buyurtma berish</span>
 
     </button>
 
@@ -1395,31 +1319,19 @@ button {
 
 <div
     id="orderPage"
-    class="container hidden"
->
+    class="container hidden">
 
     <button
         class="back-button"
-        onclick="openCart()"
-    >
+        onclick="openCart()">
 
-        ←
-
-        <span data-i18n="backToCart">
-            Savatga qaytish
-        </span>
+        ← <span data-i18n="backToCart">Savatga qaytish</span>
 
     </button>
 
 
     <h2>
-
-        📦
-
-        <span data-i18n="placeOrder">
-            Buyurtma berish
-        </span>
-
+        📦 <span data-i18n="placeOrder">Buyurtma berish</span>
     </h2>
 
 
@@ -1428,26 +1340,15 @@ button {
     <div class="form-card">
 
         <h3>
-
-            📞
-
-            <span data-i18n="phone">
-                Telefon raqami
-            </span>
-
+            📞 <span data-i18n="phone">Telefon raqami</span>
         </h3>
 
 
         <button
             class="telegram-button"
-            onclick="requestPhone()"
-        >
+            onclick="requestPhone()">
 
-            📱
-
-            <span data-i18n="sendPhone">
-                Telegramdan telefon raqamimni yuborish
-            </span>
+            📱 <span data-i18n="sendPhone">Telegramdan telefon raqamimni yuborish</span>
 
         </button>
 
@@ -1462,13 +1363,7 @@ button {
     <div class="form-card">
 
         <h3>
-
-            📍
-
-            <span data-i18n="deliveryAddress">
-                Yetkazib berish manzili
-            </span>
-
+            📍 <span data-i18n="deliveryAddress">Yetkazib berish manzili</span>
         </h3>
 
 
@@ -1477,14 +1372,9 @@ button {
 
         <button
             class="location-button"
-            onclick="requestLocation()"
-        >
+            onclick="requestLocation()">
 
-            📍
-
-            <span data-i18n="sendLocation">
-                Lokatsiyamni yuborish
-            </span>
+            📍 <span data-i18n="sendLocation">Lokatsiyamni yuborish</span>
 
         </button>
 
@@ -1500,11 +1390,7 @@ button {
 
         <label class="form-label">
 
-            🏠
-
-            <span data-i18n="addressExtra">
-                Manzilga qo‘shimcha
-            </span>
+            🏠 <span data-i18n="addressExtra">Manzilga qo‘shimcha</span>
 
         </label>
 
@@ -1512,8 +1398,8 @@ button {
         <textarea
             id="addressExtra"
             class="form-textarea"
-            placeholder="3-dom, 2-qavat, 15-xonadon..."
-        ></textarea>
+            placeholder="3-dom, 2-qavat, 15-xonadon...">
+        </textarea>
 
     </div>
 
@@ -1524,11 +1410,7 @@ button {
 
         <label class="form-label">
 
-            📝
-
-            <span data-i18n="orderNote">
-                Buyurtmaga izoh
-            </span>
+            📝 <span data-i18n="orderNote">Buyurtmaga izoh</span>
 
         </label>
 
@@ -1536,8 +1418,8 @@ button {
         <textarea
             id="orderNote"
             class="form-textarea"
-            placeholder="Masalan: olmani qattiqroq tanlang..."
-        ></textarea>
+            placeholder="Masalan: olmani qattiqroq tanlang...">
+        </textarea>
 
     </div>
 
@@ -1547,13 +1429,7 @@ button {
     <div class="form-card">
 
         <h3>
-
-            💰
-
-            <span data-i18n="payment">
-                To‘lov turi
-            </span>
-
+            💰 <span data-i18n="payment">To‘lov turi</span>
         </h3>
 
 
@@ -1563,14 +1439,9 @@ button {
                 type="radio"
                 name="payment"
                 value="naqd"
-                checked
-            >
+                checked>
 
-            💵
-
-            <span data-i18n="cash">
-                Naqd pul
-            </span>
+            💵 <span data-i18n="cash">Naqd pul</span>
 
         </label>
 
@@ -1583,14 +1454,9 @@ button {
             <input
                 type="radio"
                 name="payment"
-                value="karta"
-            >
+                value="karta">
 
-            💳
-
-            <span data-i18n="card">
-                Karta
-            </span>
+            💳 <span data-i18n="card">Karta</span>
 
         </label>
 
@@ -1602,13 +1468,7 @@ button {
     <div class="form-card">
 
         <h3>
-
-            🛍
-
-            <span data-i18n="yourOrder">
-                Buyurtma
-            </span>
-
+            🛍 <span data-i18n="yourOrder">Buyurtma</span>
         </h3>
 
 
@@ -1619,11 +1479,7 @@ button {
 
 
         <strong>
-
-            <span data-i18n="total">
-                Jami:
-            </span>
-
+            <span data-i18n="total">Jami:</span>
         </strong>
 
 
@@ -1636,14 +1492,9 @@ button {
 
     <button
         class="order-button"
-        onclick="confirmOrder()"
-    >
+        onclick="confirmOrder()">
 
-        ✅
-
-        <span data-i18n="confirmOrder">
-            Buyurtmani tasdiqlash
-        </span>
+        ✅ <span data-i18n="confirmOrder">Buyurtmani tasdiqlash</span>
 
     </button>
 
@@ -1656,88 +1507,71 @@ button {
 
 <div
     id="profilePage"
-    class="container hidden"
->
+    class="container hidden">
+
 
     <h2>
-
-        👤
-
-        <span data-i18n="myProfile">
-            Mening profilim
-        </span>
-
+        👤 <span data-i18n="myProfile">Mening profilim</span>
     </h2>
 
 
     <div class="profile-card">
 
+
         <div
             id="profileAvatar"
-            class="profile-avatar"
-        >
+            class="profile-avatar">
+
             👤
+
         </div>
 
 
         <div
             id="profileName"
-            class="profile-name"
-        >
+            class="profile-name">
+
             Telegram foydalanuvchi
+
         </div>
 
 
         <div
             id="profileUsername"
-            class="profile-username"
-        >
+            class="profile-username">
+
             @username
+
         </div>
 
 
         <div class="profile-menu">
 
+
             <button onclick="showOrders()">
 
-                📦
-
-                <span data-i18n="myOrders">
-                    Mening buyurtmalarim
-                </span>
+                📦 <span data-i18n="myOrders">Mening buyurtmalarim</span>
 
             </button>
 
 
             <button onclick="openFavorites()">
 
-                ❤️
-
-                <span data-i18n="favorites">
-                    Sevimli mahsulotlar
-                </span>
+                ❤️ <span data-i18n="favorites">Sevimli mahsulotlar</span>
 
             </button>
 
 
             <button onclick="openAddresses()">
 
-                📍
-
-                <span data-i18n="myAddresses">
-                    Saqlangan manzillar
-                </span>
+                📍 <span data-i18n="myAddresses">Saqlangan manzillar</span>
 
             </button>
 
 
             <button onclick="openSettings()">
 
-                ⚙️
-
-                <span data-i18n="settings">
-                    Sozlamalar
-                </span>
+                ⚙️ <span data-i18n="settings">Sozlamalar</span>
 
             </button>
 
@@ -1754,13 +1588,11 @@ button {
 
 <div
     id="favoritesPage"
-    class="container hidden"
->
+    class="container hidden">
 
     <button
         class="back-button"
-        onclick="openProfile()"
-    >
+        onclick="openProfile()">
 
         ← Profil
 
@@ -1768,20 +1600,13 @@ button {
 
 
     <h2>
-
-        ❤️
-
-        <span data-i18n="favorites">
-            Sevimli mahsulotlar
-        </span>
-
+        ❤️ <span data-i18n="favorites">Sevimli mahsulotlar</span>
     </h2>
 
 
     <div
         id="favoriteProducts"
-        class="products"
-    >
+        class="products">
     </div>
 
 </div>
@@ -1793,13 +1618,11 @@ button {
 
 <div
     id="addressesPage"
-    class="container hidden"
->
+    class="container hidden">
 
     <button
         class="back-button"
-        onclick="openProfile()"
-    >
+        onclick="openProfile()">
 
         ← Profil
 
@@ -1807,13 +1630,7 @@ button {
 
 
     <h2>
-
-        📍
-
-        <span data-i18n="myAddresses">
-            Saqlangan manzillar
-        </span>
-
+        📍 <span data-i18n="myAddresses">Saqlangan manzillar</span>
     </h2>
 
 
@@ -1822,14 +1639,9 @@ button {
 
     <button
         class="order-button"
-        onclick="requestNewAddress()"
-    >
+        onclick="requestNewAddress()">
 
-        ➕
-
-        <span data-i18n="addAddress">
-            Yangi manzil qo‘shish
-        </span>
+        ➕ <span data-i18n="addAddress">Yangi manzil qo‘shish</span>
 
     </button>
 
@@ -1842,13 +1654,11 @@ button {
 
 <div
     id="settingsPage"
-    class="container hidden"
->
+    class="container hidden">
 
     <button
         class="back-button"
-        onclick="openProfile()"
-    >
+        onclick="openProfile()">
 
         ← Profil
 
@@ -1856,13 +1666,7 @@ button {
 
 
     <h2>
-
-        ⚙️
-
-        <span data-i18n="settings">
-            Sozlamalar
-        </span>
-
+        ⚙️ <span data-i18n="settings">Sozlamalar</span>
     </h2>
 
 
@@ -1882,19 +1686,15 @@ button {
                 <div>
 
                     <div class="settings-title">
-
                         <span data-i18n="darkMode">
                             Tungi rejim
                         </span>
-
                     </div>
 
                     <div class="settings-subtitle">
-
                         <span data-i18n="darkModeSub">
                             Qorong‘i mavzu
                         </span>
-
                     </div>
 
                 </div>
@@ -1907,8 +1707,7 @@ button {
                 <input
                     id="darkModeToggle"
                     type="checkbox"
-                    onchange="toggleDarkMode()"
-                >
+                    onchange="toggleDarkMode()">
 
                 <span class="slider"></span>
 
@@ -1930,19 +1729,15 @@ button {
                 <div>
 
                     <div class="settings-title">
-
                         <span data-i18n="language">
                             Til
                         </span>
-
                     </div>
 
                     <div class="settings-subtitle">
-
                         <span data-i18n="chooseLanguage">
                             Ilova tilini tanlang
                         </span>
-
                     </div>
 
                 </div>
@@ -1955,18 +1750,20 @@ button {
                 <button
                     id="uzLanguage"
                     class="language-button"
-                    onclick="setLanguage('uz')"
-                >
+                    onclick="setLanguage('uz')">
+
                     🇺🇿
+
                 </button>
 
 
                 <button
                     id="ruLanguage"
                     class="language-button"
-                    onclick="setLanguage('ru')"
-                >
+                    onclick="setLanguage('ru')">
+
                     🇷🇺
+
                 </button>
 
             </div>
@@ -1979,8 +1776,7 @@ button {
         <div
             class="settings-row"
             onclick="openSupport()"
-            style="cursor:pointer;"
-        >
+            style="cursor:pointer;">
 
             <div class="settings-left">
 
@@ -1991,25 +1787,20 @@ button {
                 <div>
 
                     <div class="settings-title">
-
                         <span data-i18n="support">
                             Qo‘llab-quvvatlash
                         </span>
-
                     </div>
 
                     <div class="settings-subtitle">
-
                         <span data-i18n="supportSub">
                             Biz bilan bog‘lanish
                         </span>
-
                     </div>
 
                 </div>
 
             </div>
-
 
             <div>
                 →
@@ -2023,8 +1814,7 @@ button {
         <div
             class="settings-row"
             onclick="openHelp()"
-            style="cursor:pointer;"
-        >
+            style="cursor:pointer;">
 
             <div class="settings-left">
 
@@ -2035,25 +1825,20 @@ button {
                 <div>
 
                     <div class="settings-title">
-
                         <span data-i18n="help">
                             Yordam
                         </span>
-
                     </div>
 
                     <div class="settings-subtitle">
-
                         <span data-i18n="helpSub">
                             Ko‘p beriladigan savollar
                         </span>
-
                     </div>
 
                 </div>
 
             </div>
-
 
             <div>
                 →
@@ -2072,13 +1857,11 @@ button {
 
 <div
     id="supportPage"
-    class="container hidden"
->
+    class="container hidden">
 
     <button
         class="back-button"
-        onclick="openSettings()"
-    >
+        onclick="openSettings()">
 
         ← Sozlamalar
 
@@ -2088,15 +1871,8 @@ button {
     <div class="card">
 
         <h2>
-
-            🆘
-
-            <span data-i18n="support">
-                Qo‘llab-quvvatlash
-            </span>
-
+            🆘 <span data-i18n="support">Qo‘llab-quvvatlash</span>
         </h2>
-
 
         <p data-i18n="supportText">
             Savolingiz yoki muammoingiz bo‘lsa, biz bilan bog‘laning.
@@ -2105,8 +1881,7 @@ button {
 
         <button
             class="support-button"
-            onclick="contactSupport()"
-        >
+            onclick="contactSupport()">
 
             💬 Telegram orqali bog‘lanish
 
@@ -2123,13 +1898,11 @@ button {
 
 <div
     id="helpPage"
-    class="container hidden"
->
+    class="container hidden">
 
     <button
         class="back-button"
-        onclick="openSettings()"
-    >
+        onclick="openSettings()">
 
         ← Sozlamalar
 
@@ -2139,20 +1912,13 @@ button {
     <div class="card">
 
         <h2>
-
-            ❓
-
-            <span data-i18n="help">
-                Yordam
-            </span>
-
+            ❓ <span data-i18n="help">Yordam</span>
         </h2>
 
 
         <h3 data-i18n="faq1Title">
             Buyurtma qanday beriladi?
         </h3>
-
 
         <p data-i18n="faq1Text">
             Mahsulotlarni savatga qo‘shing, manzil va telefon raqamingizni kiriting va buyurtmani tasdiqlang.
@@ -2162,7 +1928,6 @@ button {
         <h3 data-i18n="faq2Title">
             Buyurtmam qayerda?
         </h3>
-
 
         <p data-i18n="faq2Text">
             Buyurtma holati buyurtmalar bo‘limida ko‘rsatiladi.
@@ -2179,13 +1944,12 @@ button {
 
 <div
     id="ordersPage"
-    class="container hidden"
->
+    class="container hidden">
+
 
     <button
         class="back-button"
-        onclick="openProfile()"
-    >
+        onclick="openProfile()">
 
         ← Profil
 
@@ -2193,13 +1957,7 @@ button {
 
 
     <h2>
-
-        📦
-
-        <span data-i18n="myOrders">
-            Buyurtmalarim
-        </span>
-
+        📦 <span data-i18n="myOrders">Buyurtmalarim</span>
     </h2>
 
 
@@ -2214,13 +1972,11 @@ button {
 
 <div
     id="orderDetailsPage"
-    class="container hidden"
->
+    class="container hidden">
 
     <button
         class="back-button"
-        onclick="showOrders()"
-    >
+        onclick="showOrders()">
 
         ← Buyurtmalar
 
@@ -2238,8 +1994,8 @@ button {
 
 <div
     id="successPage"
-    class="container hidden"
->
+    class="container hidden">
+
 
     <div class="success">
 
@@ -2254,7 +2010,6 @@ button {
 
 
         <p>
-
             <span data-i18n="orderNumber">
                 Buyurtma raqami:
             </span>
@@ -2262,7 +2017,6 @@ button {
             <strong id="successOrderNumber">
                 —
             </strong>
-
         </p>
 
 
@@ -2273,14 +2027,9 @@ button {
 
         <button
             class="order-button"
-            onclick="goHome()"
-        >
+            onclick="goHome()">
 
-            🏠
-
-            <span data-i18n="home">
-                Bosh sahifa
-            </span>
+            🏠 <span data-i18n="home">Bosh sahifa</span>
 
         </button>
 
@@ -2296,8 +2045,7 @@ button {
 <div
     id="cartBar"
     class="cart empty"
-    onclick="openCart()"
->
+    onclick="openCart()">
 
     🛒 Savat (0) — 0 so‘m
 
@@ -2305,22 +2053,17 @@ button {
 
 
 <!-- =====================================================
-     PREMIUM BOTTOM NAV
+     BOTTOM NAV
 ===================================================== -->
 
 <div class="bottom-nav">
 
 
-    <!-- HOME -->
-
     <button
         class="nav-button"
-        onclick="goHome()"
-    >
+        onclick="goHome()">
 
-        <span>
-            🏠
-        </span>
+        <span>🏠</span>
 
         <span data-i18n="home">
             Bosh sahifa
@@ -2329,34 +2072,11 @@ button {
     </button>
 
 
-    <!-- CATEGORIES -->
-
     <button
         class="nav-button"
-        onclick="openCategories()"
-    >
+        onclick="openCart()">
 
-        <span>
-            📂
-        </span>
-
-        <span data-i18n="categories">
-            Kategoriya
-        </span>
-
-    </button>
-
-
-    <!-- CART -->
-
-    <button
-        class="nav-button"
-        onclick="openCart()"
-    >
-
-        <span>
-            🛒
-        </span>
+        <span>🛒</span>
 
         <span data-i18n="cart">
             Savat
@@ -2365,34 +2085,11 @@ button {
     </button>
 
 
-    <!-- ORDERS -->
-
     <button
         class="nav-button"
-        onclick="showOrders()"
-    >
+        onclick="openProfile()">
 
-        <span>
-            📦
-        </span>
-
-        <span data-i18n="myOrders">
-            Buyurtmalar
-        </span>
-
-    </button>
-
-
-    <!-- PROFILE -->
-
-    <button
-        class="nav-button"
-        onclick="openProfile()"
-    >
-
-        <span>
-            👤
-        </span>
+        <span>👤</span>
 
         <span data-i18n="profile">
             Profil
@@ -2409,8 +2106,8 @@ button {
 
 <div
     id="toast"
-    class="toast"
-></div>
+    class="toast">
+</div>
 
 
 <script>
@@ -2469,14 +2166,11 @@ if (
     customer.telegram_id =
         user.id;
 
-
     customer.first_name =
         user.first_name || "";
 
-
     customer.last_name =
         user.last_name || "";
-
 
     customer.username =
         user.username || "";
@@ -2673,8 +2367,7 @@ const translations = {
 
     uz: {
 
-        onlineShopping:
-            "Onlayn xarid",
+        onlineShopping: "Onlayn xarid",
 
         chooseProducts:
             "Kerakli mahsulotlarni tanlang va savatga qo‘shing.",
@@ -3039,35 +2732,22 @@ function applyTranslations() {
         });
 
 
-    const uzButton =
-        document.getElementById(
-            "uzLanguage"
-        );
-
-    const ruButton =
-        document.getElementById(
-            "ruLanguage"
-        );
-
-
-    if (uzButton) {
-
-        uzButton.classList.toggle(
+    document
+        .getElementById("uzLanguage")
+        .classList
+        .toggle(
             "active",
             currentLanguage === "uz"
         );
 
-    }
 
-
-    if (ruButton) {
-
-        ruButton.classList.toggle(
+    document
+        .getElementById("ruLanguage")
+        .classList
+        .toggle(
             "active",
             currentLanguage === "ru"
         );
-
-    }
 
 }
 
@@ -3087,34 +2767,20 @@ function applyDarkMode() {
         );
 
 
-    const toggle =
-        document.getElementById(
-            "darkModeToggle"
-        );
-
-
-    if (toggle) {
-
-        toggle.checked =
-            darkMode;
-
-    }
+    document
+        .getElementById("darkModeToggle")
+        .checked =
+        darkMode;
 
 }
 
 
 function toggleDarkMode() {
 
-    const toggle =
-        document.getElementById(
-            "darkModeToggle"
-        );
-
-
     darkMode =
-        toggle
-        ? toggle.checked
-        : false;
+        document
+        .getElementById("darkModeToggle")
+        .checked;
 
 
     localStorage.setItem(
@@ -3138,11 +2804,6 @@ function updateWelcome() {
         document.getElementById(
             "welcomeText"
         );
-
-
-    if (!element) {
-        return;
-    }
 
 
     if (
@@ -3216,11 +2877,8 @@ function getAllProducts() {
         .forEach(product => {
 
             result.push({
-
                 ...product,
-
                 category
-
             });
 
         });
@@ -3665,8 +3323,7 @@ function createProductCard(product) {
 
         <button
             class="favorite-button"
-            onclick="toggleFavorite(${product.id})"
-        >
+            onclick="toggleFavorite(${product.id})">
 
             ${isFavorite ? "❤️" : "♡"}
 
@@ -3711,13 +3368,11 @@ function createProductCard(product) {
                     class="weight-input"
                     type="number"
                     min="1"
-                    value="1"
-                >
+                    value="1">
 
                 <select
                     id="unit-${product.id}"
-                    class="unit-select"
-                >
+                    class="unit-select">
 
                     <option value="kg">
                         kg
@@ -3734,8 +3389,7 @@ function createProductCard(product) {
 
             <button
                 class="add-button"
-                onclick="addWeightProduct(${product.id})"
-            >
+                onclick="addWeightProduct(${product.id})">
 
                 🛒 Savatga qo‘shish
 
@@ -3751,8 +3405,7 @@ function createProductCard(product) {
 
             <button
                 class="add-button"
-                onclick="addToCart(${product.id})"
-            >
+                onclick="addToCart(${product.id})">
 
                 🛒 Savatga qo‘shish
 
@@ -3777,33 +3430,16 @@ function openCategory(category) {
     hideAll();
 
 
-    const productsPage =
-        document.getElementById(
-            "productsPage"
-        );
+    document
+        .getElementById("productsPage")
+        .classList
+        .remove("hidden");
 
 
-    if (productsPage) {
-
-        productsPage
-            .classList
-            .remove("hidden");
-
-    }
-
-
-    const categoryTitle =
-        document.getElementById(
-            "categoryTitle"
-        );
-
-
-    if (categoryTitle) {
-
-        categoryTitle.textContent =
-            category;
-
-    }
+    document
+        .getElementById("categoryTitle")
+        .textContent =
+        category;
 
 
     const container =
@@ -3812,21 +3448,7 @@ function openCategory(category) {
         );
 
 
-    if (!container) {
-        return;
-    }
-
-
     container.innerHTML = "";
-
-
-    if (
-        !products[category]
-    ) {
-
-        return;
-
-    }
 
 
     products[category]
@@ -3860,15 +3482,6 @@ function showCategoryRecommendations(
     category
 ) {
 
-    if (
-        !products[category]
-    ) {
-
-        return;
-
-    }
-
-
     const categoryProducts =
         products[category]
         .filter(
@@ -3877,26 +3490,14 @@ function showCategoryRecommendations(
         );
 
 
-    const recommendations =
-        document.getElementById(
-            "recommendations"
-        );
-
-
-    if (
-        !recommendations
-    ) {
-
-        return;
-
-    }
-
-
     if (
         categoryProducts.length === 0
     ) {
 
-        recommendations
+        document
+            .getElementById(
+                "recommendations"
+            )
             .classList
             .add("hidden");
 
@@ -3951,7 +3552,10 @@ function showCategoryRecommendations(
         related.length === 0
     ) {
 
-        recommendations
+        document
+            .getElementById(
+                "recommendations"
+            )
             .classList
             .add("hidden");
 
@@ -3964,11 +3568,6 @@ function showCategoryRecommendations(
         document.getElementById(
             "recommendationList"
         );
-
-
-    if (!container) {
-        return;
-    }
 
 
     container.innerHTML = "";
@@ -3990,7 +3589,7 @@ function showCategoryRecommendations(
 
             const image =
                 product.image
-                ? `<img src="${product.image}" alt="">`
+                ? `<img src="${product.image}">`
                 : product.icon;
 
 
@@ -4009,8 +3608,7 @@ function showCategoryRecommendations(
                 </div>
 
                 <button
-                    onclick="addToCart(${product.id})"
-                >
+                    onclick="addToCart(${product.id})">
 
                     🛒 +
 
@@ -4024,7 +3622,10 @@ function showCategoryRecommendations(
         });
 
 
-    recommendations
+    document
+        .getElementById(
+            "recommendations"
+        )
         .classList
         .remove("hidden");
 
@@ -4083,14 +3684,11 @@ function toggleFavorite(id) {
 }
 
 
-/* =========================================================
-   REFRESH VISIBLE PRODUCTS
-========================================================= */
-
 function refreshVisibleProducts() {
 
     const categoryTitle =
-        document.getElementById(
+        document
+        .getElementById(
             "categoryTitle"
         );
 
@@ -4359,11 +3957,6 @@ function updateCart() {
         );
 
 
-    if (!cartBar) {
-        return;
-    }
-
-
     if (
         cart.length === 0
     ) {
@@ -4487,19 +4080,13 @@ function renderCart() {
                         ${amount}
                     </div>
 
-                    <div
-                        style="
-                            margin-top:7px;
-                            font-weight:bold;
-                        "
-                    >
+                    <div style="margin-top:7px;font-weight:bold;">
                         ${formatPrice(itemTotal)}
                     </div>
 
                     <button
                         class="remove-button"
-                        onclick="removeCartItem(${index})"
-                    >
+                        onclick="removeCartItem(${index})">
 
                         🗑 O‘chirish
 
@@ -4629,24 +4216,16 @@ function renderOrderSummary() {
 
         container.innerHTML += `
 
-            <div
-                style="
-                    display:flex;
-                    justify-content:space-between;
-                    margin-bottom:10px;
-                "
-            >
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                margin-bottom:10px;
+            ">
 
                 <span>
-
                     ${item.name}
-
                     <br>
-
-                    <small>
-                        ${amount}
-                    </small>
-
+                    <small>${amount}</small>
                 </span>
 
                 <strong>
@@ -4668,7 +4247,9 @@ function renderOrderSummary() {
         formatPrice(total);
 
 }
-   /* =========================================================
+
+
+/* =========================================================
    PHONE
 ========================================================= */
 
