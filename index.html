@@ -840,81 +840,9 @@ button {
 }
 
 
-<!-- =====================================================
-     BOTTOM NAV
-===================================================== -->
-
-<div class="bottom-nav">
-
-    <button
-        class="nav-button"
-        onclick="goHome()">
-
-        <span>🏠</span>
-
-        <span data-i18n="home">
-            Bosh sahifa
-        </span>
-
-    </button>
-
-
-    <button
-        class="nav-button"
-        onclick="openCategories()">
-
-        <span>📂</span>
-
-        <span data-i18n="categories">
-            Kategoriya
-        </span>
-
-    </button>
-
-
-    <button
-        class="nav-button"
-        onclick="openCart()">
-
-        <span>🛒</span>
-
-        <span data-i18n="cart">
-            Savat
-        </span>
-
-    </button>
-
-
-    <button
-        class="nav-button"
-        onclick="showOrders()">
-
-        <span>📦</span>
-
-        <span data-i18n="myOrders">
-            Buyurtmalar
-        </span>
-
-    </button>
-
-
-    <button
-        class="nav-button"
-        onclick="openProfile()">
-
-        <span>👤</span>
-
-        <span data-i18n="profile">
-            Profil
-        </span>
-
-    </button>
-
-</div>
-
-/* =========================================================
-   TOAST
-========================================================= */
+<!-- =========================================================
+     TOAST
+========================================================= -->
 
 .toast {
     position: fixed;
@@ -950,6 +878,8 @@ button {
     }
 
 }
+
+
 /* =====================================================
    PREMIUM BOTTOM NAV
 ===================================================== */
@@ -994,12 +924,45 @@ button {
 .nav-button:active {
     transform: scale(0.94);
 }
-   
+
 </style>
 </head>
 
-
 <body>
+
+
+<!-- =====================================================
+     BOTTOM NAV
+===================================================== -->
+
+<div class="bottom-nav">
+
+    <button class="nav-button" onclick="goHome()">
+        <span>🏠</span>
+        <span data-i18n="home">Bosh sahifa</span>
+    </button>
+
+    <button class="nav-button" onclick="openCategories()">
+        <span>📂</span>
+        <span data-i18n="categories">Kategoriya</span>
+    </button>
+
+    <button class="nav-button" onclick="openCart()">
+        <span>🛒</span>
+        <span data-i18n="cart">Savat</span>
+    </button>
+
+    <button class="nav-button" onclick="showOrders()">
+        <span>📦</span>
+        <span data-i18n="myOrders">Buyurtmalar</span>
+    </button>
+
+    <button class="nav-button" onclick="openProfile()">
+        <span>👤</span>
+        <span data-i18n="profile">Profil</span>
+    </button>
+
+</div>
 
 
 <!-- =====================================================
