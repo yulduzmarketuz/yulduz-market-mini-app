@@ -1946,7 +1946,6 @@ button {
     id="ordersPage"
     class="container hidden">
 
-
     <button
         class="back-button"
         onclick="openProfile()">
@@ -1961,10 +1960,72 @@ button {
     </h2>
 
 
-    <div id="ordersList"></div>
+    <!-- ORDER TABS -->
+
+    <div class="order-tabs">
+
+        <button
+            class="order-tab active"
+            onclick="showOrderTab('current')">
+
+            📦 Joriy
+
+        </button>
+
+
+        <button
+            class="order-tab"
+            onclick="showOrderTab('history')">
+
+            📋 Tarix
+
+        </button>
+
+
+        <button
+            class="order-tab"
+            onclick="showOrderTab('cancelled')">
+
+            ❌ Bekor qilingan
+
+        </button>
+
+    </div>
+
+
+    <!-- CURRENT ORDERS -->
+
+    <div
+        id="currentOrdersTab"
+        class="order-tab-content">
+
+        <div id="currentOrdersList"></div>
+
+    </div>
+
+
+    <!-- ORDER HISTORY -->
+
+    <div
+        id="historyOrdersTab"
+        class="order-tab-content hidden">
+
+        <div id="orderHistoryList"></div>
+
+    </div>
+
+
+    <!-- CANCELLED ORDERS -->
+
+    <div
+        id="cancelledOrdersTab"
+        class="order-tab-content hidden">
+
+        <div id="cancelledOrdersList"></div>
+
+    </div>
 
 </div>
-
 
 <!-- =====================================================
      ORDER DETAILS
