@@ -786,33 +786,53 @@ function showOrderTab(tab) {
     const cancelled =
         document.getElementById("cancelledOrders");
 
+    const tabs =
+        document.querySelectorAll(".orders-tab");
+
+
+    if (!current || !history || !cancelled) {
+        console.error("Buyurtma tablari topilmadi");
+        return;
+    }
+
 
     current.classList.add("hidden");
     history.classList.add("hidden");
     cancelled.classList.add("hidden");
 
 
+    tabs.forEach(button => {
+        button.classList.remove("active");
+    });
+
+
     if (tab === "current") {
 
         current.classList.remove("hidden");
 
+        tabs[0]?.classList.add("active");
+
     }
 
 
-    if (tab === "history") {
+    else if (tab === "history") {
 
         history.classList.remove("hidden");
 
+        tabs[1]?.classList.add("active");
+
     }
 
 
-    if (tab === "cancelled") {
+    else if (tab === "cancelled") {
 
         cancelled.classList.remove("hidden");
 
+        tabs[2]?.classList.add("active");
+
     }
 
-}   
+}
 
 /* =========================================================
    ORDER STATUS
@@ -5498,11 +5518,7 @@ function getOrderStatusIcon(status) {
 
         qabul_qilindi: "🟡",
 
-        yig_ilmoqda: "👨‍🍳",
-
-        tayyorlanmoqda: "👨‍🍳",
-
-        tayyor: "📦",
+        yigilmoqda: "👨‍🍳",
 
         yetkazib_berishga_tayyor: "📦",
 
@@ -5518,7 +5534,6 @@ function getOrderStatusIcon(status) {
     return icons[status] || "🟡";
 
 }
-
 
 /* =========================================================
    ORDER TABS
@@ -5621,16 +5636,15 @@ function showOrders() {
         return;
     }
 
-    ordersPage
-        .classList
-        .remove("hidden");
+    ordersPage.classList.remove("hidden");
 
     loadOrders();
 
     renderOrders();
 
-}
+    showOrderTab("current");
 
+}
 /* =========================================================
    ORDER DETAILS
 ========================================================= */
@@ -5761,19 +5775,19 @@ const statuses = [
 
     {
         id: "qabul_qilindi",
-        title: "Qabul qilindi",
+        title: "Buyurtma qabul qilindi",
         icon: "🟡"
     },
 
     {
-        id: "tayyorlanmoqda",
-        title: "Tayyorlanmoqda",
+        id: "yigilmoqda",
+        title: "Yig‘ilmoqda",
         icon: "👨‍🍳"
     },
 
     {
-        id: "tayyor",
-        title: "Tayyor",
+        id: "yetkazib_berishga_tayyor",
+        title: "Yetkazib berishga tayyor",
         icon: "📦"
     },
 
@@ -5790,7 +5804,6 @@ const statuses = [
     }
 
 ];
-
 
 /* =========================================================
    STATUS TEXT
@@ -6093,7 +6106,7 @@ function openCategories() {
         .classList
         .remove("hidden");
 
-}   
+}
 /* =========================================================
    PRICE
 ========================================================= */
