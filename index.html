@@ -5605,7 +5605,31 @@ function showOrderTab(tab) {
     }
 
 }
+/* =========================================================
+   SHOW ORDERS
+========================================================= */
 
+function showOrders() {
+
+    hideAll();
+
+    const ordersPage =
+        document.getElementById("ordersPage");
+
+    if (!ordersPage) {
+        console.error("ordersPage topilmadi");
+        return;
+    }
+
+    ordersPage
+        .classList
+        .remove("hidden");
+
+    loadOrders();
+
+    renderOrders();
+
+}
 
 /* =========================================================
    ORDER DETAILS
