@@ -5506,12 +5506,28 @@ function openHelp() {
 
 
 /* =========================================================
+   HOME
+========================================================= */
+
+function goHome() {
+
+    hideAll();
+
+    document
+        .getElementById("homePage")
+        .classList
+        .remove("hidden");
+
+}
+
+
+/* =========================================================
    HIDE ALL
 ========================================================= */
 
 function hideAll() {
 
-  const pages = [
+    const pages = [
 
         "homePage",
 
@@ -5565,7 +5581,6 @@ function hideAll() {
     );
 
 }
-
 
 /* =========================================================
    OPEN CATEGORIES
