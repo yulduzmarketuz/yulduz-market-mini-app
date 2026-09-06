@@ -771,68 +771,6 @@ button {
     margin-top: 8px;
 }
 
-/* =========================================================
-   ORDER TABS
-========================================================= */
-
-function showOrderTab(tab) {
-
-    const current =
-        document.getElementById("currentOrders");
-
-    const history =
-        document.getElementById("historyOrders");
-
-    const cancelled =
-        document.getElementById("cancelledOrders");
-
-    const tabs =
-        document.querySelectorAll(".orders-tab");
-
-
-    if (!current || !history || !cancelled) {
-        console.error("Buyurtma tablari topilmadi");
-        return;
-    }
-
-
-    current.classList.add("hidden");
-    history.classList.add("hidden");
-    cancelled.classList.add("hidden");
-
-
-    tabs.forEach(button => {
-        button.classList.remove("active");
-    });
-
-
-    if (tab === "current") {
-
-        current.classList.remove("hidden");
-
-        tabs[0]?.classList.add("active");
-
-    }
-
-
-    else if (tab === "history") {
-
-        history.classList.remove("hidden");
-
-        tabs[1]?.classList.add("active");
-
-    }
-
-
-    else if (tab === "cancelled") {
-
-        cancelled.classList.remove("hidden");
-
-        tabs[2]?.classList.add("active");
-
-    }
-
-}
 
 /* =========================================================
    ORDER STATUS
@@ -2008,6 +1946,7 @@ function showOrderTab(tab) {
     id="ordersPage"
     class="container hidden">
 
+
     <button
         class="back-button"
         onclick="openProfile()">
@@ -2022,72 +1961,10 @@ function showOrderTab(tab) {
     </h2>
 
 
-    <!-- ORDER TABS -->
-
-    <div class="order-tabs">
-
-        <button
-            class="order-tab active"
-            onclick="showOrderTab('current')">
-
-            📦 Joriy
-
-        </button>
-
-
-        <button
-            class="order-tab"
-            onclick="showOrderTab('history')">
-
-            📋 Tarix
-
-        </button>
-
-
-        <button
-            class="order-tab"
-            onclick="showOrderTab('cancelled')">
-
-            ❌ Bekor qilingan
-
-        </button>
-
-    </div>
-
-
-    <!-- CURRENT ORDERS -->
-
-    <div
-        id="currentOrdersTab"
-        class="order-tab-content">
-
-        <div id="currentOrdersList"></div>
-
-    </div>
-
-
-    <!-- ORDER HISTORY -->
-
-    <div
-        id="historyOrdersTab"
-        class="order-tab-content hidden">
-
-        <div id="orderHistoryList"></div>
-
-    </div>
-
-
-    <!-- CANCELLED ORDERS -->
-
-    <div
-        id="cancelledOrdersTab"
-        class="order-tab-content hidden">
-
-        <div id="cancelledOrdersList"></div>
-
-    </div>
+    <div id="ordersList"></div>
 
 </div>
+
 
 <!-- =====================================================
      ORDER DETAILS
@@ -2182,7 +2059,6 @@ function showOrderTab(tab) {
 <div class="bottom-nav">
 
 
-    <!-- BOSH SAHIFA -->
     <button
         class="nav-button"
         onclick="goHome()">
@@ -2196,21 +2072,6 @@ function showOrderTab(tab) {
     </button>
 
 
-    <!-- KATEGORIYALAR -->
-    <button
-        class="nav-button"
-        onclick="openCategories()">
-
-        <span>🗂️</span>
-
-        <span data-i18n="categories">
-            Kategoriyalar
-        </span>
-
-    </button>
-
-
-    <!-- SAVAT -->
     <button
         class="nav-button"
         onclick="openCart()">
@@ -2224,21 +2085,6 @@ function showOrderTab(tab) {
     </button>
 
 
-    <!-- BUYURTMALAR -->
-    <button
-        class="nav-button"
-        onclick="openOrders()">
-
-        <span>📦</span>
-
-        <span data-i18n="orders">
-            Buyurtmalar
-        </span>
-
-    </button>
-
-
-    <!-- PROFIL -->
     <button
         class="nav-button"
         onclick="openProfile()">
@@ -2250,7 +2096,6 @@ function showOrderTab(tab) {
         </span>
 
     </button>
-
 
 </div>
 
@@ -3575,6 +3420,58 @@ function createProductCard(product) {
 
 }
 
+
+/* =========================================================
+   OPEN CATEGORY
+========================================================= */
+
+function openCategory(category) {
+
+    hideAll();
+
+
+    document
+        .getElementById("productsPage")
+        .classList
+        .remove("hidden");
+
+
+    document
+        .getElementById("categoryTitle")
+        .textContent =
+        category;
+
+
+    const container =
+        document.getElementById(
+            "products"
+        );
+
+
+    container.innerHTML = "";
+
+
+    products[category]
+        .filter(
+            product =>
+            product.visible
+        )
+        .forEach(product => {
+
+            container.appendChild(
+                createProductCard(
+                    product
+                )
+            );
+
+        });
+
+
+    showCategoryRecommendations(
+        category
+    );
+
+}
 
 
 /* =========================================================
@@ -5078,57 +4975,27 @@ function loadOrders() {
 
 function renderOrders() {
 
-    const currentList =
+    const list =
         document.getElementById(
-            "currentOrdersList"
-        );
-
-    const historyList =
-        document.getElementById(
-            "historyOrdersList"
-        );
-
-    const cancelledList =
-        document.getElementById(
-            "cancelledOrdersList"
+            "ordersList"
         );
 
 
-    if (!currentList ||
-        !historyList ||
-        !cancelledList) {
-
-        return;
-
-    }
+    list.innerHTML = "";
 
 
-    currentList.innerHTML = "";
+    if (
+        orders.length === 0
+    ) {
 
-    historyList.innerHTML = "";
+        list.innerHTML = `
 
-    cancelledList.innerHTML = "";
-
-
-    if (!orders ||
-        orders.length === 0) {
-
-        currentList.innerHTML = `
             <div class="form-card">
-                📦 Hozircha joriy buyurtmalar yo‘q.
-            </div>
-        `;
 
-        historyList.innerHTML = `
-            <div class="form-card">
-                📋 Hozircha buyurtmalar tarixi yo‘q.
-            </div>
-        `;
+                📦 Hozircha buyurtmalar mavjud emas.
 
-        cancelledList.innerHTML = `
-            <div class="form-card">
-                ❌ Hozircha bekor qilingan buyurtmalar yo‘q.
             </div>
+
         `;
 
         return;
@@ -5137,328 +5004,12 @@ function renderOrders() {
 
 
     orders
-        .slice()
-        .reverse()
-        .forEach(order => {
+    .slice()
+    .reverse()
+    .forEach(order => {
 
-            let total = 0;
+        let total = 0;
 
-
-            if (order.items) {
-
-                order.items.forEach(
-                    item => {
-
-                        total +=
-                            item.price *
-                            item.quantity;
-
-                    }
-                );
-
-            }
-
-
-            const status =
-                order.status || "qabul_qilindi";
-
-
-            const card = `
-
-                <div
-                    class="order-history-card"
-                    onclick="openOrderDetails('${order.id}')"
-                    style="cursor:pointer;">
-
-                    <strong>
-                        📦 Buyurtma #${order.id}
-                    </strong>
-
-                    <p>
-                        ${formatPrice(total)}
-                    </p>
-
-                    <span class="order-status">
-                        ${getStatusText(status)}
-                    </span>
-
-                </div>
-
-            `;
-
-
-            /* =========================================
-               BEKOR QILINGAN
-            ========================================= */
-
-            if (
-                status === "bekor_qilingan" ||
-                status === "cancelled"
-            ) {
-
-                cancelledList.innerHTML += card;
-
-            }
-
-
-            /* =========================================
-               YETKAZILGAN — TARIX
-            ========================================= */
-
-            else if (
-                status === "yetkazildi"
-            ) {
-
-                historyList.innerHTML += card;
-
-            }
-
-
-            /* =========================================
-               JORIY BUYURTMA
-            ========================================= */
-
-            else {
-
-                currentList.innerHTML += card;
-
-            }
-
-        });
-
-
-    if (
-        currentList.innerHTML === ""
-    ) {
-
-        currentList.innerHTML = `
-            <div class="form-card">
-                🟡 Hozircha joriy buyurtmalar yo‘q.
-            </div>
-        `;
-
-    }
-
-
-    if (
-        historyList.innerHTML === ""
-    ) {
-
-        historyList.innerHTML = `
-            <div class="form-card">
-                📋 Hozircha yetkazilgan buyurtmalar yo‘q.
-            </div>
-        `;
-
-    }
-
-
-    if (
-        cancelledList.innerHTML === ""
-    ) {
-
-        cancelledList.innerHTML = `
-            <div class="form-card">
-                ❌ Hozircha bekor qilingan buyurtmalar yo‘q.
-            </div>
-        `;
-
-    }
-
-}
-
-
-/* =========================================================
-   RENDER CURRENT ORDERS
-========================================================= */
-
-function renderCurrentOrders() {
-
-    const list =
-        document.getElementById(
-            "currentOrdersList"
-        );
-
-
-    if (!list)
-        return;
-
-
-    list.innerHTML = "";
-
-
-    const currentOrders =
-        orders
-        .filter(order =>
-            order.status !== "yetkazildi" &&
-            order.status !== "bekor_qilingan"
-        )
-        .slice()
-        .reverse();
-
-
-    if (currentOrders.length === 0) {
-
-        list.innerHTML = `
-
-            <div class="form-card">
-
-                📦 Hozircha joriy buyurtmalar yo‘q.
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    currentOrders.forEach(
-        order => {
-
-            renderOrderCard(
-                list,
-                order
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   RENDER ORDER HISTORY
-========================================================= */
-
-function renderOrderHistory() {
-
-    const list =
-        document.getElementById(
-            "orderHistoryList"
-        );
-
-
-    if (!list)
-        return;
-
-
-    list.innerHTML = "";
-
-
-    const historyOrders =
-        orders
-        .filter(order =>
-            order.status === "yetkazildi"
-        )
-        .slice()
-        .reverse();
-
-
-    if (historyOrders.length === 0) {
-
-        list.innerHTML = `
-
-            <div class="form-card">
-
-                📋 Hozircha buyurtmalar tarixi yo‘q.
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    historyOrders.forEach(
-        order => {
-
-            renderOrderCard(
-                list,
-                order
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   RENDER CANCELLED ORDERS
-========================================================= */
-
-function renderCancelledOrders() {
-
-    const list =
-        document.getElementById(
-            "cancelledOrdersList"
-        );
-
-
-    if (!list)
-        return;
-
-
-    list.innerHTML = "";
-
-
-    const cancelledOrders =
-        orders
-        .filter(order =>
-            order.status === "bekor_qilingan"
-        )
-        .slice()
-        .reverse();
-
-
-    if (cancelledOrders.length === 0) {
-
-        list.innerHTML = `
-
-            <div class="form-card">
-
-                ❌ Hozircha bekor qilingan buyurtmalar yo‘q.
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    cancelledOrders.forEach(
-        order => {
-
-            renderOrderCard(
-                list,
-                order
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   ORDER CARD
-========================================================= */
-
-function renderOrderCard(
-    list,
-    order
-) {
-
-    let total = 0;
-
-
-    if (order.items) {
 
         order.items.forEach(
             item => {
@@ -5470,181 +5021,43 @@ function renderOrderCard(
             }
         );
 
-    }
+
+        list.innerHTML += `
+
+            <div
+                class="order-history-card"
+                onclick="openOrderDetails('${order.id}')"
+                style="cursor:pointer;">
+
+                <strong>
+
+                    📦 Buyurtma #${order.id}
+
+                </strong>
 
 
-    list.innerHTML += `
+                <p>
 
-        <div
-            class="order-history-card"
-            onclick="openOrderDetails('${order.id}')"
-            style="cursor:pointer;">
+                    ${formatPrice(total)}
 
-            <strong>
-
-                📦 Buyurtma #${order.id}
-
-            </strong>
+                </p>
 
 
-            <p>
+                <span class="order-status">
 
-                ${formatPrice(total)}
+                    🟡 ${getStatusText(order.status)}
 
-            </p>
+                </span>
 
+            </div>
 
-            <span class="order-status">
+        `;
 
-                ${getOrderStatusIcon(order.status)}
-                ${getStatusText(order.status)}
-
-            </span>
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   ORDER STATUS ICON
-========================================================= */
-
-function getOrderStatusIcon(status) {
-
-    const icons = {
-
-        qabul_qilindi: "🟡",
-
-        yigilmoqda: "👨‍🍳",
-
-        yetkazib_berishga_tayyor: "📦",
-
-        yolda: "🛵",
-
-        yetkazildi: "🟢",
-
-        bekor_qilingan: "❌"
-
-    };
-
-
-    return icons[status] || "🟡";
+    });
 
 }
 
-/* =========================================================
-   ORDER TABS
-========================================================= */
 
-function showOrderTab(tab) {
-
-    const current =
-        document.getElementById(
-            "currentOrdersTab"
-        );
-
-    const history =
-        document.getElementById(
-            "historyOrdersTab"
-        );
-
-    const cancelled =
-        document.getElementById(
-            "cancelledOrdersTab"
-        );
-
-
-    const tabs =
-        document.querySelectorAll(
-            ".order-tab"
-        );
-
-
-    current.classList.add("hidden");
-
-    history.classList.add("hidden");
-
-    cancelled.classList.add("hidden");
-
-
-    tabs.forEach(
-        button => {
-
-            button.classList.remove(
-                "active"
-            );
-
-        }
-    );
-
-
-    if (tab === "current") {
-
-        current.classList.remove(
-            "hidden"
-        );
-
-        tabs[0]?.classList.add(
-            "active"
-        );
-
-    }
-
-
-    else if (tab === "history") {
-
-        history.classList.remove(
-            "hidden"
-        );
-
-        tabs[1]?.classList.add(
-            "active"
-        );
-
-    }
-
-
-    else if (tab === "cancelled") {
-
-        cancelled.classList.remove(
-            "hidden"
-        );
-
-        tabs[2]?.classList.add(
-            "active"
-        );
-
-    }
-
-}
-/* =========================================================
-   SHOW ORDERS
-========================================================= */
-
-function showOrders() {
-
-    hideAll();
-
-    const ordersPage =
-        document.getElementById("ordersPage");
-
-    if (!ordersPage) {
-        console.error("ordersPage topilmadi");
-        return;
-    }
-
-    ordersPage.classList.remove("hidden");
-
-    loadOrders();
-
-    renderOrders();
-
-    showOrderTab("current");
-
-}
 /* =========================================================
    ORDER DETAILS
 ========================================================= */
@@ -5775,19 +5188,19 @@ const statuses = [
 
     {
         id: "qabul_qilindi",
-        title: "Buyurtma qabul qilindi",
+        title: "Qabul qilindi",
         icon: "🟡"
     },
 
     {
-        id: "yigilmoqda",
-        title: "Yig‘ilmoqda",
+        id: "tayyorlanmoqda",
+        title: "Tayyorlanmoqda",
         icon: "👨‍🍳"
     },
 
     {
-        id: "yetkazib_berishga_tayyor",
-        title: "Yetkazib berishga tayyor",
+        id: "tayyor",
+        title: "Tayyor",
         icon: "📦"
     },
 
@@ -5804,6 +5217,7 @@ const statuses = [
     }
 
 ];
+
 
 /* =========================================================
    STATUS TEXT
@@ -6094,20 +5508,6 @@ function goHome() {
     document.getElementById("homePage").classList.add("hidden");("categoriesPage").classList.remove("hidden");
 }
 /* =========================================================
-   OPEN CATEGORIES
-========================================================= */
-
-function openCategories() {
-
-    hideAll();
-
-    document
-        .getElementById("categoriesPage")
-        .classList
-        .remove("hidden");
-
-}
-/* =========================================================
    PRICE
 ========================================================= */
 
@@ -6182,103 +5582,6 @@ goHome();
 
 
 </script>
-<!-- =====================================================
-     ORDERS PAGE
-===================================================== -->
 
-<div
-    id="ordersPage"
-    class="container hidden">
-
-    <button
-        class="back-button"
-        onclick="goHome()">
-
-        ← Bosh sahifa
-
-    </button>
-
-
-    <h2>
-        📦 <span data-i18n="myOrders">
-            Buyurtmalarim
-        </span>
-    </h2>
-
-
-    <!-- BUYURTMALAR BO‘LIMLARI -->
-
-    <div class="orders-tabs">
-
-        <button
-            class="orders-tab active"
-            onclick="showOrderTab('current')">
-
-            🟡 Joriy
-
-        </button>
-
-
-        <button
-            class="orders-tab"
-            onclick="showOrderTab('history')">
-
-            📋 Tarix
-
-        </button>
-
-
-        <button
-            class="orders-tab"
-            onclick="showOrderTab('cancelled')">
-
-            ❌ Bekor qilingan
-
-        </button>
-
-    </div>
-
-
-    <!-- JORIY BUYURTMALAR -->
-
-    <div
-        id="currentOrders"
-        class="orders-tab-content">
-
-        <div id="currentOrdersList"></div>
-
-    </div>
-
-
-    <!-- BUYURTMALAR TARIXI -->
-
-    <div
-        id="historyOrders"
-        class="orders-tab-content hidden">
-
-        <div id="historyOrdersList"></div>
-
-    </div>
-
-
-    <!-- BEKOR QILINGAN BUYURTMALAR -->
-
-    <div
-        id="cancelledOrders"
-        class="orders-tab-content hidden">
-
-        <div id="cancelledOrdersList"></div>
-
-    </div>
-
-
-    <!-- UMUMIY BUYURTMALAR RO‘YXATI -->
-
-    <div
-        id="ordersList"
-        style="display:none;">
-    </div>
-
-</div>
 </body>
 </html>
