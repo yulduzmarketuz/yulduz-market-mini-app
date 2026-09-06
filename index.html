@@ -1186,38 +1186,9 @@ button {
 
     <h2>📂 Kategoriyalar</h2>
 
-    <div class="categories">
-
-        <div class="category" onclick="openCategory('Ichimliklar')">
-            <div class="category-icon">🥤</div>
-            <strong>Ichimliklar</strong>
-        </div>
-
-        <div class="category" onclick="openCategory('Shirinliklar')">
-            <div class="category-icon">🍫</div>
-            <strong>Shirinliklar</strong>
-        </div>
-
-        <div class="category" onclick="openCategory('Sut mahsulotlari')">
-            <div class="category-icon">🥛</div>
-            <strong>Sut mahsulotlari</strong>
-        </div>
-
-        <div class="category" onclick="openCategory('Meva va sabzavot')">
-            <div class="category-icon">🍎</div>
-            <strong>Meva va sabzavot</strong>
-        </div>
-
-        <div class="category" onclick="openCategory('Muzqaymoqlar')">
-            <div class="category-icon">🍦</div>
-            <strong>Muzqaymoqlar</strong>
-        </div>
-
-        <div class="category" onclick="openCategory('Maishiy mahsulotlar')">
-            <div class="category-icon">🧴</div>
-            <strong>Maishiy mahsulotlar</strong>
-        </div>
-
+    <div
+        id="categoriesContainer"
+        class="categories">
     </div>
 
 </div>
@@ -3512,6 +3483,77 @@ function openCategory(category) {
     );
 
 }
+   /* =========================================================
+   RENDER CATEGORIES
+========================================================= */
+
+function renderCategories() {
+
+    const container =
+        document.getElementById("categoriesContainer");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    Object.keys(products).forEach(category => {
+
+        const items =
+            products[category].filter(
+                product => product.visible
+            );
+
+        const card =
+            document.createElement("div");
+
+        card.className = "category";
+
+        card.onclick = function () {
+            openCategory(category);
+        };
+
+        card.innerHTML = `
+            <div class="category-icon">
+                ${getCategoryIcon(category)}
+            </div>
+
+            <strong>
+                ${category}
+            </strong>
+
+            <div style="
+                font-size:12px;
+                color:var(--muted);
+                margin-top:5px;
+            ">
+                ${items.length} ta mahsulot
+            </div>
+        `;
+
+        container.appendChild(card);
+
+    });
+
+}
+   /* =========================================================
+   CATEGORY ICON
+========================================================= */
+
+function getCategoryIcon(category) {
+
+    const icons = {
+
+        "Ichimliklar": "🥤",
+        "Shirinliklar": "🍫",
+        "Sut mahsulotlari": "🥛",
+        "Meva va sabzavot": "🍎",
+        "Muzqaymoqlar": "🍦",
+        "Maishiy mahsulotlar": "🧴"
+
+    };
+
+    return icons[category] || "🛒";
+}
 
 
 /* =========================================================
@@ -5526,26 +5568,20 @@ function hideAll() {
 
 
 /* =========================================================
-   HOME
+   OPEN CATEGORIES
 ========================================================= */
 
-function goHome() {
+function openCategories() {
 
     hideAll();
 
-
     document
-        .getElementById(
-            "homePage"
-        )
+        .getElementById("categoriesPage")
         .classList
         .remove("hidden");
 
-}
+    renderCategories();
 
-   function openCategories() {
-    hideAll();
-    document.getElementById("homePage").classList.add("hidden");("categoriesPage").classList.remove("hidden");
 }
 /* =========================================================
    PRICE
