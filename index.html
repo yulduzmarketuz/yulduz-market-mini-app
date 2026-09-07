@@ -280,10 +280,9 @@ button {
 
 .categories {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
 }
-
 .category {
     border: 1px solid rgba(0, 0, 0, 0.05);
     background: var(--card);
@@ -1257,86 +1256,112 @@ button {
         </h3>
 
 
-        <div class="categories">
+       <div class="categories">
 
-            <button
-                class="category"
-                onclick="openCategory('Ichimliklar')">
+    <button
+        class="category"
+        onclick="openCategory('Ichimliklar')">
 
-                <div class="category-icon">
-                    🥤
-                </div>
-
-                Ichimliklar
-
-            </button>
-
-
-            <button
-                class="category"
-                onclick="openCategory('Shirinliklar')">
-
-                <div class="category-icon">
-                    🍫
-                </div>
-
-                Shirinliklar
-
-            </button>
-
-
-            <button
-                class="category"
-                onclick="openCategory('Sut mahsulotlari')">
-
-                <div class="category-icon">
-                    🥛
-                </div>
-
-                Sut mahsulotlari
-
-            </button>
-
-
-            <button
-                class="category"
-                onclick="openCategory('Meva va sabzavot')">
-
-                <div class="category-icon">
-                    🍎
-                </div>
-
-                Meva va sabzavot
-
-            </button>
-
-
-            <button
-                class="category"
-                onclick="openCategory('Muzqaymoqlar')">
-
-                <div class="category-icon">
-                    🍦
-                </div>
-
-                Muzqaymoqlar
-
-            </button>
-
-
-            <button
-                class="category"
-                onclick="openCategory('Maishiy mahsulotlar')">
-
-                <div class="category-icon">
-                    🧴
-                </div>
-
-                Maishiy mahsulotlar
-
-            </button>
-
+        <div class="category-icon">
+            🥤
         </div>
+
+        Ichimliklar
+
+    </button>
+
+
+    <button
+        class="category"
+        onclick="openCategory('Shirinliklar')">
+
+        <div class="category-icon">
+            🍫
+        </div>
+
+        Shirinliklar
+
+    </button>
+
+
+    <button
+        class="category"
+        onclick="openCategory('Sut mahsulotlari')">
+
+        <div class="category-icon">
+            🥛
+        </div>
+
+        Sut mahsulotlari
+
+    </button>
+
+
+    <button
+        class="category"
+        onclick="openCategory('Mevalar')">
+
+        <div class="category-icon">
+            🍎
+        </div>
+
+        Mevalar
+
+    </button>
+
+
+    <button
+        class="category"
+        onclick="openCategory('Sabzavotlar')">
+
+        <div class="category-icon">
+            🥦
+        </div>
+
+        Sabzavotlar
+
+    </button>
+
+
+    <button
+        class="category"
+        onclick="openCategory(&quot;Go'sht&quot;)">
+
+        <div class="category-icon">
+            🥩
+        </div>
+
+        Go'sht
+
+    </button>
+
+
+    <button
+        class="category"
+        onclick="openCategory('Non mahsulotlari')">
+
+        <div class="category-icon">
+            🍞
+        </div>
+
+        Non mahsulotlari
+
+    </button>
+
+
+    <button
+        class="category"
+        onclick="openCategory('Maishiy')">
+
+        <div class="category-icon">
+            🧹
+        </div>
+
+        Maishiy
+
+    </button>
+
+</div>
 
     </div>
 
@@ -2479,7 +2504,7 @@ const products = {
     ],
 
 
-    "Meva va sabzavot": [
+    "Mevalar": [
 
         {
             id: 5,
@@ -2500,8 +2525,12 @@ const products = {
             icon: "🍌",
             visible: true,
             related: [5]
-        },
+        }
 
+    ],
+
+
+    "Sabzavotlar": [
 
         {
             id: 7,
@@ -2511,6 +2540,27 @@ const products = {
             icon: "🥔",
             visible: true,
             related: [5]
+        }
+
+    ],
+
+
+    "Go'sht": [],
+
+
+    "Non mahsulotlari": [],
+
+
+    "Maishiy": [
+
+        {
+            id: 9,
+            name: "Kir yuvish kukuni",
+            price: 25000,
+            unit: "dona",
+            icon: "🧴",
+            visible: true,
+            related: []
         }
 
     ],
@@ -2526,21 +2576,6 @@ const products = {
             icon: "🍦",
             visible: true,
             related: [3]
-        }
-
-    ],
-
-
-    "Maishiy mahsulotlar": [
-
-        {
-            id: 9,
-            name: "Kir yuvish kukuni",
-            price: 25000,
-            unit: "dona",
-            icon: "🧴",
-            visible: true,
-            related: []
         }
 
     ]
