@@ -1092,8 +1092,8 @@ button {
     transform: scale(0.94);
 }
 
-.nav-button:active {
-    transform: scale(0.94);
+.nav-button.active {
+    color: #16A34A;
 }
    
 </style>
@@ -2195,7 +2195,7 @@ button {
 
     <button
         class="nav-button"
-        onclick="goHome()">
+        onclick="goHome(); setActiveNav(0)">
 
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
      xmlns="http://www.w3.org/2000/svg">
@@ -2218,7 +2218,7 @@ button {
 
     <button
         class="nav-button"
-        onclick="openCategories()">
+        onclick="openCategories(); setActiveNav(1)">
 
        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
      xmlns="http://www.w3.org/2000/svg">
@@ -2241,7 +2241,7 @@ button {
 
     <button
         class="nav-button"
-        onclick="openCart()">
+        onclick="openCart(); setActiveNav(2)">
 
        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
      xmlns="http://www.w3.org/2000/svg">
@@ -2265,7 +2265,7 @@ button {
 
     <button
         class="nav-button"
-        onclick="showOrders()">
+        onclick="showOrders(); setActiveNav(3)">
 
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
      xmlns="http://www.w3.org/2000/svg">
@@ -2299,7 +2299,7 @@ button {
 
     <button
         class="nav-button"
-        onclick="openProfile()">
+        onclick="openProfile(); setActiveNav(4)">
 
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none"
      xmlns="http://www.w3.org/2000/svg">
@@ -5741,6 +5741,7 @@ function goHome() {
         .getElementById("homePage")
         .classList
         .remove("hidden");
+   setActiveNav(0);
 
 }
 
@@ -5804,6 +5805,11 @@ function hideAll() {
         }
     );
 
+}
+   function setActiveNav(index) {
+    document.querySelectorAll(".bottom-nav .nav-button").forEach((button, i) => {
+        button.classList.toggle("active", i === index);
+    });
 }
 
 /* =========================================================
