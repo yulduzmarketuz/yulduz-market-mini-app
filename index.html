@@ -2749,99 +2749,7 @@ button {
     </div>
 
 </div>
-/* =========================================================
-   OPEN SEARCH PAGE
-========================================================= */
 
-function openSearchPage() {
-
-    hideAll();
-
-    document
-        .getElementById("searchPage")
-        .classList
-        .remove("hidden");
-
-    const input =
-        document.getElementById("searchPageInput");
-
-    if (input) {
-
-        input.value = "";
-
-        setTimeout(() => {
-            input.focus();
-        }, 100);
-
-    }
-
-}
-/* =========================================================
-   RUN SEARCH PAGE
-========================================================= */
-
-function runSearchPage() {
-
-    const input =
-        document.getElementById("searchPageInput");
-
-    const container =
-        document.getElementById("searchPageResults");
-
-    if (!input || !container) return;
-
-    const query =
-        input.value.trim();
-
-    container.innerHTML = "";
-
-    if (!query) {
-        return;
-    }
-
-    const result =
-        smartSearch(query);
-
-    if (result.length === 0) {
-
-        container.innerHTML = `
-            <div class="no-results">
-                😕<br><br>
-                Bunday mahsulot topilmadi.
-            </div>
-        `;
-
-        return;
-    }
-
-    result.forEach(product => {
-
-        container.appendChild(
-            createProductCard(product)
-        );
-
-    });
-
-}
-   const searchPageInput =
-    document.getElementById("searchPageInput");
-
-if (searchPageInput) {
-
-    searchPageInput.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (event.key === "Enter") {
-
-                runSearchPage();
-
-            }
-
-        }
-    );
-
-}
    
 <!-- =====================================================
      CART BAR
@@ -3018,6 +2926,99 @@ if (searchPageInput) {
 
 
 <script>
+   /* =========================================================
+   OPEN SEARCH PAGE
+========================================================= */
+
+function openSearchPage() {
+
+    hideAll();
+
+    document
+        .getElementById("searchPage")
+        .classList
+        .remove("hidden");
+
+    const input =
+        document.getElementById("searchPageInput");
+
+    if (input) {
+
+        input.value = "";
+
+        setTimeout(() => {
+            input.focus();
+        }, 100);
+
+    }
+
+}
+/* =========================================================
+   RUN SEARCH PAGE
+========================================================= */
+
+function runSearchPage() {
+
+    const input =
+        document.getElementById("searchPageInput");
+
+    const container =
+        document.getElementById("searchPageResults");
+
+    if (!input || !container) return;
+
+    const query =
+        input.value.trim();
+
+    container.innerHTML = "";
+
+    if (!query) {
+        return;
+    }
+
+    const result =
+        smartSearch(query);
+
+    if (result.length === 0) {
+
+        container.innerHTML = `
+            <div class="no-results">
+                😕<br><br>
+                Bunday mahsulot topilmadi.
+            </div>
+        `;
+
+        return;
+    }
+
+    result.forEach(product => {
+
+        container.appendChild(
+            createProductCard(product)
+        );
+
+    });
+
+}
+   const searchPageInput =
+    document.getElementById("searchPageInput");
+
+if (searchPageInput) {
+
+    searchPageInput.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                runSearchPage();
+
+            }
+
+        }
+    );
+
+}
 
 
 /* =========================================================
