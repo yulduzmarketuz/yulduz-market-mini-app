@@ -1379,47 +1379,6 @@ button {
     color: #16A34A;
     white-space: nowrap;
 }
-   
-   /* =========================================================
-   HOME SEARCH BUTTON
-========================================================= */
-
-.search-box {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.search-box .search-input {
-    flex: 1;
-    width: auto;
-    min-width: 0;
-    padding-left: 16px;
-    padding-right: 16px;
-}
-
-.home-search-button {
-    flex: 0 0 50px;
-    width: 50px;
-    height: 50px;
-
-    border: none;
-    border-radius: 14px;
-
-    background: #16A34A;
-    color: #ffffff;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
-}
-
-.home-search-button svg {
-    width: 21px;
-    height: 21px;
-}
    /* =========================================================
    SEARCH PAGE
 ========================================================= */
@@ -1500,6 +1459,46 @@ button {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
+}
+   /* =========================================================
+   HOME SEARCH BUTTON
+========================================================= */
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-box .search-input {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.home-search-button {
+    flex: 0 0 50px;
+    width: 50px;
+    height: 50px;
+
+    border: none;
+    border-radius: 14px;
+
+    background: #16A34A;
+    color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+.home-search-button svg {
+    width: 21px;
+    height: 21px;
 }
    
 </style>
@@ -6638,11 +6637,7 @@ function hideAll() {
 
         "orderDetailsPage",
 
-        "successPage",
-
-        "searchPage"
-
-];
+        "successPage"
 
     ];
 
