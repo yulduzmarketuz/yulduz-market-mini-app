@@ -1603,17 +1603,18 @@ button {
             <div class="recommended-header">
 
                 <h3>
-                    Siz uchun tavsiya qilamiz
+                    Tavsiya etamiz
                 </h3>
 
                 <button
-                    class="recommended-arrow"
-                    onclick="openFavorites()"
-                    aria-label="Barchasini ko‘rish">
+    class="recommended-all"
+    onclick="openFavorites()"
+    aria-label="Barchasini ko‘rish">
 
-                    →
+    <span>Barchasi</span>
+    <span class="recommended-arrow">→</span>
 
-                </button>
+</button>
 
             </div>
 
@@ -3317,9 +3318,8 @@ function renderRecommendedProducts() {
                 </div>
 
                 <div class="recommended-product-price">
-                    ${formatPrice(product.price)}
-                    so‘m
-                </div>
+    ${formatPrice(product.price)}
+</div>
 
             `;
 
