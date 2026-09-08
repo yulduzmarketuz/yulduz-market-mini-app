@@ -604,31 +604,81 @@ button {
     left: 15px;
     right: 15px;
 
-    background: var(--button);
-    color: var(--button-text);
+    background: #16A34A;
+    color: #FFFFFF;
 
-    padding: 15px;
+    min-height: 54px;
+    padding: 10px 14px;
+
     border-radius: 16px;
 
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+
+    font-size: 15px;
+    font-weight: 700;
 
     z-index: 30;
-    box-shadow: 0 5px 20px rgba(0,0,0,.2);
+
+    box-shadow: 0 5px 20px rgba(22,163,74,.28);
+
+    box-sizing: border-box;
 }
 
+/* =========================================================
+   CART ICON
+========================================================= */
+
 .cart-bar-icon {
-    width: 25px;
-    height: 25px;
+    width: 24px;
+    height: 24px;
+
     flex-shrink: 0;
+
     color: #FFFFFF;
+
+    position: relative;
+    top: 2px;
 }
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+.cart-bar-products {
+    margin-left: 8px;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.cart-bar-price {
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   ARROW
+========================================================= */
+
+.cart-bar-arrow {
+    margin-left: 10px;
+
+    font-size: 19px;
+    line-height: 1;
+
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   EMPTY CART
+========================================================= */
 
 .cart.empty {
     display: none;
 }
-
 /* =========================================================
    CART PAGE
 ========================================================= */
@@ -4525,27 +4575,20 @@ function updateCart() {
             stroke-linejoin="round"
         />
 
-        <circle
-            cx="9.5"
-            cy="20"
-            r="1.2"
-            fill="currentColor"
-        />
-
-        <circle
-            cx="18"
-            cy="20"
-            r="1.2"
-            fill="currentColor"
-        />
+        <circle cx="9.5" cy="20" r="1.2" fill="currentColor"/>
+        <circle cx="18" cy="20" r="1.2" fill="currentColor"/>
     </svg>
 
-    <span>
-        Savat (${cart.length}) — ${formatPrice(total)}
+    <span class="cart-bar-products">
+        ${cart.length} ta mahsulot
     </span>
 
-    <span style="margin-left:auto;font-size:28px;font-weight:400;">
-        ›
+    <span class="cart-bar-price">
+        ${formatPrice(total)} so‘m
+    </span>
+
+    <span class="cart-bar-arrow">
+        ➡️
     </span>
 `;
 
