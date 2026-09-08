@@ -638,7 +638,7 @@ button {
     color: #FFFFFF;
 
     position: relative;
-    top: 0px;
+    top: 1px;
 }
 
 /* =========================================================
@@ -1371,30 +1371,30 @@ button {
 
         <span class="search-icon">
 
-    <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        <circle
-            cx="11"
-            cy="11"
-            r="7"
-            stroke="currentColor"
-            stroke-width="1.8"
-        />
+            <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <circle
+                    cx="11"
+                    cy="11"
+                    r="7"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                />
 
-        <path
-            d="M16.5 16.5L21 21"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-        />
-    </svg>
+                <path
+                    d="M16.5 16.5L21 21"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                />
+            </svg>
 
-</span>
+        </span>
 
         <input
             id="searchInput"
@@ -1424,7 +1424,13 @@ button {
         class="hidden">
 
         <h3 class="search-result-title">
-            🔎 <span data-i18n="searchResults">Qidiruv natijalari</span>
+
+            🔎
+
+            <span data-i18n="searchResults">
+                Qidiruv natijalari
+            </span>
+
         </h3>
 
         <div
@@ -1444,112 +1450,180 @@ button {
         </h3>
 
 
-       <div class="categories">
+        <!-- =================================================
+             CATEGORIES
+        ================================================= -->
 
-    <button
-        class="category"
-        onclick="openCategory('Ichimliklar')">
+        <div class="categories">
 
-        <div class="category-icon">
-            <img src="assets/categories/drinks.png" alt="">
+            <button
+                class="category"
+                onclick="openCategory('Ichimliklar')">
+
+                <div class="category-icon">
+
+                    <img
+                        src="assets/categories/drinks.png"
+                        alt="">
+
+                </div>
+
+                Ichimliklar
+
+            </button>
+
+
+            <button
+                class="category"
+                onclick="openCategory('Shirinliklar')">
+
+                <div class="category-icon">
+
+                    <img
+                        src="assets/categories/sweets.png"
+                        alt="">
+
+                </div>
+
+                Shirinliklar
+
+            </button>
+
+
+            <button
+                class="category"
+                onclick="openCategory('Sut mahsulotlari')">
+
+                <div class="category-icon">
+
+                    <img
+                        src="assets/categories/dairy.png"
+                        alt="">
+
+                </div>
+
+                Sut mahsulotlari
+
+            </button>
+
+
+            <button
+                class="category"
+                onclick="openCategory('Mevalar')">
+
+                <div class="category-icon">
+
+                    <img
+                        src="assets/categories/fruits.png"
+                        alt="">
+
+                </div>
+
+                Mevalar
+
+            </button>
+
+
+            <button
+                class="category"
+                onclick="openCategory('Sabzavotlar')">
+
+                <div class="category-icon">
+
+                    <img
+                        src="assets/categories/vegetables.png"
+                        alt="">
+
+                </div>
+
+                Sabzavotlar
+
+            </button>
+
+
+            <button
+                class="category"
+                onclick="openCategory(&quot;Go'sht&quot;)">
+
+                <div class="category-icon">
+
+                    <img
+                        src="assets/categories/meat.png"
+                        alt="">
+
+                </div>
+
+                Go'sht
+
+            </button>
+
+
+            <button
+                class="category"
+                onclick="openCategory('Non mahsulotlari')">
+
+                <div class="category-icon">
+
+                    <img
+                        src="assets/categories/bakery.png"
+                        alt="">
+
+                </div>
+
+                Non mahsulotlari
+
+            </button>
+
+
+            <button
+                class="category"
+                onclick="openCategory('Maishiy')">
+
+                <div class="category-icon">
+
+                    <img
+                        src="assets/categories/household.png"
+                        alt="">
+
+                </div>
+
+                Maishiy
+
+            </button>
+
         </div>
 
-        Ichimliklar
 
-    </button>
+        <!-- =================================================
+             RECOMMENDED PRODUCTS
+        ================================================= -->
+
+        <div class="recommended-section">
+
+            <div class="recommended-header">
+
+                <h3>
+                    Siz uchun tavsiya qilamiz
+                </h3>
+
+                <button
+                    class="recommended-arrow"
+                    onclick="openRecommended()"
+                    aria-label="Barchasini ko‘rish">
+
+                    →
+
+                </button>
+
+            </div>
 
 
-    <button
-        class="category"
-        onclick="openCategory('Shirinliklar')">
+            <div
+                id="recommendedProducts"
+                class="recommended-products">
+            </div>
 
-        <div class="category-icon">
-            <img src="assets/categories/sweets.png" alt="">
         </div>
-
-        Shirinliklar
-
-    </button>
-
-
-    <button
-        class="category"
-        onclick="openCategory('Sut mahsulotlari')">
-
-        <div class="category-icon">
-            <img src="assets/categories/dairy.png" alt="">
-        </div>
-
-        Sut mahsulotlari
-
-    </button>
-
-
-    <button
-        class="category"
-        onclick="openCategory('Mevalar')">
-
-        <div class="category-icon">
-            <img src="assets/categories/fruits.png" alt="">
-        </div>
-
-        Mevalar
-
-    </button>
-
-
-    <button
-        class="category"
-        onclick="openCategory('Sabzavotlar')">
-
-        <div class="category-icon">
-            <img src="assets/categories/vegetables.png" alt="">
-        </div>
-
-        Sabzavotlar
-
-    </button>
-
-
-    <button
-        class="category"
-        onclick="openCategory(&quot;Go'sht&quot;)">
-
-        <div class="category-icon">
-            <img src="assets/categories/meat.png" alt="">
-        </div>
-
-        Go'sht
-
-    </button>
-
-
-    <button
-        class="category"
-        onclick="openCategory('Non mahsulotlari')">
-
-        <div class="category-icon">
-            <img src="assets/categories/bakery.png" alt="">
-        </div>
-
-        Non mahsulotlari
-
-    </button>
-
-
-    <button
-        class="category"
-        onclick="openCategory('Maishiy')">
-
-        <div class="category-icon">
-            <img src="assets/categories/household.png" alt="">
-        </div>
-
-        Maishiy
-
-    </button>
-
-</div>
 
     </div>
 
@@ -2793,6 +2867,52 @@ const products = {
     ]
 
 };
+   /* =========================================================
+   RECOMMENDED PRODUCTS
+========================================================= */
+
+function renderRecommendedProducts() {
+
+    const container =
+        document.getElementById(
+            "recommendedProducts"
+        );
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    const recommended = [];
+
+    Object.keys(products).forEach(category => {
+
+        products[category].forEach(product => {
+
+            if (
+                product.visible
+            ) {
+
+                recommended.push(
+                    product
+                );
+
+            }
+
+        });
+
+    });
+
+    recommended
+        .slice(0, 6)
+        .forEach(product => {
+
+            container.appendChild(
+                createProductCard(product)
+            );
+
+        });
+
+}
 
 
 /* =========================================================
@@ -6049,7 +6169,10 @@ function goHome() {
         .getElementById("homePage")
         .classList
         .remove("hidden");
-   setActiveNav(0);
+
+    setActiveNav(0);
+
+    renderRecommendedProducts();
 
 }
 
