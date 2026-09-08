@@ -1608,7 +1608,7 @@ button {
 
                 <button
                     class="recommended-arrow"
-                    onclick="openRecommended()"
+                    onclick="openFavorites()"
                     aria-label="Barchasini ko‘rish">
 
                     →
@@ -3252,7 +3252,96 @@ const translations = {
     }
 
 };
+/* =========================================================
+   RENDER RECOMMENDED PRODUCTS
+========================================================= */
 
+function renderRecommendedProducts() {
+
+    const container =
+        document.getElementById(
+            "recommendedProducts"
+        );
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    const recommended = [];
+
+    Object.keys(products).forEach(category => {
+
+        products[category].forEach(product => {
+
+            if (product.visible) {
+
+                recommended.push(product);
+
+            }
+
+        });
+
+    });
+
+    recommended
+        .slice(0, 3)
+        .forEach(product => {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "recommended-product-card";
+
+            const image =
+                product.image
+                ? `
+                    <img
+                        src="${product.image}"
+                        alt="${product.name}">
+                  `
+                : `
+                    <span class="recommended-product-icon">
+                        ${product.icon}
+                    </span>
+                  `;
+
+            card.innerHTML = `
+
+                <div class="recommended-product-image">
+                    ${image}
+                </div>
+
+                <div class="recommended-product-name">
+                    ${product.name}
+                </div>
+
+                <div class="recommended-product-price">
+                    ${formatPrice(product.price)}
+                    so‘m
+                </div>
+
+            `;
+
+            card.onclick = function () {
+
+                if (product.unit === "kg") {
+
+                    addWeightProduct(product.id);
+
+                } else {
+
+                    addToCart(product.id);
+
+                }
+
+            };
+
+            container.appendChild(card);
+
+        });
+
+}
 
 /* =========================================================
    LANGUAGE SYSTEM
