@@ -570,11 +570,67 @@ button {
     margin-bottom: 12px;
 }
 
+/* =========================================================
+   PREMIUM NO RESULTS
+========================================================= */
+
 .no-results {
-    background: var(--card);
-    border-radius: 16px;
-    padding: 25px;
+    grid-column: 1 / -1;
+
+    min-height: 210px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
     text-align: center;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 20px;
+
+    padding: 30px 20px;
+
+    box-sizing: border-box;
+}
+
+.no-results-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #16A34A;
+
+    margin-bottom: 14px;
+}
+
+.no-results-icon span {
+    margin-left: 3px;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: #16A34A;
+}
+
+.no-results-title {
+    font-size: 17px;
+    font-weight: 700;
+
+    color: var(--text);
+
+    margin-bottom: 5px;
+}
+
+.no-results-text {
+    font-size: 13px;
+    font-weight: 400;
+
     color: var(--muted);
 }
 
@@ -3021,11 +3077,46 @@ function runSearchPage() {
     if (result.length === 0) {
 
         container.innerHTML = `
-            <div class="no-results">
-                😕<br><br>
-                Bunday mahsulot topilmadi.
-            </div>
-        `;
+    <div class="no-results">
+
+        <div class="no-results-icon">
+
+            <svg
+                width="42"
+                height="42"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <circle
+                    cx="11"
+                    cy="11"
+                    r="6.5"
+                    stroke="currentColor"
+                    stroke-width="1.7"/>
+
+                <path
+                    d="M16 16L20.5 20.5"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"/>
+
+            </svg>
+
+            <span>...</span>
+
+        </div>
+
+        <div class="no-results-title">
+            Mahsulot topilmadi
+        </div>
+
+        <div class="no-results-text">
+            Boshqa nom bilan qidirib ko‘ring
+        </div>
+
+    </div>
+`;
 
         return;
     }
@@ -4330,17 +4421,46 @@ function renderSearchResults(query) {
     ) {
 
         container.innerHTML = `
+    <div class="no-results">
 
-            <div class="no-results">
+        <div class="no-results-icon">
 
-                😕<br><br>
+            <svg
+                width="42"
+                height="42"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
 
-                Bunday mahsulot topilmadi.
+                <circle
+                    cx="11"
+                    cy="11"
+                    r="6.5"
+                    stroke="currentColor"
+                    stroke-width="1.7"/>
 
-            </div>
+                <path
+                    d="M16 16L20.5 20.5"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"/>
 
-        `;
+            </svg>
 
+            <span>...</span>
+
+        </div>
+
+        <div class="no-results-title">
+            Mahsulot topilmadi
+        </div>
+
+        <div class="no-results-text">
+            Boshqa nom bilan qidirib ko‘ring
+        </div>
+
+    </div>
+`;
         return;
 
     }
