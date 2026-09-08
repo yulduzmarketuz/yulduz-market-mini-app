@@ -4409,7 +4409,6 @@ function addWeightProduct(id) {
 
 }
 
-
 /* =========================================================
    UPDATE CART
 ========================================================= */
@@ -4453,11 +4452,13 @@ function updateCart() {
                 0
             );
 
-        cartBadge.textContent =
-            count;
+        cartBadge.textContent = count;
 
-        cartBadge.dataset.count =
-            count;
+        if (count === 0) {
+            cartBadge.style.display = "none";
+        } else {
+            cartBadge.style.display = "flex";
+        }
 
     }
 
