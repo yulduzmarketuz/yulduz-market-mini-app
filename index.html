@@ -4504,8 +4504,44 @@ function updateCart() {
             .remove("empty");
 
 
-        cartBar.textContent =
-            `🛒 Savat (${cart.length}) — ${formatPrice(total)}`;
+        cartBar.innerHTML = `
+    <svg
+        class="cart-bar-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            d="M3 4H5L7.2 15.2C7.4 16.2 8.3 17 9.3 17H18.2C19.1 17 19.9 16.4 20.2 15.5L22 9H6"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        />
+
+        <circle
+            cx="9.5"
+            cy="20"
+            r="1.2"
+            fill="currentColor"
+        />
+
+        <circle
+            cx="18"
+            cy="20"
+            r="1.2"
+            fill="currentColor"
+        />
+    </svg>
+
+    <span>
+        Savat (${cart.length}) — ${formatPrice(total)}
+    </span>
+
+    <span style="margin-left:auto;font-size:28px;font-weight:400;">
+        ›
+    </span>
+`;
 
     }
 
