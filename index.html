@@ -2496,37 +2496,48 @@ button {
 
 
 /* =========================================================
-   TELEGRAM
+   TELEGRAM MINI APP
 ========================================================= */
 
 const tg =
-    window.Telegram
-    ? window.Telegram.WebApp
-    : null;
-
+    window.Telegram?.WebApp || null;
 
 if (tg) {
 
+    /* Telegram Mini App tayyor */
     tg.ready();
 
+    /* Oddiy expand */
     tg.expand();
 
-    /*
-    ==========================================
-    SWIPE TO CLOSE — O‘CHIRISH
-    ==========================================
-    */
 
-    if (
-        typeof tg.disableVerticalSwipes === "function"
-    ) {
+    /* =====================================================
+       FULLSCREEN
+       Telegram panelini maksimal darajada olib tashlaydi
+    ===================================================== */
+
+    if (typeof tg.requestFullscreen === "function") {
+
+        try {
+            tg.requestFullscreen();
+        } catch (error) {
+            console.log("Fullscreen ishlamadi:", error);
+        }
+
+    }
+
+
+    /* =====================================================
+       SWIPE TO CLOSE — O‘CHIRILADI
+    ===================================================== */
+
+    if (typeof tg.disableVerticalSwipes === "function") {
 
         tg.disableVerticalSwipes();
 
     }
 
 }
-
 
 /* =========================================================
    CUSTOMER
