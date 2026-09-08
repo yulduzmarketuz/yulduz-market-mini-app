@@ -275,7 +275,7 @@ button {
 }
 
 /* =========================================================
-   CATEGORIES
+   CATEGORIES — PREMIUM 4x2 GRID
 ========================================================= */
 
 .categories {
@@ -283,42 +283,100 @@ button {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 10px;
 }
+
+/* CATEGORY CARD */
 .category {
+    min-width: 0;
+    aspect-ratio: 1 / 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 6px;
+
     border: 1px solid rgba(0, 0, 0, 0.05);
     background: var(--card);
-    padding: 22px 14px;
-    border-radius: 20px;
+    border-radius: 18px;
+
     text-align: center;
-    font-size: 16px;
     cursor: pointer;
+
     transition:
         transform 0.15s ease,
         box-shadow 0.15s ease;
 }
 
 .category:active {
-    transform: scale(0.96);
+    transform: scale(0.95);
 }
 
+/* CATEGORY ICON */
 .category-icon {
-    width: 58px;
-    height: 58px;
-    margin: 0 auto 10px;
+    width: 56px;
+    height: 56px;
+
+    margin: 0 auto 8px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    font-size: 34px;
+    flex-shrink: 0;
 
-    border-radius: 18px;
+    font-size: 32px;
+
+    border-radius: 17px;
     background: rgba(255, 0, 0, 0.06);
 }
 
+/* CATEGORY NAME */
 .category strong {
-    display: block;
-    font-size: 15px;
-    line-height: 20px;
+    display: -webkit-box;
+
+    width: 100%;
+
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .categories {
+        gap: 8px;
+    }
+
+    .category {
+        border-radius: 16px;
+        padding: 8px 5px;
+    }
+
+    .category-icon {
+        width: 50px;
+        height: 50px;
+
+        font-size: 28px;
+        border-radius: 15px;
+
+        margin-bottom: 7px;
+    }
+
+    .category strong {
+        font-size: 13px;
+        line-height: 17px;
+    }
 }
 
 
