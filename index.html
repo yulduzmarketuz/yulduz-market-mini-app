@@ -1282,6 +1282,103 @@ button {
 .nav-button.active {
     color: #16A34A;
 }
+   /* =========================================================
+   RECOMMENDED PRODUCTS
+========================================================= */
+
+.recommended-section {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.recommended-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.recommended-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.recommended-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+    background: transparent;
+    padding: 5px 0;
+    margin: 0;
+    color: var(--text);
+    opacity: 0.65;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.recommended-arrow {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.recommended-products {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.recommended-product-card {
+    min-width: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 9px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+.recommended-product-image {
+    width: 100%;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 7px;
+}
+
+.recommended-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.recommended-product-icon {
+    font-size: 42px;
+    line-height: 1;
+}
+
+.recommended-product-name {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 15px;
+    height: 30px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.recommended-product-price {
+    font-size: 12px;
+    font-weight: 700;
+    color: #16A34A;
+    white-space: nowrap;
+}
    
 </style>
 </head>
@@ -2868,53 +2965,7 @@ const products = {
     ]
 
 };
-   /* =========================================================
-   RECOMMENDED PRODUCTS
-========================================================= */
-
-function renderRecommendedProducts() {
-
-    const container =
-        document.getElementById(
-            "recommendedProducts"
-        );
-
-    if (!container) return;
-
-    container.innerHTML = "";
-
-    const recommended = [];
-
-    Object.keys(products).forEach(category => {
-
-        products[category].forEach(product => {
-
-            if (
-                product.visible
-            ) {
-
-                recommended.push(
-                    product
-                );
-
-            }
-
-        });
-
-    });
-
-    recommended
-        .slice(0, 6)
-        .forEach(product => {
-
-            container.appendChild(
-                createProductCard(product)
-            );
-
-        });
-
-}
-
+   
 
 /* =========================================================
    CART
