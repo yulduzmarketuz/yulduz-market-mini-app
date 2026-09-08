@@ -70,16 +70,15 @@ button {
 
 
 /* =========================================================
-   HEADER — FULLSCREEN UCHUN MOSLANGAN
+   HEADER
 ========================================================= */
-
 .header {
     background: var(--card);
-    padding: 80px 16px 10px 16px;
+    padding: 12px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
     position: sticky;
     top: 0;
     z-index: 20;
@@ -108,16 +107,11 @@ button {
     font-weight: 700;
     color: #16A34A;
 }
-
 .subtitle {
     color: var(--muted);
     margin-top: 2px;
     font-size: 13px;
 }
-
-/* =========================================================
-   BILDIRISHNOMA — MINIMAL VA SHAFFOF
-========================================================= */
 
 .header-notification {
     width: 36px;
@@ -129,13 +123,8 @@ button {
     justify-content: center;
     font-size: 19px;
     border-radius: 50%;
-    opacity: 0.65;
-    padding: 0;
 }
 
-.header-notification:active {
-    background: rgba(0, 0, 0, 0.05);
-}
 /* =========================================================
    CONTAINER
 ========================================================= */
@@ -595,7 +584,7 @@ button {
 
 
 /* =========================================================
-   PREMIUM CART BAR
+   CART BAR
 ========================================================= */
 
 .cart {
@@ -604,91 +593,24 @@ button {
     left: 15px;
     right: 15px;
 
-    background: #16A34A;
-    color: #FFFFFF;
+    background: var(--button);
+    color: var(--button-text);
 
-    min-height: 56px;
-    padding: 10px 14px;
+    padding: 15px;
+    border-radius: 16px;
 
-    border-radius: 18px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-
-    font-size: 15px;
-    font-weight: 700;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
 
     z-index: 30;
-
-    box-shadow:
-        0 8px 24px rgba(22, 163, 74, 0.28);
-
-    box-sizing: border-box;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease;
+    box-shadow: 0 5px 20px rgba(0,0,0,.2);
 }
-
-/* =========================================================
-   CART ICON
-========================================================= */
-
-.cart-bar-icon {
-    width: 25px;
-    height: 25px;
-
-    flex-shrink: 0;
-
-    color: #FFFFFF;
-}
-
-/* =========================================================
-   CART TEXT
-========================================================= */
-
-.cart-bar-text {
-    line-height: 1;
-    white-space: nowrap;
-}
-
-/* =========================================================
-   ARROW
-========================================================= */
-
-.cart-bar-arrow {
-    font-size: 28px;
-    font-weight: 400;
-
-    line-height: 20px;
-
-    margin-left: auto;
-
-    color: #FFFFFF;
-}
-
-/* =========================================================
-   PRESS EFFECT
-========================================================= */
-
-.cart:active {
-    transform: scale(0.98);
-
-    box-shadow:
-        0 5px 16px rgba(22, 163, 74, 0.22);
-}
-
-/* =========================================================
-   EMPTY CART
-========================================================= */
 
 .cart.empty {
     display: none;
 }
+
 
 /* =========================================================
    CART PAGE
@@ -2574,48 +2496,37 @@ button {
 
 
 /* =========================================================
-   TELEGRAM MINI APP
+   TELEGRAM
 ========================================================= */
 
 const tg =
-    window.Telegram?.WebApp || null;
+    window.Telegram
+    ? window.Telegram.WebApp
+    : null;
+
 
 if (tg) {
 
-    /* Telegram Mini App tayyor */
     tg.ready();
 
-    /* Oddiy expand */
     tg.expand();
 
+    /*
+    ==========================================
+    SWIPE TO CLOSE — O‘CHIRISH
+    ==========================================
+    */
 
-    /* =====================================================
-       FULLSCREEN
-       Telegram panelini maksimal darajada olib tashlaydi
-    ===================================================== */
-
-    if (typeof tg.requestFullscreen === "function") {
-
-        try {
-            tg.requestFullscreen();
-        } catch (error) {
-            console.log("Fullscreen ishlamadi:", error);
-        }
-
-    }
-
-
-    /* =====================================================
-       SWIPE TO CLOSE — O‘CHIRILADI
-    ===================================================== */
-
-    if (typeof tg.disableVerticalSwipes === "function") {
+    if (
+        typeof tg.disableVerticalSwipes === "function"
+    ) {
 
         tg.disableVerticalSwipes();
 
     }
 
 }
+
 
 /* =========================================================
    CUSTOMER
@@ -4552,66 +4463,34 @@ function updateCart() {
     }
 
 
-   /* =====================================================
-   CART BAR
-========================================================= */
+    /* =====================================================
+       CART BAR
+    ===================================================== */
 
-if (
-    cart.length === 0
-) {
+    if (
+        cart.length === 0
+    ) {
 
-    cartBar
-        .classList
-        .add("empty");
+        cartBar
+            .classList
+            .add("empty");
 
-}
+    }
 
-else {
+    else {
 
-    cartBar
-        .classList
-        .remove("empty");
+        cartBar
+            .classList
+            .remove("empty");
 
-    cartBar.innerHTML = `
-        <svg
-            class="cart-bar-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-                d="M3 4H5L7.2 15.2C7.4 16.2 8.3 17 9.3 17H18.2C19.1 17 19.9 16.4 20.2 15.5L22 9H6"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
 
-            <circle
-                cx="9.5"
-                cy="20"
-                r="1.2"
-                fill="currentColor"
-            />
+        cartBar.textContent =
+            `🛒 Savat (${cart.length}) — ${formatPrice(total)}`;
 
-            <circle
-                cx="18"
-                cy="20"
-                r="1.2"
-                fill="currentColor"
-            />
-        </svg>
-
-        <span class="cart-bar-text">
-            Savat (${cart.length}) — ${formatPrice(total)}
-        </span>
-
-        <span class="cart-bar-arrow">
-            ›
-        </span>
-    `;
+    }
 
 }
+
 /* =========================================================
    OPEN CART
 ========================================================= */
