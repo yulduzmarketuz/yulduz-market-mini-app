@@ -1157,7 +1157,6 @@ button {
 
 .cart-nav-icon {
     position: relative;
-
     width: 24px;
     height: 24px;
 
@@ -1169,11 +1168,11 @@ button {
 .cart-badge {
     position: absolute;
 
-    top: -7px;
-    right: -9px;
+    top: -8px;
+    right: -10px;
 
-    min-width: 17px;
-    height: 17px;
+    min-width: 18px;
+    height: 18px;
 
     padding: 0 4px;
 
@@ -1181,25 +1180,20 @@ button {
     align-items: center;
     justify-content: center;
 
-    background: var(--primary);
-    color: #fff;
+    background: #22c55e;
+    color: #ffffff;
 
-    border-radius: 999px;
+    border-radius: 50%;
 
     font-size: 10px;
     font-weight: 700;
-    line-height: 1;
+    line-height: 18px;
 
     border: 2px solid var(--card);
 
     box-sizing: border-box;
 
-    z-index: 10;
-}
-
-.cart-badge:empty,
-.cart-badge[data-count="0"] {
-    display: none;
+    z-index: 9999;
 }
 /* =====================================================
    PREMIUM NAV ICON
