@@ -1569,7 +1569,440 @@ button {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
 }
-   
+   /* =========================================================
+   PREMIUM CATEGORIES PAGE
+========================================================= */
+
+#categoriesPage {
+    padding: 20px 16px 100px;
+}
+
+
+/* PAGE HEADER */
+
+.categories-page-header {
+    margin-bottom: 20px;
+}
+
+.categories-page-title {
+    margin: 0;
+    font-size: 27px;
+    line-height: 1.15;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+}
+
+.categories-page-subtitle {
+    margin: 7px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+
+/* CATEGORY GRID */
+
+#categoriesContainer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+
+/* CATEGORY CARD */
+
+.premium-category-card {
+    position: relative;
+    min-height: 235px;
+    overflow: hidden;
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.96),
+            rgba(248,250,248,0.88)
+        );
+
+    border: 1px solid rgba(255,255,255,0.8);
+
+    box-shadow:
+        0 8px 24px rgba(0,0,0,0.07);
+
+    cursor: pointer;
+
+    isolation: isolate;
+
+    transform: translateZ(0);
+
+    transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease;
+}
+
+
+/* PRODUCT IMAGE */
+
+.premium-category-image {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 0;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.premium-category-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transform: scale(1.02);
+
+    filter:
+        saturate(0.9)
+        brightness(1.04);
+
+    transition:
+        transform 0.45s cubic-bezier(.2,.7,.2,1),
+        filter 0.45s ease;
+}
+
+
+/* SOFT WHITE/GREEN OVERLAY */
+
+.premium-category-image::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,0.08) 0%,
+            rgba(255,255,255,0.20) 28%,
+            rgba(255,255,255,0.70) 66%,
+            rgba(255,255,255,0.94) 100%
+        );
+
+    pointer-events: none;
+}
+
+
+/* GLASS PANEL */
+
+.premium-category-glass {
+    position: absolute;
+
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+
+    z-index: 2;
+
+    min-height: 105px;
+
+    padding: 14px 52px 14px 14px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.72),
+            rgba(238,250,242,0.62)
+        );
+
+    border: 1px solid rgba(255,255,255,0.78);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.08);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    transition:
+        background 0.28s ease,
+        box-shadow 0.28s ease;
+}
+
+
+/* CATEGORY ICON */
+
+.premium-category-icon {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 7px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(22,163,74,0.10);
+
+    color: #16A34A;
+
+    font-size: 17px;
+}
+
+
+/* CATEGORY NAME */
+
+.premium-category-name {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 16px;
+    line-height: 1.15;
+
+    font-weight: 800;
+
+    letter-spacing: -0.2px;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    overflow: hidden;
+}
+
+
+/* CATEGORY DESCRIPTION */
+
+.premium-category-description {
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 11.5px;
+    line-height: 1.25;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    overflow: hidden;
+}
+
+
+/* ARROW BUTTON */
+
+.premium-category-arrow {
+    position: absolute;
+
+    right: 12px;
+    bottom: 12px;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: #16A34A;
+
+    color: #fff;
+
+    font-size: 21px;
+    line-height: 1;
+
+    box-shadow:
+        0 5px 14px rgba(22,163,74,0.24);
+
+    transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease;
+}
+
+
+/* DESKTOP HOVER */
+
+@media (hover: hover) and (pointer: fine) {
+
+    .premium-category-card:hover {
+        transform: scale(1.025);
+
+        box-shadow:
+            0 14px 34px rgba(0,0,0,0.11);
+    }
+
+    .premium-category-card:hover
+    .premium-category-image img {
+        transform: scale(1.06);
+
+        filter:
+            saturate(0.95)
+            brightness(1.06);
+    }
+
+    .premium-category-card:hover
+    .premium-category-glass {
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255,255,255,0.78),
+                rgba(238,250,242,0.70)
+            );
+
+        box-shadow:
+            0 10px 28px rgba(0,0,0,0.10);
+    }
+
+    .premium-category-card:hover
+    .premium-category-arrow {
+        transform: translateX(4px);
+
+        box-shadow:
+            0 7px 17px rgba(22,163,74,0.30);
+    }
+
+    .premium-category-card:active {
+        transform: scale(0.985);
+    }
+}
+
+
+/* MOBILE TAP */
+
+.premium-category-card:active {
+    transform: scale(0.985);
+}
+
+
+/* TABLET / SMALL DESKTOP */
+
+@media (min-width: 700px) {
+
+    #categoriesContainer {
+        gap: 18px;
+    }
+
+    .premium-category-card {
+        min-height: 270px;
+    }
+
+    .premium-category-glass {
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+    }
+}
+
+
+/* SMALL PHONES */
+
+@media (max-width: 380px) {
+
+    #categoriesPage {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    #categoriesContainer {
+        gap: 10px;
+    }
+
+    .premium-category-card {
+        min-height: 215px;
+        border-radius: 21px;
+    }
+
+    .premium-category-glass {
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+
+        min-height: 98px;
+
+        padding:
+            11px
+            48px
+            11px
+            11px;
+
+        border-radius: 16px;
+    }
+
+    .premium-category-name {
+        font-size: 14px;
+    }
+
+    .premium-category-description {
+        font-size: 10.5px;
+    }
+
+    .premium-category-arrow {
+        right: 10px;
+        bottom: 10px;
+
+        width: 34px;
+        height: 34px;
+
+        font-size: 19px;
+    }
+}
+
+
+/* DARK MODE */
+
+body.dark .premium-category-card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30,30,30,0.96),
+            rgba(24,28,25,0.92)
+        );
+
+    border-color: rgba(255,255,255,0.06);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.25);
+}
+
+body.dark .premium-category-image::after {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(20,20,20,0.05) 0%,
+            rgba(20,20,20,0.18) 30%,
+            rgba(20,20,20,0.68) 67%,
+            rgba(20,20,20,0.92) 100%
+        );
+}
+
+body.dark .premium-category-glass {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(35,40,36,0.72),
+            rgba(22,40,28,0.64)
+        );
+
+    border-color: rgba(255,255,255,0.08);
+}
+
+body.dark .premium-category-icon {
+    background:
+        rgba(22,163,74,0.16);
+}
    
 </style>
 </head>
@@ -4661,7 +5094,7 @@ function openCategory(category) {
 
 }
    /* =========================================================
-   RENDER CATEGORIES
+   RENDER CATEGORIES — PREMIUM
 ========================================================= */
 
 function renderCategories() {
@@ -4673,6 +5106,64 @@ function renderCategories() {
 
     container.innerHTML = "";
 
+    const categoryData = {
+
+        "Ichimliklar": {
+            image: "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=900&q=85",
+            icon: "🥤",
+            description: "Salqin va tetiklashtiruvchi ichimliklar"
+        },
+
+        "Shirinliklar": {
+            image: "https://images.unsplash.com/photo-1575377427642-087cf684f04d?auto=format&fit=crop&w=900&q=85",
+            icon: "🍫",
+            description: "Kayfiyat uchun shirin tanlovlar"
+        },
+
+        "Sut mahsulotlari": {
+            image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=900&q=85",
+            icon: "🥛",
+            description: "Har kuni kerak bo‘ladigan mahsulotlar"
+        },
+
+        "Mevalar": {
+            image: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=900&q=85",
+            icon: "🍎",
+            description: "Yangi va tabiiy mevalar"
+        },
+
+        "Sabzavotlar": {
+            image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=900&q=85",
+            icon: "🥬",
+            description: "Yangi sabzavot va ko‘katlar"
+        },
+
+        "Go'sht": {
+            image: "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&w=900&q=85",
+            icon: "🥩",
+            description: "Sifatli go‘sht mahsulotlari"
+        },
+
+        "Non mahsulotlari": {
+            image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=85",
+            icon: "🍞",
+            description: "Yangi va mazali non mahsulotlari"
+        },
+
+        "Maishiy": {
+            image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?auto=format&fit=crop&w=900&q=85",
+            icon: "🧴",
+            description: "Uy uchun kerakli mahsulotlar"
+        },
+
+        "Muzqaymoqlar": {
+            image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=900&q=85",
+            icon: "🍦",
+            description: "Sovuq va mazali desertlar"
+        }
+
+    };
+
     Object.keys(products).forEach(category => {
 
         const items =
@@ -4680,31 +5171,71 @@ function renderCategories() {
                 product => product.visible
             );
 
+        const data =
+            categoryData[category] || {
+                image: "",
+                icon: "🛒",
+                description: "Kerakli mahsulotlar"
+            };
+
         const card =
             document.createElement("div");
 
-        card.className = "category";
+        card.className =
+            "premium-category-card";
 
         card.onclick = function () {
+
+            if (
+                window.Telegram &&
+                Telegram.WebApp &&
+                Telegram.WebApp.HapticFeedback
+            ) {
+                Telegram.WebApp.HapticFeedback.impactOccurred("light");
+            }
+
             openCategory(category);
         };
 
         card.innerHTML = `
-            <div class="category-icon">
-                ${getCategoryIcon(category)}
+
+            <div class="premium-category-image">
+
+                ${
+                    data.image
+                    ? `<img
+                        src="${data.image}"
+                        alt="${category}"
+                        loading="lazy"
+                    >`
+                    : ""
+                }
+
             </div>
 
-            <strong>
-                ${category}
-            </strong>
+            <div class="premium-category-glass">
 
-            <div style="
-                font-size:12px;
-                color:var(--muted);
-                margin-top:5px;
-            ">
-                ${items.length} ta mahsulot
+                <div class="premium-category-icon">
+                    ${data.icon}
+                </div>
+
+                <div class="premium-category-name">
+                    ${category}
+                </div>
+
+                <div class="premium-category-description">
+                    ${data.description}
+                </div>
+
             </div>
+
+            <button
+                class="premium-category-arrow"
+                type="button"
+                aria-label="${category}"
+            >
+                →
+            </button>
         `;
 
         container.appendChild(card);
