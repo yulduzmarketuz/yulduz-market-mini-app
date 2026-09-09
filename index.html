@@ -1599,7 +1599,7 @@ button {
 
 
 /* =========================================================
-   GRID
+   CATEGORY GRID
 ========================================================= */
 
 #categoriesContainer {
@@ -1617,13 +1617,16 @@ button {
     position: relative;
     min-height: 245px;
     overflow: hidden;
+
     border-radius: 25px;
+
     background: #f4f8f5;
+
     border: 1px solid rgba(255,255,255,0.9);
 
     box-shadow:
-        0 8px 24px rgba(15,23,42,0.08),
-        0 2px 5px rgba(15,23,42,0.04);
+        0 9px 28px rgba(15,23,42,0.08),
+        0 2px 6px rgba(15,23,42,0.04);
 
     cursor: pointer;
     isolation: isolate;
@@ -1637,12 +1640,13 @@ button {
 
 
 /* =========================================================
-   IMAGE
+   CATEGORY IMAGE
 ========================================================= */
 
 .premium-category-image {
     position: absolute;
     inset: 0;
+
     z-index: 0;
 
     overflow: hidden;
@@ -1658,12 +1662,12 @@ button {
 
     object-fit: cover;
 
-    transform: scale(1.045);
+    transform: scale(1.04);
 
     filter:
-        saturate(0.88)
-        brightness(1.03)
-        contrast(0.96);
+        saturate(1.02)
+        brightness(1.02)
+        contrast(0.98);
 
     transition:
         transform 0.5s cubic-bezier(.2,.7,.2,1),
@@ -1684,10 +1688,10 @@ button {
     background:
         linear-gradient(
             180deg,
-            rgba(255,255,255,0.02) 0%,
-            rgba(255,255,255,0.08) 32%,
-            rgba(255,255,255,0.30) 60%,
-            rgba(240,250,244,0.78) 100%
+            rgba(255,255,255,0.00) 0%,
+            rgba(255,255,255,0.04) 35%,
+            rgba(255,255,255,0.22) 60%,
+            rgba(255,255,255,0.56) 100%
         );
 
     pointer-events: none;
@@ -1696,6 +1700,7 @@ button {
 
 /* =========================================================
    GLASS PANEL
+   NATURAL WAVE
 ========================================================= */
 
 .premium-category-glass {
@@ -1707,50 +1712,60 @@ button {
 
     z-index: 2;
 
-    min-height: 108px;
+    min-height: 112px;
 
     padding:
-        22px
-        58px
-        15px
-        15px;
+        30px
+        62px
+        16px
+        16px;
 
     background:
         linear-gradient(
             135deg,
-            rgba(255,255,255,0.60),
-            rgba(229,246,235,0.55)
+            rgba(255,255,255,0.46),
+            rgba(225,247,232,0.42)
         );
 
     border-top:
-        1px solid rgba(255,255,255,0.70);
+        1px solid rgba(255,255,255,0.62);
 
     box-shadow:
-        0 -8px 25px rgba(22,163,74,0.04);
+        0 -8px 26px rgba(22,163,74,0.035);
 
     backdrop-filter:
-        blur(13px)
-        saturate(125%);
+        blur(9px)
+        saturate(135%);
 
     -webkit-backdrop-filter:
-        blur(13px)
-        saturate(125%);
+        blur(9px)
+        saturate(135%);
+
+    /*
+       Tabiiy to‘lqin:
+       chapdan pastga tushadi,
+       o‘rtada ko‘tariladi,
+       keyin yana yumshoq tushadi.
+    */
 
     clip-path:
         polygon(
-            0 15%,
-            8% 10%,
-            17% 5%,
-            27% 2%,
-            38% 0%,
-            50% 2%,
-            61% 7%,
-            72% 13%,
-            83% 17%,
-            92% 18%,
+            0% 17%,
+            7% 13%,
+            14% 9%,
+            22% 5%,
+            30% 3%,
+            38% 5%,
+            46% 10%,
+            54% 15%,
+            62% 19%,
+            70% 21%,
+            78% 20%,
+            86% 17%,
+            94% 14%,
             100% 16%,
             100% 100%,
-            0 100%
+            0% 100%
         );
 
     transition:
@@ -1760,7 +1775,7 @@ button {
 
 
 /* =========================================================
-   CATEGORY ICON
+   SVG ICON
 ========================================================= */
 
 .premium-category-icon {
@@ -1771,7 +1786,7 @@ button {
     align-items: center;
     justify-content: center;
 
-    margin-bottom: 6px;
+    margin-bottom: 7px;
 
     border-radius: 11px;
 
@@ -1783,10 +1798,24 @@ button {
 
     color: #16A34A;
 
-    font-size: 19px;
-
     box-shadow:
-        0 4px 12px rgba(22,163,74,0.08);
+        0 4px 12px rgba(22,163,74,0.07);
+}
+
+.premium-category-icon svg {
+    width: 20px;
+    height: 20px;
+
+    display: block;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    fill: none;
 }
 
 
@@ -1799,7 +1828,7 @@ button {
 
     color: var(--text);
 
-    font-size: 15.5px;
+    font-size: 16px;
     line-height: 1.18;
 
     font-weight: 800;
@@ -1819,14 +1848,14 @@ button {
 ========================================================= */
 
 .premium-category-description {
-    margin-top: 5px;
+    margin-top: 6px;
 
-    color: rgba(15,23,42,0.62);
+    color: rgba(15,23,42,0.68);
 
-    font-size: 10.5px;
-    line-height: 1.25;
+    font-size: 12px;
+    line-height: 1.3;
 
-    font-weight: 500;
+    font-weight: 600;
 
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -1837,7 +1866,7 @@ button {
 
 
 /* =========================================================
-   ARROW — WHITE CIRCLE
+   WHITE ARROW BUTTON
 ========================================================= */
 
 .premium-category-arrow {
@@ -1846,7 +1875,7 @@ button {
     right: 13px;
     bottom: 13px;
 
-    z-index: 5;
+    z-index: 6;
 
     width: 40px;
     height: 40px;
@@ -1855,13 +1884,14 @@ button {
     align-items: center;
     justify-content: center;
 
-    border: 1px solid rgba(22,163,74,0.10);
+    border:
+        1px solid rgba(22,163,74,0.10);
 
     border-radius: 50%;
 
     background: rgba(255,255,255,0.96);
 
-    color: #16A34A;
+    color: #111827;
 
     font-size: 22px;
     font-weight: 700;
@@ -1869,7 +1899,7 @@ button {
     line-height: 1;
 
     box-shadow:
-        0 6px 18px rgba(15,23,42,0.13);
+        0 6px 18px rgba(15,23,42,0.14);
 
     pointer-events: none;
 
@@ -1880,7 +1910,7 @@ button {
 
 
 /* =========================================================
-   HOVER
+   DESKTOP HOVER
 ========================================================= */
 
 @media (hover: hover) and (pointer: fine) {
@@ -1889,7 +1919,7 @@ button {
         transform: scale(1.025);
 
         box-shadow:
-            0 15px 35px rgba(15,23,42,0.12),
+            0 16px 36px rgba(15,23,42,0.12),
             0 4px 10px rgba(22,163,74,0.06);
     }
 
@@ -1898,9 +1928,9 @@ button {
         transform: scale(1.09);
 
         filter:
-            saturate(0.94)
-            brightness(1.05)
-            contrast(0.97);
+            saturate(1.05)
+            brightness(1.04)
+            contrast(0.98);
     }
 
     .premium-category-card:hover
@@ -1908,12 +1938,9 @@ button {
         background:
             linear-gradient(
                 135deg,
-                rgba(255,255,255,0.67),
-                rgba(225,246,232,0.62)
+                rgba(255,255,255,0.53),
+                rgba(222,247,230,0.49)
             );
-
-        box-shadow:
-            0 -10px 28px rgba(22,163,74,0.07);
     }
 
     .premium-category-card:hover
@@ -1921,13 +1948,13 @@ button {
         transform: translateX(4px);
 
         box-shadow:
-            0 8px 20px rgba(22,163,74,0.16);
+            0 8px 21px rgba(22,163,74,0.15);
     }
 }
 
 
 /* =========================================================
-   PRESS
+   MOBILE TAP
 ========================================================= */
 
 .premium-category-card:active {
@@ -1936,7 +1963,7 @@ button {
 
 
 /* =========================================================
-   DESKTOP
+   TABLET / DESKTOP
 ========================================================= */
 
 @media (min-width: 700px) {
@@ -1951,18 +1978,19 @@ button {
     }
 
     .premium-category-glass {
-        padding:
-            25px
-            62px
-            17px
-            17px;
-    }
+        min-height: 118px;
 
+        padding:
+            33px
+            64px
+            18px
+            18px;
+    }
 }
 
 
 /* =========================================================
-   SMALL MOBILE
+   SMALL PHONES
 ========================================================= */
 
 @media (max-width: 380px) {
@@ -1982,11 +2010,11 @@ button {
     }
 
     .premium-category-glass {
-        min-height: 98px;
+        min-height: 100px;
 
         padding:
-            20px
-            50px
+            27px
+            51px
             12px
             12px;
     }
@@ -1994,8 +2022,15 @@ button {
     .premium-category-icon {
         width: 30px;
         height: 30px;
-        font-size: 17px;
+
+        margin-bottom: 6px;
+
         border-radius: 9px;
+    }
+
+    .premium-category-icon svg {
+        width: 18px;
+        height: 18px;
     }
 
     .premium-category-name {
@@ -2003,7 +2038,7 @@ button {
     }
 
     .premium-category-description {
-        font-size: 10px;
+        font-size: 10.5px;
     }
 
     .premium-category-arrow {
@@ -2015,7 +2050,6 @@ button {
 
         font-size: 19px;
     }
-
 }
 
 
@@ -2027,20 +2061,20 @@ body.dark .premium-category-card {
     background: #18201b;
 
     border-color:
-        rgba(255,255,255,0.06);
+        rgba(255,255,255,0.07);
 
     box-shadow:
-        0 10px 28px rgba(0,0,0,0.28);
+        0 10px 30px rgba(0,0,0,0.28);
 }
 
 body.dark .premium-category-image::after {
     background:
         linear-gradient(
             180deg,
-            rgba(10,20,13,0.04) 0%,
-            rgba(10,20,13,0.12) 35%,
-            rgba(10,20,13,0.50) 62%,
-            rgba(14,30,19,0.86) 100%
+            rgba(10,20,13,0.02) 0%,
+            rgba(10,20,13,0.07) 35%,
+            rgba(10,20,13,0.30) 62%,
+            rgba(14,30,19,0.72) 100%
         );
 }
 
@@ -2048,8 +2082,8 @@ body.dark .premium-category-glass {
     background:
         linear-gradient(
             135deg,
-            rgba(25,45,32,0.58),
-            rgba(20,55,32,0.52)
+            rgba(22,45,29,0.48),
+            rgba(20,55,32,0.43)
         );
 
     border-top-color:
@@ -2058,15 +2092,15 @@ body.dark .premium-category-glass {
 
 body.dark .premium-category-description {
     color:
-        rgba(255,255,255,0.62);
+        rgba(255,255,255,0.68);
 }
 
 body.dark .premium-category-arrow {
     background:
-        rgba(255,255,255,0.94);
+        rgba(255,255,255,0.96);
 
     color:
-        #16A34A;
+        #111827;
 }
    
 </style>
