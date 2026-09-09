@@ -1570,7 +1570,9 @@ button {
     gap: 10px;
 }
    /* =========================================================
-   PREMIUM CATEGORIES PAGE — SMOOTH SVG WAVE
+   YULDUZ MARKET
+   PREMIUM CATEGORY CARDS
+   NATURAL GLASS WAVE
 ========================================================= */
 
 #categoriesPage {
@@ -1604,13 +1606,16 @@ button {
 
 #categoriesContainer {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
     gap: 15px;
 }
 
 
 /* =========================================================
-   CARD
+   CATEGORY CARD
 ========================================================= */
 
 .premium-category-card {
@@ -1622,13 +1627,15 @@ button {
 
     border-radius: 25px;
 
-    background: #f4f8f5;
+    background:
+        #edf7ef;
 
-    border: 1px solid rgba(255,255,255,0.90);
+    border:
+        1px solid rgba(255,255,255,0.85);
 
     box-shadow:
         0 9px 28px rgba(15,23,42,0.08),
-        0 2px 6px rgba(15,23,42,0.04);
+        0 2px 7px rgba(15,23,42,0.04);
 
     cursor: pointer;
 
@@ -1640,6 +1647,12 @@ button {
     -webkit-transform:
         translate3d(0,0,0);
 
+    backface-visibility:
+        hidden;
+
+    -webkit-backface-visibility:
+        hidden;
+
     transition:
         transform 0.28s ease,
         box-shadow 0.28s ease;
@@ -1647,7 +1660,7 @@ button {
 
 
 /* =========================================================
-   IMAGE
+   NATURAL IMAGE
 ========================================================= */
 
 .premium-category-image {
@@ -1661,6 +1674,10 @@ button {
 }
 
 .premium-category-image img {
+    position: absolute;
+
+    inset: 0;
+
     width: 100%;
     height: 100%;
 
@@ -1670,25 +1687,25 @@ button {
 
     transform:
         translate3d(0,0,0)
-        scale(1.04);
+        scale(1.03);
 
     -webkit-transform:
         translate3d(0,0,0)
-        scale(1.04);
+        scale(1.03);
 
     filter:
-        saturate(1.02)
-        brightness(1.02)
+        saturate(1.04)
+        brightness(1.03)
         contrast(0.98);
 
     transition:
-        transform 0.5s cubic-bezier(.2,.7,.2,1),
-        filter 0.5s ease;
+        transform 0.55s cubic-bezier(.2,.7,.2,1),
+        filter 0.55s ease;
 }
 
 
 /* =========================================================
-   VERY LIGHT IMAGE OVERLAY
+   SOFT IMAGE LIGHT
 ========================================================= */
 
 .premium-category-image::after {
@@ -1698,23 +1715,22 @@ button {
 
     inset: 0;
 
+    pointer-events: none;
+
     background:
         linear-gradient(
             180deg,
             rgba(255,255,255,0.00) 0%,
-            rgba(255,255,255,0.025) 42%,
-            rgba(255,255,255,0.10) 70%,
-            rgba(255,255,255,0.24) 100%
+            rgba(255,255,255,0.02) 48%,
+            rgba(255,255,255,0.10) 78%,
+            rgba(255,255,255,0.18) 100%
         );
-
-    pointer-events: none;
 }
 
 
 /* =========================================================
-   GLASS CONTAINER
-   IMPORTANT:
-   BACKDROP FILTER IS ALWAYS INITIALIZED
+   GLASS
+   NATURAL SINGLE CURVE
 ========================================================= */
 
 .premium-category-glass {
@@ -1724,73 +1740,37 @@ button {
     right: 0;
     bottom: 0;
 
-    z-index: 3;
+    z-index: 4;
 
-    min-height: 116px;
+    height: 128px;
 
     padding:
-        34px
+        36px
         62px
-        16px
+        15px
         16px;
 
     /*
-       Juda yengil shaffof oyna.
-       Orqa rasmini ko‘rish mumkin.
+       Shaffof yashil glass.
     */
     background:
         linear-gradient(
             135deg,
-            rgba(255,255,255,0.43),
-            rgba(225,247,232,0.36)
+            rgba(255,255,255,0.58) 0%,
+            rgba(225,247,232,0.48) 48%,
+            rgba(210,241,219,0.40) 100%
         );
-
-    border-top:
-        1px solid rgba(255,255,255,0.50);
-
-    /*
-       Telegram WebView uchun renderni
-       birinchi frame'danoq ishga tushiramiz.
-    */
-    -webkit-backdrop-filter:
-        blur(10px)
-        saturate(135%);
-
-    backdrop-filter:
-        blur(10px)
-        saturate(135%);
-
-    transform:
-        translate3d(0,0,0);
-
-    -webkit-transform:
-        translate3d(0,0,0);
-
-    will-change:
-        transform,
-        backdrop-filter;
-
-    isolation: isolate;
-
-    box-shadow:
-        0 -8px 26px rgba(22,163,74,0.035);
 
     /*
        MUHIM:
-       Bu endi polygon emas.
-       SVG mask orqali silliq to‘lqin qilinadi.
+       Qirrasi SVG bilan kesiladi.
+       Polygon ishlatilmaydi.
     */
     -webkit-mask-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 260' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 54 C55 42 110 27 170 20 C225 13 280 20 335 45 C390 70 445 105 500 112 C555 119 610 105 665 72 C720 39 775 20 830 19 C885 18 940 28 1000 39 L1000 260 L0 260 Z'/%3E%3C/svg%3E");
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 38 C35 36 70 30 105 22 C140 14 175 8 210 12 C250 16 278 30 305 55 C338 84 365 108 402 118 C440 128 475 125 510 115 C548 104 575 84 610 61 C646 37 680 19 718 15 C758 11 795 17 830 27 C867 38 905 48 945 45 C966 43 985 39 1000 35 L1000 300 L0 300 Z'/%3E%3C/svg%3E");
 
     mask-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 260' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 54 C55 42 110 27 170 20 C225 13 280 20 335 45 C390 70 445 105 500 112 C555 119 610 105 665 72 C720 39 775 20 830 19 C885 18 940 28 1000 39 L1000 260 L0 260 Z'/%3E%3C/svg%3E");
-
-    -webkit-mask-size:
-        100% 100%;
-
-    mask-size:
-        100% 100%;
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 38 C35 36 70 30 105 22 C140 14 175 8 210 12 C250 16 278 30 305 55 C338 84 365 108 402 118 C440 128 475 125 510 115 C548 104 575 84 610 61 C646 37 680 19 718 15 C758 11 795 17 830 27 C867 38 905 48 945 45 C966 43 985 39 1000 35 L1000 300 L0 300 Z'/%3E%3C/svg%3E");
 
     -webkit-mask-repeat:
         no-repeat;
@@ -1799,19 +1779,59 @@ button {
         no-repeat;
 
     -webkit-mask-position:
-        center bottom;
+        center;
 
     mask-position:
-        center bottom;
+        center;
 
-    transition:
-        background 0.3s ease,
-        box-shadow 0.3s ease;
+    -webkit-mask-size:
+        100% 100%;
+
+    mask-size:
+        100% 100%;
+
+
+    /*
+       Glass effekti.
+       Birinchi ochilishdayoq render qilinadi.
+    */
+    -webkit-backdrop-filter:
+        blur(12px)
+        saturate(140%);
+
+    backdrop-filter:
+        blur(12px)
+        saturate(140%);
+
+    will-change:
+        transform,
+        backdrop-filter;
+
+    transform:
+        translate3d(0,0,0);
+
+    -webkit-transform:
+        translate3d(0,0,0);
+
+    backface-visibility:
+        hidden;
+
+    -webkit-backface-visibility:
+        hidden;
+
+    isolation:
+        isolate;
+
+    box-shadow:
+        0 -5px 22px rgba(22,163,74,0.035);
+
+    pointer-events:
+        none;
 }
 
 
 /* =========================================================
-   SVG ICON
+   ICON
 ========================================================= */
 
 .premium-category-icon {
@@ -1865,7 +1885,7 @@ button {
 
 /* =========================================================
    CATEGORY NAME
-   O'ZGARTIRILMADI
+   O'ZGARMADI
 ========================================================= */
 
 .premium-category-name {
@@ -1902,7 +1922,7 @@ button {
 
 /* =========================================================
    MOTIVATION
-   O'LCHAMI O'ZGARTIRILMADI
+   O'ZGARMADI
 ========================================================= */
 
 .premium-category-description {
@@ -1955,8 +1975,10 @@ button {
     align-items: center;
     justify-content: center;
 
+    padding: 0;
+
     border:
-        1px solid rgba(22,163,74,0.10);
+        1px solid rgba(22,163,74,0.08);
 
     border-radius:
         50%;
@@ -2007,22 +2029,12 @@ button {
     .premium-category-image img {
         transform:
             translate3d(0,0,0)
-            scale(1.09);
+            scale(1.075);
 
         filter:
-            saturate(1.05)
-            brightness(1.04)
+            saturate(1.07)
+            brightness(1.05)
             contrast(0.98);
-    }
-
-    .premium-category-card:hover
-    .premium-category-glass {
-        background:
-            linear-gradient(
-                135deg,
-                rgba(255,255,255,0.49),
-                rgba(222,247,230,0.42)
-            );
     }
 
     .premium-category-card:hover
@@ -2053,20 +2065,24 @@ button {
 @media (min-width: 700px) {
 
     #categoriesContainer {
-        gap: 18px;
+        gap:
+            18px;
     }
 
     .premium-category-card {
-        min-height: 275px;
+        min-height:
+            275px;
 
-        border-radius: 27px;
+        border-radius:
+            27px;
     }
 
     .premium-category-glass {
-        min-height: 122px;
+        height:
+            137px;
 
         padding:
-            37px
+            39px
             64px
             18px
             18px;
@@ -2102,11 +2118,11 @@ button {
     }
 
     .premium-category-glass {
-        min-height:
-            103px;
+        height:
+            112px;
 
         padding:
-            29px
+            31px
             51px
             12px
             12px;
@@ -2184,8 +2200,8 @@ body.dark .premium-category-image::after {
             180deg,
             rgba(10,20,13,0.01) 0%,
             rgba(10,20,13,0.04) 40%,
-            rgba(10,20,13,0.16) 68%,
-            rgba(14,30,19,0.38) 100%
+            rgba(10,20,13,0.15) 72%,
+            rgba(14,30,19,0.30) 100%
         );
 }
 
@@ -2193,20 +2209,17 @@ body.dark .premium-category-glass {
     background:
         linear-gradient(
             135deg,
-            rgba(22,45,29,0.46),
-            rgba(20,55,32,0.38)
+            rgba(22,45,29,0.55),
+            rgba(20,55,32,0.45)
         );
 
-    border-top-color:
-        rgba(255,255,255,0.10);
-
     -webkit-backdrop-filter:
-        blur(10px)
-        saturate(135%);
+        blur(12px)
+        saturate(140%);
 
     backdrop-filter:
-        blur(10px)
-        saturate(135%);
+        blur(12px)
+        saturate(140%);
 }
 
 body.dark .premium-category-description {
