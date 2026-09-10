@@ -1569,29 +1569,24 @@ button {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
 }
-  /* =========================================================
+   /* =========================================================
    YULDUZ MARKET
    PREMIUM CATEGORY CARDS
-   CLEAN PRODUCT + NATURAL WAVE
+   FLOATING LABEL
 ========================================================= */
 
 
 /* =========================================================
-   PAGE
+   CATEGORIES PAGE
 ========================================================= */
 
 #categoriesPage {
     padding: 20px 16px 105px;
-
-    background:
-        #F7FAF8;
 }
-
 
 .categories-page-header {
     margin-bottom: 18px;
 }
-
 
 .categories-page-title {
     margin: 0;
@@ -1601,26 +1596,18 @@ button {
 
     font-weight: 800;
 
-    color:
-        var(--text);
+    color: var(--text);
 
-    letter-spacing:
-        -0.7px;
+    letter-spacing: -0.7px;
 }
 
-
 .categories-page-subtitle {
-    margin:
-        7px 0 0;
+    margin: 7px 0 0;
 
-    color:
-        var(--muted);
+    color: var(--muted);
 
-    font-size:
-        14px;
-
-    line-height:
-        1.4;
+    font-size: 14px;
+    line-height: 1.4;
 }
 
 
@@ -1629,56 +1616,41 @@ button {
 ========================================================= */
 
 #categoriesContainer {
-
-    display:
-        grid;
+    display: grid;
 
     grid-template-columns:
         repeat(2, minmax(0, 1fr));
 
-    gap:
-        11px;
+    gap: 12px;
 }
 
 
 /* =========================================================
-   CARD
+   CATEGORY CARD
 ========================================================= */
 
 .premium-category-card {
+    position: relative;
 
-    position:
-        relative;
+    height: 180px;
+    min-height: 180px;
 
-    width:
-        100%;
+    overflow: hidden;
 
-    height:
-        180px;
-
-    min-height:
-        180px;
-
-    overflow:
-        hidden;
-
-    border-radius:
-        24px;
+    border-radius: 24px;
 
     background:
-        #F1F7F3;
+        #edf7ef;
 
     border:
-        1px solid rgba(255,255,255,0.55);
+        1px solid rgba(255,255,255,0.75);
 
     box-shadow:
-        0 4px 16px rgba(20,80,45,0.07);
+        0 5px 18px rgba(20,80,45,0.08);
 
-    cursor:
-        pointer;
+    cursor: pointer;
 
-    isolation:
-        isolate;
+    isolation: isolate;
 
     transform:
         translate3d(0,0,0);
@@ -1693,8 +1665,8 @@ button {
         hidden;
 
     transition:
-        transform 220ms ease-out,
-        box-shadow 220ms ease-out;
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 
@@ -1703,170 +1675,134 @@ button {
 ========================================================= */
 
 .premium-category-image {
+    position: absolute;
 
-    position:
-        absolute;
+    inset: 0;
 
-    inset:
-        0;
+    z-index: 0;
 
-    z-index:
-        0;
-
-    overflow:
-        hidden;
-
-    pointer-events:
-        none;
+    overflow: hidden;
 }
 
-
 .premium-category-image img {
+    position: absolute;
 
-    position:
-        absolute;
+    inset: 0;
 
-    inset:
-        0;
+    width: 100%;
+    height: 100%;
 
-    width:
-        100%;
+    display: block;
 
-    height:
-        100%;
-
-    display:
-        block;
-
-    object-fit:
-        cover;
+    object-fit: cover;
 
     object-position:
         50% 45%;
 
     transform:
         translate3d(0,0,0)
-        scale(1.015);
+        scale(1.01);
 
     -webkit-transform:
         translate3d(0,0,0)
-        scale(1.015);
+        scale(1.01);
 
     filter:
-        saturate(1.02)
-        brightness(1.02);
+        saturate(1.03)
+        brightness(1.02)
+        contrast(0.99);
 
     transition:
-        transform 220ms ease-out;
+        transform 0.45s cubic-bezier(.2,.7,.2,1),
+        filter 0.45s ease;
 }
 
 
 /* =========================================================
-   VERY SOFT LOWER CONTRAST
-   TEXT O‘QILISHI UCHUN
+   IMAGE DEPTH
+   VERY SOFT GRADIENT
 ========================================================= */
 
 .premium-category-image::after {
+    content: "";
 
-    content:
-        "";
+    position: absolute;
 
-    position:
-        absolute;
+    inset: 0;
 
-    left:
-        0;
-
-    right:
-        0;
-
-    bottom:
-        0;
-
-    height:
-        78px;
-
-    pointer-events:
-        none;
+    pointer-events: none;
 
     background:
         linear-gradient(
             180deg,
-            rgba(247,250,248,0) 0%,
-            rgba(247,250,248,0.035) 48%,
-            rgba(247,250,248,0.12) 100%
+            rgba(0,0,0,0.00) 42%,
+            rgba(0,0,0,0.025) 58%,
+            rgba(0,0,0,0.28) 100%
         );
+
+    z-index: 1;
 }
 
 
 /* =========================================================
-   NATURAL WAVE GLASS
-   FAQAT TEXT UCHUN
+   FLOATING LABEL
+   ASOSIY YANGI DIZAYN
 ========================================================= */
 
 .premium-category-glass {
+    position: absolute;
 
-    position:
-        absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
 
-    left:
-        0;
+    z-index: 5;
 
-    right:
-        0;
-
-    bottom:
-        0;
-
-    z-index:
-        4;
-
-    height:
-        54px;
+    min-height: 55px;
 
     padding:
-        15px 14px 10px;
+        9px
+        42px
+        9px
+        12px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    border-radius:
+        16px;
 
     background:
-        rgba(248,252,249,0.60);
+        rgba(255,255,255,0.84);
+
+    border:
+        1px solid rgba(255,255,255,0.88);
 
     -webkit-backdrop-filter:
-        blur(11px);
+        blur(10px)
+        saturate(125%);
 
     backdrop-filter:
-        blur(11px);
+        blur(10px)
+        saturate(125%);
 
-    /*
-       Soft single arc.
+    box-shadow:
+        0 5px 18px rgba(15,23,42,0.12),
+        0 1px 3px rgba(15,23,42,0.06);
 
-       Chetlari pastroq.
-       Markazi biroz yuqoriroq.
-       Keskin burchak yo‘q.
-    */
+    transform:
+        translate3d(0,0,0);
 
-    -webkit-mask-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 180' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 42 C180 42 315 39 405 28 C455 22 480 18 500 18 C520 18 545 22 595 28 C685 39 820 42 1000 42 L1000 180 L0 180 Z'/%3E%3C/svg%3E");
+    -webkit-transform:
+        translate3d(0,0,0);
 
-    mask-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 180' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 42 C180 42 315 39 405 28 C455 22 480 18 500 18 C520 18 545 22 595 28 C685 39 820 42 1000 42 L1000 180 L0 180 Z'/%3E%3C/svg%3E");
-
-    -webkit-mask-repeat:
-        no-repeat;
-
-    mask-repeat:
-        no-repeat;
-
-    -webkit-mask-position:
-        center;
-
-    mask-position:
-        center;
-
-    -webkit-mask-size:
-        100% 100%;
-
-    mask-size:
-        100% 100%;
+    transition:
+        background 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
 
     pointer-events:
         none;
@@ -1874,14 +1810,90 @@ button {
 
 
 /* =========================================================
-   REMOVE OLD ICON VISUALLY
-   HTMLDA QOLSA HAM KO‘RINMAYDI
+   SMALL GREEN ACCENT
+========================================================= */
+
+.premium-category-glass::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+
+    width: 3px;
+
+    border-radius:
+        0 4px 4px 0;
+
+    background:
+        #16A34A;
+
+    opacity:
+        0.9;
+}
+
+
+/* =========================================================
+   ICON
 ========================================================= */
 
 .premium-category-icon {
+    position: absolute;
 
-    display:
-        none !important;
+    top: 50%;
+    left: 10px;
+
+    width: 27px;
+    height: 27px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+
+    border-radius:
+        8px;
+
+    background:
+        rgba(22,163,74,0.09);
+
+    border:
+        1px solid rgba(22,163,74,0.10);
+
+    color:
+        #16A34A;
+
+    transform:
+        translateY(-50%);
+
+    box-shadow:
+        none;
+}
+
+.premium-category-icon svg {
+    width: 16px;
+    height: 16px;
+
+    display: block;
+
+    stroke:
+        currentColor;
+
+    stroke-width:
+        1.8;
+
+    stroke-linecap:
+        round;
+
+    stroke-linejoin:
+        round;
+
+    fill:
+        none;
 }
 
 
@@ -1890,24 +1902,22 @@ button {
 ========================================================= */
 
 .premium-category-name {
+    margin: 0;
 
-    margin:
-        0;
-
-    padding:
-        0;
+    padding-left:
+        34px;
 
     color:
         #123B2A;
 
     font-size:
-        15.5px;
+        15px;
 
     line-height:
         1.18;
 
     font-weight:
-        650;
+        700;
 
     letter-spacing:
         -0.2px;
@@ -1923,9 +1933,6 @@ button {
 
     overflow:
         hidden;
-
-    max-width:
-        calc(100% - 4px);
 }
 
 
@@ -1934,27 +1941,23 @@ button {
 ========================================================= */
 
 .premium-category-description {
-
     margin:
         3px 0 0;
 
-    padding:
-        0;
+    padding-left:
+        34px;
 
     color:
-        #456052;
-
-    opacity:
-        0.75;
+        rgba(18,59,42,0.68);
 
     font-size:
-        11px;
+        10.5px;
 
     line-height:
         1.2;
 
     font-weight:
-        400;
+        500;
 
     display:
         -webkit-box;
@@ -1967,22 +1970,10 @@ button {
 
     overflow:
         hidden;
-
-    max-width:
-        calc(100% - 4px);
 }
 
 
-/* =========================================================
-   REMOVE ARROW
-   CARD O‘ZI CLICKABLE
-========================================================= */
 
-.premium-category-arrow {
-
-    display:
-        none !important;
-}
 
 
 /* =========================================================
@@ -1994,10 +1985,10 @@ button {
     .premium-category-card:hover {
 
         transform:
-            scale(1.017);
+            scale(1.018);
 
         box-shadow:
-            0 5px 17px rgba(20,80,45,0.08);
+            0 8px 23px rgba(20,80,45,0.11);
     }
 
 
@@ -2006,19 +1997,54 @@ button {
 
         transform:
             translate3d(0,0,0)
-            scale(1.028);
+            scale(1.045);
+
+        filter:
+            saturate(1.06)
+            brightness(1.035)
+            contrast(0.99);
+    }
+
+
+    .premium-category-card:hover
+    .premium-category-glass {
+
+        background:
+            rgba(255,255,255,0.90);
+
+        box-shadow:
+            0 7px 21px rgba(15,23,42,0.14);
+    }
+
+
+    .premium-category-card:hover
+    .premium-category-arrow {
+
+        transform:
+            translateY(-50%)
+            translateX(3px);
+
+        box-shadow:
+            0 5px 13px rgba(22,163,74,0.15);
     }
 }
 
 
 /* =========================================================
-   PRESS
+   TAP
 ========================================================= */
 
 .premium-category-card:active {
 
     transform:
         scale(0.985);
+}
+
+.premium-category-card:active
+.premium-category-glass {
+
+    transform:
+        translate3d(0,1px,0);
 }
 
 
@@ -2031,30 +2057,39 @@ button {
     #categoriesContainer {
 
         gap:
-            12px;
+            14px;
     }
 
 
     .premium-category-card {
 
         height:
-            185px;
+            190px;
 
         min-height:
-            185px;
+            190px;
 
         border-radius:
-            24px;
+            25px;
     }
 
 
     .premium-category-glass {
 
-        height:
-            55px;
+        left:
+            14px;
 
-        padding:
-            15px 14px 10px;
+        right:
+            14px;
+
+        bottom:
+            14px;
+
+        min-height:
+            58px;
+
+        border-radius:
+            17px;
     }
 }
 
@@ -2097,28 +2132,101 @@ button {
 
     .premium-category-glass {
 
-        height:
+        left:
+            9px;
+
+        right:
+            9px;
+
+        bottom:
+            9px;
+
+        min-height:
             51px;
 
         padding:
-            14px 12px 9px;
+            8px
+            38px
+            8px
+            9px;
+
+        border-radius:
+            14px;
+    }
+
+
+    .premium-category-glass::before {
+
+        top:
+            11px;
+
+        bottom:
+            11px;
+
+        width:
+            2.5px;
+    }
+
+
+    .premium-category-icon {
+
+        left:
+            8px;
+
+        width:
+            24px;
+
+        height:
+            24px;
+
+        border-radius:
+            7px;
+    }
+
+
+    .premium-category-icon svg {
+
+        width:
+            14px;
+
+        height:
+            14px;
     }
 
 
     .premium-category-name {
 
+        padding-left:
+            30px;
+
         font-size:
-            14px;
+            13.5px;
     }
 
 
     .premium-category-description {
 
-        margin-top:
-            2px;
+        padding-left:
+            30px;
 
         font-size:
-            10px;
+            9.5px;
+    }
+
+
+    .premium-category-arrow {
+
+        right:
+            7px;
+
+        width:
+            27px;
+
+        height:
+            27px;
+
+        font-size:
+            18px;
     }
 }
 
@@ -2127,23 +2235,16 @@ button {
    DARK MODE
 ========================================================= */
 
-body.dark #categoriesPage {
-
-    background:
-        #101712;
-}
-
-
 body.dark .premium-category-card {
 
     background:
-        #18201B;
+        #18201b;
 
     border-color:
-        rgba(255,255,255,0.06);
+        rgba(255,255,255,0.08);
 
     box-shadow:
-        0 4px 16px rgba(0,0,0,0.22);
+        0 6px 20px rgba(0,0,0,0.26);
 }
 
 
@@ -2152,9 +2253,9 @@ body.dark .premium-category-image::after {
     background:
         linear-gradient(
             180deg,
-            rgba(16,23,18,0) 0%,
-            rgba(16,23,18,0.04) 55%,
-            rgba(16,23,18,0.16) 100%
+            rgba(0,0,0,0.00) 40%,
+            rgba(0,0,0,0.06) 60%,
+            rgba(0,0,0,0.36) 100%
         );
 }
 
@@ -2162,13 +2263,20 @@ body.dark .premium-category-image::after {
 body.dark .premium-category-glass {
 
     background:
-        rgba(24,35,28,0.60);
+        rgba(20,35,26,0.84);
 
-    -webkit-backdrop-filter:
-        blur(11px);
+    border-color:
+        rgba(255,255,255,0.10);
 
-    backdrop-filter:
-        blur(11px);
+    box-shadow:
+        0 6px 20px rgba(0,0,0,0.25);
+}
+
+
+body.dark .premium-category-glass::before {
+
+    background:
+        #16A34A;
 }
 
 
@@ -2182,7 +2290,27 @@ body.dark .premium-category-name {
 body.dark .premium-category-description {
 
     color:
-        rgba(255,255,255,0.70);
+        rgba(255,255,255,0.65);
+}
+
+
+body.dark .premium-category-icon {
+
+    background:
+        rgba(22,163,74,0.13);
+
+    border-color:
+        rgba(22,163,74,0.16);
+}
+
+
+body.dark .premium-category-arrow {
+
+    background:
+        rgba(255,255,255,0.92);
+
+    color:
+        #123B2A;
 }
    
 </style>
