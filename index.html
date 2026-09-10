@@ -1570,8 +1570,167 @@ button {
     gap: 10px;
 }
    /* =========================================================
+   YULDUZ MARKET
+   PREMIUM CATEGORY CARDS
+   NATURAL GLASS WAVE
+========================================================= */
+
+#categoriesPage {
+    padding: 20px 16px 105px;
+}
+
+.categories-page-header {
+    margin-bottom: 20px;
+}
+
+.categories-page-title {
+    margin: 0;
+    font-size: 27px;
+    line-height: 1.15;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.6px;
+}
+
+.categories-page-subtitle {
+    margin: 7px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+#categoriesContainer {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 15px;
+}
+
+
+/* =========================================================
+   CATEGORY CARD
+========================================================= */
+
+.premium-category-card {
+    position: relative;
+
+    min-height: 245px;
+
+    overflow: hidden;
+
+    border-radius: 25px;
+
+    background:
+        #edf7ef;
+
+    border:
+        1px solid rgba(255,255,255,0.85);
+
+    box-shadow:
+        0 9px 28px rgba(15,23,42,0.08),
+        0 2px 7px rgba(15,23,42,0.04);
+
+    cursor: pointer;
+
+    isolation: isolate;
+
+    transform:
+        translate3d(0,0,0);
+
+    -webkit-transform:
+        translate3d(0,0,0);
+
+    backface-visibility:
+        hidden;
+
+    -webkit-backface-visibility:
+        hidden;
+
+    transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease;
+}
+
+
+/* =========================================================
+   NATURAL IMAGE
+========================================================= */
+
+.premium-category-image {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 0;
+
+    overflow: hidden;
+}
+
+.premium-category-image img {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transform:
+        translate3d(0,0,0)
+        scale(1.03);
+
+    -webkit-transform:
+        translate3d(0,0,0)
+        scale(1.03);
+
+    filter:
+        saturate(1.04)
+        brightness(1.03)
+        contrast(0.98);
+
+    transition:
+        transform 0.55s cubic-bezier(.2,.7,.2,1),
+        filter 0.55s ease;
+}
+
+
+/* =========================================================
+   SOFT IMAGE LIGHT
+========================================================= */
+
+.premium-category-image::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,0.00) 0%,
+            rgba(255,255,255,0.02) 48%,
+            rgba(255,255,255,0.10) 78%,
+            rgba(255,255,255,0.18) 100%
+        );
+}
+
+
+/* =========================================================
    GLASS
-   NATURAL ORGANIC WAVE — REFERENCE STYLE
+   NATURAL SINGLE ORGANIC CURVE
 ========================================================= */
 
 .premium-category-glass {
@@ -1583,45 +1742,44 @@ button {
 
     z-index: 4;
 
-    height: 150px;
+    height: 128px;
 
     padding:
-        43px
+        36px
         62px
         15px
         16px;
 
     /*
-       YUMSHOQ YASHIL GLASS
+       Shaffof yashil glass.
     */
     background:
         linear-gradient(
             135deg,
-            rgba(255,255,255,0.62) 0%,
-            rgba(232,248,237,0.52) 42%,
-            rgba(211,241,220,0.43) 100%
+            rgba(255,255,255,0.58) 0%,
+            rgba(225,247,232,0.48) 48%,
+            rgba(210,241,219,0.40) 100%
         );
 
     /*
        =====================================================
-       MUHIM — ORGANIC GLASS WAVE
+       MUHIM:
+       GLASS KESILISHI
+       Reference rasmdagi katta tabiiy yoy
        =====================================================
 
-       Bu yerda maqsad:
-       - chap tomondan glass balandroq boshlanadi
-       - yuqoriga yumshoq yoy bilan ko'tariladi
-       - markazdan keyin katta yoy bilan pastlaydi
-       - o'ng tomonda yana yumshoq tekislanadi
+       Chap tomonda balandroq boshlanadi.
+       Markazda katta yumshoq egri hosil qiladi.
+       O'ng tomonda yana yumshoq ko'tarilib/pasayadi.
 
-       Ya'ni reference rasmdagi kabi
-       B I T T A   katta tabiiy kesilish.
+       Keskin polygon ishlatilmaydi.
     */
 
     -webkit-mask-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 78 C55 75 82 54 112 28 C139 5 170 8 198 22 C230 38 247 69 283 86 C322 105 365 111 407 108 C456 104 490 88 529 70 C571 50 606 35 646 37 C690 39 723 57 763 70 C811 85 858 86 905 80 C944 75 974 68 1000 62 L1000 300 L0 300 Z'/%3E%3C/svg%3E");
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 42 C70 42 105 22 145 10 C185 -2 225 5 258 25 C292 46 310 72 350 91 C390 111 435 116 478 108 C523 100 558 77 595 54 C632 31 665 16 705 18 C748 20 779 38 818 52 C862 67 908 70 950 63 C970 60 986 56 1000 51 L1000 300 L0 300 Z'/%3E%3C/svg%3E");
 
     mask-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 78 C55 75 82 54 112 28 C139 5 170 8 198 22 C230 38 247 69 283 86 C322 105 365 111 407 108 C456 104 490 88 529 70 C571 50 606 35 646 37 C690 39 723 57 763 70 C811 85 858 86 905 80 C944 75 974 68 1000 62 L1000 300 L0 300 Z'/%3E%3C/svg%3E");
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 42 C70 42 105 22 145 10 C185 -2 225 5 258 25 C292 46 310 72 350 91 C390 111 435 116 478 108 C523 100 558 77 595 54 C632 31 665 16 705 18 C748 20 779 38 818 52 C862 67 908 70 950 63 C970 60 986 56 1000 51 L1000 300 L0 300 Z'/%3E%3C/svg%3E");
 
     -webkit-mask-repeat:
         no-repeat;
@@ -1642,29 +1800,16 @@ button {
         100% 100%;
 
     /*
-       =====================================================
-       GLASS BLUR
-       =====================================================
+       Glass effekti.
     */
 
     -webkit-backdrop-filter:
-        blur(13px)
-        saturate(145%);
+        blur(12px)
+        saturate(140%);
 
     backdrop-filter:
-        blur(13px)
-        saturate(145%);
-
-    /*
-       Yumshoq yuqori yorug'lik
-    */
-
-    box-shadow:
-        0 -6px 24px rgba(22,163,74,0.035);
-
-    /*
-       Render stabil
-    */
+        blur(12px)
+        saturate(140%);
 
     will-change:
         transform,
@@ -1685,8 +1830,417 @@ button {
     isolation:
         isolate;
 
+    box-shadow:
+        0 -5px 22px rgba(22,163,74,0.035);
+
     pointer-events:
         none;
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.premium-category-icon {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 7px;
+
+    border-radius: 11px;
+
+    background:
+        rgba(22,163,74,0.10);
+
+    border:
+        1px solid rgba(22,163,74,0.12);
+
+    color:
+        #16A34A;
+
+    box-shadow:
+        0 4px 12px rgba(22,163,74,0.07);
+}
+
+.premium-category-icon svg {
+    width: 20px;
+    height: 20px;
+
+    display: block;
+
+    stroke:
+        currentColor;
+
+    stroke-width:
+        1.8;
+
+    stroke-linecap:
+        round;
+
+    stroke-linejoin:
+        round;
+
+    fill:
+        none;
+}
+
+
+/* =========================================================
+   CATEGORY NAME
+   O'ZGARMADI
+========================================================= */
+
+.premium-category-name {
+    margin: 0;
+
+    color:
+        var(--text);
+
+    font-size:
+        16px;
+
+    line-height:
+        1.18;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        -0.25px;
+
+    display:
+        -webkit-box;
+
+    -webkit-box-orient:
+        vertical;
+
+    -webkit-line-clamp:
+        2;
+
+    overflow:
+        hidden;
+}
+
+
+/* =========================================================
+   MOTIVATION
+   O'ZGARMADI
+========================================================= */
+
+.premium-category-description {
+    margin-top:
+        6px;
+
+    color:
+        rgba(15,23,42,0.68);
+
+    font-size:
+        11.5px;
+
+    line-height:
+        1.25;
+
+    font-weight:
+        600;
+
+    display:
+        -webkit-box;
+
+    -webkit-box-orient:
+        vertical;
+
+    -webkit-line-clamp:
+        2;
+
+    overflow:
+        hidden;
+}
+
+
+/* =========================================================
+   ARROW
+========================================================= */
+
+.premium-category-arrow {
+    position: absolute;
+
+    right: 13px;
+    bottom: 13px;
+
+    z-index: 10;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border:
+        1px solid rgba(22,163,74,0.08);
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(255,255,255,0.97);
+
+    color:
+        #111827;
+
+    font-size:
+        28px;
+
+    font-weight:
+        700;
+
+    line-height:
+        1;
+
+    box-shadow:
+        0 6px 18px rgba(15,23,42,0.14);
+
+    pointer-events:
+        none;
+
+    transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease;
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+
+    .premium-category-card:hover {
+        transform:
+            scale(1.025);
+
+        box-shadow:
+            0 16px 36px rgba(15,23,42,0.12),
+            0 4px 10px rgba(22,163,74,0.06);
+    }
+
+    .premium-category-card:hover
+    .premium-category-image img {
+        transform:
+            translate3d(0,0,0)
+            scale(1.075);
+
+        filter:
+            saturate(1.07)
+            brightness(1.05)
+            contrast(0.98);
+    }
+
+    .premium-category-card:hover
+    .premium-category-arrow {
+        transform:
+            translateX(4px);
+
+        box-shadow:
+            0 8px 21px rgba(22,163,74,0.15);
+    }
+}
+
+
+/* =========================================================
+   TAP
+========================================================= */
+
+.premium-category-card:active {
+    transform:
+        scale(0.985);
+}
+
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media (min-width: 700px) {
+
+    #categoriesContainer {
+        gap:
+            18px;
+    }
+
+    .premium-category-card {
+        min-height:
+            275px;
+
+        border-radius:
+            27px;
+    }
+
+    .premium-category-glass {
+        height:
+            137px;
+
+        padding:
+            39px
+            64px
+            18px
+            18px;
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    #categoriesPage {
+        padding-left:
+            12px;
+
+        padding-right:
+            12px;
+    }
+
+    #categoriesContainer {
+        gap:
+            10px;
+    }
+
+    .premium-category-card {
+        min-height:
+            220px;
+
+        border-radius:
+            21px;
+    }
+
+    .premium-category-glass {
+        height:
+            112px;
+
+        padding:
+            31px
+            51px
+            12px
+            12px;
+    }
+
+    .premium-category-icon {
+        width:
+            30px;
+
+        height:
+            30px;
+
+        margin-bottom:
+            6px;
+
+        border-radius:
+            9px;
+    }
+
+    .premium-category-icon svg {
+        width:
+            18px;
+
+        height:
+            18px;
+    }
+
+    .premium-category-name {
+        font-size:
+            14px;
+    }
+
+    .premium-category-description {
+        font-size:
+            10.5px;
+    }
+
+    .premium-category-arrow {
+        right:
+            9px;
+
+        bottom:
+            10px;
+
+        width:
+            35px;
+
+        height:
+            35px;
+
+        font-size:
+            25px;
+    }
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+body.dark .premium-category-card {
+    background:
+        #18201b;
+
+    border-color:
+        rgba(255,255,255,0.07);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.28);
+}
+
+body.dark .premium-category-image::after {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(10,20,13,0.01) 0%,
+            rgba(10,20,13,0.04) 40%,
+            rgba(10,20,13,0.15) 72%,
+            rgba(14,30,19,0.30) 100%
+        );
+}
+
+body.dark .premium-category-glass {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(22,45,29,0.55),
+            rgba(20,55,32,0.45)
+        );
+
+    -webkit-backdrop-filter:
+        blur(12px)
+        saturate(140%);
+
+    backdrop-filter:
+        blur(12px)
+        saturate(140%);
+}
+
+body.dark .premium-category-description {
+    color:
+        rgba(255,255,255,0.68);
+}
+
+body.dark .premium-category-arrow {
+    background:
+        rgba(255,255,255,0.97);
+
+    color:
+        #111827;
 }
    
 </style>
