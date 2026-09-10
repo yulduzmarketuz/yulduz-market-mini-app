@@ -1572,36 +1572,47 @@ button {
    /* =========================================================
    YULDUZ MARKET
    PREMIUM CATEGORY CARDS
-   NATURAL GLASS WAVE
+   CLEAN NATURAL GLASS
 ========================================================= */
 
 #categoriesPage {
     padding: 20px 16px 105px;
 }
 
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
 .categories-page-header {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .categories-page-title {
     margin: 0;
+
     font-size: 27px;
     line-height: 1.15;
+
     font-weight: 800;
+
     color: var(--text);
-    letter-spacing: -0.6px;
+
+    letter-spacing: -0.7px;
 }
 
 .categories-page-subtitle {
     margin: 7px 0 0;
+
     color: var(--muted);
+
     font-size: 14px;
     line-height: 1.4;
 }
 
 
 /* =========================================================
-   GRID
+   CATEGORY GRID
 ========================================================= */
 
 #categoriesContainer {
@@ -1610,7 +1621,7 @@ button {
     grid-template-columns:
         repeat(2, minmax(0, 1fr));
 
-    gap: 15px;
+    gap: 12px;
 }
 
 
@@ -1621,21 +1632,21 @@ button {
 .premium-category-card {
     position: relative;
 
-    min-height: 245px;
+    height: 180px;
+    min-height: 180px;
 
     overflow: hidden;
 
-    border-radius: 25px;
+    border-radius: 24px;
 
     background:
         #edf7ef;
 
     border:
-        1px solid rgba(255,255,255,0.85);
+        1px solid rgba(255,255,255,0.72);
 
     box-shadow:
-        0 9px 28px rgba(15,23,42,0.08),
-        0 2px 7px rgba(15,23,42,0.04);
+        0 4px 16px rgba(20,80,45,0.08);
 
     cursor: pointer;
 
@@ -1654,13 +1665,13 @@ button {
         hidden;
 
     transition:
-        transform 0.28s ease,
-        box-shadow 0.28s ease;
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 
 /* =========================================================
-   NATURAL IMAGE
+   IMAGE
 ========================================================= */
 
 .premium-category-image {
@@ -1685,27 +1696,30 @@ button {
 
     object-fit: cover;
 
+    object-position:
+        50% 45%;
+
     transform:
         translate3d(0,0,0)
-        scale(1.03);
+        scale(1.01);
 
     -webkit-transform:
         translate3d(0,0,0)
-        scale(1.03);
+        scale(1.01);
 
     filter:
-        saturate(1.04)
-        brightness(1.03)
-        contrast(0.98);
+        saturate(1.02)
+        brightness(1.02)
+        contrast(0.99);
 
     transition:
-        transform 0.55s cubic-bezier(.2,.7,.2,1),
-        filter 0.55s ease;
+        transform 0.45s cubic-bezier(.2,.7,.2,1),
+        filter 0.45s ease;
 }
 
 
 /* =========================================================
-   SOFT IMAGE LIGHT
+   VERY SOFT IMAGE LIGHT
 ========================================================= */
 
 .premium-category-image::after {
@@ -1720,17 +1734,16 @@ button {
     background:
         linear-gradient(
             180deg,
-            rgba(255,255,255,0.00) 0%,
-            rgba(255,255,255,0.02) 48%,
-            rgba(255,255,255,0.10) 78%,
-            rgba(255,255,255,0.18) 100%
+            rgba(255,255,255,0) 48%,
+            rgba(255,255,255,0.025) 62%,
+            rgba(255,255,255,0.12) 100%
         );
 }
 
 
 /* =========================================================
-   GLASS
-   TWO CORNERS → ONE SOFT CENTER ARC
+   NATURAL GLASS
+   YUMSHOQ BIRLIKDA KO‘RINADI
 ========================================================= */
 
 .premium-category-glass {
@@ -1742,39 +1755,35 @@ button {
 
     z-index: 4;
 
-    height: 128px;
+    height: 62px;
 
     padding:
-        36px
-        62px
-        15px
-        16px;
+        13px
+        48px
+        11px
+        14px;
 
     background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,0.58) 0%,
-            rgba(225,247,232,0.48) 48%,
-            rgba(210,241,219,0.40) 100%
-        );
+        rgba(248,252,249,0.60);
+
+    -webkit-backdrop-filter:
+        blur(12px)
+        saturate(125%);
+
+    backdrop-filter:
+        blur(12px)
+        saturate(125%);
 
     /*
-       =====================================================
-       NATURAL SINGLE ARC
-
-       Ikki yuqori burchakdan glass ichkariga tortiladi.
-       O'rtada bitta keng va yumshoq yoy hosil bo'ladi.
-
-       Mayda to'lqinlar yo'q.
-       Keskin polygon yo'q.
-       =====================================================
+       Glass yuqorida keskin chiziq bermaydi.
+       Faqat juda yumshoq markaziy yoy.
     */
 
     -webkit-mask-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 32 C170 32 285 40 380 68 C430 83 466 90 500 90 C534 90 570 83 620 68 C715 40 830 32 1000 32 L1000 300 L0 300 Z'/%3E%3C/svg%3E");
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 220' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 24 C170 24 300 28 395 42 C445 49 475 55 500 55 C525 55 555 49 605 42 C700 28 830 24 1000 24 L1000 220 L0 220 Z'/%3E%3C/svg%3E");
 
     mask-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 32 C170 32 285 40 380 68 C430 83 466 90 500 90 C534 90 570 83 620 68 C715 40 830 32 1000 32 L1000 300 L0 300 Z'/%3E%3C/svg%3E");
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 220' preserveAspectRatio='none'%3E%3Cpath fill='white' d='M0 24 C170 24 300 28 395 42 C445 49 475 55 500 55 C525 55 555 49 605 42 C700 28 830 24 1000 24 L1000 220 L0 220 Z'/%3E%3C/svg%3E");
 
     -webkit-mask-repeat:
         no-repeat;
@@ -1794,21 +1803,11 @@ button {
     mask-size:
         100% 100%;
 
-    /*
-       Glass effekti.
-    */
+    box-shadow:
+        0 -4px 18px rgba(20,80,45,0.035);
 
-    -webkit-backdrop-filter:
-        blur(12px)
-        saturate(140%);
-
-    backdrop-filter:
-        blur(12px)
-        saturate(140%);
-
-    will-change:
-        transform,
-        backdrop-filter;
+    pointer-events:
+        none;
 
     transform:
         translate3d(0,0,0);
@@ -1821,51 +1820,47 @@ button {
 
     -webkit-backface-visibility:
         hidden;
-
-    isolation:
-        isolate;
-
-    box-shadow:
-        0 -5px 22px rgba(22,163,74,0.035);
-
-    pointer-events:
-        none;
 }
 
 
 /* =========================================================
    ICON
+   YENGIL ACCENT
 ========================================================= */
 
 .premium-category-icon {
-    width: 34px;
-    height: 34px;
+    position: relative;
+
+    width: 26px;
+    height: 26px;
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    margin-bottom: 7px;
+    margin-bottom: 4px;
 
-    border-radius: 11px;
+    border-radius: 8px;
 
     background:
-        rgba(22,163,74,0.10);
+        rgba(22,163,74,0.09);
 
     border:
-        1px solid rgba(22,163,74,0.12);
+        1px solid rgba(22,163,74,0.10);
 
     color:
         #16A34A;
 
     box-shadow:
-        0 4px 12px rgba(22,163,74,0.07);
+        none;
+
+    flex-shrink: 0;
 }
 
 .premium-category-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
 
     display: block;
 
@@ -1888,23 +1883,22 @@ button {
 
 /* =========================================================
    CATEGORY NAME
-   O'ZGARMADI
 ========================================================= */
 
 .premium-category-name {
     margin: 0;
 
     color:
-        var(--text);
+        #123B2A;
 
     font-size:
-        16px;
+        15.5px;
 
     line-height:
         1.18;
 
     font-weight:
-        800;
+        700;
 
     letter-spacing:
         -0.25px;
@@ -1920,29 +1914,31 @@ button {
 
     overflow:
         hidden;
+
+    max-width:
+        100%;
 }
 
 
 /* =========================================================
-   MOTIVATION
-   O'ZGARMADI
+   DESCRIPTION
 ========================================================= */
 
 .premium-category-description {
     margin-top:
-        6px;
+        3px;
 
     color:
-        rgba(15,23,42,0.68);
+        rgba(18,59,42,0.70);
 
     font-size:
-        11.5px;
+        10.5px;
 
     line-height:
-        1.25;
+        1.22;
 
     font-weight:
-        600;
+        500;
 
     display:
         -webkit-box;
@@ -1951,27 +1947,31 @@ button {
         vertical;
 
     -webkit-line-clamp:
-        2;
+        1;
 
     overflow:
         hidden;
+
+    max-width:
+        92%;
 }
 
 
 /* =========================================================
    ARROW
+   KICHIK VA TOZA
 ========================================================= */
 
 .premium-category-arrow {
     position: absolute;
 
-    right: 13px;
-    bottom: 13px;
+    right: 10px;
+    bottom: 10px;
 
     z-index: 10;
 
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
 
     display: flex;
 
@@ -1981,35 +1981,35 @@ button {
     padding: 0;
 
     border:
-        1px solid rgba(22,163,74,0.08);
+        1px solid rgba(255,255,255,0.65);
 
     border-radius:
         50%;
 
     background:
-        rgba(255,255,255,0.97);
+        rgba(255,255,255,0.82);
 
     color:
-        #111827;
+        #123B2A;
 
     font-size:
-        28px;
+        20px;
 
     font-weight:
-        700;
+        600;
 
     line-height:
         1;
 
     box-shadow:
-        0 6px 18px rgba(15,23,42,0.14);
+        0 3px 10px rgba(20,80,45,0.09);
 
     pointer-events:
         none;
 
     transition:
-        transform 0.28s ease,
-        box-shadow 0.28s ease;
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 
@@ -2020,33 +2020,37 @@ button {
 @media (hover: hover) and (pointer: fine) {
 
     .premium-category-card:hover {
+
         transform:
-            scale(1.025);
+            scale(1.018);
 
         box-shadow:
-            0 16px 36px rgba(15,23,42,0.12),
-            0 4px 10px rgba(22,163,74,0.06);
+            0 7px 20px rgba(20,80,45,0.10);
     }
+
 
     .premium-category-card:hover
     .premium-category-image img {
+
         transform:
             translate3d(0,0,0)
-            scale(1.075);
+            scale(1.035);
 
         filter:
-            saturate(1.07)
-            brightness(1.05)
-            contrast(0.98);
+            saturate(1.04)
+            brightness(1.035)
+            contrast(0.99);
     }
+
 
     .premium-category-card:hover
     .premium-category-arrow {
+
         transform:
-            translateX(4px);
+            translateX(3px);
 
         box-shadow:
-            0 8px 21px rgba(22,163,74,0.15);
+            0 5px 13px rgba(20,80,45,0.12);
     }
 }
 
@@ -2056,6 +2060,7 @@ button {
 ========================================================= */
 
 .premium-category-card:active {
+
     transform:
         scale(0.985);
 }
@@ -2068,27 +2073,35 @@ button {
 @media (min-width: 700px) {
 
     #categoriesContainer {
+
         gap:
-            18px;
+            14px;
     }
+
 
     .premium-category-card {
+
+        height:
+            190px;
+
         min-height:
-            275px;
+            190px;
 
         border-radius:
-            27px;
+            25px;
     }
 
+
     .premium-category-glass {
+
         height:
-            137px;
+            66px;
 
         padding:
-            39px
-            64px
-            18px
-            18px;
+            14px
+            50px
+            11px
+            15px;
     }
 }
 
@@ -2100,6 +2113,7 @@ button {
 @media (max-width: 380px) {
 
     #categoriesPage {
+
         padding-left:
             12px;
 
@@ -2107,77 +2121,99 @@ button {
             12px;
     }
 
+
     #categoriesContainer {
+
         gap:
             10px;
     }
 
+
     .premium-category-card {
+
+        height:
+            170px;
+
         min-height:
-            220px;
+            170px;
 
         border-radius:
             21px;
     }
 
+
     .premium-category-glass {
+
         height:
-            112px;
+            58px;
 
         padding:
-            31px
-            51px
             12px
+            42px
+            9px
             12px;
     }
 
+
     .premium-category-icon {
+
         width:
-            30px;
+            24px;
 
         height:
-            30px;
+            24px;
 
         margin-bottom:
-            6px;
+            3px;
 
         border-radius:
-            9px;
+            7px;
     }
+
 
     .premium-category-icon svg {
+
         width:
-            18px;
+            15px;
 
         height:
-            18px;
+            15px;
     }
 
+
     .premium-category-name {
+
         font-size:
             14px;
     }
 
+
     .premium-category-description {
+
         font-size:
-            10.5px;
-    }
-
-    .premium-category-arrow {
-        right:
-            9px;
-
-        bottom:
             10px;
 
+        margin-top:
+            2px;
+    }
+
+
+    .premium-category-arrow {
+
+        right:
+            8px;
+
+        bottom:
+            8px;
+
         width:
-            35px;
+            28px;
 
         height:
-            35px;
+            28px;
 
         font-size:
-            25px;
+            19px;
     }
 }
 
@@ -2187,6 +2223,7 @@ button {
 ========================================================= */
 
 body.dark .premium-category-card {
+
     background:
         #18201b;
 
@@ -2194,48 +2231,71 @@ body.dark .premium-category-card {
         rgba(255,255,255,0.07);
 
     box-shadow:
-        0 10px 30px rgba(0,0,0,0.28);
+        0 5px 18px rgba(0,0,0,0.25);
 }
 
+
 body.dark .premium-category-image::after {
+
     background:
         linear-gradient(
             180deg,
-            rgba(10,20,13,0.01) 0%,
-            rgba(10,20,13,0.04) 40%,
-            rgba(10,20,13,0.15) 72%,
-            rgba(14,30,19,0.30) 100%
+            rgba(10,20,13,0) 45%,
+            rgba(10,20,13,0.04) 65%,
+            rgba(14,30,19,0.22) 100%
         );
 }
 
+
 body.dark .premium-category-glass {
+
     background:
-        linear-gradient(
-            135deg,
-            rgba(22,45,29,0.55),
-            rgba(20,55,32,0.45)
-        );
+        rgba(20,45,29,0.58);
 
     -webkit-backdrop-filter:
         blur(12px)
-        saturate(140%);
+        saturate(125%);
 
     backdrop-filter:
         blur(12px)
-        saturate(140%);
+        saturate(125%);
 }
 
+
+body.dark .premium-category-name {
+
+    color:
+        rgba(255,255,255,0.94);
+}
+
+
 body.dark .premium-category-description {
+
     color:
         rgba(255,255,255,0.68);
 }
 
-body.dark .premium-category-arrow {
+
+body.dark .premium-category-icon {
+
     background:
-        rgba(255,255,255,0.97);
+        rgba(22,163,74,0.13);
+
+    border-color:
+        rgba(22,163,74,0.15);
+}
+
+
+body.dark .premium-category-arrow {
+
+    background:
+        rgba(255,255,255,0.90);
 
     color:
-        #111827;
+        #123B2A;
+
+    border-color:
+        rgba(255,255,255,0.50);
 }
    
 </style>
