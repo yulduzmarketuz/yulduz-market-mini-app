@@ -6330,22 +6330,42 @@ function addWeightProduct(id) {
 
 function updateCart() {
 
-    let total = 0;
-
-
-    cart.forEach(item => {
-
-        total +=
-            item.price *
-            item.quantity;
-
-    });
-
-
     const cartBar =
         document.getElementById(
             "cartBar"
         );
+
+
+    /* =====================================================
+       BIR XIL HISOB-KITOB
+    ===================================================== */
+
+    let total = 0;
+
+    let count = 0;
+
+
+    cart.forEach(
+        item => {
+
+            const quantity =
+                Number(item.quantity) || 0;
+
+
+            if (
+                quantity > 0
+            ) {
+
+                count += quantity;
+
+                total +=
+                    Number(item.price) *
+                    quantity;
+
+            }
+
+        }
+    );
 
 
     /* =====================================================
@@ -6358,21 +6378,28 @@ function updateCart() {
         );
 
 
-    if (cartBadge) {
+    if (
+        cartBadge
+    ) {
 
-        const count =
-            cart.reduce(
-                (sum, item) =>
-                    sum + item.quantity,
-                0
-            );
+        cartBadge.textContent =
+            count;
 
-        cartBadge.textContent = count;
 
-        if (count === 0) {
-            cartBadge.style.display = "none";
-        } else {
-            cartBadge.style.display = "flex";
+        if (
+            count === 0
+        ) {
+
+            cartBadge.style.display =
+                "none";
+
+        }
+
+        else {
+
+            cartBadge.style.display =
+                "flex";
+
         }
 
     }
@@ -6383,57 +6410,88 @@ function updateCart() {
     ===================================================== */
 
     if (
-        cart.length === 0
+        !cartBar
+    ) {
+        return;
+    }
+
+
+    if (
+        count === 0
     ) {
 
         cartBar
             .classList
             .add("empty");
 
-    }
-
-    else {
-
-        cartBar
-            .classList
-            .remove("empty");
-
-
-        cartBar.innerHTML = `
-    <svg
-        class="cart-bar-icon"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        <path
-            d="M3 4H5L7.2 15.2C7.4 16.2 8.3 17 9.3 17H18.2C19.1 17 19.9 16.4 20.2 15.5L22 9H6"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-        />
-
-        <circle cx="9.5" cy="20" r="1.2" fill="currentColor"/>
-        <circle cx="18" cy="20" r="1.2" fill="currentColor"/>
-    </svg>
-
-    <span class="cart-bar-products">
-        ${cart.length} ta mahsulot
-    </span>
-
-    <span class="cart-bar-price">
-        ${formatPrice(total)} so‘m
-    </span>
-
-    <span class="cart-bar-arrow">
-    ›
-</span>
-`;
+        return;
 
     }
+
+
+    cartBar
+        .classList
+        .remove("empty");
+
+
+    cartBar.innerHTML = `
+
+        <svg
+            class="cart-bar-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+            <path
+                d="M3 4H5L7.2 15.2C7.4 16.2 8.3 17 9.3 17H18.2C19.1 17 19.9 16.4 20.2 15.5L22 9H6"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+
+            <circle
+                cx="9.5"
+                cy="20"
+                r="1.2"
+                fill="currentColor"
+            />
+
+            <circle
+                cx="18"
+                cy="20"
+                r="1.2"
+                fill="currentColor"
+            />
+
+        </svg>
+
+
+        <span class="cart-bar-products">
+
+            ${count} ta mahsulot
+
+        </span>
+
+
+        <span class="cart-bar-price">
+
+            ${formatPrice(total)} so‘m
+
+        </span>
+
+
+        <span class="cart-bar-arrow">
+
+            ›
+
+        </span>
+
+    `;
 
 }
+
 
 /* =========================================================
    OPEN CART
@@ -6455,288 +6513,6 @@ function openCart() {
 }
 
 
-/* =========================================================
-   RENDER CART
-========================================================= */
-
-function renderCart() {
-
-    const container =
-        document.getElementById(
-            "cartItems"
-        );
-
-
-    container.innerHTML = "";
-
-
-    let total = 0;
-
-
-    /* =====================================================
-       EMPTY CART
-    ===================================================== */
-
-    if (
-        cart.length === 0
-    ) {
-
-        container.innerHTML = `
-
-            <div class="form-card">
-
-                🛒 Savat hozircha bo‘sh.
-
-            </div>
-
-        `;
-
-    }
-
-
-    /* =====================================================
-       CART ITEMS
-    ===================================================== */
-
-    cart.forEach(
-        (item, index) => {
-
-            const quantity =
-                Number(item.quantity) || 0;
-
-
-            const itemTotal =
-                item.price *
-                quantity;
-
-
-            /* 0 bo‘lgan mahsulot jami summaga qo‘shilmaydi */
-
-            if (quantity > 0) {
-
-                total += itemTotal;
-
-            }
-
-
-            /* =================================================
-               PRODUCT IMAGE
-            ================================================= */
-
-            const image =
-                item.image
-                ? `<img
-                        src="${item.image}"
-                        class="cart-item-image"
-                        alt=""
-                   >`
-                : (
-                    item.icon
-                    ? `<div class="cart-item-image cart-item-icon">
-                            ${item.icon}
-                       </div>`
-                    : ""
-                );
-
-
-            /* =================================================
-               PRODUCT AMOUNT
-            ================================================= */
-
-            let amount;
-
-
-            if (
-                item.unit === "kg"
-            ) {
-
-                amount =
-                    `${item.enteredAmount || 0} ${item.selectedUnit || "kg"}`;
-
-            }
-
-            else {
-
-                amount =
-                    `${quantity} dona`;
-
-            }
-
-
-            /* =================================================
-               ZERO STATE
-            ================================================= */
-
-            if (
-                quantity <= 0
-            ) {
-
-                container.innerHTML += `
-
-                    <div class="cart-item cart-item-disabled">
-
-                        <div class="cart-item-main">
-
-                            ${image}
-
-                            <div class="cart-item-content">
-
-                                <div class="cart-item-name">
-                                    ${item.name}
-                                </div>
-
-                                <div class="cart-item-price">
-                                    ${formatPrice(item.price)}
-                                </div>
-
-                                <div class="cart-item-amount">
-                                    Mahsulot tanlanmagan
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="cart-item-bottom">
-
-                            <div class="cart-restore"
-                                 onclick="restoreCartItem(${index})">
-
-                                Qaytarish
-
-                            </div>
-
-
-                            <button
-                                class="cart-delete"
-                                onclick="removeCartItem(${index})">
-
-                                O‘chirish
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                `;
-
-                return;
-
-            }
-
-
-            /* =================================================
-               NORMAL STATE
-            ================================================= */
-
-            container.innerHTML += `
-
-                <div class="cart-item">
-
-                    <div class="cart-item-main">
-
-                        ${image}
-
-                        <div class="cart-item-content">
-
-                            <div class="cart-item-name">
-                                ${item.name}
-                            </div>
-
-                            <div class="cart-item-price">
-                                ${formatPrice(item.price)}
-                            </div>
-
-                            <div class="cart-item-amount">
-                                ${amount}
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="cart-item-bottom">
-
-
-                        <div class="cart-quantity">
-
-                            <button
-                                type="button"
-                                class="cart-quantity-button"
-                                onclick="decreaseCartItem(${index})">
-
-                                −
-
-                            </button>
-
-
-                            <span class="cart-quantity-value">
-
-                                ${quantity}
-
-                            </span>
-
-
-                            <button
-                                type="button"
-                                class="cart-quantity-button"
-                                onclick="increaseCartItem(${index})">
-
-                                +
-
-                            </button>
-
-                        </div>
-
-
-                        <div class="cart-item-total">
-
-                            ${formatPrice(itemTotal)}
-
-                        </div>
-
-
-                        <button
-                            type="button"
-                            class="cart-delete"
-                            onclick="removeCartItem(${index})">
-
-                            O‘chirish
-
-                        </button>
-
-
-                    </div>
-
-                </div>
-
-            `;
-
-        }
-    );
-
-
-    /* =====================================================
-       TOTAL
-    ===================================================== */
-
-    document
-        .getElementById(
-            "cartTotal"
-        )
-        .innerHTML = `
-
-            Jami summa:
-            <span class="cart-total-price">
-                ${formatPrice(total)}
-            </span>
-
-        `;
-
-}
 /* =========================================================
    INCREASE CART ITEM
 ========================================================= */
@@ -6765,45 +6541,12 @@ function increaseCartItem(index) {
         quantity;
 
 
-    renderCart();
+    /* Aqlli savat + badge */
 
-}
-
-
-/* =========================================================
-   DECREASE CART ITEM
-========================================================= */
-
-function decreaseCartItem(index) {
-
-    if (
-        !cart[index]
-    ) {
-        return;
-    }
+    updateCart();
 
 
-    const item =
-        cart[index];
-
-
-    let quantity =
-        Number(item.quantity) || 0;
-
-
-    if (
-        quantity <= 0
-    ) {
-        return;
-    }
-
-
-    quantity -= 1;
-
-
-    item.quantity =
-        quantity;
-
+    /* Savat sahifasi */
 
     renderCart();
 
@@ -6811,53 +6554,6 @@ function decreaseCartItem(index) {
 
 
 /* =========================================================
-   UPDATE CART ITEM QUANTITY
-========================================================= */
-
-function updateCartItemQuantity(
-    index,
-    value
-) {
-
-    if (
-        !cart[index]
-    ) {
-        return;
-    }
-
-
-    const item =
-        cart[index];
-
-
-    let quantity =
-        Number(value);
-
-
-    if (
-        !Number.isFinite(quantity)
-        || quantity < 0
-    ) {
-
-        quantity = 0;
-
-    }
-
-
-    quantity =
-        Math.floor(
-            quantity
-        );
-
-
-    item.quantity =
-        quantity;
-
-
-    renderCart();
-
-}
- /* =========================================================
    DECREASE CART ITEM
 ========================================================= */
 
@@ -6900,8 +6596,6 @@ function decreaseCartItem(index) {
         quantity === 0
     ) {
 
-        /* Oldingi timer bo‘lsa tozalaymiz */
-
         if (
             item.restoreTimer
         ) {
@@ -6913,17 +6607,9 @@ function decreaseCartItem(index) {
         }
 
 
-        /* 7 soniyalik timer */
-
         item.restoreTimer =
             setTimeout(
                 function () {
-
-                    /*
-                       Mijoz shu vaqt ichida
-                       Qaytarish tugmasini bosmagan bo‘lsa,
-                       mahsulot butunlay o‘chiriladi.
-                    */
 
                     const currentItem =
                         cart[index];
@@ -6942,10 +6628,12 @@ function decreaseCartItem(index) {
                             1
                         );
 
-
-                        renderCart();
-
                     }
+
+
+                    updateCart();
+
+                    renderCart();
 
                 },
                 7000
@@ -6954,15 +6642,142 @@ function decreaseCartItem(index) {
     }
 
 
+    /* Aqlli savat + badge */
+
+    updateCart();
+
+
+    /* Savat sahifasi */
+
     renderCart();
 
 }
-   
+
+
+/* =========================================================
+   UPDATE CART ITEM QUANTITY
+========================================================= */
+
+function updateCartItemQuantity(
+    index,
+    value
+) {
+
+    if (
+        !cart[index]
+    ) {
+        return;
+    }
+
+
+    const item =
+        cart[index];
+
+
+    let quantity =
+        Number(value);
+
+
+    if (
+        !Number.isFinite(quantity)
+        ||
+        quantity < 0
+    ) {
+
+        quantity = 0;
+
+    }
+
+
+    quantity =
+        Math.floor(
+            quantity
+        );
+
+
+    item.quantity =
+        quantity;
+
+
+    updateCart();
+
+    renderCart();
+
+}
+
+
+/* =========================================================
+   RESTORE CART ITEM
+========================================================= */
+
+function restoreCartItem(index) {
+
+    if (
+        !cart[index]
+    ) {
+        return;
+    }
+
+
+    const item =
+        cart[index];
+
+
+    item.quantity =
+        1;
+
+
+    if (
+        item.restoreTimer
+    ) {
+
+        clearTimeout(
+            item.restoreTimer
+        );
+
+        item.restoreTimer =
+            null;
+
+    }
+
+
+    updateCart();
+
+    renderCart();
+
+}
+
+
 /* =========================================================
    REMOVE CART
 ========================================================= */
 
 function removeCartItem(index) {
+
+    if (
+        !cart[index]
+    ) {
+        return;
+    }
+
+
+    const item =
+        cart[index];
+
+
+    if (
+        item.restoreTimer
+    ) {
+
+        clearTimeout(
+            item.restoreTimer
+        );
+
+        item.restoreTimer =
+            null;
+
+    }
+
 
     cart.splice(
         index,
