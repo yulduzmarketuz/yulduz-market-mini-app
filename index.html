@@ -789,53 +789,157 @@ button {
     display: none;
 }
 /* =========================================================
-   CART PAGE
+   CART PAGE — PREMIUM
 ========================================================= */
 
 .cart-item {
     background: var(--card);
-    padding: 15px;
-    border-radius: 15px;
-    margin-bottom: 10px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+}
+
+.cart-item-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cart-item-image {
+    width: 68px;
+    height: 68px;
+    flex-shrink: 0;
+    object-fit: contain;
+    border-radius: 14px;
+    background: var(--bg);
+}
+
+.cart-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.cart-item-content {
+    min-width: 0;
+    flex: 1;
 }
 
 .cart-item-name {
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.25;
 }
 
 .cart-item-price {
-    color: var(--muted);
     margin-top: 5px;
+    color: var(--muted);
+    font-size: 13px;
 }
 
-.remove-button {
-    margin-top: 10px;
-    border: none;
-    background: var(--bg);
+.cart-item-amount {
+    margin-top: 4px;
     color: var(--text);
-    padding: 8px 12px;
-    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.cart-item-bottom {
+    display: flex;
+    align-items: center;
+    margin-top: 13px;
+    gap: 10px;
+}
+
+.cart-quantity {
+    display: flex;
+    align-items: center;
+    background: var(--bg);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.cart-quantity-button {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.cart-quantity-value {
+    min-width: 42px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.cart-item-total {
+    margin-left: auto;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.cart-delete {
+    border: none;
+    background: transparent;
+    color: #e53935;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px;
+}
+
+.cart-item-disabled {
+    opacity: 0.7;
+}
+
+.cart-restore {
+    color: #16A34A;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
 }
 
 .total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background: var(--card);
-    padding: 18px;
-    border-radius: 15px;
+    border: 1px solid var(--border);
+    padding: 17px;
+    border-radius: 17px;
     margin-top: 15px;
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.cart-total-price {
+    color: #16A34A;
+    font-size: 19px;
 }
 
 .order-button {
     width: 100%;
     border: none;
-    background: var(--button);
-    color: var(--button-text);
+    background: #16A34A;
+    color: #fff;
     padding: 16px;
-    border-radius: 14px;
-    margin-top: 15px;
-    font-size: 17px;
-    font-weight: bold;
+    border-radius: 15px;
+    margin-top: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.order-button:active {
+    transform: scale(0.98);
 }
 
 .back-button {
@@ -6200,21 +6304,23 @@ function addToCart(id) {
         findProduct(id);
 
 
-    if (!product)
+    if (!product) {
         return;
+    }
 
 
     const existing =
         cart.find(
             item =>
-            item.id === id &&
-            item.unit === "dona"
+                item.id === id &&
+                item.selectedUnit === "dona"
         );
 
 
     if (existing) {
 
-        existing.quantity++;
+        existing.quantity =
+            (Number(existing.quantity) || 0) + 1;
 
     }
 
@@ -6226,7 +6332,9 @@ function addToCart(id) {
 
             quantity: 1,
 
-            selectedUnit: "dona"
+            selectedUnit: "dona",
+
+            unit: "dona"
 
         });
 
@@ -6251,6 +6359,11 @@ function addWeightProduct(id) {
 
     const product =
         findProduct(id);
+
+
+    if (!product) {
+        return;
+    }
 
 
     const weightInput =
@@ -6286,7 +6399,7 @@ function addWeightProduct(id) {
 
 
     if (
-        !amount ||
+        !Number.isFinite(amount) ||
         amount <= 0
     ) {
 
@@ -6299,11 +6412,19 @@ function addWeightProduct(id) {
     }
 
 
+    /* =====================================================
+       CONVERT TO KG
+    ===================================================== */
+
     const kg =
         unit === "g"
         ? amount / 1000
         : amount;
 
+
+    /* =====================================================
+       ADD TO CART
+    ===================================================== */
 
     cart.push({
 
@@ -6313,7 +6434,9 @@ function addWeightProduct(id) {
 
         selectedUnit: unit,
 
-        enteredAmount: amount
+        enteredAmount: amount,
+
+        unit: "kg"
 
     });
 
@@ -6521,20 +6644,13 @@ function openCart() {
 function renderCart() {
 
     const container =
-        document.getElementById(
-            "cartItems"
-        );
-
+        document.getElementById("cartItems");
 
     const totalElement =
-        document.getElementById(
-            "cartTotal"
-        );
+        document.getElementById("cartTotal");
 
 
-    if (
-        !container
-    ) {
+    if (!container) {
         return;
     }
 
@@ -6549,32 +6665,22 @@ function renderCart() {
        EMPTY CART
     ===================================================== */
 
-    if (
-        cart.length === 0
-    ) {
+    if (cart.length === 0) {
 
         container.innerHTML = `
-
             <div class="form-card">
-
-                🛒 Savat hozircha bo‘sh.
-
+                Savat hozircha bo‘sh.
             </div>
-
         `;
 
 
-        if (
-            totalElement
-        ) {
+        if (totalElement) {
 
             totalElement.innerHTML = `
-
                 Jami:
                 <span class="cart-total-price">
-                    0
+                    0 so‘m
                 </span>
-
             `;
 
         }
@@ -6595,18 +6701,14 @@ function renderCart() {
             const quantity =
                 Number(item.quantity) || 0;
 
-
             const price =
                 Number(item.price) || 0;
-
 
             const itemTotal =
                 price * quantity;
 
 
-            if (
-                quantity > 0
-            ) {
+            if (quantity > 0) {
 
                 total += itemTotal;
 
@@ -6619,112 +6721,100 @@ function renderCart() {
 
             const image =
                 item.image
-                ? `<img
+
+                ? `
+                    <img
                         src="${item.image}"
                         class="cart-item-image"
                         alt=""
-                   >`
+                    >
+                  `
+
                 : (
+
                     item.icon
-                    ? `<div class="cart-item-image cart-item-icon">
+
+                    ? `
+                        <div class="cart-item-image cart-item-icon">
                             ${item.icon}
-                       </div>`
+                        </div>
+                      `
+
                     : ""
+
                 );
 
 
             /* =================================================
-               PRODUCT AMOUNT
+               AMOUNT TEXT
             ================================================= */
 
-            let amount;
+            let amountText = "";
 
 
             if (
-                item.unit === "kg"
+                item.selectedUnit === "kg" ||
+                item.selectedUnit === "g"
             ) {
 
-                amount =
-                    `${item.enteredAmount || 0} ${item.selectedUnit || "kg"}`;
+                const entered =
+                    item.enteredAmount != null
+                    ? item.enteredAmount
+                    : (
+                        item.selectedUnit === "g"
+                        ? quantity * 1000
+                        : quantity
+                    );
+
+
+                amountText =
+                    `${entered} ${item.selectedUnit}`;
 
             }
 
             else {
 
-                amount =
+                amountText =
                     `${quantity} dona`;
 
             }
 
 
             /* =================================================
-               ZERO STATE
+               QUANTITY DISPLAY
             ================================================= */
 
+            let quantityDisplay;
+
+
             if (
-                quantity <= 0
+                item.selectedUnit === "kg"
             ) {
 
-                container.innerHTML += `
+                quantityDisplay =
+                    Number(quantity.toFixed(3));
 
-                    <div class="cart-item cart-item-disabled">
+            }
 
-                        <div class="cart-item-main">
+            else if (
+                item.selectedUnit === "g"
+            ) {
 
-                            ${image}
+                quantityDisplay =
+                    Math.round(quantity * 1000);
 
-                            <div class="cart-item-content">
+            }
 
-                                <div class="cart-item-name">
-                                    ${item.name}
-                                </div>
+            else {
 
-                                <div class="cart-item-price">
-                                    ${formatPrice(price)}
-                                </div>
-
-                                <div class="cart-item-amount">
-                                    Mahsulot tanlanmagan
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="cart-item-bottom">
-
-                            <div
-                                class="cart-restore"
-                                onclick="restoreCartItem(${index})">
-
-                                Qaytarish
-
-                            </div>
-
-
-                            <button
-                                type="button"
-                                class="cart-delete"
-                                onclick="removeCartItem(${index})">
-
-                                O‘chirish
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                `;
-
-                return;
+                quantityDisplay =
+                    Math.floor(quantity);
 
             }
 
 
             /* =================================================
-               NORMAL STATE
+               CART ITEM
             ================================================= */
 
             container.innerHTML += `
@@ -6743,10 +6833,19 @@ function renderCart() {
 
                             <div class="cart-item-price">
                                 ${formatPrice(price)}
+                                ${
+                                    (
+                                        item.selectedUnit === "kg"
+                                        ||
+                                        item.selectedUnit === "g"
+                                    )
+                                    ? " / kg"
+                                    : ""
+                                }
                             </div>
 
                             <div class="cart-item-amount">
-                                ${amount}
+                                ${amountText}
                             </div>
 
                         </div>
@@ -6761,46 +6860,39 @@ function renderCart() {
                             <button
                                 type="button"
                                 class="cart-quantity-button"
-                                onclick="decreaseCartItem(${index})">
-
+                                onclick="decreaseCartItem(${index})"
+                            >
                                 −
-
                             </button>
 
 
                             <span class="cart-quantity-value">
-
-                                ${quantity}
-
+                                ${quantityDisplay}
                             </span>
 
 
                             <button
                                 type="button"
                                 class="cart-quantity-button"
-                                onclick="increaseCartItem(${index})">
-
+                                onclick="increaseCartItem(${index})"
+                            >
                                 +
-
                             </button>
 
                         </div>
 
 
                         <div class="cart-item-total">
-
                             ${formatPrice(itemTotal)}
-
                         </div>
 
 
                         <button
                             type="button"
                             class="cart-delete"
-                            onclick="removeCartItem(${index})">
-
+                            onclick="removeCartItem(${index})"
+                        >
                             O‘chirish
-
                         </button>
 
                     </div>
@@ -6817,57 +6909,93 @@ function renderCart() {
        TOTAL
     ===================================================== */
 
-    if (
-        totalElement
-    ) {
+    if (totalElement) {
 
         totalElement.innerHTML = `
-
             Jami:
             <span class="cart-total-price">
                 ${formatPrice(total)}
             </span>
-
         `;
 
     }
 
 }
-
 /* =========================================================
    INCREASE CART ITEM
 ========================================================= */
 
 function increaseCartItem(index) {
 
-    if (
-        !cart[index]
-    ) {
+    if (!cart[index]) {
         return;
     }
 
-
-    const item =
-        cart[index];
-
+    const item = cart[index];
 
     let quantity =
         Number(item.quantity) || 0;
 
 
-    quantity += 1;
+    /* =====================================================
+       WEIGHT PRODUCT
+       100 g = 0.1 kg
+    ===================================================== */
+
+    if (
+        item.selectedUnit === "kg" ||
+        item.selectedUnit === "g"
+    ) {
+
+        quantity += 0.1;
+
+        quantity =
+            Math.round(quantity * 1000) / 1000;
+
+
+        if (item.selectedUnit === "g") {
+
+            item.enteredAmount =
+                Math.round(quantity * 1000);
+
+        } else {
+
+            item.enteredAmount =
+                quantity;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       NORMAL PRODUCT
+    ===================================================== */
+
+    else {
+
+        quantity += 1;
+
+    }
 
 
     item.quantity =
         quantity;
 
 
-    /* Aqlli savat + badge */
+    /* Agar 0 holatda turgan bo‘lsa */
+    if (item.restoreTimer) {
+
+        clearTimeout(
+            item.restoreTimer
+        );
+
+        item.restoreTimer = null;
+
+    }
+
 
     updateCart();
-
-
-    /* Savat sahifasi */
 
     renderCart();
 
@@ -6880,29 +7008,66 @@ function increaseCartItem(index) {
 
 function decreaseCartItem(index) {
 
-    if (
-        !cart[index]
-    ) {
+    if (!cart[index]) {
         return;
     }
 
-
-    const item =
-        cart[index];
-
+    const item = cart[index];
 
     let quantity =
         Number(item.quantity) || 0;
 
 
-    if (
-        quantity <= 0
-    ) {
+    if (quantity <= 0) {
         return;
     }
 
 
-    quantity -= 1;
+    /* =====================================================
+       WEIGHT PRODUCT
+       100 g = 0.1 kg
+    ===================================================== */
+
+    if (
+        item.selectedUnit === "kg" ||
+        item.selectedUnit === "g"
+    ) {
+
+        quantity -= 0.1;
+
+        quantity =
+            Math.round(quantity * 1000) / 1000;
+
+
+        if (quantity < 0) {
+            quantity = 0;
+        }
+
+
+        if (item.selectedUnit === "g") {
+
+            item.enteredAmount =
+                Math.round(quantity * 1000);
+
+        } else {
+
+            item.enteredAmount =
+                quantity;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       NORMAL PRODUCT
+    ===================================================== */
+
+    else {
+
+        quantity -= 1;
+
+    }
 
 
     item.quantity =
@@ -6913,13 +7078,12 @@ function decreaseCartItem(index) {
        ZERO → 7 SECOND AUTO DELETE
     ===================================================== */
 
-    if (
-        quantity === 0
-    ) {
+    if (quantity <= 0) {
 
-        if (
-            item.restoreTimer
-        ) {
+        item.quantity = 0;
+
+
+        if (item.restoreTimer) {
 
             clearTimeout(
                 item.restoreTimer
@@ -6937,8 +7101,7 @@ function decreaseCartItem(index) {
 
 
                     if (
-                        currentItem
-                        &&
+                        currentItem &&
                         Number(
                             currentItem.quantity
                         ) === 0
@@ -6963,12 +7126,7 @@ function decreaseCartItem(index) {
     }
 
 
-    /* Aqlli savat + badge */
-
     updateCart();
-
-
-    /* Savat sahifasi */
 
     renderCart();
 
@@ -7010,14 +7168,112 @@ function updateCartItemQuantity(
     }
 
 
-    quantity =
-        Math.floor(
-            quantity
-        );
+    /* =====================================================
+       WEIGHT PRODUCT
+    ===================================================== */
+
+    if (
+        item.selectedUnit === "kg" ||
+        item.selectedUnit === "g"
+    ) {
+
+        quantity =
+            Math.round(
+                quantity * 1000
+            ) / 1000;
+
+
+        if (
+            item.selectedUnit === "g"
+        ) {
+
+            item.enteredAmount =
+                Math.round(
+                    quantity * 1000
+                );
+
+        } else {
+
+            item.enteredAmount =
+                quantity;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       NORMAL PRODUCT
+    ===================================================== */
+
+    else {
+
+        quantity =
+            Math.floor(
+                quantity
+            );
+
+    }
 
 
     item.quantity =
         quantity;
+
+
+    /* =====================================================
+       ZERO → 7 SECOND AUTO DELETE
+    ===================================================== */
+
+    if (
+        quantity <= 0
+    ) {
+
+        item.quantity = 0;
+
+
+        if (
+            item.restoreTimer
+        ) {
+
+            clearTimeout(
+                item.restoreTimer
+            );
+
+        }
+
+
+        item.restoreTimer =
+            setTimeout(
+                function () {
+
+                    const currentItem =
+                        cart[index];
+
+
+                    if (
+                        currentItem &&
+                        Number(
+                            currentItem.quantity
+                        ) === 0
+                    ) {
+
+                        cart.splice(
+                            index,
+                            1
+                        );
+
+                    }
+
+
+                    updateCart();
+
+                    renderCart();
+
+                },
+                7000
+            );
+
+    }
 
 
     updateCart();
@@ -7026,26 +7282,55 @@ function updateCartItemQuantity(
 
 }
 
-
 /* =========================================================
    RESTORE CART ITEM
 ========================================================= */
 
 function restoreCartItem(index) {
 
-    if (
-        !cart[index]
-    ) {
+    if (!cart[index]) {
         return;
     }
-
 
     const item =
         cart[index];
 
 
-    item.quantity =
-        1;
+    /* =====================================================
+       WEIGHT PRODUCT
+    ===================================================== */
+
+    if (
+        item.selectedUnit === "kg" ||
+        item.selectedUnit === "g"
+    ) {
+
+        if (
+            item.selectedUnit === "g"
+        ) {
+
+            item.quantity = 0.1;
+            item.enteredAmount = 100;
+
+        } else {
+
+            item.quantity = 0.1;
+            item.enteredAmount = 0.1;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       NORMAL PRODUCT
+    ===================================================== */
+
+    else {
+
+        item.quantity = 1;
+
+    }
 
 
     if (
@@ -7056,8 +7341,7 @@ function restoreCartItem(index) {
             item.restoreTimer
         );
 
-        item.restoreTimer =
-            null;
+        item.restoreTimer = null;
 
     }
 
@@ -7075,12 +7359,9 @@ function restoreCartItem(index) {
 
 function removeCartItem(index) {
 
-    if (
-        !cart[index]
-    ) {
+    if (!cart[index]) {
         return;
     }
-
 
     const item =
         cart[index];
@@ -7094,8 +7375,7 @@ function removeCartItem(index) {
             item.restoreTimer
         );
 
-        item.restoreTimer =
-            null;
+        item.restoreTimer = null;
 
     }
 
