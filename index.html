@@ -790,63 +790,530 @@ button {
 }
 /* =========================================================
    CART PAGE
+   YULDUZ MARKET — PREMIUM CART
+========================================================= */
+
+#cartPage {
+    padding:
+        10px
+        14px
+        110px;
+}
+
+
+/* =========================================================
+   CART HEADER
+========================================================= */
+
+#cartPage h2 {
+    display: none;
+}
+
+
+.cart-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    height: 42px;
+
+    margin-bottom: 14px;
+}
+
+
+.cart-page-title {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    color: var(--text);
+}
+
+
+.cart-page-title-icon {
+    font-size: 16px;
+}
+
+
+.cart-edit-button {
+    border: none;
+    background: transparent;
+
+    color: #16A34A;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    padding: 6px 2px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   OLD BACK BUTTON
+========================================================= */
+
+.back-button {
+    display: none;
+}
+
+
+/* =========================================================
+   CART ITEM
 ========================================================= */
 
 .cart-item {
-    background: var(--card);
-    padding: 15px;
-    border-radius: 15px;
-    margin-bottom: 10px;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    background: transparent;
+
+    padding:
+        12px
+        0
+        13px;
+
+    border-radius: 0;
+
+    margin-bottom: 0;
+
+    border-bottom:
+        1px solid
+        color-mix(
+            in srgb,
+            var(--border) 55%,
+            transparent
+        );
 }
+
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   PRODUCT MAIN
+========================================================= */
+
+.cart-item-main {
+    display: flex;
+    align-items: flex-start;
+
+    min-width: 0;
+
+    padding-right: 105px;
+}
+
+
+/* =========================================================
+   PRODUCT IMAGE
+========================================================= */
+
+.cart-item-image {
+    flex-shrink: 0;
+
+    width: 60px;
+    height: 60px;
+
+    object-fit: contain;
+
+    border-radius: 10px;
+
+    margin-right: 12px;
+}
+
+
+.cart-item-image img {
+    display: block;
+
+    width: 60px;
+    height: 60px;
+
+    object-fit: contain;
+
+    border-radius: 10px;
+}
+
+
+.cart-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 32px;
+
+    background: transparent;
+}
+
+
+/* =========================================================
+   PRODUCT CONTENT
+========================================================= */
+
+.cart-item-content {
+    min-width: 0;
+
+    padding-top: 1px;
+}
+
 
 .cart-item-name {
-    font-weight: bold;
+    overflow: hidden;
+
+    color: var(--text);
+
+    font-size: 13px;
+    line-height: 18px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
+
 .cart-item-price {
+    margin-top: 3px;
+
     color: var(--muted);
+
+    font-size: 11px;
+    line-height: 16px;
+
+    font-weight: 400;
+}
+
+
+.cart-item-amount {
+    margin-top: 1px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+    line-height: 15px;
+}
+
+
+/* =========================================================
+   PRODUCT TOTAL
+========================================================= */
+
+.cart-item-total {
+    position: absolute;
+
+    top: 14px;
+    right: 0;
+
+    color: var(--text);
+
+    font-size: 13px;
+    line-height: 18px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   CART ITEM BOTTOM
+========================================================= */
+
+.cart-item-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 7px;
+
+    min-height: 28px;
+
     margin-top: 5px;
 }
 
-.remove-button {
-    margin-top: 10px;
-    border: none;
-    background: var(--bg);
-    color: var(--text);
-    padding: 8px 12px;
-    border-radius: 9px;
+
+/* =========================================================
+   QUANTITY CONTROL
+========================================================= */
+
+.cart-quantity {
+    display: flex;
+    align-items: center;
+
+    height: 27px;
+
+    border-radius: 7px;
+
+    background: rgba(
+        22,
+        163,
+        74,
+        0.055
+    );
 }
 
-.total {
-    background: var(--card);
-    padding: 18px;
-    border-radius: 15px;
-    margin-top: 15px;
-    font-size: 20px;
-    font-weight: bold;
+
+.cart-quantity-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 27px;
+    height: 27px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #16A34A;
+
+    font-size: 17px;
+    line-height: 1;
+
+    font-weight: 500;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
 }
+
+
+.cart-quantity-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 27px;
+
+    color: #16A34A;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   DELETE BUTTON
+========================================================= */
+
+.cart-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 27px;
+    height: 27px;
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    font-size: 0;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================================================
+   DELETE SVG ICON
+========================================================= */
+
+.cart-delete::before {
+    content: "";
+
+    width: 15px;
+    height: 15px;
+
+    display: block;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 7h16'/%3E%3Cpath d='M10 11v6'/%3E%3Cpath d='M14 11v6'/%3E%3Cpath d='M6 7l1 14h10l1-14'/%3E%3Cpath d='M9 7V4h6v3'/%3E%3C/svg%3E");
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+
+/* =========================================================
+   RESTORE
+========================================================= */
+
+.cart-restore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 27px;
+
+    padding:
+        0
+        10px;
+
+    border-radius: 7px;
+
+    background: rgba(
+        22,
+        163,
+        74,
+        0.08
+    );
+
+    color: #16A34A;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   DISABLED / ZERO ITEM
+========================================================= */
+
+.cart-item-disabled {
+    opacity: 0.65;
+}
+
+
+.cart-item-disabled .cart-item-total {
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   TOTAL
+========================================================= */
+
+.total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: transparent;
+
+    padding:
+        17px
+        0
+        8px;
+
+    border-radius: 0;
+
+    margin-top: 5px;
+
+    color: var(--text);
+
+    font-size: 15px;
+
+    font-weight: 500;
+}
+
+
+.cart-total-price {
+    color: #16A34A;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   ORDER BUTTON
+========================================================= */
 
 .order-button {
     width: 100%;
+
+    min-height: 42px;
+
     border: none;
-    background: var(--button);
-    color: var(--button-text);
-    padding: 16px;
-    border-radius: 14px;
-    margin-top: 15px;
-    font-size: 17px;
-    font-weight: bold;
+
+    background: #16A34A;
+
+    color: #FFFFFF;
+
+    padding:
+        10px
+        14px;
+
+    border-radius: 7px;
+
+    margin-top: 5px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    box-shadow: none;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
-.back-button {
-    border: none;
-    background: var(--card);
-    color: var(--text);
-    padding: 10px 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
+
+.order-button:active {
+    transform: scale(0.99);
 }
 
+
+/* =========================================================
+   EMPTY CART
+========================================================= */
+
+#cartItems:empty {
+    display: none;
+}
+
+
+/* =========================================================
+   SMALL SCREEN
+========================================================= */
+
+@media (max-width: 380px) {
+
+    #cartPage {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+
+    .cart-item-main {
+        padding-right: 92px;
+    }
+
+
+    .cart-item-image,
+    .cart-item-image img {
+        width: 56px;
+        height: 56px;
+    }
+
+
+    .cart-item-total {
+        font-size: 12px;
+    }
+
+}
 
 /* =========================================================
    FORMS
@@ -2750,22 +3217,30 @@ body.dark .premium-category-arrow {
      CART
 ===================================================== -->
 
-<div
-    id="cartPage"
-    class="container hidden">
+<div class="cart-page-header">
+
+    <div class="cart-page-title">
+
+        <span class="cart-page-title-icon">
+            ←
+        </span>
+
+        <span>
+            Savat
+        </span>
+
+    </div>
+
 
     <button
-        class="back-button"
-        onclick="goHome()">
+        type="button"
+        class="cart-edit-button">
 
-        ← <span data-i18n="home">Bosh sahifa</span>
+        Tahrirlash
 
     </button>
 
-
-    <h2>
-        🛒 <span data-i18n="cart">Savat</span>
-    </h2>
+</div>
 
 
     <div id="cartItems"></div>
