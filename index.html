@@ -6858,10 +6858,10 @@ function updateCartItemQuantity(
 
 }
  /* =========================================================
-    RESTORE CART ITEM
- ========================================================= */
+   DECREASE CART ITEM
+========================================================= */
 
-function restoreCartItem(index) {
+function decreaseCartItem(index) {
 
     if (
         !cart[index]
@@ -6874,12 +6874,84 @@ function restoreCartItem(index) {
         cart[index];
 
 
-    /*
-       Agar mahsulot 0 ga tushgan bo‘lsa,
-       uni yana 1 donaga qaytaramiz.
-    */
+    let quantity =
+        Number(item.quantity) || 0;
 
-    item.quantity = 1;
+
+    if (
+        quantity <= 0
+    ) {
+        return;
+    }
+
+
+    quantity -= 1;
+
+
+    item.quantity =
+        quantity;
+
+
+    /* =====================================================
+       ZERO → 7 SECOND AUTO DELETE
+    ===================================================== */
+
+    if (
+        quantity === 0
+    ) {
+
+        /* Oldingi timer bo‘lsa tozalaymiz */
+
+        if (
+            item.restoreTimer
+        ) {
+
+            clearTimeout(
+                item.restoreTimer
+            );
+
+        }
+
+
+        /* 7 soniyalik timer */
+
+        item.restoreTimer =
+            setTimeout(
+                function () {
+
+                    /*
+                       Mijoz shu vaqt ichida
+                       Qaytarish tugmasini bosmagan bo‘lsa,
+                       mahsulot butunlay o‘chiriladi.
+                    */
+
+                    const currentItem =
+                        cart[index];
+
+
+                    if (
+                        currentItem
+                        &&
+                        Number(
+                            currentItem.quantity
+                        ) === 0
+                    ) {
+
+                        cart.splice(
+                            index,
+                            1
+                        );
+
+
+                        renderCart();
+
+                    }
+
+                },
+                7000
+            );
+
+    }
 
 
     renderCart();
