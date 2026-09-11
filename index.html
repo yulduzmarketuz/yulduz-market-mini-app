@@ -6857,7 +6857,35 @@ function updateCartItemQuantity(
     renderCart();
 
 }
+ /* =========================================================
+    RESTORE CART ITEM
+ ========================================================= */
 
+function restoreCartItem(index) {
+
+    if (
+        !cart[index]
+    ) {
+        return;
+    }
+
+
+    const item =
+        cart[index];
+
+
+    /*
+       Agar mahsulot 0 ga tushgan bo‘lsa,
+       uni yana 1 donaga qaytaramiz.
+    */
+
+    item.quantity = 1;
+
+
+    renderCart();
+
+}
+   
 /* =========================================================
    REMOVE CART
 ========================================================= */
