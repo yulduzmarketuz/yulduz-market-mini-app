@@ -6514,7 +6514,325 @@ function openCart() {
     renderCart();
 
 }
+/* =========================================================
+   RENDER CART
+========================================================= */
 
+function renderCart() {
+
+    const container =
+        document.getElementById(
+            "cartItems"
+        );
+
+
+    const totalElement =
+        document.getElementById(
+            "cartTotal"
+        );
+
+
+    if (
+        !container
+    ) {
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    let total = 0;
+
+
+    /* =====================================================
+       EMPTY CART
+    ===================================================== */
+
+    if (
+        cart.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="form-card">
+
+                🛒 Savat hozircha bo‘sh.
+
+            </div>
+
+        `;
+
+
+        if (
+            totalElement
+        ) {
+
+            totalElement.innerHTML = `
+
+                Jami:
+                <span class="cart-total-price">
+                    0
+                </span>
+
+            `;
+
+        }
+
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       CART ITEMS
+    ===================================================== */
+
+    cart.forEach(
+        (item, index) => {
+
+            const quantity =
+                Number(item.quantity) || 0;
+
+
+            const price =
+                Number(item.price) || 0;
+
+
+            const itemTotal =
+                price * quantity;
+
+
+            if (
+                quantity > 0
+            ) {
+
+                total += itemTotal;
+
+            }
+
+
+            /* =================================================
+               PRODUCT IMAGE
+            ================================================= */
+
+            const image =
+                item.image
+                ? `<img
+                        src="${item.image}"
+                        class="cart-item-image"
+                        alt=""
+                   >`
+                : (
+                    item.icon
+                    ? `<div class="cart-item-image cart-item-icon">
+                            ${item.icon}
+                       </div>`
+                    : ""
+                );
+
+
+            /* =================================================
+               PRODUCT AMOUNT
+            ================================================= */
+
+            let amount;
+
+
+            if (
+                item.unit === "kg"
+            ) {
+
+                amount =
+                    `${item.enteredAmount || 0} ${item.selectedUnit || "kg"}`;
+
+            }
+
+            else {
+
+                amount =
+                    `${quantity} dona`;
+
+            }
+
+
+            /* =================================================
+               ZERO STATE
+            ================================================= */
+
+            if (
+                quantity <= 0
+            ) {
+
+                container.innerHTML += `
+
+                    <div class="cart-item cart-item-disabled">
+
+                        <div class="cart-item-main">
+
+                            ${image}
+
+                            <div class="cart-item-content">
+
+                                <div class="cart-item-name">
+                                    ${item.name}
+                                </div>
+
+                                <div class="cart-item-price">
+                                    ${formatPrice(price)}
+                                </div>
+
+                                <div class="cart-item-amount">
+                                    Mahsulot tanlanmagan
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="cart-item-bottom">
+
+                            <div
+                                class="cart-restore"
+                                onclick="restoreCartItem(${index})">
+
+                                Qaytarish
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="cart-delete"
+                                onclick="removeCartItem(${index})">
+
+                                O‘chirish
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            /* =================================================
+               NORMAL STATE
+            ================================================= */
+
+            container.innerHTML += `
+
+                <div class="cart-item">
+
+                    <div class="cart-item-main">
+
+                        ${image}
+
+                        <div class="cart-item-content">
+
+                            <div class="cart-item-name">
+                                ${item.name}
+                            </div>
+
+                            <div class="cart-item-price">
+                                ${formatPrice(price)}
+                            </div>
+
+                            <div class="cart-item-amount">
+                                ${amount}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="cart-item-bottom">
+
+                        <div class="cart-quantity">
+
+                            <button
+                                type="button"
+                                class="cart-quantity-button"
+                                onclick="decreaseCartItem(${index})">
+
+                                −
+
+                            </button>
+
+
+                            <span class="cart-quantity-value">
+
+                                ${quantity}
+
+                            </span>
+
+
+                            <button
+                                type="button"
+                                class="cart-quantity-button"
+                                onclick="increaseCartItem(${index})">
+
+                                +
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="cart-item-total">
+
+                            ${formatPrice(itemTotal)}
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="cart-delete"
+                            onclick="removeCartItem(${index})">
+
+                            O‘chirish
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    /* =====================================================
+       TOTAL
+    ===================================================== */
+
+    if (
+        totalElement
+    ) {
+
+        totalElement.innerHTML = `
+
+            Jami:
+            <span class="cart-total-price">
+                ${formatPrice(total)}
+            </span>
+
+        `;
+
+    }
+
+}
 
 /* =========================================================
    INCREASE CART ITEM
