@@ -6473,6 +6473,10 @@ function renderCart() {
     let total = 0;
 
 
+    /* =====================================================
+       EMPTY CART
+    ===================================================== */
+
     if (
         cart.length === 0
     ) {
@@ -6490,16 +6494,54 @@ function renderCart() {
     }
 
 
+    /* =====================================================
+       CART ITEMS
+    ===================================================== */
+
     cart.forEach(
-        (item,index) => {
+        (item, index) => {
+
+            const quantity =
+                Number(item.quantity) || 0;
+
 
             const itemTotal =
                 item.price *
-                item.quantity;
+                quantity;
 
 
-            total += itemTotal;
+            /* 0 bo‘lgan mahsulot jami summaga qo‘shilmaydi */
 
+            if (quantity > 0) {
+
+                total += itemTotal;
+
+            }
+
+
+            /* =================================================
+               PRODUCT IMAGE
+            ================================================= */
+
+            const image =
+                item.image
+                ? `<img
+                        src="${item.image}"
+                        class="cart-item-image"
+                        alt=""
+                   >`
+                : (
+                    item.icon
+                    ? `<div class="cart-item-image cart-item-icon">
+                            ${item.icon}
+                       </div>`
+                    : ""
+                );
+
+
+            /* =================================================
+               PRODUCT AMOUNT
+            ================================================= */
 
             let amount;
 
@@ -6509,41 +6551,165 @@ function renderCart() {
             ) {
 
                 amount =
-                    `${item.enteredAmount} ${item.selectedUnit}`;
+                    `${item.enteredAmount || 0} ${item.selectedUnit || "kg"}`;
 
             }
 
             else {
 
                 amount =
-                    `${item.quantity} dona`;
+                    `${quantity} dona`;
 
             }
 
+
+            /* =================================================
+               ZERO STATE
+            ================================================= */
+
+            if (
+                quantity <= 0
+            ) {
+
+                container.innerHTML += `
+
+                    <div class="cart-item cart-item-disabled">
+
+                        <div class="cart-item-main">
+
+                            ${image}
+
+                            <div class="cart-item-content">
+
+                                <div class="cart-item-name">
+                                    ${item.name}
+                                </div>
+
+                                <div class="cart-item-price">
+                                    ${formatPrice(item.price)}
+                                </div>
+
+                                <div class="cart-item-amount">
+                                    Mahsulot tanlanmagan
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="cart-item-bottom">
+
+                            <div class="cart-restore"
+                                 onclick="restoreCartItem(${index})">
+
+                                Qaytarish
+
+                            </div>
+
+
+                            <button
+                                class="cart-delete"
+                                onclick="removeCartItem(${index})">
+
+                                O‘chirish
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            /* =================================================
+               NORMAL STATE
+            ================================================= */
 
             container.innerHTML += `
 
                 <div class="cart-item">
 
-                    <div class="cart-item-name">
-                        ${item.name}
+                    <div class="cart-item-main">
+
+                        ${image}
+
+                        <div class="cart-item-content">
+
+                            <div class="cart-item-name">
+                                ${item.name}
+                            </div>
+
+                            <div class="cart-item-price">
+                                ${formatPrice(item.price)}
+                            </div>
+
+                            <div class="cart-item-amount">
+                                ${amount}
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    <div class="cart-item-price">
-                        ${amount}
+
+                    <div class="cart-item-bottom">
+
+
+                        <div class="cart-quantity">
+
+                            <button
+                                type="button"
+                                class="cart-quantity-button"
+                                onclick="decreaseCartItem(${index})">
+
+                                −
+
+                            </button>
+
+
+                            <span class="cart-quantity-value">
+
+                                ${quantity}
+
+                            </span>
+
+
+                            <button
+                                type="button"
+                                class="cart-quantity-button"
+                                onclick="increaseCartItem(${index})">
+
+                                +
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="cart-item-total">
+
+                            ${formatPrice(itemTotal)}
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="cart-delete"
+                            onclick="removeCartItem(${index})">
+
+                            O‘chirish
+
+                        </button>
+
+
                     </div>
-
-                    <div style="margin-top:7px;font-weight:bold;">
-                        ${formatPrice(itemTotal)}
-                    </div>
-
-                    <button
-                        class="remove-button"
-                        onclick="removeCartItem(${index})">
-
-                        🗑 O‘chirish
-
-                    </button>
 
                 </div>
 
@@ -6553,15 +6719,144 @@ function renderCart() {
     );
 
 
+    /* =====================================================
+       TOTAL
+    ===================================================== */
+
     document
         .getElementById(
             "cartTotal"
         )
-        .textContent =
-        `Jami: ${formatPrice(total)}`;
+        .innerHTML = `
+
+            Jami summa:
+            <span class="cart-total-price">
+                ${formatPrice(total)}
+            </span>
+
+        `;
+
+}
+/* =========================================================
+   INCREASE CART ITEM
+========================================================= */
+
+function increaseCartItem(index) {
+
+    if (
+        !cart[index]
+    ) {
+        return;
+    }
+
+
+    const item =
+        cart[index];
+
+
+    let quantity =
+        Number(item.quantity) || 0;
+
+
+    quantity += 1;
+
+
+    item.quantity =
+        quantity;
+
+
+    renderCart();
 
 }
 
+
+/* =========================================================
+   DECREASE CART ITEM
+========================================================= */
+
+function decreaseCartItem(index) {
+
+    if (
+        !cart[index]
+    ) {
+        return;
+    }
+
+
+    const item =
+        cart[index];
+
+
+    let quantity =
+        Number(item.quantity) || 0;
+
+
+    if (
+        quantity <= 0
+    ) {
+        return;
+    }
+
+
+    quantity -= 1;
+
+
+    item.quantity =
+        quantity;
+
+
+    renderCart();
+
+}
+
+
+/* =========================================================
+   UPDATE CART ITEM QUANTITY
+========================================================= */
+
+function updateCartItemQuantity(
+    index,
+    value
+) {
+
+    if (
+        !cart[index]
+    ) {
+        return;
+    }
+
+
+    const item =
+        cart[index];
+
+
+    let quantity =
+        Number(value);
+
+
+    if (
+        !Number.isFinite(quantity)
+        || quantity < 0
+    ) {
+
+        quantity = 0;
+
+    }
+
+
+    quantity =
+        Math.floor(
+            quantity
+        );
+
+
+    item.quantity =
+        quantity;
+
+
+    renderCart();
+
+}
 
 /* =========================================================
    REMOVE CART
