@@ -4729,17 +4729,20 @@ function findProduct(id) {
             products[category]
             .find(
                 item =>
-                item.id === Number(id)
+                String(item.id) === String(id)
             );
 
 
-        if (product) {
+        if (
+            product
+        ) {
 
             return product;
 
         }
 
     }
+
 
     return null;
 
@@ -6477,7 +6480,7 @@ function updateCart() {
 
         <span class="cart-bar-price">
 
-            ${formatPrice(total)} so‘m
+            ${formatPrice(total)}
 
         </span>
 
