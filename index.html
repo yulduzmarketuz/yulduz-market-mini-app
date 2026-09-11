@@ -4227,6 +4227,61 @@ let cart = [];
 
 
 /* =========================================================
+   LOAD CART FROM STORAGE
+========================================================= */
+
+try {
+
+    const savedCart =
+        localStorage.getItem("yulduzMarketCart");
+
+    if (savedCart) {
+
+        const parsedCart =
+            JSON.parse(savedCart);
+
+        if (Array.isArray(parsedCart)) {
+
+            cart = parsedCart;
+
+        }
+
+    }
+
+} catch (error) {
+
+    console.error(
+        "Savatni yuklashda xato:",
+        error
+    );
+
+}
+   /* =========================================================
+   SAVE CART TO STORAGE
+========================================================= */
+
+function saveCart() {
+
+    try {
+
+        localStorage.setItem(
+            "yulduzMarketCart",
+            JSON.stringify(cart)
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Savatni saqlashda xato:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
    ORDERS
 ========================================================= */
 
@@ -6455,6 +6510,8 @@ function addWeightProduct(id) {
 ========================================================= */
 
 function updateCart() {
+
+    saveCart();
 
     const cartBar =
         document.getElementById(
