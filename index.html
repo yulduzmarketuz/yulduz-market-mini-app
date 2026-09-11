@@ -6991,31 +6991,22 @@ function openCart() {
 }
 /* =========================================================
    RENDER CART
+   YULDUZ MARKET — PREMIUM CART
 ========================================================= */
 
 function renderCart() {
 
     const container =
-        document.getElementById(
-            "cartItems"
-        );
-
+        document.getElementById("cartItems");
 
     const totalElement =
-        document.getElementById(
-            "cartTotal"
-        );
+        document.getElementById("cartTotal");
 
-
-    if (
-        !container
-    ) {
+    if (!container) {
         return;
     }
 
-
     container.innerHTML = "";
-
 
     let total = 0;
 
@@ -7024,9 +7015,7 @@ function renderCart() {
        EMPTY CART
     ===================================================== */
 
-    if (
-        cart.length === 0
-    ) {
+    if (cart.length === 0) {
 
         container.innerHTML = `
 
@@ -7038,25 +7027,21 @@ function renderCart() {
 
         `;
 
-
-        if (
-            totalElement
-        ) {
+        if (totalElement) {
 
             totalElement.innerHTML = `
 
                 Jami:
+
                 <span class="cart-total-price">
-                    0
+                    0 so‘m
                 </span>
 
             `;
 
         }
 
-
         return;
-
     }
 
 
@@ -7070,18 +7055,19 @@ function renderCart() {
             const quantity =
                 Number(item.quantity) || 0;
 
-
             const price =
                 Number(item.price) || 0;
 
+
+            /* =================================================
+               TOTAL
+            ================================================= */
 
             const itemTotal =
                 price * quantity;
 
 
-            if (
-                quantity > 0
-            ) {
+            if (quantity > 0) {
 
                 total += itemTotal;
 
@@ -7094,17 +7080,38 @@ function renderCart() {
 
             const image =
                 item.image
-                ? `<img
-                        src="${item.image}"
-                        class="cart-item-image"
-                        alt=""
-                   >`
+
+                ? `
+                    <div class="cart-item-image">
+
+                        <img
+                            src="${item.image}"
+                            alt=""
+                        >
+
+                    </div>
+                `
+
                 : (
+
                     item.icon
-                    ? `<div class="cart-item-image cart-item-icon">
+
+                    ? `
+                        <div class="cart-item-image cart-item-icon">
+
                             ${item.icon}
-                       </div>`
-                    : ""
+
+                        </div>
+                    `
+
+                    : `
+                        <div class="cart-item-image cart-item-icon">
+
+                            🛒
+
+                        </div>
+                    `
+
                 );
 
 
@@ -7112,22 +7119,52 @@ function renderCart() {
                PRODUCT AMOUNT
             ================================================= */
 
-            let amount;
+            let amountText = "";
+
+            let quantityValue = quantity;
 
 
-            if (
-                item.unit === "kg"
-            ) {
+            if (item.unit === "kg") {
 
-                amount =
-                    `${item.enteredAmount || 0} ${item.selectedUnit || "kg"}`;
+                const enteredAmount =
+                    Number(item.enteredAmount);
+
+
+                const selectedUnit =
+                    item.selectedUnit || "kg";
+
+
+                if (
+                    Number.isFinite(
+                        enteredAmount
+                    ) &&
+                    enteredAmount > 0
+                ) {
+
+                    amountText =
+                        `${enteredAmount} ${selectedUnit} × ${formatPrice(price).replace(" so‘m", "")}`;
+
+                }
+
+                else {
+
+                    amountText =
+                        `${quantity} kg × ${formatPrice(price).replace(" so‘m", "")}`;
+
+                }
+
+                quantityValue =
+                    quantity;
 
             }
 
             else {
 
-                amount =
-                    `${quantity} dona`;
+                amountText =
+                    `${quantity} dona × ${formatPrice(price).replace(" so‘m", "")}`;
+
+                quantityValue =
+                    quantity;
 
             }
 
@@ -7136,9 +7173,7 @@ function renderCart() {
                ZERO STATE
             ================================================= */
 
-            if (
-                quantity <= 0
-            ) {
+            if (quantity <= 0) {
 
                 container.innerHTML += `
 
@@ -7151,15 +7186,23 @@ function renderCart() {
                             <div class="cart-item-content">
 
                                 <div class="cart-item-name">
+
                                     ${item.name}
+
                                 </div>
+
 
                                 <div class="cart-item-price">
+
                                     ${formatPrice(price)}
+
                                 </div>
 
+
                                 <div class="cart-item-amount">
+
                                     Mahsulot tanlanmagan
+
                                 </div>
 
                             </div>
@@ -7169,13 +7212,14 @@ function renderCart() {
 
                         <div class="cart-item-bottom">
 
-                            <div
+                            <button
+                                type="button"
                                 class="cart-restore"
                                 onclick="restoreCartItem(${index})">
 
                                 Qaytarish
 
-                            </div>
+                            </button>
 
 
                             <button
@@ -7194,12 +7238,11 @@ function renderCart() {
                 `;
 
                 return;
-
             }
 
 
             /* =================================================
-               NORMAL STATE
+               NORMAL ITEM
             ================================================= */
 
             container.innerHTML += `
@@ -7210,21 +7253,37 @@ function renderCart() {
 
                         ${image}
 
+
                         <div class="cart-item-content">
 
                             <div class="cart-item-name">
+
                                 ${item.name}
+
                             </div>
+
 
                             <div class="cart-item-price">
-                                ${formatPrice(price)}
+
+                                ${amountText}
+
                             </div>
 
+
                             <div class="cart-item-amount">
-                                ${amount}
+
+                                ${formatPrice(itemTotal)}
+
                             </div>
 
                         </div>
+
+                    </div>
+
+
+                    <div class="cart-item-total">
+
+                        ${formatPrice(itemTotal)}
 
                     </div>
 
@@ -7245,7 +7304,7 @@ function renderCart() {
 
                             <span class="cart-quantity-value">
 
-                                ${quantity}
+                                ${quantityValue}
 
                             </span>
 
@@ -7262,17 +7321,11 @@ function renderCart() {
                         </div>
 
 
-                        <div class="cart-item-total">
-
-                            ${formatPrice(itemTotal)}
-
-                        </div>
-
-
                         <button
                             type="button"
                             class="cart-delete"
-                            onclick="removeCartItem(${index})">
+                            onclick="removeCartItem(${index})"
+                            aria-label="O‘chirish">
 
                             O‘chirish
 
@@ -7292,15 +7345,16 @@ function renderCart() {
        TOTAL
     ===================================================== */
 
-    if (
-        totalElement
-    ) {
+    if (totalElement) {
 
         totalElement.innerHTML = `
 
             Jami:
+
             <span class="cart-total-price">
+
                 ${formatPrice(total)}
+
             </span>
 
         `;
@@ -7315,9 +7369,7 @@ function renderCart() {
 
 function increaseCartItem(index) {
 
-    if (
-        !cart[index]
-    ) {
+    if (!cart[index]) {
         return;
     }
 
@@ -7330,19 +7382,82 @@ function increaseCartItem(index) {
         Number(item.quantity) || 0;
 
 
-    quantity += 1;
+    /* =====================================================
+       WEIGHT PRODUCT
+    ===================================================== */
+
+    if (item.unit === "kg") {
+
+        quantity += 0.5;
+
+        quantity =
+            Math.round(
+                quantity * 100
+            ) / 100;
 
 
-    item.quantity =
-        quantity;
+        item.quantity =
+            quantity;
 
 
-    /* Aqlli savat + badge */
+        /* enteredAmount ni ham yangilaymiz */
+
+        if (item.selectedUnit === "g") {
+
+            item.enteredAmount =
+                Math.round(
+                    quantity * 1000
+                );
+
+        }
+
+        else {
+
+            item.enteredAmount =
+                quantity;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       NORMAL PRODUCT
+    ===================================================== */
+
+    else {
+
+        quantity += 1;
+
+        item.quantity =
+            quantity;
+
+    }
+
+
+    /* =====================================================
+       RESTORE TIMER
+    ===================================================== */
+
+    if (
+        item.restoreTimer
+    ) {
+
+        clearTimeout(
+            item.restoreTimer
+        );
+
+        item.restoreTimer =
+            null;
+
+    }
+
+
+    /* =====================================================
+       UPDATE
+    ===================================================== */
 
     updateCart();
-
-
-    /* Savat sahifasi */
 
     renderCart();
 
@@ -7355,9 +7470,7 @@ function increaseCartItem(index) {
 
 function decreaseCartItem(index) {
 
-    if (
-        !cart[index]
-    ) {
+    if (!cart[index]) {
         return;
     }
 
@@ -7370,27 +7483,80 @@ function decreaseCartItem(index) {
         Number(item.quantity) || 0;
 
 
-    if (
-        quantity <= 0
-    ) {
-        return;
+    /* =====================================================
+       WEIGHT PRODUCT
+    ===================================================== */
+
+    if (item.unit === "kg") {
+
+        quantity -= 0.5;
+
+        quantity =
+            Math.round(
+                quantity * 100
+            ) / 100;
+
+
+        if (quantity < 0) {
+            quantity = 0;
+        }
+
+
+        item.quantity =
+            quantity;
+
+
+        /* enteredAmount ni ham yangilaymiz */
+
+        if (item.selectedUnit === "g") {
+
+            item.enteredAmount =
+                Math.round(
+                    quantity * 1000
+                );
+
+        }
+
+        else {
+
+            item.enteredAmount =
+                quantity;
+
+        }
+
     }
 
 
-    quantity -= 1;
+    /* =====================================================
+       NORMAL PRODUCT
+    ===================================================== */
+
+    else {
+
+        if (quantity <= 0) {
+            return;
+        }
 
 
-    item.quantity =
-        quantity;
+        quantity -= 1;
+
+
+        if (quantity < 0) {
+            quantity = 0;
+        }
+
+
+        item.quantity =
+            quantity;
+
+    }
 
 
     /* =====================================================
        ZERO → 7 SECOND AUTO DELETE
     ===================================================== */
 
-    if (
-        quantity === 0
-    ) {
+    if (quantity === 0) {
 
         if (
             item.restoreTimer
@@ -7412,8 +7578,7 @@ function decreaseCartItem(index) {
 
 
                     if (
-                        currentItem
-                        &&
+                        currentItem &&
                         Number(
                             currentItem.quantity
                         ) === 0
@@ -7438,12 +7603,11 @@ function decreaseCartItem(index) {
     }
 
 
-    /* Aqlli savat + badge */
+    /* =====================================================
+       UPDATE
+    ===================================================== */
 
     updateCart();
-
-
-    /* Savat sahifasi */
 
     renderCart();
 
