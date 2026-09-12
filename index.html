@@ -6700,6 +6700,17 @@ function openCart() {
         .remove("hidden");
 
 
+    const cartBar =
+        document.getElementById("cartBar");
+
+
+    if (cartBar) {
+
+        cartBar.classList.add("hidden");
+
+    }
+
+
     renderCart();
 
 }
@@ -8805,12 +8816,26 @@ function goHome() {
 
     hideAll();
 
+
     document
         .getElementById("homePage")
         .classList
         .remove("hidden");
 
+
+    const cartBar =
+        document.getElementById("cartBar");
+
+
+    if (cartBar) {
+
+        cartBar.classList.remove("hidden");
+
+    }
+
+
     setActiveNav(0);
+
 
     renderRecommendedProducts();
 
