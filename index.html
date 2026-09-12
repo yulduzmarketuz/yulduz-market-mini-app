@@ -7793,9 +7793,9 @@ function renderOrderSummary() {
    PHONE
 ========================================================= */
 
-function requestPhone() {
+async function requestPhone() {
 
-    /* Telegram mavjud bo‘lmasa */
+    /* Telegram mavjud bo'lmasa */
     if (!tg) {
 
         const phone =
@@ -7817,7 +7817,8 @@ function requestPhone() {
                     ✅ ${phone}
                 </div>`;
 
-            saveCustomerToD1();
+            await saveCustomerToD1();
+
         }
 
         return;
@@ -7829,51 +7830,89 @@ function requestPhone() {
     ===================================================== */
 
     if (
-        typeof tg.requestContact ===
+        typeof tg.requestContact !==
         "function"
     ) {
-
-        tg.requestContact(
-            function (shared) {
-
-                /* Foydalanuvchi tasdiqladi */
-                if (shared) {
-
-                    /*
-                       Telegram bu yerda
-                       kontakt yuborilganini bildiradi.
-                    */
-
-                    showToast(
-                        "Telefon raqamingiz qabul qilindi."
-                    );
-
-                    /*
-                       Telefon raqam Telegram tomonidan
-                       botga contact sifatida yuboriladi.
-
-                       D1 ga saqlash jarayoni
-                       backend orqali bajariladi.
-                    */
-
-                } else {
-
-                    showToast(
-                        "Telefon raqamini yuborish bekor qilindi."
-                    );
-
-                }
-
-            }
-        );
-
-    } else {
 
         showToast(
             "Telegram telefon raqamini yuborishni qo‘llab-quvvatlamaydi."
         );
 
+        return;
     }
+
+
+    tg.requestContact(
+        async function (shared) {
+
+            /* Foydalanuvchi yubormadi */
+            if (!shared) {
+
+                showToast(
+                    "Telefon raqamini yuborish bekor qilindi."
+                );
+
+                return;
+            }
+
+
+            /* =================================================
+               TELEGRAM → BOT → D1
+            ================================================= */
+
+            showToast(
+                "Telefon raqamingiz qabul qilindi."
+            );
+
+
+            /*
+             * Telegram contact'ni botga yuboradi.
+             * Worker uni D1 ga saqlaydi.
+             *
+             * Shuning uchun biroz kutib,
+             * D1 dan qayta o‘qiymiz.
+             */
+
+            setTimeout(
+                async function () {
+
+                    await loadCustomerFromD1();
+
+
+                    /* =================================================
+                       TELEFONNI EKRANGA CHIQARISH
+                    ================================================= */
+
+                    const phoneElement =
+                        document.getElementById(
+                            "phoneReceived"
+                        );
+
+
+                    if (
+                        customer.phone
+                    ) {
+
+                        phoneElement.innerHTML =
+                            `<div class="received">
+                                ✅ ${customer.phone}
+                            </div>`;
+
+                    } else {
+
+                        phoneElement.innerHTML =
+                            `<div class="received">
+                                ⚠️ Telefon raqami hali olinmadi.
+                            </div>`;
+
+                    }
+
+                },
+                1500
+            );
+
+        }
+    );
 
 }
 
