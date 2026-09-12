@@ -4200,7 +4200,18 @@ async function loadCustomerFromD1() {
 
 async function saveCustomerToD1() {
 
+    console.log(
+        "SAVE CUSTOMER TO D1 BOSHLANDI:",
+        customer
+    );
+
+
     if (!customer.telegram_id) {
+
+        console.error(
+            "❌ telegram_id mavjud emas:",
+            customer
+        );
 
         return;
 
@@ -4228,15 +4239,33 @@ async function saveCustomerToD1() {
             );
 
 
+        console.log(
+            "D1 POST HTTP STATUS:",
+            response.status
+        );
+
+
         const data =
             await response.json();
+
+
+        console.log(
+            "D1 POST RESPONSE:",
+            data
+        );
 
 
         if (!data.success) {
 
             console.error(
-                "D1 customer saqlash xatosi:",
+                "❌ D1 customer saqlash xatosi:",
                 data
+            );
+
+        } else {
+
+            console.log(
+                "✅ CUSTOMER D1 GA SAQLANDI"
             );
 
         }
@@ -4244,14 +4273,13 @@ async function saveCustomerToD1() {
     } catch (error) {
 
         console.error(
-            "D1 customer POST xatosi:",
+            "❌ D1 customer POST xatosi:",
             error
         );
 
     }
 
 }
-
 /* =========================================================
    PRODUCTS
 ========================================================= */
