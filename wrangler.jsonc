@@ -3,9 +3,19 @@
   "name": "yulduz-market-mini-app",
   "main": "worker.js",
   "compatibility_date": "2026-08-28",
+
   "assets": {
     "directory": "."
   },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "Yulduz Market",
+      "database_id": "27d71495-6749-456b-85f5-274c9dbfb8cf"
+    }
+  ],
+
   "observability": {
     "enabled": true
   }
