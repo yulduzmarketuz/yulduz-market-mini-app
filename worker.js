@@ -87,9 +87,130 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
         return new Response("OK");
       } catch (error) {
         console.error("Telegram webhook error:", error);
+
         return new Response("Webhook error", {
           status: 500
         });
+      }
+    }
+
+    // =========================
+    // D1: SAVE CUSTOMER
+    // =========================
+    if (
+      url.pathname === "/customer" &&
+      request.method === "POST"
+    ) {
+      try {
+        const data = await request.json();
+
+        const telegramId =
+          data.telegram_id?.toString();
+
+        if (!telegramId) {
+          return json(
+            {
+              error: "telegram_id kerak"
+            },
+            400
+          );
+        }
+
+        await env.DB.prepare(`
+          INSERT INTO customers (
+            telegram_id,
+            first_name,
+            last_name,
+            username,
+            phone
+          )
+          VALUES (?, ?, ?, ?, ?)
+          ON CONFLICT(telegram_id)
+          DO UPDATE SET
+            first_name = excluded.first_name,
+            last_name = excluded.last_name,
+            username = excluded.username,
+            phone = excluded.phone,
+            updated_at = CURRENT_TIMESTAMP
+        `)
+          .bind(
+            telegramId,
+            data.first_name || "",
+            data.last_name || "",
+            data.username || "",
+            data.phone || ""
+          )
+          .run();
+
+        return json({
+          success: true
+        });
+
+      } catch (error) {
+        console.error("D1 customer error:", error);
+
+        return json(
+          {
+            error: "Mijozni saqlashda xatolik",
+            message: error.message
+          },
+          500
+        );
+      }
+    }
+
+    // =========================
+    // D1: GET CUSTOMER
+    // =========================
+    if (
+      url.pathname === "/customer" &&
+      request.method === "GET"
+    ) {
+      try {
+        const telegramId =
+          url.searchParams.get("telegram_id");
+
+        if (!telegramId) {
+          return json(
+            {
+              error: "telegram_id kerak"
+            },
+            400
+          );
+        }
+
+        const result =
+          await env.DB.prepare(`
+            SELECT
+              id,
+              telegram_id,
+              first_name,
+              last_name,
+              username,
+              phone,
+              created_at,
+              updated_at
+            FROM customers
+            WHERE telegram_id = ?
+          `)
+            .bind(telegramId)
+            .first();
+
+        return json({
+          success: true,
+          customer: result || null
+        });
+
+      } catch (error) {
+        console.error("D1 customer GET error:", error);
+
+        return json(
+          {
+            error: "Mijozni olishda xatolik",
+            message: error.message
+          },
+          500
+        );
       }
     }
 
@@ -165,9 +286,14 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
       request.method === "GET"
     ) {
       try {
-        const branch = url.searchParams.get("branch");
-        const page = url.searchParams.get("page") || "1";
-        const limit = url.searchParams.get("limit") || "100";
+        const branch =
+          url.searchParams.get("branch");
+
+        const page =
+          url.searchParams.get("page") || "1";
+
+        const limit =
+          url.searchParams.get("limit") || "100";
 
         if (!branch) {
           return json(
