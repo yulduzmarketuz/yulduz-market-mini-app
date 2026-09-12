@@ -4022,7 +4022,6 @@ if (tg) {
 
     /* =====================================================
        FULLSCREEN
-       Telegram panelini maksimal darajada olib tashlaydi
     ===================================================== */
 
     if (typeof tg.requestFullscreen === "function") {
@@ -4030,7 +4029,10 @@ if (tg) {
         try {
             tg.requestFullscreen();
         } catch (error) {
-            console.log("Fullscreen ishlamadi:", error);
+            console.log(
+                "Fullscreen ishlamadi:",
+                error
+            );
         }
 
     }
@@ -4039,7 +4041,10 @@ if (tg) {
        SWIPE TO CLOSE — O‘CHIRILADI
     ===================================================== */
 
-    if (typeof tg.disableVerticalSwipes === "function") {
+    if (
+        typeof tg.disableVerticalSwipes ===
+        "function"
+    ) {
 
         tg.disableVerticalSwipes();
 
@@ -4069,6 +4074,10 @@ let customer = {
 };
 
 
+/* =========================================================
+   LOAD TELEGRAM USER
+========================================================= */
+
 if (
     tg &&
     tg.initDataUnsafe &&
@@ -4082,20 +4091,166 @@ if (
     customer.telegram_id =
         user.id;
 
+
     customer.first_name =
         user.first_name || "";
+
 
     customer.last_name =
         user.last_name || "";
 
+
     customer.username =
         user.username || "";
+
+
+    /* =====================================================
+       D1 DAN MIJOZ MA'LUMOTINI OLISH
+    ===================================================== */
+
+    loadCustomerFromD1();
 
 
     updateWelcome();
 
 }
 
+
+/* =========================================================
+   LOAD CUSTOMER FROM D1
+========================================================= */
+
+async function loadCustomerFromD1() {
+
+    if (!customer.telegram_id) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/customer?telegram_id=${customer.telegram_id}`
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            data.success &&
+            data.customer
+        ) {
+
+            const savedCustomer =
+                data.customer;
+
+
+            customer.first_name =
+                savedCustomer.first_name ||
+                customer.first_name;
+
+
+            customer.last_name =
+                savedCustomer.last_name ||
+                customer.last_name;
+
+
+            customer.username =
+                savedCustomer.username ||
+                customer.username;
+
+
+            customer.phone =
+                savedCustomer.phone ||
+                "";
+
+
+            /* Profil ochiq bo‘lsa yangilash */
+            if (
+                typeof renderProfile ===
+                "function"
+            ) {
+
+                renderProfile();
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "D1 customer yuklash xatosi:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SAVE CUSTOMER TO D1
+========================================================= */
+
+async function saveCustomerToD1() {
+
+    if (!customer.telegram_id) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/customer",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            customer
+                        )
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            console.error(
+                "D1 customer saqlash xatosi:",
+                data
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "D1 customer POST xatosi:",
+            error
+        );
+
+    }
+
+}
 
 /* =========================================================
    PRODUCTS
@@ -7640,6 +7795,7 @@ function renderOrderSummary() {
 
 function requestPhone() {
 
+    /* Telegram mavjud bo‘lmasa */
     if (!tg) {
 
         const phone =
@@ -7647,12 +7803,10 @@ function requestPhone() {
                 "Telefon raqamingiz:"
             );
 
-
         if (phone) {
 
             customer.phone =
                 phone;
-
 
             document
                 .getElementById(
@@ -7663,19 +7817,65 @@ function requestPhone() {
                     ✅ ${phone}
                 </div>`;
 
+            saveCustomerToD1();
         }
 
         return;
-
     }
 
 
-    showToast(
-        "Telegram orqali telefon raqam olish backend bot bilan ulanadi."
-    );
+    /* =====================================================
+       TELEGRAM CONTACT REQUEST
+    ===================================================== */
+
+    if (
+        typeof tg.requestContact ===
+        "function"
+    ) {
+
+        tg.requestContact(
+            function (shared) {
+
+                /* Foydalanuvchi tasdiqladi */
+                if (shared) {
+
+                    /*
+                       Telegram bu yerda
+                       kontakt yuborilganini bildiradi.
+                    */
+
+                    showToast(
+                        "Telefon raqamingiz qabul qilindi."
+                    );
+
+                    /*
+                       Telefon raqam Telegram tomonidan
+                       botga contact sifatida yuboriladi.
+
+                       D1 ga saqlash jarayoni
+                       backend orqali bajariladi.
+                    */
+
+                } else {
+
+                    showToast(
+                        "Telefon raqamini yuborish bekor qilindi."
+                    );
+
+                }
+
+            }
+        );
+
+    } else {
+
+        showToast(
+            "Telegram telefon raqamini yuborishni qo‘llab-quvvatlamaydi."
+        );
+
+    }
 
 }
-
 
 /* =========================================================
    LOCATION
