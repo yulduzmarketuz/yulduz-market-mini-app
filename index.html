@@ -4503,10 +4503,7 @@ let favorites =
    ADDRESSES
 ========================================================= */
 
-let savedAddresses =
-    JSON.parse(
-        localStorage.getItem("yulduz_addresses") || "[]"
-    );
+let savedAddresses = [];
 
 
 /* =========================================================
@@ -8148,7 +8145,7 @@ function useSavedAddress(index) {
    OPEN ADDRESSES
 ========================================================= */
 
-function openAddresses() {
+async function openAddresses() {
 
     hideAll();
 
@@ -8161,10 +8158,92 @@ function openAddresses() {
         .remove("hidden");
 
 
-    renderAddresses();
+    await loadAddressesFromD1();
 
 }
+/* =========================================================
+   LOAD ADDRESSES FROM D1
+========================================================= */
 
+async function loadAddressesFromD1() {
+
+    if (!customer.telegram_id) {
+
+        console.error(
+            "❌ Manzillarni yuklash uchun telegram_id yo‘q."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/addresses?telegram_id=${customer.telegram_id}`
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            console.error(
+                "❌ D1 addresses GET xatosi:",
+                data
+            );
+
+            return;
+        }
+
+
+        savedAddresses =
+            (data.addresses || []).map(
+                address => ({
+
+                    id:
+                        address.id,
+
+                    name:
+                        address.name,
+
+                    icon:
+                        address.icon || "📍",
+
+                    location: {
+
+                        latitude:
+                            Number(
+                                address.latitude
+                            ),
+
+                        longitude:
+                            Number(
+                                address.longitude
+                            )
+
+                    }
+
+                })
+            );
+
+
+        renderAddresses();
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ D1 addresses yuklash xatosi:",
+            error
+        );
+
+    }
+
+}
 
 /* =========================================================
    RENDER ADDRESSES
@@ -8257,26 +8336,31 @@ function renderAddresses() {
    NEW ADDRESS
 ========================================================= */
 
-function requestNewAddress() {
+async function requestNewAddress() {
 
-    if (
-        !navigator.geolocation
-    ) {
+    if (!navigator.geolocation) {
 
         showToast(
             "Lokatsiya funksiyasi mavjud emas."
         );
 
         return;
-
     }
 
 
-    navigator
-    .geolocation
-    .getCurrentPosition(
+    if (!customer.telegram_id) {
 
-        position => {
+        showToast(
+            "Mijoz ma'lumotlari hali yuklanmagan."
+        );
+
+        return;
+    }
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        async position => {
 
             const name =
                 prompt(
@@ -8290,57 +8374,91 @@ function requestNewAddress() {
             ) {
 
                 return;
-
             }
 
 
             const address = {
 
-                id:
-                    Date.now(),
+                telegram_id:
+                    customer.telegram_id,
 
                 name:
                     name.trim(),
 
                 icon:
                     name
-                    .toLowerCase()
-                    .includes("ish")
-                    ? "🏢"
-                    : "🏠",
+                        .toLowerCase()
+                        .includes("ish")
+                        ? "🏢"
+                        : "🏠",
 
-                location: {
+                latitude:
+                    position.coords.latitude,
 
-                    latitude:
-                        position.coords.latitude,
-
-                    longitude:
-                        position.coords.longitude
-
-                }
+                longitude:
+                    position.coords.longitude
 
             };
 
 
-            savedAddresses.push(
-                address
-            );
+            try {
+
+                const response =
+                    await fetch(
+                        "/addresses",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    address
+                                )
+                        }
+                    );
 
 
-            localStorage.setItem(
-                "yulduz_addresses",
-                JSON.stringify(
-                    savedAddresses
-                )
-            );
+                const data =
+                    await response.json();
 
 
-            renderAddresses();
+                if (!data.success) {
+
+                    console.error(
+                        "Manzilni D1 ga saqlash xatosi:",
+                        data
+                    );
+
+                    showToast(
+                        "❌ Manzilni saqlab bo‘lmadi."
+                    );
+
+                    return;
+                }
 
 
-            showToast(
-                "📍 Manzil saqlandi"
-            );
+                showToast(
+                    "📍 Manzil saqlandi"
+                );
+
+
+                await loadAddressesFromD1();
+
+            } catch (error) {
+
+                console.error(
+                    "D1 address POST xatosi:",
+                    error
+                );
+
+                showToast(
+                    "❌ Manzilni saqlashda xatolik."
+                );
+            }
 
         },
 
@@ -8356,7 +8474,6 @@ function requestNewAddress() {
     );
 
 }
-
 
 /* =========================================================
    USE ADDRESS FOR ORDER
@@ -8397,7 +8514,7 @@ function useAddressForOrder(index) {
    DELETE ADDRESS
 ========================================================= */
 
-function deleteAddress(index) {
+async function deleteAddress(index) {
 
     if (
         !confirm(
@@ -8410,21 +8527,93 @@ function deleteAddress(index) {
     }
 
 
-    savedAddresses.splice(
-        index,
-        1
-    );
+    const address =
+        savedAddresses[index];
 
 
-    localStorage.setItem(
-        "yulduz_addresses",
-        JSON.stringify(
-            savedAddresses
-        )
-    );
+    if (!address) {
+
+        return;
+
+    }
 
 
-    renderAddresses();
+    if (!customer.telegram_id) {
+
+        showToast(
+            "Mijoz ma'lumotlari topilmadi."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/addresses",
+                {
+                    method: "DELETE",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            id:
+                                address.id,
+
+                            telegram_id:
+                                customer.telegram_id
+                        })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            console.error(
+                "❌ Manzilni o‘chirish xatosi:",
+                data
+            );
+
+            showToast(
+                "❌ Manzilni o‘chirib bo‘lmadi."
+            );
+
+            return;
+
+        }
+
+
+        showToast(
+            "🗑 Manzil o‘chirildi"
+        );
+
+
+        await loadAddressesFromD1();
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ D1 address DELETE xatosi:",
+            error
+        );
+
+        showToast(
+            "❌ Manzilni o‘chirishda xatolik."
+        );
+
+    }
 
 }
 
