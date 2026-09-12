@@ -32,24 +32,117 @@ export default {
     const url = new URL(request.url);
 
     // =========================
-    // TELEGRAM WEBHOOK
+// TELEGRAM WEBHOOK
+// =========================
+if (
+  url.pathname === "/telegram-webhook" &&
+  request.method === "POST"
+) {
+  try {
+    const update = await request.json();
+
     // =========================
-    if (
-      url.pathname === "/telegram-webhook" &&
-      request.method === "POST"
-    ) {
-      try {
-        const update = await request.json();
+    // USER MESSAGE
+    // =========================
+    const message = update.message;
 
-        if (update.message?.text === "/start") {
-          const chatId = update.message.chat.id;
-          const user = update.message.from;
+    if (message) {
 
-          const username = user.username
+      const chatId =
+        message.chat?.id;
+
+      const user =
+        message.from;
+
+      // =========================
+      // CONTACT → D1
+      // =========================
+      if (message.contact) {
+
+        const contact =
+          message.contact;
+
+        const telegramId =
+          contact.user_id?.toString() ||
+          user?.id?.toString();
+
+        const phone =
+          contact.phone_number || "";
+
+        if (
+          telegramId &&
+          phone
+        ) {
+
+          await env.DB.prepare(`
+            INSERT INTO customers (
+              telegram_id,
+              first_name,
+              last_name,
+              username,
+              phone
+            )
+            VALUES (?, ?, ?, ?, ?)
+            ON CONFLICT(telegram_id)
+            DO UPDATE SET
+              first_name = excluded.first_name,
+              last_name = excluded.last_name,
+              username = excluded.username,
+              phone = excluded.phone,
+              updated_at = CURRENT_TIMESTAMP
+          `)
+            .bind(
+              telegramId,
+              user?.first_name || "",
+              user?.last_name || "",
+              user?.username
+                ? `@${user.username}`
+                : "",
+              phone
+            )
+            .run();
+
+          console.log(
+            "✅ TELEFON D1 GA SAQLANDI:",
+            telegramId,
+            phone
+          );
+
+          await fetch(
+            `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+              body: JSON.stringify({
+                chat_id: chatId,
+                text:
+                  "✅ Telefon raqamingiz saqlandi."
+              })
+            }
+          );
+        }
+
+        return new Response("OK");
+      }
+
+      // =========================
+      // /start
+      // =========================
+      if (
+        message.text === "/start"
+      ) {
+
+        const username =
+          user?.username
             ? `@${user.username}`
-            : user.first_name || "mijoz";
+            : user?.first_name ||
+              "mijoz";
 
-          const text = `⭐ YULDUZ MARKET
+        const text =
+`⭐ YULDUZ MARKET
 
 Salom, ${username}! 👋
 
@@ -57,42 +150,54 @@ Xaridlaringizni uydan chiqmasdan amalga oshiring.
 
 Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
 
-          await fetch(
-            `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                chat_id: chatId,
-                text,
-                reply_markup: {
-                  inline_keyboard: [
-                    [
-                      {
-                        text: "🛒 HARIDLARNI BOSHLASH",
-                        web_app: {
-                          url: MINI_APP_URL
-                        }
+        await fetch(
+          `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body: JSON.stringify({
+              chat_id: chatId,
+              text,
+              reply_markup: {
+                inline_keyboard: [
+                  [
+                    {
+                      text:
+                        "🛒 HARIDLARNI BOSHLASH",
+                      web_app: {
+                        url:
+                          MINI_APP_URL
                       }
-                    ]
+                    }
                   ]
-                }
-              })
-            }
-          );
-        }
-
-        return new Response("OK");
-      } catch (error) {
-        console.error("Telegram webhook error:", error);
-
-        return new Response("Webhook error", {
-          status: 500
-        });
+                ]
+              }
+            })
+          }
+        );
       }
     }
+
+    return new Response("OK");
+
+  } catch (error) {
+
+    console.error(
+      "Telegram webhook error:",
+      error
+    );
+
+    return new Response(
+      "Webhook error",
+      {
+        status: 500
+      }
+    );
+  }
+}
 
     // =========================
     // D1: SAVE CUSTOMER
