@@ -318,6 +318,219 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
         );
       }
     }
+    // =========================
+// D1: ADDRESSES
+// =========================
+
+// GET ADDRESSES
+if (
+  url.pathname === "/addresses" &&
+  request.method === "GET"
+) {
+  try {
+
+    const telegramId =
+      url.searchParams.get("telegram_id");
+
+    if (!telegramId) {
+      return json(
+        {
+          error: "telegram_id kerak"
+        },
+        400
+      );
+    }
+
+    const result =
+      await env.DB.prepare(`
+        SELECT
+          id,
+          telegram_id,
+          name,
+          icon,
+          latitude,
+          longitude,
+          created_at,
+          updated_at
+        FROM addresses
+        WHERE telegram_id = ?
+        ORDER BY id DESC
+      `)
+        .bind(telegramId)
+        .all();
+
+    return json({
+      success: true,
+      addresses: result.results || []
+    });
+
+  } catch (error) {
+
+    console.error(
+      "D1 addresses GET error:",
+      error
+    );
+
+    return json(
+      {
+        error: "Manzillarni olishda xatolik",
+        message: error.message
+      },
+      500
+    );
+  }
+}
+
+
+// POST ADDRESS
+if (
+  url.pathname === "/addresses" &&
+  request.method === "POST"
+) {
+  try {
+
+    const data =
+      await request.json();
+
+    const telegramId =
+      data.telegram_id?.toString();
+
+    if (!telegramId) {
+      return json(
+        {
+          error: "telegram_id kerak"
+        },
+        400
+      );
+    }
+
+    if (
+      !data.name ||
+      data.latitude === undefined ||
+      data.longitude === undefined
+    ) {
+      return json(
+        {
+          error:
+            "name, latitude va longitude kerak"
+        },
+        400
+      );
+    }
+
+    const result =
+      await env.DB.prepare(`
+        INSERT INTO addresses (
+          telegram_id,
+          name,
+          icon,
+          latitude,
+          longitude
+        )
+        VALUES (?, ?, ?, ?, ?)
+      `)
+        .bind(
+          telegramId,
+          data.name.trim(),
+          data.icon || "📍",
+          Number(data.latitude),
+          Number(data.longitude)
+        )
+        .run();
+
+    return json({
+      success: true,
+      id: result.meta?.last_row_id || null
+    });
+
+  } catch (error) {
+
+    console.error(
+      "D1 addresses POST error:",
+      error
+    );
+
+    return json(
+      {
+        error: "Manzilni saqlashda xatolik",
+        message: error.message
+      },
+      500
+    );
+  }
+}
+
+
+// DELETE ADDRESS
+if (
+  url.pathname === "/addresses" &&
+  request.method === "DELETE"
+) {
+  try {
+
+    const data =
+      await request.json();
+
+    const telegramId =
+      data.telegram_id?.toString();
+
+    const addressId =
+      Number(data.id);
+
+    if (!telegramId) {
+      return json(
+        {
+          error: "telegram_id kerak"
+        },
+        400
+      );
+    }
+
+    if (!addressId) {
+      return json(
+        {
+          error: "address id kerak"
+        },
+        400
+      );
+    }
+
+    const result =
+      await env.DB.prepare(`
+        DELETE FROM addresses
+        WHERE id = ?
+        AND telegram_id = ?
+      `)
+        .bind(
+          addressId,
+          telegramId
+        )
+        .run();
+
+    return json({
+      success: true,
+      deleted:
+        (result.meta?.changes || 0) > 0
+    });
+
+  } catch (error) {
+
+    console.error(
+      "D1 addresses DELETE error:",
+      error
+    );
+
+    return json(
+      {
+        error: "Manzilni o‘chirishda xatolik",
+        message: error.message
+      },
+      500
+    );
+  }
+}
+
+
 
     // =========================
     // YESPOS: BRANCH LIST
