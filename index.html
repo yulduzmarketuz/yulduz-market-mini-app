@@ -7816,14 +7816,16 @@ function renderOrderSummary() {
 
 }
 
-
 /* =========================================================
    PHONE
 ========================================================= */
 
 async function requestPhone() {
 
-    /* Telegram mavjud bo'lmasa */
+    /* =====================================================
+       TELEGRAM MAVJUD BO'LMASA
+    ===================================================== */
+
     if (!tg) {
 
         const phone =
@@ -7834,7 +7836,7 @@ async function requestPhone() {
         if (phone) {
 
             customer.phone =
-                phone;
+                phone.trim();
 
             document
                 .getElementById(
@@ -7842,7 +7844,7 @@ async function requestPhone() {
                 )
                 .innerHTML =
                 `<div class="received">
-                    ✅ ${phone}
+                    ✅ ${customer.phone}
                 </div>`;
 
             await saveCustomerToD1();
@@ -7885,64 +7887,72 @@ async function requestPhone() {
 
 
             /* =================================================
-               TELEGRAM → BOT → D1
+               TELEFON RAQAMINI KIRITISH
             ================================================= */
 
+            const phone =
+                prompt(
+                    "Telefon raqamingizni kiriting:\n\nMasalan: +998901234567"
+                );
+
+
+            if (!phone) {
+
+                showToast(
+                    "Telefon raqami kiritilmadi."
+                );
+
+                return;
+            }
+
+
+            /* =================================================
+               CUSTOMER MA'LUMOTINI YANGILASH
+            ================================================= */
+
+            customer.phone =
+                phone.trim();
+
+
+            /* =================================================
+               D1 GA SAQLASH
+            ================================================= */
+
+            await saveCustomerToD1();
+
+
+            /* =================================================
+               TELEFONNI EKRANGA CHIQARISH
+            ================================================= */
+
+            const phoneElement =
+                document.getElementById(
+                    "phoneReceived"
+                );
+
+
+            if (phoneElement) {
+
+                phoneElement.innerHTML =
+                    `<div class="received">
+                        ✅ ${customer.phone}
+                    </div>`;
+
+            }
+
+
             showToast(
-                "Telefon raqamingiz qabul qilindi."
-            );
-
-
-            /*
-             * Telegram contact'ni botga yuboradi.
-             * Worker uni D1 ga saqlaydi.
-             *
-             * Shuning uchun biroz kutib,
-             * D1 dan qayta o‘qiymiz.
-             */
-
-            setTimeout(
-                async function () {
-
-                    await loadCustomerFromD1();
-
-
-                    /* =================================================
-                       TELEFONNI EKRANGA CHIQARISH
-                    ================================================= */
-
-                    const phoneElement =
-                        document.getElementById(
-                            "phoneReceived"
-                        );
-
-
-                    if (
-                        customer.phone
-                    ) {
-
-                        phoneElement.innerHTML =
-                            `<div class="received">
-                                ✅ ${customer.phone}
-                            </div>`;
-
-                    } else {
-
-                        phoneElement.innerHTML =
-                            `<div class="received">
-                                ⚠️ Telefon raqami hali olinmadi.
-                            </div>`;
-
-                    }
-
-                },
-                1500
+                "✅ Telefon raqamingiz saqlandi."
             );
 
         }
     );
 
 }
+
+
+
+    
 
 /* =========================================================
    LOCATION
