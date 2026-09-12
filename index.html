@@ -3136,6 +3136,15 @@ body.dark .premium-category-arrow {
         </div>
 
 
+        <div
+            id="profilePhone"
+            class="profile-username">
+
+            Telefon raqami kiritilmagan
+
+        </div>
+
+
         <div class="profile-menu">
 
 
@@ -3166,12 +3175,12 @@ body.dark .premium-category-arrow {
 
             </button>
 
+
         </div>
 
     </div>
 
 </div>
-
 
 <!-- =====================================================
      FAVORITES
@@ -8981,27 +8990,70 @@ function openProfile() {
 
 function renderProfile() {
 
-    document
-        .getElementById(
+    /* =====================================================
+       NAME
+    ===================================================== */
+
+    const profileName =
+        document.getElementById(
             "profileName"
-        )
-        .textContent =
-        customer.first_name
-        ? `${customer.first_name} ${customer.last_name}`.trim()
-        : "Telegram foydalanuvchi";
+        );
+
+    if (profileName) {
+
+        const fullName =
+            `${customer.first_name || ""} ${customer.last_name || ""}`
+                .trim();
+
+        profileName.textContent =
+            fullName ||
+            "Telegram foydalanuvchi";
+
+    }
 
 
-    document
-        .getElementById(
+    /* =====================================================
+       USERNAME
+    ===================================================== */
+
+    const profileUsername =
+        document.getElementById(
             "profileUsername"
-        )
-        .textContent =
-        customer.username
-        ? `@${customer.username}`
-        : "Telegram foydalanuvchi";
+        );
+
+    if (profileUsername) {
+
+        profileUsername.textContent =
+            customer.username
+                ? (
+                    customer.username.startsWith("@")
+                        ? customer.username
+                        : `@${customer.username}`
+                  )
+                : "Username mavjud emas";
+
+    }
+
+
+    /* =====================================================
+       PHONE
+    ===================================================== */
+
+    const profilePhone =
+        document.getElementById(
+            "profilePhone"
+        );
+
+    if (profilePhone) {
+
+        profilePhone.textContent =
+            customer.phone
+                ? customer.phone
+                : "Telefon raqami kiritilmagan";
+
+    }
 
 }
-
 
 /* =========================================================
    SETTINGS
