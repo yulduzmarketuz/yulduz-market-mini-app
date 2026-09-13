@@ -1160,15 +1160,15 @@ button {
 /* =========================================================
    ACTION BUTTONS
 ========================================================= */
-
 #orderPage .order-action-button {
+    position: relative;
+
     width: 100%;
     min-height: 50px;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
+    justify-content: center;
 
     box-sizing: border-box;
 
@@ -1178,12 +1178,14 @@ button {
     background: rgba(22, 163, 74, 0.08);
     color: #16A34A;
 
-    padding: 13px 14px;
+    padding: 13px 48px 13px 14px;
 
     font-family: inherit;
     font-size: 14px;
     line-height: 1.25;
     font-weight: 750;
+
+    text-align: center;
 
     cursor: pointer;
 
@@ -1192,7 +1194,18 @@ button {
         background 0.15s ease;
 }
 
+#orderPage .order-action-button span {
+    text-align: center;
+}
+
 #orderPage .order-action-button svg {
+    position: absolute;
+
+    right: 14px;
+
+    width: 18px;
+    height: 18px;
+
     flex: 0 0 auto;
 }
 
@@ -1200,6 +1213,7 @@ button {
     transform: scale(0.98);
     background: rgba(22, 163, 74, 0.14);
 }
+
 
 
 /* =========================================================
@@ -5811,7 +5825,7 @@ const translations = {
             "Telefon raqami",
 
         sendPhone:
-            "Telegramdan telefon raqamimni yuborish",
+            "Telefon raqamni yuborish",
 
         deliveryAddress:
             "Yetkazib berish manzili",
