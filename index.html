@@ -6480,6 +6480,7 @@ body.dark .premium-category-arrow {
 
 
 </div>
+   
 <!-- =====================================================
      TOAST
 ===================================================== -->
@@ -9502,11 +9503,96 @@ function openCart() {
     renderCart();
 
 }
+   /* =========================================================
+   CART BADGE
+========================================================= */
+
+function updateCartBadge() {
+
+    const badge =
+        document.getElementById("cartBadge");
+
+    if (!badge) {
+        return;
+    }
+
+    let count = 0;
+
+    cart.forEach(item => {
+
+        const quantity =
+            Number(item.quantity) || 0;
+
+        if (quantity > 0) {
+
+            if (
+                item.selectedUnit === "kg" ||
+                item.selectedUnit === "g"
+            ) {
+                count += quantity;
+            } else {
+                count += Math.floor(quantity);
+            }
+
+        }
+
+    });
+
+
+    if (count > 0) {
+
+        /*
+           Oddiy mahsulot: 1, 2, 3...
+           Kg/g mahsulot: ham mavjud miqdorni ko'rsatadi
+        */
+
+        if (
+            count % 1 === 0
+        ) {
+
+            badge.textContent =
+                String(count);
+
+        } else {
+
+            badge.textContent =
+                String(
+                    Number(
+                        count.toFixed(3)
+                    )
+                );
+
+        }
+
+
+        badge.style.display = "flex";
+
+        badge.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+    } else {
+
+        badge.textContent = "";
+
+        badge.style.display = "none";
+
+        badge.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+    }
+
+}
 /* =========================================================
    RENDER CART
 ========================================================= */
 
 function renderCart() {
+
+   updateCartBadge();
 
     const container =
         document.getElementById("cartItems");
@@ -9549,6 +9635,8 @@ function renderCart() {
             `;
 
         }
+
+       updateCartBadge();
 
 
         return;
