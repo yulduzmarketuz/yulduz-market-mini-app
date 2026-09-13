@@ -2887,6 +2887,9 @@ button {
 
     z-index: 9999;
 }
+   .cart-badge[hidden] {
+    display: none !important;
+}
 /* =====================================================
    PREMIUM NAV ICON
 ===================================================== */
@@ -9368,21 +9371,17 @@ if (cartBadge) {
         count;
 
 
-    if (
-        Number(count) === 0
-    ) {
+    if (Number(count) === 0) {
 
-        cartBadge.style.display =
-            "none";
+    cartBadge.hidden = true;
 
-    }
+}
 
-    else {
+else {
 
-        cartBadge.style.display =
-            "flex";
+    cartBadge.hidden = false;
 
-    }
+}
 
 }
 
