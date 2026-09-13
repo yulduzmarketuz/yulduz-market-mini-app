@@ -1102,13 +1102,14 @@ button {
     color: var(--muted);
 }
 
-
 /* =========================================================
    FIELD CARDS
 ========================================================= */
 
 #orderPage .order-field-card {
-    display: block;
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
 
     padding: 13px;
 
@@ -1123,12 +1124,11 @@ button {
 #orderPage .order-field-icon {
     width: 34px;
     height: 34px;
+    flex: 0 0 34px;
 
     display: flex;
     align-items: center;
     justify-content: center;
-
-    margin-bottom: 9px;
 
     border-radius: 10px;
 
@@ -1139,12 +1139,15 @@ button {
 }
 
 #orderPage .order-field-content {
-    width: 100%;
     min-width: 0;
+    flex: 1;
 }
 
 #orderPage .order-field-label {
-    display: block;
+    display: flex;
+    align-items: center;
+
+    min-height: 34px;
 
     margin-bottom: 9px;
 
