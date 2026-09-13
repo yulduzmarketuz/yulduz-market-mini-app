@@ -1845,78 +1845,39 @@ button {
 }
 
 
-<button
-    type="button"
-    class="profile-settings-icon"
-    onclick="openSettings()"
-    aria-label="Sozlamalar">
+.profile-settings-icon {
+    width: 36px;
+    height: 36px;
 
-    <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true">
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        <!-- MARKAZIY HALQA — JOYIDA -->
-        <circle
-            cx="12"
-            cy="12"
-            r="3.2"
-            stroke="currentColor"
-            stroke-width="1.9"/>
+    padding: 0;
+    margin: 0;
 
-        <!-- TASHQI TISHLAR — CHAPGA 1.8 PX -->
-        <path
-            transform="translate(-1.8 0)"
-            d="M19.4 15
-               A1.7 1.7 0 0 0 19.74 16.88
-               L19.8 16.94
-               L18.1 18.64
-               L18.04 18.58
-               A1.7 1.7 0 0 0 16.16 18.24
-               A1.7 1.7 0 0 0 15.13 19.8
-               V20
-               H12.73
-               V19.8
-               A1.7 1.7 0 0 0 11.7 18.24
-               A1.7 1.7 0 0 0 9.82 18.58
-               L9.76 18.64
-               L8.06 16.94
-               L8.12 16.88
-               A1.7 1.7 0 0 0 8.46 15
-               A1.7 1.7 0 0 0 6.9 13.97
-               H6.7
-               V11.57
-               H6.9
-               A1.7 1.7 0 0 0 8.46 10
-               A1.7 1.7 0 0 0 8.12 8.12
-               L8.06 8.06
-               L9.76 6.36
-               L9.82 6.42
-               A1.7 1.7 0 0 0 11.7 6.76
-               A1.7 1.7 0 0 0 12.73 5.2
-               V5
-               H15.13
-               V5.2
-               A1.7 1.7 0 0 0 16.16 6.76
-               A1.7 1.7 0 0 0 18.04 6.42
-               L18.1 6.36
-               L19.8 8.06
-               L19.74 8.12
-               A1.7 1.7 0 0 0 19.4 10
-               A1.7 1.7 0 0 0 20.96 11.03
-               H21.16
-               V13.43
-               H20.96
-               A1.7 1.7 0 0 0 19.4 15Z"
-            stroke="currentColor"
-            stroke-width="1.9"
-            stroke-linejoin="round"
-            stroke-linecap="round"/>
+    border: 1px solid #E3E9EF;
+    border-radius: 10px;
 
-    </svg>
+    background: #FFFFFF;
+    color: #64748B;
 
-</button>
+    cursor: pointer;
+
+    box-sizing: border-box;
+}
+
+.profile-settings-icon svg {
+    width: 18px;
+    height: 18px;
+
+    display: block;
+
+    flex-shrink: 0;
+
+    stroke: currentColor;
+    stroke-width: 1.9;
+}
 
 /* =========================================================
    PROFILE HERO
