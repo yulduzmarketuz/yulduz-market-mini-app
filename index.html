@@ -1108,9 +1108,7 @@ button {
 ========================================================= */
 
 #orderPage .order-field-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 11px;
+    display: block;
 
     padding: 13px;
 
@@ -1125,11 +1123,12 @@ button {
 #orderPage .order-field-icon {
     width: 34px;
     height: 34px;
-    flex: 0 0 34px;
 
     display: flex;
     align-items: center;
     justify-content: center;
+
+    margin-bottom: 9px;
 
     border-radius: 10px;
 
@@ -1140,8 +1139,8 @@ button {
 }
 
 #orderPage .order-field-content {
+    width: 100%;
     min-width: 0;
-    flex: 1;
 }
 
 #orderPage .order-field-label {
@@ -1155,7 +1154,6 @@ button {
 
     color: var(--text);
 }
-
 
 /* =========================================================
    ACTION BUTTONS
@@ -1593,13 +1591,18 @@ button {
     right: 0;
     bottom: 0;
 
-    z-index: 1000;
+    z-index: 99999;
 
-    padding: 10px 12px 12px;
+    box-sizing: border-box;
+
+    padding: 10px 12px calc(12px + env(safe-area-inset-bottom));
 
     background: var(--bg);
 
     border-top: 1px solid var(--border);
+
+    visibility: visible;
+    opacity: 1;
 }
 
 #orderPage .order-confirm-button {
@@ -1610,6 +1613,8 @@ button {
     align-items: center;
     justify-content: center;
     gap: 9px;
+
+    box-sizing: border-box;
 
     border: none;
     border-radius: 15px;
@@ -1626,6 +1631,9 @@ button {
 
     cursor: pointer;
 
+    visibility: visible;
+    opacity: 1;
+
     box-shadow:
         0 7px 20px rgba(22, 163, 74, 0.25);
 
@@ -1635,6 +1643,9 @@ button {
 }
 
 #orderPage .order-confirm-button svg {
+    width: 18px;
+    height: 18px;
+
     flex: 0 0 auto;
 }
 
@@ -1644,7 +1655,6 @@ button {
     box-shadow:
         0 4px 12px rgba(22, 163, 74, 0.18);
 }
-
 
 /* =========================================================
    DARK MODE
