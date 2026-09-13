@@ -1107,9 +1107,10 @@ button {
 ========================================================= */
 
 #orderPage .order-field-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 11px;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    column-gap: 11px;
+    row-gap: 0;
 
     padding: 13px;
 
@@ -1124,7 +1125,6 @@ button {
 #orderPage .order-field-icon {
     width: 34px;
     height: 34px;
-    flex: 0 0 34px;
 
     display: flex;
     align-items: center;
@@ -1140,7 +1140,7 @@ button {
 
 #orderPage .order-field-content {
     min-width: 0;
-    flex: 1;
+    width: 100%;
 }
 
 #orderPage .order-field-label {
