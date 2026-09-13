@@ -9353,41 +9353,38 @@ function updateCart() {
 
 
     /* =====================================================
-       CART BADGE
-    ===================================================== */
+   CART BADGE
+===================================================== */
 
-    const cartBadge =
-        document.getElementById(
-            "cartBadge"
-        );
+const cartBadge =
+    document.getElementById(
+        "cartBadge"
+    );
+
+
+if (cartBadge) {
+
+    cartBadge.textContent =
+        count;
 
 
     if (
-        cartBadge
+        Number(count) === 0
     ) {
 
-        cartBadge.textContent =
-            count;
-
-
-        if (
-            count === 0
-        ) {
-
-            cartBadge.style.display =
-                "none";
-
-        }
-
-        else {
-
-            cartBadge.style.display =
-                "flex";
-
-        }
+        cartBadge.style.display =
+            "none";
 
     }
 
+    else {
+
+        cartBadge.style.display =
+            "flex";
+
+    }
+
+}
 
     /* =====================================================
        CART BAR
