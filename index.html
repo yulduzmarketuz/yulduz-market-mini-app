@@ -1811,36 +1811,358 @@ button {
     border-radius: 8px;
 }
 
-
 /* =========================================================
-   PROFILE — PREMIUM DESIGN
+   PROFILE — YULDUZ MARKET PREMIUM
 ========================================================= */
 
-.profile-card {
-    background: var(--card);
-    border-radius: 24px;
-    padding: 22px 18px 18px;
-    border: 1px solid var(--border);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+#profilePage {
+    padding-bottom: 90px;
 }
+
+
 /* =========================================================
-   PROFILE MENU — ICON + ARROW
+   PROFILE HEADER
 ========================================================= */
 
-.profile-menu button {
+.profile-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 16px;
+}
+
+
+.profile-page-header h2 {
+    margin: 0;
+
+    color: #14243A;
+
+    font-size: 20px;
+    line-height: 26px;
+
+    font-weight: 700;
+}
+
+
+.profile-settings-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    margin: 0;
+
+    border: 1px solid #E5EAF0;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    color: #718096;
+
+    cursor: pointer;
+}
+
+
+.profile-settings-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+
+/* =========================================================
+   PROFILE HERO
+========================================================= */
+
+.profile-hero {
     position: relative;
 
-    justify-content: flex-start;
+    min-height: 113px;
 
-    gap: 13px;
+    display: flex;
+    align-items: center;
+
+    padding: 17px 17px;
+
+    background: #16A34A;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 7px 20px rgba(22, 163, 74, 0.16);
 }
 
 
-/* ICON */
+.profile-avatar-wrap {
+    position: relative;
 
-.profile-menu button > span:first-child {
-    width: 40px;
-    height: 40px;
+    flex-shrink: 0;
+
+    width: 76px;
+    height: 76px;
+}
+
+
+.profile-avatar {
+    width: 76px;
+    height: 76px;
+
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: #16A34A;
+
+    font-size: 31px;
+
+    border: 3px solid rgba(255,255,255,0.9);
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.10);
+}
+
+
+.telegram-badge {
+    position: absolute;
+
+    right: -2px;
+    bottom: -1px;
+
+    width: 23px;
+    height: 23px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #229ED9;
+
+    border: 2px solid #16A34A;
+}
+
+
+.telegram-badge svg {
+    width: 13px;
+    height: 13px;
+}
+
+
+.profile-hero-info {
+    min-width: 0;
+
+    flex: 1;
+
+    margin-left: 14px;
+
+    color: #ffffff;
+}
+
+
+.profile-hero-name {
+    font-size: 16px;
+    line-height: 21px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.profile-hero-username {
+    margin-top: 3px;
+
+    font-size: 12px;
+    line-height: 16px;
+
+    color: rgba(255,255,255,0.78);
+}
+
+
+.profile-hero-phone {
+    margin-top: 4px;
+
+    font-size: 12px;
+    line-height: 16px;
+
+    color: rgba(255,255,255,0.92);
+}
+
+
+.profile-hero-arrow {
+    flex-shrink: 0;
+
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: rgba(255,255,255,0.95);
+}
+
+
+.profile-hero-arrow svg {
+    width: 20px;
+    height: 20px;
+}
+
+
+/* =========================================================
+   PROFILE STATISTICS
+========================================================= */
+
+.profile-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin-top: 12px;
+}
+
+
+.profile-stat {
+    min-height: 80px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 5px;
+
+    background: #EAF8F1;
+
+    border-radius: 14px;
+}
+
+
+.profile-stat-icon {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 3px;
+}
+
+
+.profile-stat-icon svg {
+    width: 21px;
+    height: 21px;
+}
+
+
+.profile-stat-icon.green {
+    color: #16A34A;
+}
+
+
+.profile-stat-icon.pink {
+    color: #E76F8A;
+}
+
+
+.profile-stat-number {
+    color: #14243A;
+
+    font-size: 16px;
+    line-height: 19px;
+
+    font-weight: 700;
+}
+
+
+.profile-stat-label {
+    margin-top: 2px;
+
+    color: #718096;
+
+    font-size: 10px;
+    line-height: 13px;
+
+    font-weight: 500;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   PROFILE MAIN MENU
+========================================================= */
+
+.profile-main-menu {
+    margin-top: 12px;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #E5EAF0;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 4px 18px rgba(20, 36, 58, 0.035);
+}
+
+
+.profile-main-menu button,
+.profile-language-row {
+    width: 100%;
+
+    min-height: 67px;
+
+    display: flex;
+    align-items: center;
+
+    margin: 0;
+
+    padding: 10px 13px;
+
+    background: #ffffff;
+
+    color: #14243A;
+
+    border: 0;
+
+    border-bottom: 1px solid #E5EAF0;
+
+    border-radius: 0;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+
+.profile-main-menu button:last-child {
+    border-bottom: 0;
+}
+
+
+.profile-menu-icon {
+    width: 38px;
+    height: 38px;
 
     flex-shrink: 0;
 
@@ -1850,177 +2172,117 @@ button {
 
     border-radius: 12px;
 
-    background: rgba(22, 163, 74, 0.08);
-
-    font-size: 19px;
-}
-
-
-/* TEXT */
-
-.profile-menu button > span:nth-child(2) {
-    flex: 1;
-
-    font-size: 15px;
-    font-weight: 600;
-
-    color: var(--text);
-}
-
-
-/* RIGHT ARROW */
-
-.profile-menu button::after {
-    content: "›";
-
-    font-size: 25px;
-    line-height: 1;
-
-    color: var(--muted);
-
-    margin-left: auto;
-
-    transition:
-        transform 0.15s ease,
-        color 0.15s ease;
-}
-
-
-/* ACTIVE PRESS */
-
-.profile-menu button:active::after {
-    transform: translateX(3px);
+    background: #EAF8F1;
 
     color: #16A34A;
 }
 
-/* =========================================================
-   PROFILE HEADER
-========================================================= */
 
-.profile-avatar {
-    width: 76px;
-    height: 76px;
-
-    margin: 0 auto;
-
-    border-radius: 50%;
-
-    background: #16A34A;
-
-    color: #ffffff;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 32px;
-    font-weight: 700;
-
-    border: 4px solid rgba(22, 163, 74, 0.12);
-
-    box-shadow:
-        0 6px 18px rgba(22, 163, 74, 0.18);
+.profile-menu-icon svg {
+    width: 20px;
+    height: 20px;
 }
 
 
-.profile-name {
-    margin-top: 14px;
+.profile-menu-text {
+    min-width: 0;
 
-    text-align: center;
+    flex: 1;
 
-    font-size: 21px;
-    line-height: 26px;
-
-    font-weight: 700;
-
-    color: var(--text);
+    margin-left: 11px;
 }
 
 
-.profile-username {
-    margin-top: 5px;
+.profile-menu-text strong {
+    display: block;
 
-    text-align: center;
+    color: #14243A;
 
-    font-size: 13px;
+    font-size: 14px;
     line-height: 18px;
 
-    color: var(--muted);
+    font-weight: 650;
 }
 
 
-#profilePhone {
+.profile-menu-text small {
+    display: block;
+
     margin-top: 2px;
+
+    color: #718096;
+
+    font-size: 11px;
+    line-height: 15px;
+
+    font-weight: 400;
+}
+
+
+.profile-menu-arrow {
+    flex-shrink: 0;
+
+    margin-left: 8px;
+
+    color: #9AA6B2;
+
+    font-size: 24px;
+    line-height: 24px;
+
+    font-weight: 300;
 }
 
 
 /* =========================================================
-   PROFILE MENU
+   PROFILE SETTINGS
 ========================================================= */
 
-.profile-menu {
-    margin-top: 24px;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 10px;
+.profile-settings-section {
+    margin-top: 18px;
 }
 
 
-.profile-menu button {
-    width: 100%;
+.profile-section-title {
+    margin: 0 0 9px 2px;
 
-    min-height: 58px;
+    color: #14243A;
 
-    display: flex;
-    align-items: center;
+    font-size: 17px;
+    line-height: 22px;
 
-    background: var(--card);
+    font-weight: 700;
+}
 
-    color: var(--text);
 
-    border: 1px solid var(--border);
+.profile-language-row {
+    min-height: 67px;
+
+    border: 1px solid #E5EAF0;
 
     border-radius: 16px;
 
-    padding: 10px 14px;
-
-    margin: 0;
-
-    text-align: left;
-
-    font-size: 15px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.15s ease,
-        border-color 0.15s ease,
-        background 0.15s ease;
-}
-
-
-.profile-menu button:hover {
-    border-color: rgba(22, 163, 74, 0.35);
-
-    background: rgba(22, 163, 74, 0.03);
-}
-
-
-.profile-menu button:active {
-    transform: scale(0.98);
+    box-shadow:
+        0 4px 18px rgba(20, 36, 58, 0.035);
 }
 
 
 /* =========================================================
-   PROFILE MENU ICON
+   PROFILE INTERACTION
 ========================================================= */
 
-.profile-menu button::first-letter {
-    font-size: 19px;
+.profile-main-menu button:active,
+.profile-language-row:active,
+.profile-settings-icon:active {
+    transform: scale(0.985);
+}
+
+
+.profile-main-menu button,
+.profile-language-row,
+.profile-settings-icon {
+    transition:
+        transform 0.12s ease,
+        background 0.12s ease;
 }
 
 
@@ -2030,92 +2292,70 @@ button {
 
 @media (max-width: 480px) {
 
-    .profile-card {
-        padding: 20px 14px 16px;
-
-        border-radius: 22px;
+    #profilePage {
+        padding-left: 14px;
+        padding-right: 14px;
+        padding-bottom: 88px;
     }
 
+
+    .profile-page-header {
+        margin-bottom: 14px;
+    }
+
+
+    .profile-page-header h2 {
+        font-size: 19px;
+    }
+
+
+    .profile-hero {
+        min-height: 108px;
+
+        padding: 15px;
+    }
+
+
+    .profile-avatar-wrap,
     .profile-avatar {
         width: 72px;
         height: 72px;
-
-        font-size: 30px;
     }
 
-    .profile-name {
-        font-size: 20px;
+
+    .profile-hero-name {
+        font-size: 15px;
     }
 
-    .profile-menu {
-        margin-top: 22px;
 
-        gap: 9px;
+    .profile-stats {
+        gap: 8px;
     }
 
-    .profile-menu button {
-        min-height: 56px;
 
+    .profile-stat {
+        min-height: 76px;
+
+        border-radius: 13px;
+    }
+
+
+    .profile-main-menu {
         border-radius: 15px;
+    }
 
-        padding: 9px 13px;
+
+    .profile-menu-text strong {
+        font-size: 13.5px;
+    }
+
+
+    .profile-menu-text small {
+        font-size: 10.5px;
     }
 
 }
-   /* =========================================================
-   PROFILE INFO
-========================================================= */
 
-.profile-card {
-    overflow: hidden;
-}
-
-
-.profile-avatar {
-    position: relative;
-
-    box-shadow:
-        0 8px 22px rgba(22, 163, 74, 0.20);
-}
-
-
-.profile-name {
-    letter-spacing: -0.2px;
-}
-
-
-.profile-username {
-    opacity: 0.9;
-}
-
-
-#profilePhone {
-    display: inline-block;
-
-    padding: 5px 10px;
-
-    margin-top: 7px;
-
-    border-radius: 8px;
-
-    background: rgba(22, 163, 74, 0.07);
-
-    color: #16A34A;
-
-    font-size: 12px;
-    font-weight: 600;
-}
-
-
-/* =========================================================
-   PROFILE SEPARATOR
-========================================================= */
-
-.profile-menu {
-    padding-top: 4px;
-
-    border-top: 1px solid var(--border);
-}
 
 /* =========================================================
    SETTINGS
@@ -4623,9 +4863,8 @@ body.dark .premium-category-arrow {
 
 </div>
 
-
 <!-- =====================================================
-     PROFILE — PREMIUM
+     PROFILE — YULDUZ MARKET PREMIUM
 ===================================================== -->
 
 <div
@@ -4633,110 +4872,407 @@ body.dark .premium-category-arrow {
     class="container hidden">
 
 
-    <h2>
-        <span data-i18n="myProfile">Mening profilim</span>
-    </h2>
+    <!-- HEADER -->
+
+    <div class="profile-page-header">
+
+        <h2>
+            <span data-i18n="myProfile">Profil</span>
+        </h2>
+
+        <button
+            type="button"
+            class="profile-settings-icon"
+            onclick="openSettings()"
+            aria-label="Sozlamalar">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                    d="M12 15.2A3.2 3.2 0 1 0 12 8.8a3.2 3.2 0 0 0 0 6.4Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <path
+                    d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.7 1.7-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V20h-2.4v-.2a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06-1.7-1.7.06-.06A1.7 1.7 0 0 0 8.46 15a1.7 1.7 0 0 0-1.56-1.03H6.7v-2.4h.2A1.7 1.7 0 0 0 8.46 10a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.7-1.7.06.06a1.7 1.7 0 0 0 1.88.34A1.7 1.7 0 0 0 12.73 5.2V5h2.4v.2a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06 1.7 1.7-.06.06A1.7 1.7 0 0 0 19.4 10a1.7 1.7 0 0 0 1.56 1.03h.2v2.4h-.2A1.7 1.7 0 0 0 19.4 15Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"/>
+
+            </svg>
+
+        </button>
+
+    </div>
 
 
-    <div class="profile-card">
+    <!-- PROFILE HERO -->
+
+    <div class="profile-hero">
 
 
-        <!-- PROFILE HEADER -->
+        <!-- AVATAR -->
 
-        <div class="profile-avatar" id="profileAvatar">
-            👤
+        <div class="profile-avatar-wrap">
+
+            <div
+                class="profile-avatar"
+                id="profileAvatar">
+
+                👤
+
+            </div>
+
+
+            <div class="telegram-badge">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+
+                    <path
+                        d="M20.4 4.6 3.8 11c-1.1.45-1.1 1.1-.2 1.38l4.25 1.33 1.64 5.08c.2.56.1.78.68.78.45 0 .65-.2.9-.43l2.06-2 4.28 3.16c.79.44 1.36.21 1.56-.73l2.81-13.25c.3-1.16-.44-1.68-1.38-1.33Z"
+                        fill="white"/>
+
+                </svg>
+
+            </div>
+
         </div>
 
 
-        <div
-            id="profileName"
-            class="profile-name">
+        <!-- USER DATA -->
 
-            Telegram foydalanuvchi
+        <div class="profile-hero-info">
+
+            <div
+                id="profileName"
+                class="profile-hero-name">
+
+                Telegram foydalanuvchi
+
+            </div>
+
+
+            <div
+                id="profileUsername"
+                class="profile-hero-username">
+
+                @username
+
+            </div>
+
+
+            <div
+                id="profilePhone"
+                class="profile-hero-phone">
+
+                Telefon raqami kiritilmagan
+
+            </div>
 
         </div>
 
 
-        <div
-            id="profileUsername"
-            class="profile-username">
+        <!-- ARROW -->
 
-            @username
+        <div class="profile-hero-arrow">
 
-        </div>
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
 
+                <path
+                    d="m9 5 7 7-7 7"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
 
-        <div
-            id="profilePhone"
-            class="profile-username">
-
-            Telefon raqami kiritilmagan
-
-        </div>
-
-
-        <!-- PROFILE MENU -->
-
-        <div class="profile-menu">
-
-
-            <button
-                type="button"
-                onclick="showOrders()">
-
-                <span>📦</span>
-
-                <span data-i18n="myOrders">
-                    Buyurtmalar
-                </span>
-
-            </button>
-
-
-            <button
-                type="button"
-                onclick="openFavorites()">
-
-                <span>❤️</span>
-
-                <span data-i18n="favorites">
-                    Sevimli mahsulotlar
-                </span>
-
-            </button>
-
-
-            <button
-                type="button"
-                onclick="openAddresses()">
-
-                <span>📍</span>
-
-                <span data-i18n="myAddresses">
-                    Saqlangan manzillar
-                </span>
-
-            </button>
-
-
-            <button
-                type="button"
-                onclick="openSettings()">
-
-                <span>⚙️</span>
-
-                <span data-i18n="settings">
-                    Sozlamalar
-                </span>
-
-            </button>
-
+            </svg>
 
         </div>
 
     </div>
 
+
+    <!-- STATISTICS -->
+
+    <div class="profile-stats">
+
+
+        <div class="profile-stat">
+
+            <div class="profile-stat-icon green">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none">
+
+                    <path
+                        d="M6 8.5h12l-1 10H7l-1-10Z"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"/>
+
+                    <path
+                        d="M9 9V6.5a3 3 0 0 1 6 0V9"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"/>
+
+                </svg>
+
+            </div>
+
+            <div class="profile-stat-number">12</div>
+
+            <div class="profile-stat-label">
+                Buyurtmalar
+            </div>
+
+        </div>
+
+
+        <div class="profile-stat">
+
+            <div class="profile-stat-icon pink">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none">
+
+                    <path
+                        d="M20.8 8.8c0 5.2-8.8 10-8.8 10s-8.8-4.8-8.8-10A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.8 2.6Z"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"/>
+
+                </svg>
+
+            </div>
+
+            <div class="profile-stat-number">8</div>
+
+            <div class="profile-stat-label">
+                Sevimlilar
+            </div>
+
+        </div>
+
+
+        <div class="profile-stat">
+
+            <div class="profile-stat-icon green">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none">
+
+                    <path
+                        d="M20 10.5c0 5-8 10-8 10s-8-5-8-10a8 8 0 1 1 16 0Z"
+                        stroke="currentColor"
+                        stroke-width="1.8"/>
+
+                    <circle
+                        cx="12"
+                        cy="10.5"
+                        r="2.5"
+                        stroke="currentColor"
+                        stroke-width="1.8"/>
+
+                </svg>
+
+            </div>
+
+            <div class="profile-stat-number">3</div>
+
+            <div class="profile-stat-label">
+                Manzillar
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- PROFILE MENU -->
+
+    <div class="profile-main-menu">
+
+
+        <button
+            type="button"
+            onclick="showOrders()">
+
+            <span class="profile-menu-icon">
+
+                <svg viewBox="0 0 24 24" fill="none">
+
+                    <path
+                        d="M6 8.5h12l-1 10H7l-1-10Z"
+                        stroke="currentColor"
+                        stroke-width="1.8"/>
+
+                    <path
+                        d="M9 9V6.5a3 3 0 0 1 6 0V9"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"/>
+
+                </svg>
+
+            </span>
+
+            <span class="profile-menu-text">
+
+                <strong>Buyurtmalar</strong>
+
+                <small>
+                    Buyurtmalar tarixini ko‘rish
+                </small>
+
+            </span>
+
+            <span class="profile-menu-arrow">›</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            onclick="openAddresses()">
+
+            <span class="profile-menu-icon">
+
+                <svg viewBox="0 0 24 24" fill="none">
+
+                    <path
+                        d="M20 10.5c0 5-8 10-8 10s-8-5-8-10a8 8 0 1 1 16 0Z"
+                        stroke="currentColor"
+                        stroke-width="1.8"/>
+
+                    <circle
+                        cx="12"
+                        cy="10.5"
+                        r="2.5"
+                        stroke="currentColor"
+                        stroke-width="1.8"/>
+
+                </svg>
+
+            </span>
+
+            <span class="profile-menu-text">
+
+                <strong>Saqlangan manzillar</strong>
+
+                <small>
+                    Uy, ish va boshqa manzillar
+                </small>
+
+            </span>
+
+            <span class="profile-menu-arrow">›</span>
+
+        </button>
+
+
+        <button
+            type="button"
+            onclick="openFavorites()">
+
+            <span class="profile-menu-icon">
+
+                <svg viewBox="0 0 24 24" fill="none">
+
+                    <path
+                        d="M20.8 8.8c0 5.2-8.8 10-8.8 10s-8.8-4.8-8.8-10A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.8 2.6Z"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"/>
+
+                </svg>
+
+            </span>
+
+            <span class="profile-menu-text">
+
+                <strong>Sevimlilar</strong>
+
+                <small>
+                    Saqlangan mahsulotlar
+                </small>
+
+            </span>
+
+            <span class="profile-menu-arrow">›</span>
+
+        </button>
+
+
+    </div>
+
+
+    <!-- SETTINGS -->
+
+    <div class="profile-settings-section">
+
+        <div class="profile-section-title">
+            Sozlamalar
+        </div>
+
+
+        <button
+            type="button"
+            class="profile-language-row"
+            onclick="openSettings()">
+
+            <span class="profile-menu-icon">
+
+                <svg viewBox="0 0 24 24" fill="none">
+
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="8.5"
+                        stroke="currentColor"
+                        stroke-width="1.8"/>
+
+                    <path
+                        d="M3.8 12h16.4M12 3.5c2.1 2.3 3.2 5.1 3.2 8.5s-1.1 6.2-3.2 8.5c-2.1-2.3-3.2-5.1-3.2-8.5S9.9 5.8 12 3.5Z"
+                        stroke="currentColor"
+                        stroke-width="1.5"/>
+
+                </svg>
+
+            </span>
+
+            <span class="profile-menu-text">
+
+                <strong>Til</strong>
+
+                <small>
+                    O‘zbek tili
+                </small>
+
+            </span>
+
+            <span class="profile-menu-arrow">›</span>
+
+        </button>
+
+    </div>
+
+
 </div>
+
 
 <!-- =====================================================
      FAVORITES
