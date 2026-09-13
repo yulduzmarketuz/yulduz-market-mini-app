@@ -1813,55 +1813,309 @@ button {
 
 
 /* =========================================================
-   PROFILE
+   PROFILE — PREMIUM DESIGN
 ========================================================= */
 
 .profile-card {
     background: var(--card);
-    border-radius: 18px;
-    padding: 20px;
-    text-align: center;
+    border-radius: 24px;
+    padding: 22px 18px 18px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+/* =========================================================
+   PROFILE MENU — ICON + ARROW
+========================================================= */
+
+.profile-menu button {
+    position: relative;
+
+    justify-content: flex-start;
+
+    gap: 13px;
 }
 
-.profile-avatar {
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    background: var(--bg);
+
+/* ICON */
+
+.profile-menu button > span:first-child {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: auto;
-    font-size: 35px;
+
+    border-radius: 12px;
+
+    background: rgba(22, 163, 74, 0.08);
+
+    font-size: 19px;
 }
+
+
+/* TEXT */
+
+.profile-menu button > span:nth-child(2) {
+    flex: 1;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    color: var(--text);
+}
+
+
+/* RIGHT ARROW */
+
+.profile-menu button::after {
+    content: "›";
+
+    font-size: 25px;
+    line-height: 1;
+
+    color: var(--muted);
+
+    margin-left: auto;
+
+    transition:
+        transform 0.15s ease,
+        color 0.15s ease;
+}
+
+
+/* ACTIVE PRESS */
+
+.profile-menu button:active::after {
+    transform: translateX(3px);
+
+    color: #16A34A;
+}
+
+/* =========================================================
+   PROFILE HEADER
+========================================================= */
+
+.profile-avatar {
+    width: 76px;
+    height: 76px;
+
+    margin: 0 auto;
+
+    border-radius: 50%;
+
+    background: #16A34A;
+
+    color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 32px;
+    font-weight: 700;
+
+    border: 4px solid rgba(22, 163, 74, 0.12);
+
+    box-shadow:
+        0 6px 18px rgba(22, 163, 74, 0.18);
+}
+
 
 .profile-name {
+    margin-top: 14px;
+
+    text-align: center;
+
     font-size: 21px;
-    font-weight: bold;
-    margin-top: 12px;
+    line-height: 26px;
+
+    font-weight: 700;
+
+    color: var(--text);
 }
+
 
 .profile-username {
-    color: var(--muted);
     margin-top: 5px;
+
+    text-align: center;
+
+    font-size: 13px;
+    line-height: 18px;
+
+    color: var(--muted);
 }
 
-.profile-menu {
-    margin-top: 20px;
+
+#profilePhone {
+    margin-top: 2px;
 }
+
+
+/* =========================================================
+   PROFILE MENU
+========================================================= */
+
+.profile-menu {
+    margin-top: 24px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
 
 .profile-menu button {
     width: 100%;
+
+    min-height: 58px;
+
+    display: flex;
+    align-items: center;
+
     background: var(--card);
+
     color: var(--text);
+
     border: 1px solid var(--border);
-    padding: 14px;
-    border-radius: 12px;
-    margin-bottom: 8px;
+
+    border-radius: 16px;
+
+    padding: 10px 14px;
+
+    margin: 0;
+
     text-align: left;
+
     font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        border-color 0.15s ease,
+        background 0.15s ease;
 }
 
+
+.profile-menu button:hover {
+    border-color: rgba(22, 163, 74, 0.35);
+
+    background: rgba(22, 163, 74, 0.03);
+}
+
+
+.profile-menu button:active {
+    transform: scale(0.98);
+}
+
+
+/* =========================================================
+   PROFILE MENU ICON
+========================================================= */
+
+.profile-menu button::first-letter {
+    font-size: 19px;
+}
+
+
+/* =========================================================
+   PROFILE MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .profile-card {
+        padding: 20px 14px 16px;
+
+        border-radius: 22px;
+    }
+
+    .profile-avatar {
+        width: 72px;
+        height: 72px;
+
+        font-size: 30px;
+    }
+
+    .profile-name {
+        font-size: 20px;
+    }
+
+    .profile-menu {
+        margin-top: 22px;
+
+        gap: 9px;
+    }
+
+    .profile-menu button {
+        min-height: 56px;
+
+        border-radius: 15px;
+
+        padding: 9px 13px;
+    }
+
+}
+   /* =========================================================
+   PROFILE INFO
+========================================================= */
+
+.profile-card {
+    overflow: hidden;
+}
+
+
+.profile-avatar {
+    position: relative;
+
+    box-shadow:
+        0 8px 22px rgba(22, 163, 74, 0.20);
+}
+
+
+.profile-name {
+    letter-spacing: -0.2px;
+}
+
+
+.profile-username {
+    opacity: 0.9;
+}
+
+
+#profilePhone {
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    margin-top: 7px;
+
+    border-radius: 8px;
+
+    background: rgba(22, 163, 74, 0.07);
+
+    color: #16A34A;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   PROFILE SEPARATOR
+========================================================= */
+
+.profile-menu {
+    padding-top: 4px;
+
+    border-top: 1px solid var(--border);
+}
 
 /* =========================================================
    SETTINGS
@@ -4371,7 +4625,7 @@ body.dark .premium-category-arrow {
 
 
 <!-- =====================================================
-     PROFILE
+     PROFILE — PREMIUM
 ===================================================== -->
 
 <div
@@ -4380,19 +4634,17 @@ body.dark .premium-category-arrow {
 
 
     <h2>
-        👤 <span data-i18n="myProfile">Mening profilim</span>
+        <span data-i18n="myProfile">Mening profilim</span>
     </h2>
 
 
     <div class="profile-card">
 
 
-        <div
-            id="profileAvatar"
-            class="profile-avatar">
+        <!-- PROFILE HEADER -->
 
+        <div class="profile-avatar" id="profileAvatar">
             👤
-
         </div>
 
 
@@ -4423,33 +4675,59 @@ body.dark .premium-category-arrow {
         </div>
 
 
+        <!-- PROFILE MENU -->
+
         <div class="profile-menu">
 
 
-            <button onclick="showOrders()">
+            <button
+                type="button"
+                onclick="showOrders()">
 
-                📦 <span data-i18n="myOrders">Buyurtmalar</span>
+                <span>📦</span>
 
-            </button>
-
-
-            <button onclick="openFavorites()">
-
-                ❤️ <span data-i18n="favorites">Sevimli mahsulotlar</span>
-
-            </button>
-
-
-            <button onclick="openAddresses()">
-
-                📍 <span data-i18n="myAddresses">Saqlangan manzillar</span>
+                <span data-i18n="myOrders">
+                    Buyurtmalar
+                </span>
 
             </button>
 
 
-            <button onclick="openSettings()">
+            <button
+                type="button"
+                onclick="openFavorites()">
 
-                ⚙️ <span data-i18n="settings">Sozlamalar</span>
+                <span>❤️</span>
+
+                <span data-i18n="favorites">
+                    Sevimli mahsulotlar
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                onclick="openAddresses()">
+
+                <span>📍</span>
+
+                <span data-i18n="myAddresses">
+                    Saqlangan manzillar
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                onclick="openSettings()">
+
+                <span>⚙️</span>
+
+                <span data-i18n="settings">
+                    Sozlamalar
+                </span>
 
             </button>
 
