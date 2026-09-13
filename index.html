@@ -964,95 +964,241 @@ button {
 ========================================================= */
 
 #orderPage {
-    padding-bottom: 110px;
+    padding-bottom: 105px;
 }
 
 
 /* =========================================================
-   CHECKOUT HEADER
+   HEADER
 ========================================================= */
 
-#orderPage h2 {
-    margin: 4px 0 20px;
-    font-size: 24px;
+#orderPage .order-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 6px 0 20px;
+}
+
+#orderPage .order-header-icon {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: rgba(22, 163, 74, 0.10);
+    color: #16A34A;
+}
+
+#orderPage .order-title {
+    margin: 0;
+    font-size: 23px;
+    line-height: 1.2;
     font-weight: 800;
     color: var(--text);
 }
 
-
-/* =========================================================
-   CHECKOUT SECTIONS
-========================================================= */
-
-#orderPage .form-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 17px;
-    margin-bottom: 13px;
-    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.035);
+#orderPage .order-subtitle {
+    margin: 5px 0 0;
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--muted);
 }
 
 
 /* =========================================================
-   SECTION TITLES
+   BACK BUTTON
 ========================================================= */
 
-#orderPage .form-card h3,
-#orderPage .form-card .form-label {
+#orderPage .back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+
+    padding: 9px 13px;
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 650;
+
+    cursor: pointer;
+}
+
+#orderPage .back-button:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   MAIN SECTIONS
+========================================================= */
+
+#orderPage .order-section {
+    background: var(--card);
+
+    border: 1px solid var(--border);
+    border-radius: 18px;
+
+    padding: 16px;
+    margin-bottom: 12px;
+
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.035);
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+#orderPage .order-section-header {
     display: flex;
     align-items: center;
-    gap: 9px;
-    margin: 0 0 14px;
+    gap: 10px;
+
+    margin-bottom: 15px;
+}
+
+#orderPage .order-section-icon {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: rgba(22, 163, 74, 0.09);
+    color: #16A34A;
+}
+
+#orderPage .order-section-header h3 {
+    margin: 0;
+
     font-size: 16px;
+    line-height: 1.2;
     font-weight: 750;
+
+    color: var(--text);
+}
+
+#orderPage .order-section-header p {
+    margin: 3px 0 0;
+
+    font-size: 12px;
+    line-height: 1.3;
+
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   FIELD CARDS
+========================================================= */
+
+#orderPage .order-field-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+
+    padding: 13px;
+
+    margin-top: 10px;
+
+    border: 1px solid var(--border);
+    border-radius: 15px;
+
+    background: var(--bg);
+}
+
+#orderPage .order-field-icon {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--card);
+    color: #16A34A;
+
+    border: 1px solid var(--border);
+}
+
+#orderPage .order-field-content {
+    min-width: 0;
+    flex: 1;
+}
+
+#orderPage .order-field-label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 700;
+
     color: var(--text);
 }
 
 
 /* =========================================================
-   PHONE BUTTON
+   ACTION BUTTONS
 ========================================================= */
 
-#orderPage .telegram-button {
+#orderPage .order-action-button {
     width: 100%;
     min-height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    box-sizing: border-box;
+
     border: 1px solid #16A34A;
+    border-radius: 13px;
+
     background: rgba(22, 163, 74, 0.08);
     color: #16A34A;
-    border-radius: 14px;
-    padding: 13px 15px;
+
+    padding: 13px 14px;
+
+    font-family: inherit;
     font-size: 14px;
-    font-weight: 700;
+    line-height: 1.25;
+    font-weight: 750;
+
     cursor: pointer;
-    transition: 0.2s ease;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease;
 }
 
-#orderPage .telegram-button:active {
+#orderPage .order-action-button svg {
+    flex: 0 0 auto;
+}
+
+#orderPage .order-action-button:active {
     transform: scale(0.98);
-}
-
-
-/* =========================================================
-   LOCATION BUTTON
-========================================================= */
-
-#orderPage .location-button {
-    width: 100%;
-    min-height: 50px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    color: var(--text);
-    border-radius: 14px;
-    padding: 13px 15px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-#orderPage .location-button:active {
-    transform: scale(0.98);
+    background: rgba(22, 163, 74, 0.14);
 }
 
 
@@ -1064,14 +1210,38 @@ button {
     margin-bottom: 10px;
 }
 
+#orderPage #savedAddressSelector > div {
+    margin-bottom: 0 !important;
+}
+
+#orderPage #savedAddressSelector > div > div:first-child {
+    margin-bottom: 8px !important;
+
+    font-size: 13px !important;
+    font-weight: 700 !important;
+
+    color: var(--muted) !important;
+}
+
 #orderPage #savedAddressSelector button {
     width: 100%;
+
+    box-sizing: border-box;
+
     border: 1px solid var(--border) !important;
-    background: var(--bg) !important;
+    border-radius: 13px !important;
+
+    background: var(--card) !important;
     color: var(--text) !important;
-    border-radius: 14px !important;
-    padding: 13px !important;
-    transition: 0.2s ease;
+
+    padding: 12px !important;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    transition:
+        border-color 0.15s ease,
+        transform 0.15s ease;
 }
 
 #orderPage #savedAddressSelector button:active {
@@ -1080,45 +1250,99 @@ button {
 
 
 /* =========================================================
-   RECEIVED INFORMATION
+   PHONE / LOCATION RESULT
 ========================================================= */
 
 #orderPage #phoneReceived,
 #orderPage #locationReceived {
-    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    margin-top: 9px;
+
     color: #16A34A;
+
     font-size: 13px;
-    font-weight: 650;
+    line-height: 1.3;
+    font-weight: 700;
 }
 
 
 /* =========================================================
-   INPUT / TEXTAREA
+   INPUT BLOCKS
 ========================================================= */
 
-#orderPage .form-textarea {
-    width: 100%;
-    min-height: 90px;
-    box-sizing: border-box;
-    resize: none;
+#orderPage .order-input-block {
+    margin-top: 12px;
+
+    padding: 14px;
+
     border: 1px solid var(--border);
+    border-radius: 15px;
+
     background: var(--bg);
+}
+
+#orderPage .order-input-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 10px;
+
     color: var(--text);
-    border-radius: 14px;
-    padding: 13px 14px;
+
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 750;
+}
+
+#orderPage .order-input-label svg {
+    flex: 0 0 auto;
+    color: #16A34A;
+}
+
+
+/* =========================================================
+   TEXTAREA
+========================================================= */
+
+#orderPage .order-premium-textarea {
+    width: 100%;
+    min-height: 82px;
+
+    box-sizing: border-box;
+
+    resize: none;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: var(--card);
+    color: var(--text);
+
+    padding: 12px;
+
     font-family: inherit;
     font-size: 14px;
     line-height: 1.45;
+
     outline: none;
-    transition: 0.2s ease;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
-#orderPage .form-textarea:focus {
+#orderPage .order-premium-textarea:focus {
     border-color: #16A34A;
-    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.10);
+
+    box-shadow:
+        0 0 0 3px rgba(22, 163, 74, 0.10);
 }
 
-#orderPage .form-textarea::placeholder {
+#orderPage .order-premium-textarea::placeholder {
     color: var(--muted);
 }
 
@@ -1127,12 +1351,136 @@ button {
    PAYMENT
 ========================================================= */
 
-#orderPage input[name="payment"] {
-    accent-color: #16A34A;
+#orderPage .payment-section {
+    padding-bottom: 15px;
 }
 
-#orderPage .form-card label {
+#orderPage .payment-options {
+    display: grid;
+    gap: 9px;
+}
+
+#orderPage .payment-option {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    min-height: 62px;
+
+    box-sizing: border-box;
+
+    padding: 11px 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    background: var(--bg);
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+#orderPage .payment-option:active {
+    transform: scale(0.985);
+}
+
+#orderPage .payment-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#orderPage .payment-option-icon {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: var(--card);
+    color: var(--muted);
+
+    border: 1px solid var(--border);
+
+    transition:
+        color 0.15s ease,
+        background 0.15s ease;
+}
+
+#orderPage .payment-option-content {
+    min-width: 0;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+#orderPage .payment-option-content strong {
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 750;
+
     color: var(--text);
+}
+
+#orderPage .payment-option-content span {
+    font-size: 12px;
+    line-height: 1.2;
+
+    color: var(--muted);
+}
+
+#orderPage .payment-option-check {
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    border: 1.5px solid var(--border);
+    color: transparent;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+
+/* SELECTED PAYMENT */
+
+#orderPage .payment-option:has(input:checked) {
+    border-color: #16A34A;
+
+    background: rgba(22, 163, 74, 0.055);
+}
+
+#orderPage .payment-option:has(input:checked) .payment-option-icon {
+    background: rgba(22, 163, 74, 0.10);
+    color: #16A34A;
+
+    border-color: rgba(22, 163, 74, 0.25);
+}
+
+#orderPage .payment-option:has(input:checked) .payment-option-check {
+    background: #16A34A;
+    border-color: #16A34A;
+    color: #ffffff;
 }
 
 
@@ -1140,12 +1488,21 @@ button {
    ORDER SUMMARY
 ========================================================= */
 
+#orderPage .order-summary-section {
+    margin-bottom: 12px;
+}
+
 #orderPage #orderSummary {
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 #orderPage #orderSummary > div {
+    display: flex;
+
+    align-items: center;
+
     padding: 11px 0;
+
     border-bottom: 1px solid var(--border);
 }
 
@@ -1155,18 +1512,22 @@ button {
 
 #orderPage #orderSummary span {
     color: var(--text);
+
     font-size: 14px;
-    line-height: 1.4;
+    line-height: 1.35;
 }
 
 #orderPage #orderSummary small {
     color: var(--muted);
+
     font-size: 12px;
 }
 
 #orderPage #orderSummary strong {
     color: var(--text);
+
     font-size: 14px;
+    font-weight: 750;
 }
 
 
@@ -1174,104 +1535,150 @@ button {
    TOTAL
 ========================================================= */
 
-#orderPage #orderTotal {
-    display: block;
-    margin-top: 7px;
-    color: #16A34A;
-    font-size: 22px;
-    font-weight: 800;
-}
+#orderPage .order-total-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
 
+    margin-top: 10px;
+    padding-top: 14px;
 
-/* =========================================================
-   DIVIDER
-========================================================= */
-
-#orderPage hr {
-    border: none;
     border-top: 1px solid var(--border);
-    margin: 15px 0;
+}
+
+#orderPage .order-total-row span {
+    color: var(--muted);
+
+    font-size: 14px;
+    font-weight: 650;
+}
+
+#orderPage .order-total-row strong {
+    color: #16A34A;
+
+    font-size: 21px;
+    line-height: 1.2;
+    font-weight: 850;
 }
 
 
 /* =========================================================
-   CONFIRM BUTTON
+   CONFIRM AREA
 ========================================================= */
 
-#orderPage .order-button {
+#orderPage .order-confirm-area {
     position: fixed;
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    width: calc(100% - 24px);
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
     z-index: 1000;
 
-    min-height: 58px;
+    padding: 10px 12px 12px;
+
+    background: var(--bg);
+
+    border-top: 1px solid var(--border);
+}
+
+#orderPage .order-confirm-button {
+    width: 100%;
+    min-height: 56px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
 
     border: none;
-    border-radius: 17px;
+    border-radius: 15px;
 
     background: #16A34A;
     color: #ffffff;
 
     padding: 15px 18px;
 
-    font-size: 16px;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.2;
     font-weight: 800;
 
     cursor: pointer;
 
     box-shadow:
-        0 8px 25px rgba(22, 163, 74, 0.28);
+        0 7px 20px rgba(22, 163, 74, 0.25);
 
     transition:
         transform 0.15s ease,
         box-shadow 0.15s ease;
 }
 
-#orderPage .order-button:active {
-    transform: scale(0.97);
+#orderPage .order-confirm-button svg {
+    flex: 0 0 auto;
+}
+
+#orderPage .order-confirm-button:active {
+    transform: scale(0.98);
+
     box-shadow:
-        0 4px 14px rgba(22, 163, 74, 0.20);
+        0 4px 12px rgba(22, 163, 74, 0.18);
 }
 
 
 /* =========================================================
-   BACK BUTTON
-========================================================= */
-
-#orderPage .back-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--text);
-
-    padding: 10px 14px;
-    border-radius: 12px;
-
-    font-size: 14px;
-    font-weight: 650;
-
-    cursor: pointer;
-}
-
-
-/* =========================================================
-   DARK MODE SUPPORT
+   DARK MODE
 ========================================================= */
 
 @media (prefers-color-scheme: dark) {
 
-    #orderPage .form-card {
+    #orderPage .order-section {
         box-shadow:
-            0 5px 18px rgba(0, 0, 0, 0.16);
+            0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    #orderPage .order-confirm-area {
+        background: var(--bg);
     }
 
 }
 
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    #orderPage {
+        padding-bottom: 100px;
+    }
+
+    #orderPage .order-section {
+        padding: 14px;
+        border-radius: 17px;
+    }
+
+    #orderPage .order-title {
+        font-size: 21px;
+    }
+
+    #orderPage .order-subtitle {
+        font-size: 12px;
+    }
+
+    #orderPage .order-action-button {
+        min-height: 52px;
+        font-size: 14px;
+    }
+
+    #orderPage .order-confirm-button {
+        min-height: 55px;
+        font-size: 15px;
+    }
+
+}
 /* =========================================================
    FORMS
 ========================================================= */
@@ -3214,7 +3621,6 @@ body.dark .premium-category-arrow {
 
 </div>
 
-
 <!-- =====================================================
      PREMIUM ORDER
 ===================================================== -->
@@ -3223,6 +3629,7 @@ body.dark .premium-category-arrow {
     id="orderPage"
     class="container hidden">
 
+
     <!-- BACK -->
 
     <button
@@ -3230,8 +3637,8 @@ body.dark .premium-category-arrow {
         onclick="openCart()">
 
         <svg
-            width="20"
-            height="20"
+            width="18"
+            height="18"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -3251,15 +3658,17 @@ body.dark .premium-category-arrow {
     </button>
 
 
-    <!-- HEADER -->
+    <!-- =================================================
+         HEADER
+    ================================================== -->
 
     <div class="order-header">
 
         <div class="order-header-icon">
 
             <svg
-                width="24"
-                height="24"
+                width="22"
+                height="22"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -3279,15 +3688,13 @@ body.dark .premium-category-arrow {
         <div>
 
             <h2 class="order-title">
-
                 <span data-i18n="placeOrder">
                     Buyurtmani rasmiylashtirish
                 </span>
-
             </h2>
 
             <p class="order-subtitle">
-                Buyurtmangiz ma'lumotlarini tekshiring
+                Buyurtma ma’lumotlarini tekshiring
             </p>
 
         </div>
@@ -3301,13 +3708,16 @@ body.dark .premium-category-arrow {
 
     <div class="order-section">
 
+
+        <!-- SECTION HEADER -->
+
         <div class="order-section-header">
 
             <div class="order-section-icon">
 
                 <svg
-                    width="21"
-                    height="21"
+                    width="20"
+                    height="20"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -3316,37 +3726,36 @@ body.dark .premium-category-arrow {
                     stroke-linejoin="round">
 
                     <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
+
+                    <circle
+                        cx="12"
+                        cy="10"
+                        r="3">
+                    </circle>
 
                 </svg>
 
             </div>
 
 
-            <div>
-
-                <h3>
-                    Yetkazib berish
-                </h3>
-
-                <p>
-                    Buyurtmani qayerga olib boramiz?
-                </p>
-
-            </div>
+            <h3>
+                Yetkazib berish
+            </h3>
 
         </div>
 
 
-        <!-- PHONE -->
+        <!-- =================================================
+             PHONE
+        ================================================== -->
 
         <div class="order-field-card">
 
             <div class="order-field-icon">
 
                 <svg
-                    width="20"
-                    height="20"
+                    width="19"
+                    height="19"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -3380,12 +3789,14 @@ body.dark .premium-category-arrow {
                     Telefon raqami
                 </span>
 
+
                 <button
+                    type="button"
                     class="order-action-button"
                     onclick="requestPhone()">
 
                     <span data-i18n="sendPhone">
-                        Telegramdan telefon raqamimni yuborish
+                        Telefon raqamini yuborish
                     </span>
 
                     <svg
@@ -3399,11 +3810,13 @@ body.dark .premium-category-arrow {
                         stroke-linejoin="round">
 
                         <path d="M5 12h14"></path>
+
                         <path d="M13 6l6 6-6 6"></path>
 
                     </svg>
 
                 </button>
+
 
                 <div id="phoneReceived"></div>
 
@@ -3412,15 +3825,17 @@ body.dark .premium-category-arrow {
         </div>
 
 
-        <!-- ADDRESS -->
+        <!-- =================================================
+             ADDRESS
+        ================================================== -->
 
         <div class="order-field-card">
 
             <div class="order-field-icon">
 
                 <svg
-                    width="20"
-                    height="20"
+                    width="19"
+                    height="19"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -3429,7 +3844,12 @@ body.dark .premium-category-arrow {
                     stroke-linejoin="round">
 
                     <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
+
+                    <circle
+                        cx="12"
+                        cy="10"
+                        r="3">
+                    </circle>
 
                 </svg>
 
@@ -3439,7 +3859,7 @@ body.dark .premium-category-arrow {
             <div class="order-field-content">
 
                 <span class="order-field-label">
-                    Yetkazib berish manzili
+                    Manzil
                 </span>
 
 
@@ -3447,6 +3867,7 @@ body.dark .premium-category-arrow {
 
 
                 <button
+                    type="button"
                     class="order-action-button"
                     onclick="requestLocation()">
 
@@ -3454,9 +3875,10 @@ body.dark .premium-category-arrow {
                         Lokatsiyamni yuborish
                     </span>
 
+
                     <svg
-                        width="18"
-                        height="18"
+                        width="19"
+                        height="19"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -3464,8 +3886,25 @@ body.dark .premium-category-arrow {
                         stroke-linecap="round"
                         stroke-linejoin="round">
 
-                        <path d="M12 2v20"></path>
-                        <path d="M2 12h20"></path>
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="8">
+                        </circle>
+
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="3">
+                        </circle>
+
+                        <path d="M12 2v3"></path>
+
+                        <path d="M12 19v3"></path>
+
+                        <path d="M2 12h3"></path>
+
+                        <path d="M19 12h3"></path>
 
                     </svg>
 
@@ -3479,7 +3918,9 @@ body.dark .premium-category-arrow {
         </div>
 
 
-        <!-- ADDRESS EXTRA -->
+        <!-- =================================================
+             ADDRESS EXTRA
+        ================================================== -->
 
         <div class="order-input-block">
 
@@ -3498,12 +3939,16 @@ body.dark .premium-category-arrow {
                     stroke-linejoin="round">
 
                     <path d="M3 21h18"></path>
+
                     <path d="M5 21V7l7-4 7 4v14"></path>
+
                     <path d="M9 21v-5h6v5"></path>
 
                 </svg>
 
-                Manzilga qo‘shimcha
+                <span>
+                    Manzilga qo‘shimcha
+                </span>
 
             </label>
 
@@ -3511,8 +3956,7 @@ body.dark .premium-category-arrow {
             <textarea
                 id="addressExtra"
                 class="form-textarea order-premium-textarea"
-                placeholder="3-dom, 2-qavat, 15-xonadon...">
-            </textarea>
+                placeholder="3-dom, 2-qavat, 15-xonadon..."></textarea>
 
         </div>
 
@@ -3525,13 +3969,14 @@ body.dark .premium-category-arrow {
 
     <div class="order-section">
 
+
         <div class="order-section-header">
 
             <div class="order-section-icon">
 
                 <svg
-                    width="21"
-                    height="21"
+                    width="20"
+                    height="20"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -3546,26 +3991,50 @@ body.dark .premium-category-arrow {
             </div>
 
 
-            <div>
-
-                <h3>
-                    Buyurtmaga izoh
-                </h3>
-
-                <p>
-                    Yetkazib beruvchi uchun qo‘shimcha ma'lumot
-                </p>
-
-            </div>
+            <h3>
+                Buyurtmaga izoh
+            </h3>
 
         </div>
 
 
-        <textarea
-            id="orderNote"
-            class="form-textarea order-premium-textarea"
-            placeholder="Masalan: olmani qattiqroq tanlang...">
-        </textarea>
+        <div class="order-input-block">
+
+            <label
+                class="order-input-label"
+                for="orderNote">
+
+                <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M4 4h16v16H4z"></path>
+
+                    <path d="M8 9h8"></path>
+
+                    <path d="M8 13h6"></path>
+
+                </svg>
+
+                <span>
+                    Izoh
+                </span>
+
+            </label>
+
+
+            <textarea
+                id="orderNote"
+                class="form-textarea order-premium-textarea"
+                placeholder="Masalan: olmani qattiqroq tanlang..."></textarea>
+
+        </div>
 
     </div>
 
@@ -3574,15 +4043,16 @@ body.dark .premium-category-arrow {
          PAYMENT
     ================================================== -->
 
-    <div class="order-section">
+    <div class="order-section payment-section">
+
 
         <div class="order-section-header">
 
             <div class="order-section-icon">
 
                 <svg
-                    width="21"
-                    height="21"
+                    width="20"
+                    height="20"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -3610,22 +4080,17 @@ body.dark .premium-category-arrow {
             </div>
 
 
-            <div>
-
-                <h3>
-                    To‘lov usuli
-                </h3>
-
-                <p>
-                    O‘zingizga qulay usulni tanlang
-                </p>
-
-            </div>
+            <h3>
+                To‘lov usuli
+            </h3>
 
         </div>
 
 
         <div class="payment-options">
+
+
+            <!-- NAQD -->
 
             <label class="payment-option">
 
@@ -3639,8 +4104,8 @@ body.dark .premium-category-arrow {
                 <div class="payment-option-icon">
 
                     <svg
-                        width="22"
-                        height="22"
+                        width="21"
+                        height="21"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -3674,7 +4139,7 @@ body.dark .premium-category-arrow {
                     </strong>
 
                     <span>
-                        Yetkazib berishda
+                        Yetkazib berishda to‘lash
                     </span>
 
                 </div>
@@ -3701,6 +4166,8 @@ body.dark .premium-category-arrow {
             </label>
 
 
+            <!-- KARTA -->
+
             <label class="payment-option">
 
                 <input
@@ -3712,8 +4179,8 @@ body.dark .premium-category-arrow {
                 <div class="payment-option-icon">
 
                     <svg
-                        width="22"
-                        height="22"
+                        width="21"
+                        height="21"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -3785,13 +4252,14 @@ body.dark .premium-category-arrow {
 
     <div class="order-section order-summary-section">
 
+
         <div class="order-section-header">
 
             <div class="order-section-icon">
 
                 <svg
-                    width="21"
-                    height="21"
+                    width="20"
+                    height="20"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -3800,7 +4268,9 @@ body.dark .premium-category-arrow {
                     stroke-linejoin="round">
 
                     <path d="M6 2l3 4h6l3-4"></path>
+
                     <path d="M3 6h18l-2 15H5L3 6z"></path>
+
                     <path d="M9 11h6"></path>
 
                 </svg>
@@ -3808,17 +4278,9 @@ body.dark .premium-category-arrow {
             </div>
 
 
-            <div>
-
-                <h3>
-                    Buyurtma
-                </h3>
-
-                <p>
-                    Tanlangan mahsulotlar
-                </p>
-
-            </div>
+            <h3>
+                Buyurtma tafsilotlari
+            </h3>
 
         </div>
 
@@ -3831,6 +4293,7 @@ body.dark .premium-category-arrow {
             <span>
                 Jami
             </span>
+
 
             <strong id="orderTotal">
                 0 so‘m
@@ -3848,6 +4311,7 @@ body.dark .premium-category-arrow {
     <div class="order-confirm-area">
 
         <button
+            type="button"
             class="order-button order-confirm-button"
             onclick="confirmOrder()">
 
@@ -3857,8 +4321,8 @@ body.dark .premium-category-arrow {
 
 
             <svg
-                width="21"
-                height="21"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
