@@ -11929,52 +11929,47 @@ function renderProfile() {
 
     }
 
-
-    /* =====================================================
-    PROFILE STATISTICS
- ===================================================== */
+/* =====================================================
+   PROFILE STATISTICS
+===================================================== */
 
 const orderCount =
     Array.isArray(orders)
         ? orders.length
         : 0;
 
-
 const addressCount =
     Array.isArray(savedAddresses)
         ? savedAddresses.length
         : 0;
 
+let favoriteCount = 0;
 
-const favoriteCount =
-    Array.isArray(favorites)
-        ? favorites.length
-        : 0;
+if (Array.isArray(favorites)) {
 
+    favoriteCount =
+        favorites.length;
+
+}
 
 const statNumbers =
     document.querySelectorAll(
         ".profile-stat-number"
     );
 
-
 if (statNumbers.length >= 3) {
 
-    /* Buyurtmalar */
     statNumbers[0].textContent =
-        String(orderCount);
+        orderCount;
 
-
-    /* Sevimlilar */
     statNumbers[1].textContent =
-        String(favoriteCount);
+        favoriteCount;
 
-
-    /* Manzillar */
     statNumbers[2].textContent =
-        String(addressCount);
+        addressCount;
 
 }
+   
 /* =========================================================
    SETTINGS
 ========================================================= */
