@@ -11929,47 +11929,54 @@ function renderProfile() {
 
     }
 
-/* =====================================================
-   PROFILE STATISTICS
-===================================================== */
 
-const orderCount =
-    Array.isArray(orders)
-        ? orders.length
-        : 0;
+    /* =====================================================
+       PROFILE STATISTICS
+    ===================================================== */
 
-const addressCount =
-    Array.isArray(savedAddresses)
-        ? savedAddresses.length
-        : 0;
+    const orderCount =
+        Array.isArray(orders)
+            ? orders.length
+            : 0;
 
-let favoriteCount = 0;
 
-if (Array.isArray(favorites)) {
+    const addressCount =
+        Array.isArray(savedAddresses)
+            ? savedAddresses.length
+            : 0;
 
-    favoriteCount =
-        favorites.length;
+
+    let favoriteCount = 0;
+
+
+    if (Array.isArray(favorites)) {
+
+        favoriteCount =
+            favorites.length;
+
+    }
+
+
+    const statNumbers =
+        document.querySelectorAll(
+            ".profile-stat-number"
+        );
+
+
+    if (statNumbers.length >= 0) {
+
+        statNumbers[0].textContent =
+            orderCount;
+
+        statNumbers[1].textContent =
+            favoriteCount;
+
+        statNumbers[2].textContent =
+            addressCount;
+
+    }
 
 }
-
-const statNumbers =
-    document.querySelectorAll(
-        ".profile-stat-number"
-    );
-
-if (statNumbers.length >= 3) {
-
-    statNumbers[0].textContent =
-        orderCount;
-
-    statNumbers[1].textContent =
-        favoriteCount;
-
-    statNumbers[2].textContent =
-        addressCount;
-
-}
-   
 /* =========================================================
    SETTINGS
 ========================================================= */
