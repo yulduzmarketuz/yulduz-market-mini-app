@@ -959,7 +959,318 @@ button {
     border-radius: 10px;
     margin-bottom: 15px;
 }
+/* =========================================================
+   CHECKOUT — PREMIUM
+========================================================= */
 
+#orderPage {
+    padding-bottom: 110px;
+}
+
+
+/* =========================================================
+   CHECKOUT HEADER
+========================================================= */
+
+#orderPage h2 {
+    margin: 4px 0 20px;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+
+/* =========================================================
+   CHECKOUT SECTIONS
+========================================================= */
+
+#orderPage .form-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 17px;
+    margin-bottom: 13px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.035);
+}
+
+
+/* =========================================================
+   SECTION TITLES
+========================================================= */
+
+#orderPage .form-card h3,
+#orderPage .form-card .form-label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 14px;
+    font-size: 16px;
+    font-weight: 750;
+    color: var(--text);
+}
+
+
+/* =========================================================
+   PHONE BUTTON
+========================================================= */
+
+#orderPage .telegram-button {
+    width: 100%;
+    min-height: 50px;
+    border: 1px solid #16A34A;
+    background: rgba(22, 163, 74, 0.08);
+    color: #16A34A;
+    border-radius: 14px;
+    padding: 13px 15px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+#orderPage .telegram-button:active {
+    transform: scale(0.98);
+}
+
+
+/* =========================================================
+   LOCATION BUTTON
+========================================================= */
+
+#orderPage .location-button {
+    width: 100%;
+    min-height: 50px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 14px;
+    padding: 13px 15px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+#orderPage .location-button:active {
+    transform: scale(0.98);
+}
+
+
+/* =========================================================
+   SAVED ADDRESS
+========================================================= */
+
+#orderPage #savedAddressSelector {
+    margin-bottom: 10px;
+}
+
+#orderPage #savedAddressSelector button {
+    width: 100%;
+    border: 1px solid var(--border) !important;
+    background: var(--bg) !important;
+    color: var(--text) !important;
+    border-radius: 14px !important;
+    padding: 13px !important;
+    transition: 0.2s ease;
+}
+
+#orderPage #savedAddressSelector button:active {
+    transform: scale(0.98);
+}
+
+
+/* =========================================================
+   RECEIVED INFORMATION
+========================================================= */
+
+#orderPage #phoneReceived,
+#orderPage #locationReceived {
+    margin-top: 10px;
+    color: #16A34A;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+
+/* =========================================================
+   INPUT / TEXTAREA
+========================================================= */
+
+#orderPage .form-textarea {
+    width: 100%;
+    min-height: 90px;
+    box-sizing: border-box;
+    resize: none;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 14px;
+    padding: 13px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.45;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+#orderPage .form-textarea:focus {
+    border-color: #16A34A;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.10);
+}
+
+#orderPage .form-textarea::placeholder {
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+#orderPage input[name="payment"] {
+    accent-color: #16A34A;
+}
+
+#orderPage .form-card label {
+    color: var(--text);
+}
+
+
+/* =========================================================
+   ORDER SUMMARY
+========================================================= */
+
+#orderPage #orderSummary {
+    margin-top: 4px;
+}
+
+#orderPage #orderSummary > div {
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+#orderPage #orderSummary > div:last-child {
+    border-bottom: none;
+}
+
+#orderPage #orderSummary span {
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+#orderPage #orderSummary small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+#orderPage #orderSummary strong {
+    color: var(--text);
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   TOTAL
+========================================================= */
+
+#orderPage #orderTotal {
+    display: block;
+    margin-top: 7px;
+    color: #16A34A;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+#orderPage hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 15px 0;
+}
+
+
+/* =========================================================
+   CONFIRM BUTTON
+========================================================= */
+
+#orderPage .order-button {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: calc(100% - 24px);
+    z-index: 1000;
+
+    min-height: 58px;
+
+    border: none;
+    border-radius: 17px;
+
+    background: #16A34A;
+    color: #ffffff;
+
+    padding: 15px 18px;
+
+    font-size: 16px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 25px rgba(22, 163, 74, 0.28);
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+#orderPage .order-button:active {
+    transform: scale(0.97);
+    box-shadow:
+        0 4px 14px rgba(22, 163, 74, 0.20);
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+#orderPage .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+
+    padding: 10px 14px;
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 650;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   DARK MODE SUPPORT
+========================================================= */
+
+@media (prefers-color-scheme: dark) {
+
+    #orderPage .form-card {
+        box-shadow:
+            0 5px 18px rgba(0, 0, 0, 0.16);
+    }
+
+}
 
 /* =========================================================
    FORMS
@@ -2905,189 +3216,663 @@ body.dark .premium-category-arrow {
 
 
 <!-- =====================================================
-     ORDER
+     PREMIUM ORDER
 ===================================================== -->
 
 <div
     id="orderPage"
     class="container hidden">
 
+    <!-- BACK -->
+
     <button
         class="back-button"
         onclick="openCart()">
 
-        ← <span data-i18n="backToCart">Savatga qaytish</span>
+        <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <path d="M19 12H5"></path>
+            <path d="M12 19l-7-7 7-7"></path>
+
+        </svg>
+
+        <span data-i18n="backToCart">
+            Savatga qaytish
+        </span>
 
     </button>
 
 
-    <h2>
-        📦 <span data-i18n="placeOrder">Buyurtma berish</span>
-    </h2>
+    <!-- HEADER -->
+
+    <div class="order-header">
+
+        <div class="order-header-icon">
+
+            <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="M9 11l3 3L22 4"></path>
+
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+
+            </svg>
+
+        </div>
 
 
-    <!-- PHONE -->
+        <div>
 
-    <div class="form-card">
+            <h2 class="order-title">
 
-        <h3>
-            📞 <span data-i18n="phone">Telefon raqami</span>
-        </h3>
+                <span data-i18n="placeOrder">
+                    Buyurtmani rasmiylashtirish
+                </span>
 
+            </h2>
 
-        <button
-            class="telegram-button"
-            onclick="requestPhone()">
+            <p class="order-subtitle">
+                Buyurtmangiz ma'lumotlarini tekshiring
+            </p>
 
-            📱 <span data-i18n="sendPhone">Telegramdan telefon raqamimni yuborish</span>
-
-        </button>
-
-
-        <div id="phoneReceived"></div>
-
-    </div>
-
-
-    <!-- ADDRESS -->
-
-    <div class="form-card">
-
-        <h3>
-            📍 <span data-i18n="deliveryAddress">Yetkazib berish manzili</span>
-        </h3>
-
-
-        <div id="savedAddressSelector"></div>
-
-
-        <button
-            class="location-button"
-            onclick="requestLocation()">
-
-            📍 <span data-i18n="sendLocation">Lokatsiyamni yuborish</span>
-
-        </button>
-
-
-        <div id="locationReceived"></div>
+        </div>
 
     </div>
 
 
-    <!-- ADDRESS EXTRA -->
+    <!-- =================================================
+         DELIVERY
+    ================================================== -->
 
-    <div class="form-card">
+    <div class="order-section">
 
-        <label class="form-label">
+        <div class="order-section-header">
 
-            🏠 <span data-i18n="addressExtra">Manzilga qo‘shimcha</span>
+            <div class="order-section-icon">
 
-        </label>
+                <svg
+                    width="21"
+                    height="21"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+
+                </svg>
+
+            </div>
 
 
-        <textarea
-            id="addressExtra"
-            class="form-textarea"
-            placeholder="3-dom, 2-qavat, 15-xonadon...">
-        </textarea>
+            <div>
+
+                <h3>
+                    Yetkazib berish
+                </h3>
+
+                <p>
+                    Buyurtmani qayerga olib boramiz?
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- PHONE -->
+
+        <div class="order-field-card">
+
+            <div class="order-field-icon">
+
+                <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <rect
+                        x="5"
+                        y="2"
+                        width="14"
+                        height="20"
+                        rx="2">
+                    </rect>
+
+                    <line
+                        x1="12"
+                        y1="18"
+                        x2="12.01"
+                        y2="18">
+                    </line>
+
+                </svg>
+
+            </div>
+
+
+            <div class="order-field-content">
+
+                <span class="order-field-label">
+                    Telefon raqami
+                </span>
+
+                <button
+                    class="order-action-button"
+                    onclick="requestPhone()">
+
+                    <span data-i18n="sendPhone">
+                        Telegramdan telefon raqamimni yuborish
+                    </span>
+
+                    <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <path d="M5 12h14"></path>
+                        <path d="M13 6l6 6-6 6"></path>
+
+                    </svg>
+
+                </button>
+
+                <div id="phoneReceived"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ADDRESS -->
+
+        <div class="order-field-card">
+
+            <div class="order-field-icon">
+
+                <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+
+                </svg>
+
+            </div>
+
+
+            <div class="order-field-content">
+
+                <span class="order-field-label">
+                    Yetkazib berish manzili
+                </span>
+
+
+                <div id="savedAddressSelector"></div>
+
+
+                <button
+                    class="order-action-button"
+                    onclick="requestLocation()">
+
+                    <span data-i18n="sendLocation">
+                        Lokatsiyamni yuborish
+                    </span>
+
+                    <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <path d="M12 2v20"></path>
+                        <path d="M2 12h20"></path>
+
+                    </svg>
+
+                </button>
+
+
+                <div id="locationReceived"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ADDRESS EXTRA -->
+
+        <div class="order-input-block">
+
+            <label
+                class="order-input-label"
+                for="addressExtra">
+
+                <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M3 21h18"></path>
+                    <path d="M5 21V7l7-4 7 4v14"></path>
+                    <path d="M9 21v-5h6v5"></path>
+
+                </svg>
+
+                Manzilga qo‘shimcha
+
+            </label>
+
+
+            <textarea
+                id="addressExtra"
+                class="form-textarea order-premium-textarea"
+                placeholder="3-dom, 2-qavat, 15-xonadon...">
+            </textarea>
+
+        </div>
 
     </div>
 
 
-    <!-- NOTE -->
+    <!-- =================================================
+         NOTE
+    ================================================== -->
 
-    <div class="form-card">
+    <div class="order-section">
 
-        <label class="form-label">
+        <div class="order-section-header">
 
-            📝 <span data-i18n="orderNote">Buyurtmaga izoh</span>
+            <div class="order-section-icon">
 
-        </label>
+                <svg
+                    width="21"
+                    height="21"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"></path>
+
+                </svg>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Buyurtmaga izoh
+                </h3>
+
+                <p>
+                    Yetkazib beruvchi uchun qo‘shimcha ma'lumot
+                </p>
+
+            </div>
+
+        </div>
 
 
         <textarea
             id="orderNote"
-            class="form-textarea"
+            class="form-textarea order-premium-textarea"
             placeholder="Masalan: olmani qattiqroq tanlang...">
         </textarea>
 
     </div>
 
 
-    <!-- PAYMENT -->
+    <!-- =================================================
+         PAYMENT
+    ================================================== -->
 
-    <div class="form-card">
+    <div class="order-section">
 
-        <h3>
-            💰 <span data-i18n="payment">To‘lov turi</span>
-        </h3>
+        <div class="order-section-header">
+
+            <div class="order-section-icon">
+
+                <svg
+                    width="21"
+                    height="21"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <rect
+                        x="2"
+                        y="5"
+                        width="20"
+                        height="14"
+                        rx="2">
+                    </rect>
+
+                    <line
+                        x1="2"
+                        y1="10"
+                        x2="22"
+                        y2="10">
+                    </line>
+
+                </svg>
+
+            </div>
 
 
-        <label>
+            <div>
 
-            <input
-                type="radio"
-                name="payment"
-                value="naqd"
-                checked>
+                <h3>
+                    To‘lov usuli
+                </h3>
 
-            💵 <span data-i18n="cash">Naqd pul</span>
+                <p>
+                    O‘zingizga qulay usulni tanlang
+                </p>
 
-        </label>
+            </div>
+
+        </div>
 
 
-        <br><br>
+        <div class="payment-options">
+
+            <label class="payment-option">
+
+                <input
+                    type="radio"
+                    name="payment"
+                    value="naqd"
+                    checked>
 
 
-        <label>
+                <div class="payment-option-icon">
 
-            <input
-                type="radio"
-                name="payment"
-                value="karta">
+                    <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
 
-            💳 <span data-i18n="card">Karta</span>
+                        <rect
+                            x="2"
+                            y="5"
+                            width="20"
+                            height="14"
+                            rx="2">
+                        </rect>
 
-        </label>
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="3">
+                        </circle>
+
+                    </svg>
+
+                </div>
+
+
+                <div class="payment-option-content">
+
+                    <strong>
+                        Naqd pul
+                    </strong>
+
+                    <span>
+                        Yetkazib berishda
+                    </span>
+
+                </div>
+
+
+                <div class="payment-option-check">
+
+                    <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <polyline points="20 6 9 17 4 12"></polyline>
+
+                    </svg>
+
+                </div>
+
+            </label>
+
+
+            <label class="payment-option">
+
+                <input
+                    type="radio"
+                    name="payment"
+                    value="karta">
+
+
+                <div class="payment-option-icon">
+
+                    <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <rect
+                            x="2"
+                            y="5"
+                            width="20"
+                            height="14"
+                            rx="2">
+                        </rect>
+
+                        <line
+                            x1="2"
+                            y1="10"
+                            x2="22"
+                            y2="10">
+                        </line>
+
+                    </svg>
+
+                </div>
+
+
+                <div class="payment-option-content">
+
+                    <strong>
+                        Karta
+                    </strong>
+
+                    <span>
+                        Onlayn to‘lov
+                    </span>
+
+                </div>
+
+
+                <div class="payment-option-check">
+
+                    <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <polyline points="20 6 9 17 4 12"></polyline>
+
+                    </svg>
+
+                </div>
+
+            </label>
+
+        </div>
 
     </div>
 
 
-    <!-- SUMMARY -->
+    <!-- =================================================
+         ORDER SUMMARY
+    ================================================== -->
 
-    <div class="form-card">
+    <div class="order-section order-summary-section">
 
-        <h3>
-            🛍 <span data-i18n="yourOrder">Buyurtma</span>
-        </h3>
+        <div class="order-section-header">
+
+            <div class="order-section-icon">
+
+                <svg
+                    width="21"
+                    height="21"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M6 2l3 4h6l3-4"></path>
+                    <path d="M3 6h18l-2 15H5L3 6z"></path>
+                    <path d="M9 11h6"></path>
+
+                </svg>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Buyurtma
+                </h3>
+
+                <p>
+                    Tanlangan mahsulotlar
+                </p>
+
+            </div>
+
+        </div>
 
 
         <div id="orderSummary"></div>
 
 
-        <hr>
+        <div class="order-total-row">
 
+            <span>
+                Jami
+            </span>
 
-        <strong>
-            <span data-i18n="total">Jami:</span>
-        </strong>
+            <strong id="orderTotal">
+                0 so‘m
+            </strong>
 
-
-        <strong id="orderTotal">
-            0 so‘m
-        </strong>
+        </div>
 
     </div>
 
 
-    <button
-        class="order-button"
-        onclick="confirmOrder()">
+    <!-- =================================================
+         CONFIRM
+    ================================================== -->
 
-        ✅ <span data-i18n="confirmOrder">Buyurtmani tasdiqlash</span>
+    <div class="order-confirm-area">
 
-    </button>
+        <button
+            class="order-button order-confirm-button"
+            onclick="confirmOrder()">
+
+            <span>
+                Buyurtmani tasdiqlash
+            </span>
+
+
+            <svg
+                width="21"
+                height="21"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <polyline points="20 6 9 17 4 12"></polyline>
+
+            </svg>
+
+        </button>
+
+    </div>
 
 </div>
 
