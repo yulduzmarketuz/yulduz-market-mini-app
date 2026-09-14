@@ -2998,23 +2998,40 @@ button {
     left: 20px;
     right: 20px;
     bottom: 145px;
-    background: #222;
-    color: white;
+
+    background: #ffffff;
+    color: #14243A;
+
     padding: 13px 16px;
-    border-radius: 12px;
+
+    border: 1px solid #E5EAF0;
+    border-radius: 14px;
+
     text-align: center;
+
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 18px;
+
+    box-shadow:
+        0 8px 24px rgba(20, 36, 58, 0.12);
+
     z-index: 100;
+
     opacity: 0;
     transform: translateY(15px);
+
     pointer-events: none;
-    transition: .25s;
+
+    transition:
+        opacity .25s ease,
+        transform .25s ease;
 }
 
 .toast.show {
     opacity: 1;
     transform: translateY(0);
 }
-
 
 /* =========================================================
    MOBILE
