@@ -9286,33 +9286,29 @@ function toggleFavorite(id) {
     );
 
 
-    refreshVisibleProducts();
+    /* =====================================================
+       UPDATE FAVORITES PAGE
+    ===================================================== */
 
-}
-
-
-function refreshVisibleProducts() {
-
-    const categoryTitle =
-        document
-        .getElementById(
-            "categoryTitle"
+    const favoritesPage =
+        document.getElementById(
+            "favoritesPage"
         );
 
 
     if (
-        categoryTitle &&
-        categoryTitle.textContent &&
-        products[
-            categoryTitle.textContent
-        ]
+        favoritesPage &&
+        !favoritesPage.classList.contains(
+            "hidden"
+        )
     ) {
 
-        openCategory(
-            categoryTitle.textContent
-        );
+        renderFavorites();
 
     }
+
+
+    refreshVisibleProducts();
 
 }
 
@@ -9425,28 +9421,28 @@ function createFavoriteProductCard(product) {
     card.innerHTML = `
 
         <button
-            class="favorite-product-heart"
-            onclick="toggleFavorite(${product.id})"
-            aria-label="Sevimlilardan olib tashlash">
+    class="favorite-product-heart"
+    onclick="toggleFavorite(${product.id})"
+    aria-label="Sevimlilardan olib tashlash">
 
-            <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg">
 
-                <path
-                    d="M20.84 8.61
-                       C20.84 13.54 12 19 12 19
-                       C12 19 3.16 13.54 3.16 8.61
-                       C3.16 5.92 5.16 4 7.72 4
-                       C9.22 4 10.69 4.74 12 6.06
-                       C13.31 4.74 14.78 4 16.28 4
-                       C18.84 4 20.84 5.92 20.84 8.61Z"
-                    fill="currentColor"/>
+        <path
+            d="M20.84 8.61
+               C20.84 13.54 12 19 12 19
+               C12 19 3.16 13.54 3.16 8.61
+               C3.16 5.92 5.16 4 7.72 4
+               C9.22 4 10.69 4.74 12 6.06
+               C13.31 4.74 14.78 4 16.28 4
+               C18.84 4 20.84 5.92 20.84 8.61Z"
+            fill="#16A34A"/>
 
-            </svg>
+    </svg>
 
-        </button>
+</button>
 
 
         <div class="favorite-product-image">
