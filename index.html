@@ -2999,15 +2999,19 @@ button {
     right: 20px;
     bottom: 145px;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-height: 48px;
+    padding: 9px 16px;
+
     background: #ffffff;
     color: #14243A;
 
-    padding: 13px 16px;
-
     border: 1px solid #E5EAF0;
-    border-radius: 14px;
-
-    text-align: center;
+    border-radius: 15px;
 
     font-size: 13px;
     font-weight: 600;
@@ -3031,6 +3035,41 @@ button {
 .toast.show {
     opacity: 1;
     transform: translateY(0);
+}
+
+
+/* =========================================================
+   TOAST ICON
+========================================================= */
+
+.toast-icon {
+    width: 25px;
+    height: 25px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #EAF8F1;
+    color: #16A34A;
+}
+
+.toast-icon svg {
+    width: 15px;
+    height: 15px;
+}
+
+
+/* =========================================================
+   TOAST MESSAGE
+========================================================= */
+
+.toast-message {
+    min-width: 0;
 }
 
 /* =========================================================
@@ -6750,11 +6789,33 @@ body.dark .premium-category-arrow {
      TOAST
 ===================================================== -->
 
-<div
-    id="toast"
-    class="toast">
-</div>
+<div id="toast" class="toast">
 
+    <span class="toast-icon">
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+
+            <path
+                d="M20 6L9 17L4 12"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+
+        </svg>
+
+    </span>
+
+    <span
+        id="toastMessage"
+        class="toast-message">
+    </span>
+
+</div>
 
 <script>
    /* =========================================================
@@ -12622,8 +12683,13 @@ function showToast(message) {
             "toast"
         );
 
+    const toastMessage =
+        document.getElementById(
+            "toastMessage"
+        );
 
-    toast.textContent =
+
+    toastMessage.textContent =
         message;
 
 
@@ -12650,7 +12716,6 @@ function showToast(message) {
         );
 
 }
-
 
 /* =========================================================
    INITIALIZATION
