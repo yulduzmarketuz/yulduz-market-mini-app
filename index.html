@@ -8532,7 +8532,7 @@ function createProductCard(product) {
 
         <button
             class="favorite-button"
-            onclick="toggleFavorite(${product.id})"
+            onclick="toggleFavorite(${product.id}, this)"
             aria-label="Sevimliga qo‘shish">
 
             <svg
@@ -9337,15 +9337,17 @@ function showCategoryRecommendations(
    FAVORITES
 ========================================================= */
 
-function toggleFavorite(id) {
+function toggleFavorite(id, button) {
 
     id =
         Number(id);
 
 
-    if (
-        favorites.includes(id)
-    ) {
+    const isRemoving =
+        favorites.includes(id);
+
+
+    if (isRemoving) {
 
         favorites =
             favorites.filter(
@@ -9381,6 +9383,32 @@ function toggleFavorite(id) {
 
 
     /* =====================================================
+       UPDATE CLICKED HEART IMMEDIATELY
+    ===================================================== */
+
+    if (button) {
+
+        const path =
+            button.querySelector(
+                "svg path"
+            );
+
+
+        if (path) {
+
+            path.setAttribute(
+                "fill",
+                isRemoving
+                    ? "none"
+                    : "#16A34A"
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
        UPDATE FAVORITES PAGE
     ===================================================== */
 
@@ -9400,9 +9428,6 @@ function toggleFavorite(id) {
         renderFavorites();
 
     }
-
-
-    refreshVisibleProducts();
 
 }
 
