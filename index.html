@@ -14388,38 +14388,133 @@ async function confirmOrder() {
     ==========================================
     */
 
-    const BACKEND_URL =
-        "BU_YERGA_CLOUDFLARE_WORKER_URL";
+    /* =====================================================
+   D1 BACKEND
+===================================================== */
+
+const BACKEND_URL =
+    "https://yulduz-market-mini-app.pardayevx055.workers.dev/orders";
 
 
-    try {
+/*
+=====================================================
+D1 UCHUN ALOHIDA MA'LUMOT
+ASL ORDER O'ZGARMAYDI
+=====================================================
+*/
 
-        showToast("⏳ Buyurtma yuborilmoqda...");
+let total = 0;
+
+cart.forEach(item => {
+
+    total +=
+        Number(item.price || 0) *
+        Number(item.quantity || 0);
+
+});
 
 
-        const response = await fetch(
+const d1Order = {
+
+    telegram_id:
+        customer.telegram_id
+            ? String(customer.telegram_id)
+            : "",
+
+    first_name:
+        customer.first_name || "",
+
+    last_name:
+        customer.last_name || "",
+
+    username:
+        customer.username || "",
+
+    phone:
+        customer.phone || "",
+
+    items:
+        JSON.parse(
+            JSON.stringify(cart)
+        ),
+
+    total:
+        total,
+
+    address_name:
+        "Lokatsiya",
+
+    latitude:
+        Number(
+            customer.location.latitude
+        ),
+
+    longitude:
+        Number(
+            customer.location.longitude
+        ),
+
+    address_extra:
+        order.address_extra,
+
+    note:
+        order.note,
+
+    payment_method:
+        order.payment || "naqd",
+
+    payment_status:
+        "pending"
+
+};
+
+
+try {
+
+    showToast(
+        "⏳ Buyurtma yuborilmoqda..."
+    );
+
+
+    const response =
+        await fetch(
             BACKEND_URL,
             {
                 method: "POST",
 
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type":
+                        "application/json"
                 },
 
-                body: JSON.stringify(order)
+                body:
+                    JSON.stringify(d1Order)
             }
         );
 
 
-        if (!response.ok) {
-            throw new Error(
-                "Server xatosi: " + response.status
-            );
-        }
+    if (!response.ok) {
+
+        throw new Error(
+            "Server xatosi: " +
+            response.status
+        );
+
+    }
 
 
-        const result =
-            await response.json();
+    const result =
+        await response.json();
+
+
+    if (!result.success) {
+
+        throw new Error(
+            result.error ||
+            "Buyurtma saqlanmadi."
+        );
+
+    }
 
 
         /*
