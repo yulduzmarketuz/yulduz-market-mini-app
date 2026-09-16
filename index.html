@@ -4762,6 +4762,297 @@ body.dark .premium-category-arrow {
 
     flex-shrink: 0;
 }
+   /* =========================================================
+   ADDRESS NAME MODAL
+========================================================= */
+
+.address-name-modal {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+
+.address-name-modal.hidden {
+    display: none;
+}
+
+
+/* OVERLAY */
+
+.address-name-modal-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.42);
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+
+/* CARD */
+
+.address-name-modal-card {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+    max-width: 520px;
+
+    box-sizing: border-box;
+
+    padding: 24px 20px 20px;
+
+    background: var(--card);
+
+    border-radius: 26px 26px 0 0;
+
+    box-shadow:
+        0 -8px 30px rgba(0, 0, 0, 0.12);
+
+    animation:
+        addressModalUp .22s ease-out;
+}
+
+
+@keyframes addressModalUp {
+
+    from {
+        transform: translateY(100%);
+        opacity: .6;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+}
+
+
+/* TOP ICON */
+
+.address-name-modal-icon {
+    width: 52px;
+    height: 52px;
+
+    margin: 0 auto 14px;
+
+    border-radius: 17px;
+
+    background: rgba(22, 163, 74, 0.10);
+
+    color: #16a34a;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.address-name-modal-icon svg {
+    width: 27px;
+    height: 27px;
+
+    display: block;
+}
+
+
+/* TITLE */
+
+.address-name-modal-title {
+    text-align: center;
+
+    font-size: 21px;
+    font-weight: 750;
+
+    color: var(--text);
+
+    line-height: 1.25;
+}
+
+
+/* TEXT */
+
+.address-name-modal-text {
+    margin-top: 7px;
+
+    text-align: center;
+
+    font-size: 13px;
+    line-height: 1.45;
+
+    color: var(--muted);
+}
+
+
+/* INPUT */
+
+.address-name-input {
+    width: 100%;
+
+    height: 54px;
+
+    margin-top: 20px;
+
+    padding: 0 16px;
+
+    box-sizing: border-box;
+
+    border: 1.5px solid rgba(0, 0, 0, 0.10);
+
+    border-radius: 16px;
+
+    outline: none;
+
+    background: var(--bg);
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    transition:
+        border-color .15s ease,
+        box-shadow .15s ease;
+}
+
+
+.address-name-input:focus {
+    border-color: #16a34a;
+
+    box-shadow:
+        0 0 0 3px rgba(22, 163, 74, 0.10);
+}
+
+
+.address-name-input::placeholder {
+    color: var(--muted);
+
+    font-weight: 500;
+}
+
+
+/* PREVIEW */
+
+.address-name-preview {
+    min-height: 52px;
+
+    margin-top: 12px;
+
+    padding: 0 13px;
+
+    box-sizing: border-box;
+
+    border-radius: 15px;
+
+    background: rgba(22, 163, 74, 0.055);
+
+    border: 1px solid rgba(22, 163, 74, 0.10);
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    color: var(--text);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+.address-name-preview-icon {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    border-radius: 11px;
+
+    background: rgba(22, 163, 74, 0.10);
+
+    color: #16a34a;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.address-name-preview-icon svg {
+    width: 20px;
+    height: 20px;
+
+    display: block;
+}
+
+
+/* ACTIONS */
+
+.address-name-modal-actions {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 9px;
+
+    margin-top: 16px;
+}
+
+
+.address-name-modal-actions button {
+    height: 50px;
+
+    border-radius: 15px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+
+.address-name-modal-actions button:active {
+    transform: scale(.97);
+    opacity: .85;
+}
+
+
+/* CANCEL */
+
+.address-modal-cancel {
+    border: 1px solid rgba(0, 0, 0, 0.09);
+
+    background: var(--bg);
+
+    color: var(--text);
+}
+
+
+/* SAVE */
+
+.address-modal-save {
+    border: none;
+
+    background: #16a34a;
+
+    color: #fff;
+}
    
 </style>
 </head>
@@ -6460,7 +6751,135 @@ body.dark .premium-category-arrow {
 </button>
 
 </div>
+<!-- =====================================================
+     ADDRESS NAME MODAL
+========================================================= -->
 
+<div
+    id="addressNameModal"
+    class="address-name-modal hidden">
+
+    <div
+        class="address-name-modal-overlay"
+        onclick="closeAddressNameModal()">
+    </div>
+
+
+    <div class="address-name-modal-card">
+
+        <div class="address-name-modal-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none">
+
+                <path
+                    d="M12 3.5 20 10v10.5H4V10l8-6.5Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"/>
+
+                <path
+                    d="M9 20.5v-5h6v5"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"/>
+
+            </svg>
+
+        </div>
+
+
+        <div class="address-name-modal-title">
+
+            Manzilni nomlang
+
+        </div>
+
+
+        <div class="address-name-modal-text">
+
+            Masalan: Uyim, Ishxonam yoki Ota-onam
+
+        </div>
+
+
+        <input
+    id="addressNameInput"
+    class="address-name-input"
+    type="text"
+    placeholder="Manzil nomi"
+    maxlength="40"
+    autocomplete="off"
+    oninput="updateAddressNamePreview()">
+
+
+        <div
+            id="addressNamePreview"
+            class="address-name-preview">
+
+            <div class="address-name-preview-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none">
+
+                    <path
+                        d="M3 10.5 12 3l9 7.5"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"/>
+
+                    <path
+                        d="M5.5 9.5V20h13V9.5"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"/>
+
+                    <path
+                        d="M9.5 20v-5h5v5"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"/>
+
+                </svg>
+
+            </div>
+
+            <span>
+                Uy
+            </span>
+
+        </div>
+
+
+        <div class="address-name-modal-actions">
+
+            <button
+                type="button"
+                class="address-modal-cancel"
+                onclick="closeAddressNameModal()">
+
+                Bekor qilish
+
+            </button>
+
+
+            <button
+                type="button"
+                class="address-modal-save"
+                onclick="saveNewAddress()">
+
+                Saqlash
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 <!-- =====================================================
      SETTINGS
@@ -12445,7 +12864,14 @@ function renderAddresses() {
    NEW ADDRESS
 ========================================================= */
 
-async function requestNewAddress() {
+let pendingAddressPosition = null;
+
+
+/* =========================================================
+   REQUEST NEW ADDRESS
+========================================================= */
+
+function requestNewAddress() {
 
     if (!navigator.geolocation) {
 
@@ -12469,76 +12895,9 @@ async function requestNewAddress() {
 
     navigator.geolocation.getCurrentPosition(
 
-        async position => {
+        position => {
 
-            const name =
-                prompt(
-                    "Bu manzilni qanday nomlaysiz?\nMasalan: Uy, Ish, Ota-onam, Boshqa"
-                );
-
-
-            if (
-                !name ||
-                !name.trim()
-            ) {
-
-                return;
-            }
-
-
-            const cleanName =
-                name.trim();
-
-
-            const lowerName =
-                cleanName.toLowerCase();
-
-
-            let iconType =
-                "location";
-
-
-            if (
-                lowerName.includes("uy") ||
-                lowerName.includes("home")
-            ) {
-
-                iconType =
-                    "home";
-
-            } else if (
-                lowerName.includes("ish") ||
-                lowerName.includes("ofis") ||
-                lowerName.includes("office")
-            ) {
-
-                iconType =
-                    "work";
-
-            } else if (
-                lowerName.includes("ota") ||
-                lowerName.includes("ona") ||
-                lowerName.includes("onam") ||
-                lowerName.includes("dadam") ||
-                lowerName.includes("uyimiz")
-            ) {
-
-                iconType =
-                    "family";
-
-            }
-
-
-            const address = {
-
-                telegram_id:
-                    customer.telegram_id,
-
-                name:
-                    cleanName,
-
-                icon:
-                    iconType,
+            pendingAddressPosition = {
 
                 latitude:
                     position.coords.latitude,
@@ -12549,64 +12908,46 @@ async function requestNewAddress() {
             };
 
 
-            try {
+            const modal =
+                document.getElementById(
+                    "addressNameModal"
+                );
 
-                const response =
-                    await fetch(
-                        "/addresses",
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body:
-                                JSON.stringify(
-                                    address
-                                )
-                        }
-                    );
-
-
-                const data =
-                    await response.json();
-
-
-                if (!data.success) {
-
-                    console.error(
-                        "Manzilni D1 ga saqlash xatosi:",
-                        data
-                    );
-
-                    showToast(
-                        "❌ Manzilni saqlab bo‘lmadi."
-                    );
-
-                    return;
-                }
-
-
-                showToast(
-                    "Manzil saqlandi"
+            const input =
+                document.getElementById(
+                    "addressNameInput"
                 );
 
 
-                await loadAddressesFromD1();
-
-            } catch (error) {
+            if (!modal || !input) {
 
                 console.error(
-                    "D1 address POST xatosi:",
-                    error
+                    "Address name modal topilmadi."
                 );
 
-                showToast(
-                    "❌ Manzilni saqlashda xatolik."
-                );
+                return;
             }
+
+
+            modal.classList.remove(
+                "hidden"
+            );
+
+
+            input.value = "";
+
+
+            updateAddressNamePreview();
+
+
+            setTimeout(
+                () => {
+
+                    input.focus();
+
+                },
+                100
+            );
 
         },
 
@@ -12622,7 +12963,461 @@ async function requestNewAddress() {
     );
 
 }
+   /* =========================================================
+   ADDRESS NAME MODAL
+========================================================= */
 
+function closeAddressNameModal() {
+
+    const modal =
+        document.getElementById(
+            "addressNameModal"
+        );
+
+    const input =
+        document.getElementById(
+            "addressNameInput"
+        );
+
+
+    if (modal) {
+
+        modal.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    if (input) {
+
+        input.value = "";
+
+    }
+
+
+    pendingAddressPosition = null;
+
+
+    updateAddressNamePreview();
+
+}
+
+
+/* =========================================================
+   DETECT ADDRESS ICON
+========================================================= */
+
+function detectAddressIconType(name) {
+
+    const text =
+        name
+            .toLowerCase()
+            .trim();
+
+
+    /* FAMILY */
+
+    if (
+        text.includes("ota-onam") ||
+        text.includes("ota onam") ||
+        text.includes("ota") ||
+        text.includes("onam") ||
+        text.includes("ona") ||
+        text.includes("otam") ||
+        text.includes("dadam") ||
+        text.includes("dada") ||
+        text.includes("oila")
+    ) {
+
+        return "family";
+
+    }
+
+
+    /* WORK */
+
+    if (
+        text.includes("ishxona") ||
+        text.includes("ishxonam") ||
+        text.includes("ish") ||
+        text.includes("ofis") ||
+        text.includes("office") ||
+        text.includes("firma") ||
+        text.includes("korxona")
+    ) {
+
+        return "work";
+
+    }
+
+
+    /* HOME */
+
+    if (
+        text.includes("uy") ||
+        text.includes("uyim") ||
+        text.includes("home")
+    ) {
+
+        return "home";
+
+    }
+
+
+    /* DEFAULT */
+
+    return "location";
+
+}
+
+
+/* =========================================================
+   ADDRESS ICON SVG
+========================================================= */
+
+function getAddressIconSVG(type) {
+
+    if (type === "work") {
+
+        return `
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none">
+
+                <rect
+                    x="3.5"
+                    y="7"
+                    width="17"
+                    height="12"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <path
+                    d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <path
+                    d="M3.5 12h17"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <path
+                    d="M10 12v2h4v-2"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"/>
+
+            </svg>
+
+        `;
+
+    }
+
+
+    if (type === "family") {
+
+        return `
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none">
+
+                <path
+                    d="M12 21s7-5.1 7-11a7 7 0 1 0-14 0c0 5.9 7 11 7 11Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <circle
+                    cx="12"
+                    cy="10"
+                    r="2.3"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <path
+                    d="M8.8 15.2c.9-.9 2-1.4 3.2-1.4s2.3.5 3.2 1.4"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"/>
+
+            </svg>
+
+        `;
+
+    }
+
+
+    if (type === "location") {
+
+        return `
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none">
+
+                <path
+                    d="M20 10.5c0 5-8 10-8 10s-8-5-8-10a8 8 0 1 1 16 0Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <circle
+                    cx="12"
+                    cy="10.5"
+                    r="2.5"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+            </svg>
+
+        `;
+
+    }
+
+
+    /* HOME */
+
+    return `
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none">
+
+            <path
+                d="M3 10.5 12 3l9 7.5"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+
+            <path
+                d="M5.5 9.5V20h13V9.5"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linejoin="round"/>
+
+            <path
+                d="M9.5 20v-5h5v5"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linejoin="round"/>
+
+        </svg>
+
+    `;
+
+}
+
+
+/* =========================================================
+   LIVE ADDRESS PREVIEW
+========================================================= */
+
+function updateAddressNamePreview() {
+
+    const input =
+        document.getElementById(
+            "addressNameInput"
+        );
+
+    const iconContainer =
+        document.querySelector(
+            ".address-name-preview-icon"
+        );
+
+    const textContainer =
+        document.querySelector(
+            ".address-name-preview span"
+        );
+
+
+    if (!input || !iconContainer) {
+
+        return;
+
+    }
+
+
+    const name =
+        input.value.trim();
+
+
+    const iconType =
+        detectAddressIconType(
+            name
+        );
+
+
+    iconContainer.innerHTML =
+        getAddressIconSVG(
+            iconType
+        );
+
+
+    if (textContainer) {
+
+        textContainer.textContent =
+            name || "Uy";
+
+    }
+
+}
+   /* =========================================================
+   SAVE NEW ADDRESS
+========================================================= */
+
+async function saveNewAddress() {
+
+    const input =
+        document.getElementById(
+            "addressNameInput"
+        );
+
+
+    if (!input) {
+
+        return;
+
+    }
+
+
+    const cleanName =
+        input.value.trim();
+
+
+    if (!cleanName) {
+
+        showToast(
+            "Manzil nomini kiriting."
+        );
+
+        input.focus();
+
+        return;
+
+    }
+
+
+    if (!pendingAddressPosition) {
+
+        showToast(
+            "Lokatsiya ma'lumoti topilmadi."
+        );
+
+        return;
+
+    }
+
+
+    if (!customer.telegram_id) {
+
+        showToast(
+            "Mijoz ma'lumotlari hali yuklanmagan."
+        );
+
+        return;
+
+    }
+
+
+    const iconType =
+        detectAddressIconType(
+            cleanName
+        );
+
+
+    const address = {
+
+        telegram_id:
+            customer.telegram_id,
+
+        name:
+            cleanName,
+
+        icon:
+            iconType,
+
+        latitude:
+            pendingAddressPosition.latitude,
+
+        longitude:
+            pendingAddressPosition.longitude
+
+    };
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/addresses",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            address
+                        )
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            console.error(
+                "Manzilni D1 ga saqlash xatosi:",
+                data
+            );
+
+            showToast(
+                "❌ Manzilni saqlab bo‘lmadi."
+            );
+
+            return;
+
+        }
+
+
+        showToast(
+            "Manzil saqlandi"
+        );
+
+
+        closeAddressNameModal();
+
+
+        await loadAddressesFromD1();
+
+
+    } catch (error) {
+
+        console.error(
+            "D1 address POST xatosi:",
+            error
+        );
+
+
+        showToast(
+            "❌ Manzilni saqlashda xatolik."
+        );
+
+    }
+
+}
+
+   
 /* =========================================================
    USE ADDRESS FOR ORDER
 ========================================================= */
