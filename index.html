@@ -2649,47 +2649,194 @@ button {
     color: var(--button-text);
 }
 
-
 /* =========================================================
-   FAVORITES
+   FAVORITES EMPTY STATE
 ========================================================= */
 
 .favorite-empty {
-    min-height: 260px;
+    min-height: 360px;
+    padding: 40px 20px 30px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     text-align: center;
-    padding: 30px 20px;
-    color: var(--muted);
+    position: relative;
+    overflow: hidden;
 }
 
-.favorite-empty-icon {
-    width: 72px;
-    height: 72px;
+/* Decorative circles */
+
+.favorite-empty::before,
+.favorite-empty::after {
+    content: "";
+    position: absolute;
+
+    width: 120px;
+    height: 120px;
+
     border-radius: 50%;
-    background: rgba(22, 163, 74, 0.10);
+
+    background: rgba(22, 163, 74, 0.05);
+
+    pointer-events: none;
+}
+
+.favorite-empty::before {
+    top: 35px;
+    left: -55px;
+}
+
+.favorite-empty::after {
+    bottom: 20px;
+    right: -55px;
+}
+
+
+/* Heart */
+
+.favorite-empty-heart {
+    width: 92px;
+    height: 92px;
+
+    border-radius: 30px;
+
+    background: rgba(22, 163, 74, 0.09);
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 34px;
-    margin-bottom: 18px;
+
+    font-size: 42px;
+
+    margin-bottom: 24px;
+
+    position: relative;
+
+    animation: favoriteHeartAppear .45s ease-out;
 }
+
+
+/* Small decorative hearts */
+
+.favorite-empty-heart::before {
+    content: "♡";
+
+    position: absolute;
+
+    top: -14px;
+    right: -14px;
+
+    font-size: 25px;
+
+    color: #16a34a;
+
+    opacity: .55;
+
+    transform: rotate(12deg);
+}
+
+.favorite-empty-heart::after {
+    content: "♡";
+
+    position: absolute;
+
+    bottom: -10px;
+    left: -16px;
+
+    font-size: 19px;
+
+    color: #16a34a;
+
+    opacity: .35;
+
+    transform: rotate(-15deg);
+}
+
+
+/* Title */
 
 .favorite-empty-title {
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 21px;
+    font-weight: 750;
+
+    line-height: 1.25;
+
     color: var(--text);
-    margin-bottom: 8px;
+
+    margin-bottom: 10px;
 }
 
+
+/* Description */
+
 .favorite-empty-text {
+    max-width: 290px;
+
     font-size: 14px;
-    line-height: 1.5;
-    max-width: 280px;
+    line-height: 1.55;
+
     color: var(--muted);
+
+    margin-bottom: 24px;
 }
+
+
+/* Button */
+
+.favorite-empty-button {
+    border: none;
+
+    background: #16a34a;
+    color: #fff;
+
+    height: 48px;
+
+    padding: 0 24px;
+
+    border-radius: 15px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(22, 163, 74, 0.18);
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+.favorite-empty-button:active {
+    transform: scale(.96);
+    opacity: .9;
+}
+
+
+/* Animation */
+
+@keyframes favoriteHeartAppear {
+
+    0% {
+        opacity: 0;
+        transform: scale(.75);
+    }
+
+    70% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
 /* =========================================================
    FAVORITES PRODUCT GRID
 ========================================================= */
@@ -9532,18 +9679,26 @@ function renderFavorites() {
 
         <div class="favorite-empty">
 
-            <div class="favorite-empty-icon">
+            <div class="favorite-empty-heart">
                 ❤️
             </div>
 
             <div class="favorite-empty-title">
-                Hozircha sevimlilar yo‘q
+                Sevimlilar hali bo‘sh
             </div>
 
             <div class="favorite-empty-text">
-                Yoqtirgan mahsulotlaringizni ❤️
-                bosib sevimlilarga qo‘shing.
+                Yoqtirgan mahsulotlaringizni
+                yurakcha orqali saqlang.
+                Ular shu yerda paydo bo‘ladi.
             </div>
+
+            <button
+                class="favorite-empty-button"
+                onclick="showPage('home')"
+            >
+                Mahsulotlarni ko‘rish
+            </button>
 
         </div>
 
@@ -9552,7 +9707,6 @@ function renderFavorites() {
     return;
 
 }
-
 
     favoriteProducts.forEach(
         product => {
