@@ -2655,9 +2655,13 @@ button {
 
 .favorite-empty {
     min-height: 360px;
-    width: calc(100% + 320px);
-    margin-left: -160px;
+
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+
     padding: 40px 20px 30px;
+    box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
@@ -2665,6 +2669,7 @@ button {
     justify-content: center;
 
     text-align: center;
+
     position: relative;
     overflow: hidden;
 }
