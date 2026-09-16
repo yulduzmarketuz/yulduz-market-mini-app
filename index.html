@@ -2843,7 +2843,7 @@ button {
 
 }
 
-/* =========================================================
+ /* =========================================================
    FAVORITES PRODUCT GRID
 ========================================================= */
 
@@ -2855,17 +2855,19 @@ button {
 
     gap: 10px;
 
-    padding: 4px 0 20px;
+    padding: 0;
+    margin: 0;
 }
 
 /* FAVORITES EMPTY STATE */
 
 #favoriteProducts .favorite-empty {
     grid-column: 1 / -1;
+
     width: 100%;
+    margin: 0;
     box-sizing: border-box;
 }
-
 /* =========================================================
    FAVORITE PRODUCT CARD
 ========================================================= */
@@ -4334,6 +4336,25 @@ body.dark .premium-category-arrow {
 
     color:
         #123B2A;
+}
+   /* =========================================================
+   FAVORITES FULL WIDTH EMPTY STATE
+========================================================= */
+
+#favoritesPage {
+    overflow: hidden;
+}
+
+#favoritesPage #favoriteProducts {
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    padding: 0;
+}
+
+#favoritesPage .favorite-empty {
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
 }
    
 </style>
@@ -5976,7 +5997,7 @@ body.dark .premium-category-arrow {
     </div>
 
 </div>
-
+ 
 
 <!-- =====================================================
      ADDRESSES
