@@ -2655,10 +2655,39 @@ button {
 ========================================================= */
 
 .favorite-empty {
-    background: var(--card);
-    border-radius: 16px;
-    padding: 30px;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    padding: 30px 20px;
+    color: var(--muted);
+}
+
+.favorite-empty-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(22, 163, 74, 0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    margin-bottom: 18px;
+}
+
+.favorite-empty-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.favorite-empty-text {
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 280px;
     color: var(--muted);
 }
 /* =========================================================
@@ -9496,24 +9525,33 @@ function renderFavorites() {
 
 
     if (
-        favoriteProducts.length === 0
-    ) {
+    favoriteProducts.length === 0
+) {
 
-        container.innerHTML = `
+    container.innerHTML = `
 
-            <div class="favorite-empty">
+        <div class="favorite-empty">
 
-                ❤️<br><br>
-
-                Hozircha sevimli mahsulotlaringiz yo‘q.
-
+            <div class="favorite-empty-icon">
+                ❤️
             </div>
 
-        `;
+            <div class="favorite-empty-title">
+                Hozircha sevimlilar yo‘q
+            </div>
 
-        return;
+            <div class="favorite-empty-text">
+                Yoqtirgan mahsulotlaringizni ❤️
+                bosib sevimlilarga qo‘shing.
+            </div>
 
-    }
+        </div>
+
+    `;
+
+    return;
+
+}
 
 
     favoriteProducts.forEach(
