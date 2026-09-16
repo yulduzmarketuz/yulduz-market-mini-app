@@ -530,7 +530,150 @@ if (
   }
 }
 
+// =========================
+// D1: CREATE ORDER
+// =========================
+if (
+  url.pathname === "/orders" &&
+  request.method === "POST"
+) {
+  try {
 
+    const data =
+      await request.json();
+
+    const telegramId =
+      data.telegram_id?.toString();
+
+    if (!telegramId) {
+      return json(
+        {
+          error: "telegram_id kerak"
+        },
+        400
+      );
+    }
+
+    if (
+      !Array.isArray(data.items) ||
+      data.items.length === 0
+    ) {
+      return json(
+        {
+          error: "Buyurtmada mahsulotlar bo‘lishi kerak"
+        },
+        400
+      );
+    }
+
+    const total =
+      Number(data.total || 0);
+
+    if (total <= 0) {
+      return json(
+        {
+          error: "Buyurtma summasi noto‘g‘ri"
+        },
+        400
+      );
+    }
+
+    const orderNumber =
+      `YLZ-${Date.now()}`;
+
+    const result =
+      await env.DB.prepare(`
+        INSERT INTO orders (
+          order_number,
+          telegram_id,
+          first_name,
+          last_name,
+          username,
+          phone,
+          items,
+          total,
+          address_name,
+          latitude,
+          longitude,
+          address_extra,
+          note,
+          payment_method,
+          payment_status,
+          status,
+          yespos_status
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `)
+        .bind(
+          orderNumber,
+
+          telegramId,
+
+          data.first_name || "",
+          data.last_name || "",
+          data.username || "",
+          data.phone || "",
+
+          JSON.stringify(data.items),
+
+          total,
+
+          data.address_name || "",
+          data.latitude !== undefined
+            ? Number(data.latitude)
+            : null,
+          data.longitude !== undefined
+            ? Number(data.longitude)
+            : null,
+
+          data.address_extra || "",
+          data.note || "",
+
+          data.payment_method || "cash",
+          data.payment_status || "pending",
+
+          "yangi",
+
+          "pending"
+        )
+        .run();
+
+    console.log(
+      "✅ BUYURTMA D1 GA SAQLANDI:",
+      orderNumber,
+      telegramId
+    );
+
+    return json({
+      success: true,
+      order: {
+        id:
+          result.meta?.last_row_id || null,
+        order_number:
+          orderNumber,
+        status:
+          "yangi"
+      }
+    });
+
+  } catch (error) {
+
+    console.error(
+      "D1 order error:",
+      error
+    );
+
+    return json(
+      {
+        error:
+          "Buyurtmani saqlashda xatolik",
+        message:
+          error.message
+      },
+      500
+    );
+  }
+}
 
     // =========================
     // YESPOS: BRANCH LIST
