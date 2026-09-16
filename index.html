@@ -14327,60 +14327,343 @@ async function deleteAddress(index) {
 async function confirmOrder() {
 
     if (!customer.phone) {
-        showToast("Telefon raqamingizni yuboring.");
+
+        showToast(
+            "Telefon raqamingizni yuboring."
+        );
+
         return;
+
     }
+
 
     if (!customer.location) {
-        showToast("Lokatsiyangizni yuboring.");
+
+        showToast(
+            "Lokatsiyangizni yuboring."
+        );
+
         return;
+
     }
+
 
     if (!cart || cart.length === 0) {
-        showToast("Savat bo‘sh.");
+
+        showToast(
+            "Savat bo‘sh."
+        );
+
         return;
+
     }
 
-    const orderNumber = Date.now().toString().slice(-6);
+
+    /* =====================================================
+       TOTAL
+    ===================================================== */
+
+    let total = 0;
+
+
+    cart.forEach(item => {
+
+        total +=
+            Number(item.price || 0) *
+            Number(item.quantity || 0);
+
+    });
+
+
+    if (total <= 0) {
+
+        showToast(
+            "Buyurtma summasi noto‘g‘ri."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       ORDER DATA
+    ===================================================== */
 
     const order = {
-        id: orderNumber,
 
-        telegram_user_id: customer.telegram_id || null,
+        telegram_id:
+            customer.telegram_id
+                ? String(customer.telegram_id)
+                : "",
 
-        customer_name:
-            `${customer.first_name || ""} ${customer.last_name || ""}`.trim(),
+
+        first_name:
+            customer.first_name || "",
+
+
+        last_name:
+            customer.last_name || "",
+
 
         username:
             customer.username || "",
 
+
         phone:
-            customer.phone,
+            customer.phone || "",
 
-        location:
-            customer.location,
-
-        address_extra:
-            document.getElementById("addressExtra")?.value.trim() || "",
-
-        note:
-            document.getElementById("orderNote")?.value.trim() || "",
-
-        payment:
-            document.querySelector(
-                'input[name="payment"]:checked'
-            )?.value || "naqd",
 
         items:
-            JSON.parse(JSON.stringify(cart)),
+            JSON.parse(
+                JSON.stringify(cart)
+            ),
 
-        status:
-            "qabul_qilindi",
 
-        created_at:
-            new Date().toISOString()
+        total:
+            total,
+
+
+        address_name:
+            customer.location.name || "Lokatsiya",
+
+
+        latitude:
+            Number(
+                customer.location.latitude
+            ),
+
+
+        longitude:
+            Number(
+                customer.location.longitude
+            ),
+
+
+        address_extra:
+            document
+                .getElementById(
+                    "addressExtra"
+                )
+                ?.value
+                .trim() || "",
+
+
+        note:
+            document
+                .getElementById(
+                    "orderNote"
+                )
+                ?.value
+                .trim() || "",
+
+
+        payment_method:
+            document
+                .querySelector(
+                    'input[name="payment"]:checked'
+                )
+                ?.value || "cash",
+
+
+        payment_status:
+            "pending"
+
     };
 
+
+    /* =====================================================
+       SEND TO D1
+    ===================================================== */
+
+    const BACKEND_URL =
+        "https://yulduz-market-mini-app.pardayevx055.workers.dev/orders";
+
+
+    try {
+
+        showToast(
+            "⏳ Buyurtma yuborilmoqda..."
+        );
+
+
+        const response =
+            await fetch(
+                BACKEND_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(order)
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Server xatosi: " +
+                response.status
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        if (!result.success) {
+
+            throw new Error(
+                result.error ||
+                "Buyurtma saqlanmadi."
+            );
+
+        }
+
+
+        /* =================================================
+           LOCAL HISTORY
+        ================================================= */
+
+        const localOrder = {
+
+            id:
+                result.order?.order_number ||
+                Date.now().toString().slice(-6),
+
+
+            telegram_user_id:
+                customer.telegram_id ||
+                null,
+
+
+            customer_name:
+                `${customer.first_name || ""} ${customer.last_name || ""}`
+                    .trim(),
+
+
+            username:
+                customer.username || "",
+
+
+            phone:
+                customer.phone || "",
+
+
+            location:
+                customer.location,
+
+
+            address_extra:
+                order.address_extra,
+
+
+            note:
+                order.note,
+
+
+            payment:
+                order.payment_method,
+
+
+            items:
+                JSON.parse(
+                    JSON.stringify(cart)
+                ),
+
+
+            status:
+                "qabul_qilindi",
+
+
+            created_at:
+                new Date().toISOString()
+
+        };
+
+
+        orders.push(
+            localOrder
+        );
+
+
+        localStorage.setItem(
+            "yulduz_orders",
+            JSON.stringify(orders)
+        );
+
+
+        /* =================================================
+           CLEAR CART
+        ================================================= */
+
+        cart = [];
+
+        updateCart();
+
+
+        /* =================================================
+           SUCCESS PAGE
+        ================================================= */
+
+        const successNumber =
+            document.getElementById(
+                "successOrderNumber"
+            );
+
+
+        if (successNumber) {
+
+            successNumber.textContent =
+                `#${result.order?.order_number || ""}`;
+
+        }
+
+
+        hideAll();
+
+
+        document
+            .getElementById(
+                "successPage"
+            )
+            .classList
+            .remove("hidden");
+
+
+        showToast(
+            "✅ Buyurtma qabul qilindi!"
+        );
+
+
+        console.log(
+            "✅ BUYURTMA D1 GA SAQLANDI:",
+            result
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ BUYURTMA YUBORISH XATOSI:",
+            error
+        );
+
+
+        showToast(
+            "❌ Buyurtmani yuborishda xatolik."
+        );
+
+    }
+
+}
 
     /*
     ==========================================
