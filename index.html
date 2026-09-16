@@ -4394,6 +4394,82 @@ body.dark .premium-category-arrow {
 
     color: var(--text);
 }
+   /* =========================================================
+   ADDRESSES — PREMIUM
+========================================================= */
+
+#addressesPage {
+    padding-bottom: 30px;
+}
+
+
+/* ADD ADDRESS BUTTON */
+
+.addresses-add-button {
+    width: 100%;
+
+    min-height: 58px;
+
+    margin-top: 14px;
+
+    padding: 0 18px;
+
+    border: 1.5px dashed rgba(22, 163, 74, 0.45);
+
+    border-radius: 18px;
+
+    background: rgba(22, 163, 74, 0.045);
+
+    color: #16a34a;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s ease,
+        background .15s ease,
+        border-color .15s ease;
+}
+
+
+.addresses-add-button:active {
+    transform: scale(.98);
+
+    background: rgba(22, 163, 74, 0.09);
+
+    border-color: rgba(22, 163, 74, 0.7);
+}
+
+
+/* PLUS ICON */
+
+.addresses-add-icon {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 10px;
+
+    background: rgba(22, 163, 74, 0.10);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+
+.addresses-add-icon svg {
+    width: 17px;
+    height: 17px;
+}
    
 </style>
 </head>
@@ -6065,12 +6141,31 @@ body.dark .premium-category-arrow {
 
 
     <button
-        class="order-button"
-        onclick="requestNewAddress()">
+    type="button"
+    class="addresses-add-button"
+    onclick="requestNewAddress()">
 
-        ➕ <span data-i18n="addAddress">Yangi manzil qo‘shish</span>
+    <span class="addresses-add-icon">
 
-    </button>
+        <svg
+            viewBox="0 0 24 24"
+            fill="none">
+
+            <path
+                d="M12 5v14M5 12h14"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"/>
+
+        </svg>
+
+    </span>
+
+    <span data-i18n="addAddress">
+        Yangi manzil qo‘shish
+    </span>
+
+</button>
 
 </div>
 
