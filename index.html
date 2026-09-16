@@ -5696,6 +5696,68 @@ body.dark .premium-category-arrow {
 
     color: #fff;
 }
+   /* =====================================================
+   BUYURTMALAR — FILTERLAR
+===================================================== */
+
+#ordersPage .orders-page-header {
+    margin-top: 24px;
+    margin-bottom: 20px;
+}
+
+#ordersPage .orders-page-title {
+    margin: 0 0 18px 0;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+#ordersPage .orders-filters {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    overflow-x: auto;
+    padding: 4px 2px 8px;
+    scrollbar-width: none;
+}
+
+#ordersPage .orders-filters::-webkit-scrollbar {
+    display: none;
+}
+
+#ordersPage .orders-filter {
+    flex: 0 0 auto;
+    height: 40px;
+    padding: 0 15px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+
+    background: #ffffff;
+    color: #6b7280;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+#ordersPage .orders-filter:active {
+    transform: scale(0.96);
+}
+
+#ordersPage .orders-filter.active {
+    background: #16A34A;
+    border-color: #16A34A;
+    color: #ffffff;
+}
    
 </style>
 </head>
@@ -8178,52 +8240,67 @@ body.dark .premium-category-arrow {
 
     <div class="orders-page-header">
 
-    <div class="orders-page-icon">
-
-        <svg
-            viewBox="0 0 24 24"
-            fill="none">
-
-            <path
-                d="M6 3.5h12a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 19V5A1.5 1.5 0 0 1 6 3.5Z"
-                stroke="currentColor"
-                stroke-width="1.8"/>
-
-            <path
-                d="M8 8h8M8 12h8M8 16h5"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"/>
-
-        </svg>
-
-    </div>
-
-
-    <div>
-
         <h2 class="orders-page-title">
+
             <span data-i18n="myOrders">
                 Buyurtmalarim
             </span>
+
         </h2>
 
-        <div class="orders-page-subtitle">
-            Barcha buyurtmalaringiz shu yerda
+
+        <div class="orders-filters">
+
+            <button
+                class="orders-filter active"
+                data-filter="all"
+                onclick="filterOrders('all')">
+
+                Barchasi
+
+            </button>
+
+
+            <button
+                class="orders-filter"
+                data-filter="processing"
+                onclick="filterOrders('processing')">
+
+                Jarayonda
+
+            </button>
+
+
+            <button
+                class="orders-filter"
+                data-filter="delivered"
+                onclick="filterOrders('delivered')">
+
+                Yetkazilgan
+
+            </button>
+
+
+            <button
+                class="orders-filter"
+                data-filter="cancelled"
+                onclick="filterOrders('cancelled')">
+
+                Bekor qilingan
+
+            </button>
+
         </div>
 
     </div>
 
-</div>
 
+    <div
+        id="ordersList">
+    </div>
 
-<div id="ordersList"></div>
-
-
-    <div id="ordersList"></div>
 
 </div>
-
 
 <!-- =====================================================
      ORDER DETAILS
@@ -14453,6 +14530,12 @@ function loadOrders() {
 
 }
 
+   /* =========================================================
+   ORDER FILTER
+========================================================= */
+
+let currentOrderFilter = "all";
+
 
 /* =========================================================
    RENDER ORDERS
@@ -14477,13 +14560,72 @@ function renderOrders() {
 
 
     /* =====================================================
+       FILTER ORDERS
+    ===================================================== */
+
+    let filteredOrders =
+        Array.isArray(orders)
+            ? orders.slice()
+            : [];
+
+
+    if (currentOrderFilter === "processing") {
+
+        filteredOrders =
+            filteredOrders.filter(
+                order =>
+                    order.status !== "yetkazildi" &&
+                    order.status !== "bekor_qilingan" &&
+                    order.status !== "cancelled"
+            );
+
+    }
+
+
+    if (currentOrderFilter === "delivered") {
+
+        filteredOrders =
+            filteredOrders.filter(
+                order =>
+                    order.status === "yetkazildi"
+            );
+
+    }
+
+
+    if (currentOrderFilter === "cancelled") {
+
+        filteredOrders =
+            filteredOrders.filter(
+                order =>
+                    order.status === "bekor_qilingan" ||
+                    order.status === "cancelled"
+            );
+
+    }
+
+
+    /* =====================================================
        EMPTY STATE
     ===================================================== */
 
-    if (
-        !orders ||
-        orders.length === 0
-    ) {
+    if (filteredOrders.length === 0) {
+
+        const emptyText =
+            currentOrderFilter === "all"
+                ? "Hozircha buyurtmalar yo‘q"
+                : currentOrderFilter === "processing"
+                    ? "Jarayondagi buyurtmalar yo‘q"
+                    : currentOrderFilter === "delivered"
+                        ? "Yetkazilgan buyurtmalar yo‘q"
+                        : "Bekor qilingan buyurtmalar yo‘q";
+
+
+        const emptySubtext =
+            currentOrderFilter === "all"
+                ? "Birinchi xaridingizni boshlang"
+                : "Bu bo‘limda hozircha buyurtma mavjud emas";
+
 
         list.innerHTML = `
 
@@ -14513,14 +14655,14 @@ function renderOrders() {
 
                 <div class="orders-empty-title">
 
-                    Hozircha buyurtmalar yo‘q
+                    ${emptyText}
 
                 </div>
 
 
                 <div class="orders-empty-text">
 
-                    Birinchi xaridingizni boshlang
+                    ${emptySubtext}
 
                 </div>
 
@@ -14547,8 +14689,7 @@ function renderOrders() {
        ORDER LIST
     ===================================================== */
 
-    orders
-        .slice()
+    filteredOrders
         .reverse()
         .forEach(order => {
 
@@ -14627,7 +14768,7 @@ function renderOrders() {
                         <span class="order-history-arrow">
 
                             ›
-                            
+
                         </span>
 
                     </div>
@@ -14655,6 +14796,32 @@ function renderOrders() {
             `;
 
         });
+
+}
+   /* =========================================================
+   FILTER ORDERS
+========================================================= */
+
+function filterOrders(filter) {
+
+    currentOrderFilter = filter;
+
+
+    document
+        .querySelectorAll(
+            "#ordersPage .orders-filter"
+        )
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.filter === filter
+            );
+
+        });
+
+
+    renderOrders();
 
 }
 
