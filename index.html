@@ -4775,8 +4775,9 @@ body.dark .premium-category-arrow {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-}
 
+    overflow: hidden;
+}
 
 .address-name-modal.hidden {
     display: none;
@@ -4807,7 +4808,7 @@ body.dark .premium-category-arrow {
 
     box-sizing: border-box;
 
-    padding: 24px 20px 20px;
+    padding: 20px 20px 24px;
 
     background: var(--card);
 
@@ -4818,6 +4819,12 @@ body.dark .premium-category-arrow {
 
     animation:
         addressModalUp .22s ease-out;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
 }
 
 
