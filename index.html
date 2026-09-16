@@ -3107,20 +3107,293 @@ button {
 ========================================================= */
 
 .order-history-card {
+    position: relative;
+
     background: var(--card);
-    border-radius: 16px;
+
+    border: 1px solid rgba(0, 0, 0, 0.055);
+
+    border-radius: 20px;
+
     padding: 16px;
+
     margin-bottom: 12px;
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 14px rgba(0, 0, 0, 0.045);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease;
 }
 
+.order-history-card:active {
+    transform: scale(.985);
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================================================
+   TOP
+========================================================= */
+
+.order-history-top {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+
+/* =========================================================
+   NUMBER + ICON
+========================================================= */
+
+.order-history-number {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    min-width: 0;
+}
+
+.order-history-icon {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: rgba(22, 163, 74, 0.10);
+
+    color: #16a34a;
+}
+
+.order-history-icon svg {
+    width: 21px;
+    height: 21px;
+
+    display: block;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.order-history-title {
+    font-size: 15px;
+
+    line-height: 1.25;
+
+    font-weight: 750;
+
+    color: var(--text);
+}
+
+.order-history-items {
+    margin-top: 4px;
+
+    font-size: 12px;
+
+    line-height: 1.2;
+
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   ARROW
+========================================================= */
+
+.order-history-arrow {
+    flex-shrink: 0;
+
+    font-size: 25px;
+
+    line-height: 1;
+
+    color: var(--muted);
+
+    margin-right: 2px;
+}
+
+
+/* =========================================================
+   BOTTOM
+========================================================= */
+
+.order-history-bottom {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: 15px;
+
+    padding-top: 13px;
+
+    border-top: 1px solid rgba(0, 0, 0, 0.055);
+}
+
+
+/* =========================================================
+   TOTAL
+========================================================= */
+
+.order-history-total {
+    font-size: 15px;
+
+    font-weight: 800;
+
+    color: #16a34a;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
 .order-status {
-    display: inline-block;
-    padding: 7px 10px;
-    border-radius: 8px;
-    background: #fff5cc;
-    color: #856404;
+    display: inline-flex;
+
+    align-items: center;
+
+    min-height: 30px;
+
+    padding: 0 11px;
+
+    box-sizing: border-box;
+
+    border-radius: 10px;
+
+    background: rgba(22, 163, 74, 0.10);
+
+    color: #16a34a;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.orders-empty {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+
+    padding: 38px 20px 28px;
+
+    background: var(--card);
+
+    border-radius: 22px;
+
+    border: 1px solid rgba(0, 0, 0, 0.045);
+}
+
+.orders-empty-icon {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: rgba(22, 163, 74, 0.10);
+
+    color: #16a34a;
+
+    margin-bottom: 15px;
+}
+
+.orders-empty-icon svg {
+    width: 30px;
+    height: 30px;
+
+    display: block;
+}
+
+.orders-empty-title {
+    font-size: 17px;
+
+    font-weight: 750;
+
+    line-height: 1.3;
+
+    color: var(--text);
+}
+
+.orders-empty-text {
+    margin-top: 6px;
+
     font-size: 13px;
-    margin-top: 8px;
+
+    line-height: 1.4;
+
+    color: var(--muted);
+}
+
+.orders-empty-button {
+    height: 46px;
+
+    margin-top: 18px;
+
+    padding: 0 24px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #16a34a;
+
+    color: #fff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+.orders-empty-button:active {
+    transform: scale(.97);
+
+    opacity: .85;
 }
 
 
@@ -3157,6 +3430,366 @@ button {
 
 .status-step.active .status-title {
     font-weight: bold;
+}
+   /* =========================================================
+   ORDER DETAILS — NEW DESIGN
+========================================================= */
+
+.order-detail-header {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    margin-bottom: 14px;
+
+    padding: 17px;
+
+    background: var(--card);
+
+    border-radius: 20px;
+
+    border: 1px solid rgba(0, 0, 0, 0.05);
+
+    box-shadow:
+        0 3px 14px rgba(0, 0, 0, 0.04);
+}
+
+
+/* HEADER ICON */
+
+.order-detail-header-icon {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background: rgba(22, 163, 74, 0.10);
+
+    color: #16a34a;
+}
+
+.order-detail-header-icon svg {
+    width: 24px;
+    height: 24px;
+
+    display: block;
+}
+
+
+/* HEADER TEXT */
+
+.order-detail-header-info {
+    min-width: 0;
+}
+
+.order-detail-number {
+    font-size: 17px;
+
+    line-height: 1.25;
+
+    font-weight: 800;
+
+    color: var(--text);
+}
+
+.order-detail-status {
+    margin-top: 5px;
+
+    font-size: 13px;
+
+    line-height: 1.2;
+
+    font-weight: 650;
+
+    color: #16a34a;
+}
+
+
+/* =========================================================
+   STATUS CARD
+========================================================= */
+
+.order-detail-status-card {
+    padding: 18px;
+
+    margin-bottom: 14px;
+
+    background: var(--card);
+
+    border-radius: 20px;
+
+    border: 1px solid rgba(0, 0, 0, 0.05);
+
+    box-shadow:
+        0 3px 14px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+.order-detail-section-title {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    font-size: 15px;
+
+    line-height: 1.25;
+
+    font-weight: 800;
+
+    color: var(--text);
+}
+
+
+/* =========================================================
+   STATUS TIMELINE
+========================================================= */
+
+.order-detail-status-card .status-timeline {
+    margin-top: 18px;
+}
+
+.order-detail-status-card .status-step {
+    position: relative;
+
+    display: flex;
+
+    gap: 12px;
+
+    margin-bottom: 0;
+
+    padding-bottom: 20px;
+
+    align-items: flex-start;
+}
+
+.order-detail-status-card .status-step:last-child {
+    padding-bottom: 0;
+}
+
+
+/* VERTICAL LINE */
+
+.order-detail-status-card .status-step:not(:last-child)::after {
+    content: "";
+
+    position: absolute;
+
+    left: 14px;
+    top: 30px;
+
+    width: 2px;
+    height: calc(100% - 30px);
+
+    background: rgba(0, 0, 0, 0.08);
+
+    border-radius: 2px;
+}
+
+
+/* CIRCLE */
+
+.order-detail-status-card .status-circle {
+    position: relative;
+
+    z-index: 2;
+
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--bg);
+
+    border: 1px solid rgba(0, 0, 0, 0.08);
+
+    color: var(--muted);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+}
+
+.order-detail-status-card .status-step.active .status-circle {
+    background: #16a34a;
+
+    border-color: #16a34a;
+
+    color: #fff;
+
+    box-shadow:
+        0 0 0 4px rgba(22, 163, 74, 0.10);
+}
+
+
+/* STATUS TEXT */
+
+.order-detail-status-card .status-title {
+    padding-top: 5px;
+
+    font-size: 14px;
+
+    line-height: 1.25;
+
+    color: var(--muted);
+}
+
+.order-detail-status-card .status-step.active .status-title {
+    color: var(--text);
+
+    font-weight: 750;
+}
+
+
+/* =========================================================
+   PRODUCTS CARD
+========================================================= */
+
+.order-detail-products-card {
+    padding: 18px;
+
+    margin-bottom: 14px;
+
+    background: var(--card);
+
+    border-radius: 20px;
+
+    border: 1px solid rgba(0, 0, 0, 0.05);
+
+    box-shadow:
+        0 3px 14px rgba(0, 0, 0, 0.04);
+}
+
+
+/* COUNT */
+
+.order-detail-count {
+    padding: 5px 9px;
+
+    border-radius: 9px;
+
+    background: rgba(22, 163, 74, 0.08);
+
+    color: #16a34a;
+
+    font-size: 11px;
+
+    font-weight: 750;
+}
+
+
+/* =========================================================
+   PRODUCT LIST
+========================================================= */
+
+.order-detail-products {
+    margin-top: 14px;
+}
+
+.order-detail-product {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.055);
+}
+
+.order-detail-product:last-child {
+    border-bottom: none;
+}
+
+
+/* PRODUCT INFO */
+
+.order-detail-product-info {
+    min-width: 0;
+}
+
+.order-detail-product-name {
+    font-size: 14px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    color: var(--text);
+}
+
+.order-detail-product-quantity {
+    margin-top: 4px;
+
+    font-size: 12px;
+
+    line-height: 1.2;
+
+    color: var(--muted);
+}
+
+
+/* PRODUCT PRICE */
+
+.order-detail-product-price {
+    flex-shrink: 0;
+
+    font-size: 14px;
+
+    font-weight: 750;
+
+    color: var(--text);
+}
+
+
+/* =========================================================
+   TOTAL
+========================================================= */
+
+.order-detail-total {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-top: 8px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid rgba(0, 0, 0, 0.07);
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    color: var(--text);
+}
+
+.order-detail-total strong {
+    font-size: 18px;
+
+    font-weight: 850;
+
+    color: #16a34a;
 }
 
 
@@ -7543,9 +8176,48 @@ body.dark .premium-category-arrow {
     </button>
 
 
-    <h2>
-        📦 <span data-i18n="myOrders">Buyurtmalarim</span>
-    </h2>
+    <div class="orders-page-header">
+
+    <div class="orders-page-icon">
+
+        <svg
+            viewBox="0 0 24 24"
+            fill="none">
+
+            <path
+                d="M6 3.5h12a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 19V5A1.5 1.5 0 0 1 6 3.5Z"
+                stroke="currentColor"
+                stroke-width="1.8"/>
+
+            <path
+                d="M8 8h8M8 12h8M8 16h5"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"/>
+
+        </svg>
+
+    </div>
+
+
+    <div>
+
+        <h2 class="orders-page-title">
+            <span data-i18n="myOrders">
+                Buyurtmalarim
+            </span>
+        </h2>
+
+        <div class="orders-page-subtitle">
+            Barcha buyurtmalaringiz shu yerda
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="ordersList"></div>
 
 
     <div id="ordersList"></div>
@@ -13794,18 +14466,73 @@ function renderOrders() {
         );
 
 
+    if (!list) {
+
+        return;
+
+    }
+
+
     list.innerHTML = "";
 
 
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
+
     if (
+        !orders ||
         orders.length === 0
     ) {
 
         list.innerHTML = `
 
-            <div class="form-card">
+            <div class="orders-empty">
 
-                📦 Hozircha buyurtmalar mavjud emas.
+                <div class="orders-empty-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none">
+
+                        <path
+                            d="M6 3.5h12a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 19V5A1.5 1.5 0 0 1 6 3.5Z"
+                            stroke="currentColor"
+                            stroke-width="1.8"/>
+
+                        <path
+                            d="M8 8h8M8 12h8M8 16h5"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                    </svg>
+
+                </div>
+
+
+                <div class="orders-empty-title">
+
+                    Hozircha buyurtmalar yo‘q
+
+                </div>
+
+
+                <div class="orders-empty-text">
+
+                    Birinchi xaridingizni boshlang
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="orders-empty-button"
+                    onclick="openHome()">
+
+                    Xarid qilish
+
+                </button>
 
             </div>
 
@@ -13816,57 +14543,118 @@ function renderOrders() {
     }
 
 
+    /* =====================================================
+       ORDER LIST
+    ===================================================== */
+
     orders
-    .slice()
-    .reverse()
-    .forEach(order => {
+        .slice()
+        .reverse()
+        .forEach(order => {
 
-        let total = 0;
+            let total = 0;
 
 
-        order.items.forEach(
-            item => {
+            if (
+                order.items &&
+                Array.isArray(order.items)
+            ) {
 
-                total +=
-                    item.price *
-                    item.quantity;
+                order.items.forEach(
+                    item => {
+
+                        total +=
+                            Number(item.price || 0) *
+                            Number(item.quantity || 0);
+
+                    }
+                );
 
             }
-        );
 
 
-        list.innerHTML += `
+            list.innerHTML += `
 
-            <div
-                class="order-history-card"
-                onclick="openOrderDetails('${order.id}')"
-                style="cursor:pointer;">
+                <div
+                    class="order-history-card"
+                    onclick="openOrderDetails('${order.id}')">
 
-                <strong>
+                    <div class="order-history-top">
 
-                    📦 Buyurtma #${order.id}
+                        <div class="order-history-number">
 
-                </strong>
+                            <span class="order-history-icon">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none">
+
+                                    <path
+                                        d="M6 3.5h12a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 19V5A1.5 1.5 0 0 1 6 3.5Z"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"/>
+
+                                    <path
+                                        d="M8 8h8M8 12h8M8 16h5"
+                                        stroke="currentColor"
+                                        stroke-width="1.8"
+                                        stroke-linecap="round"/>
+
+                                </svg>
+
+                            </span>
 
 
-                <p>
+                            <div>
 
-                    ${formatPrice(total)}
+                                <div class="order-history-title">
 
-                </p>
+                                    Buyurtma #${order.id}
+
+                                </div>
+
+                                <div class="order-history-items">
+
+                                    ${order.items?.length || 0} ta mahsulot
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
 
-                <span class="order-status">
+                        <span class="order-history-arrow">
 
-                    🟡 ${getStatusText(order.status)}
+                            ›
+                            
+                        </span>
 
-                </span>
+                    </div>
 
-            </div>
 
-        `;
+                    <div class="order-history-bottom">
 
-    });
+                        <strong class="order-history-total">
+
+                            ${formatPrice(total)}
+
+                        </strong>
+
+
+                        <span class="order-status">
+
+                            ${getStatusText(order.status)}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
 
 }
 
@@ -13885,19 +14673,32 @@ function openOrderDetails(id) {
         );
 
 
-    if (!order)
+    if (!order) {
+
         return;
+
+    }
 
 
     hideAll();
 
 
-    document
-        .getElementById(
+    const page =
+        document.getElementById(
             "orderDetailsPage"
-        )
-        .classList
-        .remove("hidden");
+        );
+
+
+    if (!page) {
+
+        return;
+
+    }
+
+
+    page.classList.remove(
+        "hidden"
+    );
 
 
     const container =
@@ -13906,43 +14707,79 @@ function openOrderDetails(id) {
         );
 
 
+    if (!container) {
+
+        return;
+
+    }
+
+
     let total = 0;
 
 
+    /* =====================================================
+       PRODUCTS
+    ===================================================== */
+
     const itemsHTML =
-        order.items
+        (order.items || [])
         .map(item => {
 
+            const quantity =
+                Number(
+                    item.quantity || 0
+                );
+
+
+            const price =
+                Number(
+                    item.price || 0
+                );
+
+
             const itemTotal =
-                item.price *
-                item.quantity;
+                price * quantity;
 
 
-            total +=
-                itemTotal;
+            total += itemTotal;
+
+
+            const unitText =
+                item.unit === "kg"
+                    ? (
+                        item.selectedUnit ||
+                        "kg"
+                    )
+                    : "dona";
 
 
             return `
 
-                <div style="
-                    display:flex;
-                    justify-content:space-between;
-                    margin-bottom:10px;
-                ">
+                <div class="order-detail-product">
 
-                    <span>
-                        ${item.name}
-                        <br>
-                        <small>
-                            ${item.quantity}
-                            ${item.unit === "kg"
-                                ? item.selectedUnit
-                                : "dona"}
-                        </small>
-                    </span>
+                    <div class="order-detail-product-info">
 
-                    <strong>
+                        <div class="order-detail-product-name">
+
+                            ${item.name}
+
+                        </div>
+
+
+                        <div class="order-detail-product-quantity">
+
+                            ${quantity}
+                            ${unitText}
+
+                        </div>
+
+                    </div>
+
+
+                    <strong class="order-detail-product-price">
+
                         ${formatPrice(itemTotal)}
+
                     </strong>
 
                 </div>
@@ -13953,18 +14790,73 @@ function openOrderDetails(id) {
         .join("");
 
 
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    const statusText =
+        getStatusText(
+            order.status
+        );
+
+
+    /* =====================================================
+       RENDER
+    ===================================================== */
+
     container.innerHTML = `
 
-        <div class="card">
+        <div class="order-detail-header">
 
-            <h2>
-                📦 Buyurtma #${order.id}
-            </h2>
+            <div class="order-detail-header-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none">
+
+                    <path
+                        d="M6 3.5h12a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 19V5A1.5 1.5 0 0 1 6 3.5Z"
+                        stroke="currentColor"
+                        stroke-width="1.8"/>
+
+                    <path
+                        d="M8 8h8M8 12h8M8 16h5"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"/>
+
+                </svg>
+
+            </div>
 
 
-            <strong>
-                ${formatPrice(total)}
-            </strong>
+            <div class="order-detail-header-info">
+
+                <div class="order-detail-number">
+
+                    Buyurtma #${order.id}
+
+                </div>
+
+
+                <div class="order-detail-status">
+
+                    ${statusText}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="order-detail-status-card">
+
+            <div class="order-detail-section-title">
+
+                Buyurtma holati
+
+            </div>
 
 
             <div class="status-timeline">
@@ -13978,13 +14870,49 @@ function openOrderDetails(id) {
         </div>
 
 
-        <div class="card">
+        <div class="order-detail-products-card">
 
-            <h3>
-                🛍 Mahsulotlar
-            </h3>
+            <div class="order-detail-section-title">
 
-            ${itemsHTML}
+                <span>
+
+                    Mahsulotlar
+
+                </span>
+
+
+                <span class="order-detail-count">
+
+                    ${(order.items || []).length} ta
+
+                </span>
+
+            </div>
+
+
+            <div class="order-detail-products">
+
+                ${itemsHTML}
+
+            </div>
+
+
+            <div class="order-detail-total">
+
+                <span>
+
+                    Jami
+
+                </span>
+
+
+                <strong>
+
+                    ${formatPrice(total)}
+
+                </strong>
+
+            </div>
 
         </div>
 
