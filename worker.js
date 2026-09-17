@@ -496,17 +496,74 @@ if (update.callback_query) {
             updatedText,
 
           reply_markup: {
-            inline_keyboard: [
-              [
-                {
-                  text:
-                    "📦 Holat yangilandi",
-                  callback_data:
-                    "status_updated"
-                }
-              ]
-            ]
-          }
+  inline_keyboard:
+    newStatus === "qabul_qilindi"
+      ? [
+          [
+            {
+              text: "📦 Yig‘ilmoqda",
+              callback_data:
+                `order_preparing:${orderNumber}`
+            }
+          ],
+          [
+            {
+              text: "❌ Bekor qilish",
+              callback_data:
+                `order_cancelled:${orderNumber}`
+            }
+          ]
+        ]
+
+      : newStatus === "yigilmoqda"
+      ? [
+          [
+            {
+              text: "🚚 Yetkazishga tayyor",
+              callback_data:
+                `order_ready:${orderNumber}`
+            }
+          ],
+          [
+            {
+              text: "❌ Bekor qilish",
+              callback_data:
+                `order_cancelled:${orderNumber}`
+            }
+          ]
+        ]
+
+      : newStatus === "yetkazib_berishga_tayyor"
+      ? [
+          [
+            {
+              text: "🛵 Yo‘lda",
+              callback_data:
+                `order_delivering:${orderNumber}`
+            }
+          ],
+          [
+            {
+              text: "❌ Bekor qilish",
+              callback_data:
+                `order_cancelled:${orderNumber}`
+            }
+          ]
+        ]
+
+      : newStatus === "yolda"
+      ? [
+          [
+            {
+              text: "✅ Yetkazildi",
+              callback_data:
+                `order_delivered:${orderNumber}`
+            }
+          ]
+        ]
+
+      : []
+}
 
         })
       }
