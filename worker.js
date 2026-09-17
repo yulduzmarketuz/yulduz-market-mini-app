@@ -1292,6 +1292,108 @@ if (
   }
 }
 
+    // =====================================================
+// GET ORDERS
+// =====================================================
+
+if (
+  url.pathname === "/orders" &&
+  request.method === "GET"
+) {
+
+  try {
+
+    const telegramId =
+      url.searchParams.get("telegram_id");
+
+    if (!telegramId) {
+      return json(
+        {
+          error:
+            "telegram_id kerak"
+        },
+        400
+      );
+    }
+
+
+    const result =
+      await env.DB.prepare(`
+        SELECT
+          id,
+          order_number,
+          telegram_id,
+          first_name,
+          last_name,
+          username,
+          phone,
+          items,
+          total,
+          address_name,
+          latitude,
+          longitude,
+          address_extra,
+          note,
+          payment_method,
+          payment_status,
+          status,
+          yespos_status,
+          created_at
+        FROM orders
+        WHERE telegram_id = ?
+        ORDER BY id DESC
+      `)
+        .bind(telegramId)
+        .all();
+
+
+    const orders =
+      (result.results || []).map(order => {
+
+        let items = [];
+
+        try {
+          items =
+            JSON.parse(
+              order.items || "[]"
+            );
+        } catch (error) {
+          items = [];
+        }
+
+        return {
+          ...order,
+          items
+        };
+
+      });
+
+
+    return json({
+      success: true,
+      orders
+    });
+
+  } catch (error) {
+
+    console.error(
+      "❌ D1 ORDERS GET ERROR:",
+      error
+    );
+
+    return json(
+      {
+        error:
+          "Buyurtmalarni olishda xatolik",
+
+        message:
+          error.message
+      },
+      500
+    );
+  }
+}
+
 
     // =====================================================
     // MINI APP
