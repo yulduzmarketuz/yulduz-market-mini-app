@@ -203,6 +203,55 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
     );
   }
 }
+    // =========================
+// TELEGRAM ADMIN TEST
+// =========================
+if (
+  url.pathname === "/telegram-test" &&
+  request.method === "GET"
+) {
+  try {
+
+    const response = await fetch(
+      `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: env.ADMIN_CHAT_ID,
+          text: "🔥 YULDUZ MARKET TEST XABARI\n\nTelegram admin tizimi ishlayapti."
+        })
+      }
+    );
+
+    const result =
+      await response.text();
+
+    return new Response(
+      result,
+      {
+        status: response.status,
+        headers: {
+          "Content-Type":
+            "application/json; charset=utf-8"
+        }
+      }
+    );
+
+  } catch (error) {
+
+    return json(
+      {
+        success: false,
+        error: error.message
+      },
+      500
+    );
+
+  }
+}
 
     // =========================
     // D1: SAVE CUSTOMER
