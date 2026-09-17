@@ -29,6 +29,7 @@ async function yesposFetch(path, env, options = {}) {
 
 export default {
   async fetch(request, env) {
+    return new Response("WORKER TEST OK");
     const url = new URL(request.url);
 
     // =========================
