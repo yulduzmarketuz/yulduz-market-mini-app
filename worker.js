@@ -38,6 +38,47 @@ export default {
 
     const url = new URL(request.url);
 
+    if (
+  url.pathname === "/admin-test" &&
+  request.method === "GET"
+) {
+  console.log("🔥 ADMIN TEST BOSHLANDI");
+
+  console.log("BOT:", !!env.BOT_TOKEN);
+  console.log("ADMIN:", !!env.ADMIN_CHAT_ID);
+
+  const telegramResponse = await fetch(
+    `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        chat_id: env.ADMIN_CHAT_ID,
+        text: "✅ Yulduz Market admin test xabari"
+      })
+    }
+  );
+
+  const telegramText = await telegramResponse.text();
+
+  console.log(
+    "🔥 TELEGRAM JAVOBI:",
+    telegramText
+  );
+
+  return new Response(
+    telegramText,
+    {
+      status: telegramResponse.status,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+}
+
     // =====================================================
     // TELEGRAM WEBHOOK
     // =====================================================
