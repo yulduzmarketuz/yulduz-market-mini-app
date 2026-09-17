@@ -35,47 +35,154 @@ async function yesposFetch(path, env, options = {}) {
 
 
 // =====================================================
-// TELEGRAM ADMIN XABAR YUBORISH
+// TELEGRAM ADMIN
 // =====================================================
 
 async function sendAdminTelegram(env, text) {
 
+  console.log("🚀 TELEGRAM ADMIN FUNKSIYASI ISHLADI");
+
   if (!env.BOT_TOKEN) {
-    throw new Error("BOT_TOKEN mavjud emas");
+    console.error("❌ BOT_TOKEN YO'Q");
+    return false;
   }
 
   if (!env.ADMIN_CHAT_ID) {
-    throw new Error("ADMIN_CHAT_ID mavjud emas");
+    console.error("❌ ADMIN_CHAT_ID YO'Q");
+    return false;
   }
 
-  const response = await fetch(
-    `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        chat_id: env.ADMIN_CHAT_ID,
-        text: text
-      })
-    }
-  );
+  try {
 
-  const result = await response.text();
-
-  console.log(
-    "📨 TELEGRAM ADMIN JAVOBI:",
-    result
-  );
-
-  if (!response.ok) {
-    throw new Error(
-      `Telegram API xatosi: ${result}`
+    const response = await fetch(
+      `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: env.ADMIN_CHAT_ID,
+          text
+        })
+      }
     );
+
+    const result = await response.text();
+
+    console.log(
+      "📨 TELEGRAM ADMIN JAVOBI:",
+      result
+    );
+
+    if (!response.ok) {
+      console.error(
+        "❌ TELEGRAM API XATOSI:",
+        result
+      );
+
+      return false;
+    }
+
+    console.log(
+      "✅ TELEGRAM ADMIN XABARI YUBORILDI"
+    );
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "❌ TELEGRAM FETCH XATOSI:",
+      error
+    );
+
+    return false;
+  }
+}
+
+
+// =====================================================
+// ADMIN BUYURTMA MATNI
+// =====================================================
+
+function buildAdminOrderMessage(data, orderNumber) {
+
+  const customerName =
+    `${data.first_name || ""} ${data.last_name || ""}`
+      .trim() ||
+    "Noma'lum mijoz";
+
+  const username =
+    data.username
+      ? `@${String(data.username).replace(/^@/, "")}`
+      : "Username yo‘q";
+
+  const phone =
+    data.phone ||
+    "Telefon yo‘q";
+
+  const address =
+    data.address_name ||
+    "Lokatsiya";
+
+  const payment =
+    data.payment_method === "cash"
+      ? "Naqd"
+      : data.payment_method || "Noma'lum";
+
+  let itemsText = "";
+
+  for (
+    let index = 0;
+    index < data.items.length;
+    index++
+  ) {
+
+    const item = data.items[index];
+
+    const name =
+      item?.name ||
+      item?.title ||
+      "Mahsulot";
+
+    const quantity =
+      Number(item?.quantity || 0);
+
+    const price =
+      Number(item?.price || 0);
+
+    const itemTotal =
+      price * quantity;
+
+    itemsText +=
+      `${index + 1}. ${name}\n` +
+      `   ${quantity} dona × ${price.toLocaleString("uz-UZ")} so‘m = ${itemTotal.toLocaleString("uz-UZ")} so‘m\n`;
   }
 
-  return true;
+  const total =
+    Number(data.total || 0);
+
+  return `🛒 YANGI BUYURTMA
+
+🔢 Buyurtma: #${orderNumber}
+
+👤 Mijoz:
+${customerName}
+
+📱 ${username}
+☎️ ${phone}
+
+🛍 MAHSULOTLAR:
+${itemsText}
+💰 Jami: ${total.toLocaleString("uz-UZ")} so‘m
+
+💳 To‘lov: ${payment}
+
+📍 Manzil: ${address}
+
+${data.address_extra ? `📝 Qo‘shimcha: ${data.address_extra}\n` : ""}${data.note ? `💬 Izoh: ${data.note}\n` : ""}
+🟡 Holat: Yangi`;
 }
 
 
@@ -83,7 +190,8 @@ export default {
 
   async fetch(request, env) {
 
-    const url = new URL(request.url);
+    const url =
+      new URL(request.url);
 
 
     // =====================================================
@@ -108,17 +216,12 @@ export default {
           const chatId =
             message.chat?.id;
 
-          console.log(
-            "🔥 TELEGRAM CHAT ID:",
-            chatId
-          );
-
           const user =
             message.from;
 
 
           // =================================================
-          // CONTACT → D1
+          // CONTACT
           // =================================================
 
           if (message.contact) {
@@ -172,7 +275,6 @@ export default {
                 phone
               );
 
-
               await fetch(
                 `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
                 {
@@ -188,7 +290,6 @@ export default {
                   })
                 }
               );
-
             }
 
             return new Response("OK");
@@ -218,7 +319,6 @@ Xaridlaringizni uydan chiqmasdan amalga oshiring.
 
 Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
 
-
             await fetch(
               `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
               {
@@ -247,9 +347,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
                 })
               }
             );
-
           }
-
         }
 
         return new Response("OK");
@@ -272,7 +370,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
 
 
     // =====================================================
-    // D1: SAVE CUSTOMER
+    // CUSTOMER POST
     // =====================================================
 
     if (
@@ -289,7 +387,6 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
           data.telegram_id?.toString();
 
         if (!telegramId) {
-
           return json(
             {
               error:
@@ -297,9 +394,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
             },
             400
           );
-
         }
-
 
         await env.DB.prepare(`
           INSERT INTO customers (
@@ -327,7 +422,6 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
           )
           .run();
 
-
         return json({
           success: true
         });
@@ -353,7 +447,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
 
 
     // =====================================================
-    // D1: GET CUSTOMER
+    // CUSTOMER GET
     // =====================================================
 
     if (
@@ -369,7 +463,6 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
           );
 
         if (!telegramId) {
-
           return json(
             {
               error:
@@ -377,9 +470,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
             },
             400
           );
-
         }
-
 
         const result =
           await env.DB.prepare(`
@@ -397,7 +488,6 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
           `)
             .bind(telegramId)
             .first();
-
 
         return json({
           success: true,
@@ -426,7 +516,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
 
 
     // =====================================================
-    // D1: ADDRESSES - GET
+    // ADDRESSES GET
     // =====================================================
 
     if (
@@ -442,7 +532,6 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
           );
 
         if (!telegramId) {
-
           return json(
             {
               error:
@@ -450,9 +539,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
             },
             400
           );
-
         }
-
 
         const result =
           await env.DB.prepare(`
@@ -471,7 +558,6 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
           `)
             .bind(telegramId)
             .all();
-
 
         return json({
           success: true,
@@ -500,7 +586,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
 
 
     // =====================================================
-    // D1: ADDRESSES - POST
+    // ADDRESSES POST
     // =====================================================
 
     if (
@@ -517,7 +603,6 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
           data.telegram_id?.toString();
 
         if (!telegramId) {
-
           return json(
             {
               error:
@@ -525,16 +610,13 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
             },
             400
           );
-
         }
-
 
         if (
           !data.name ||
           data.latitude === undefined ||
           data.longitude === undefined
         ) {
-
           return json(
             {
               error:
@@ -542,9 +624,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
             },
             400
           );
-
         }
-
 
         const result =
           await env.DB.prepare(`
@@ -565,7 +645,6 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
               Number(data.longitude)
             )
             .run();
-
 
         return json({
           success: true,
@@ -595,7 +674,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
 
 
     // =====================================================
-    // D1: ADDRESSES - DELETE
+    // ADDRESSES DELETE
     // =====================================================
 
     if (
@@ -615,7 +694,6 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
           Number(data.id);
 
         if (!telegramId) {
-
           return json(
             {
               error:
@@ -623,12 +701,9 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
             },
             400
           );
-
         }
 
-
         if (!addressId) {
-
           return json(
             {
               error:
@@ -636,9 +711,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
             },
             400
           );
-
         }
-
 
         const result =
           await env.DB.prepare(`
@@ -651,7 +724,6 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
               telegramId
             )
             .run();
-
 
         return json({
           success: true,
@@ -680,7 +752,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
 
 
     // =====================================================
-    // D1: CREATE ORDER
+    // CREATE ORDER
     // =====================================================
 
     if (
@@ -696,9 +768,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
         const telegramId =
           data.telegram_id?.toString();
 
-
         if (!telegramId) {
-
           return json(
             {
               error:
@@ -706,15 +776,12 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
             },
             400
           );
-
         }
-
 
         if (
           !Array.isArray(data.items) ||
           data.items.length === 0
         ) {
-
           return json(
             {
               error:
@@ -722,16 +789,12 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
             },
             400
           );
-
         }
-
 
         const total =
           Number(data.total || 0);
 
-
         if (total <= 0) {
-
           return json(
             {
               error:
@@ -739,12 +802,42 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
             },
             400
           );
-
         }
 
 
+        // =================================================
+        // ORDER NUMBER
+        // =================================================
+
         const orderNumber =
           `YLZ-${Date.now()}`;
+
+
+        // =================================================
+        // ADMIN XABARINI TAYYORLASH
+        // =================================================
+
+        const adminMessage =
+          buildAdminOrderMessage(
+            data,
+            orderNumber
+          );
+
+
+        console.log(
+          "🚀 ADMIN TELEGRAMGA YUBORISH BOSHLANDI:",
+          orderNumber
+        );
+
+
+        // =================================================
+        // TELEGRAM ADMIN
+        // =================================================
+
+        await sendAdminTelegram(
+          env,
+          adminMessage
+        );
 
 
         // =================================================
@@ -823,134 +916,6 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
 
 
         // =================================================
-        // TELEGRAM ADMIN XABARI
-        // =================================================
-
-        const customerName =
-          `${data.first_name || ""} ${data.last_name || ""}`
-            .trim() ||
-          "Noma'lum mijoz";
-
-
-        const username =
-          data.username
-            ? `@${String(
-                data.username
-              ).replace(/^@/, "")}`
-            : "Username yo‘q";
-
-
-        const phone =
-          data.phone ||
-          "Telefon yo‘q";
-
-
-        const address =
-          data.address_name ||
-          "Lokatsiya";
-
-
-        const payment =
-          data.payment_method === "cash"
-            ? "Naqd"
-            : data.payment_method ||
-              "Noma'lum";
-
-
-        let itemsText = "";
-
-
-        for (
-          let index = 0;
-          index < data.items.length;
-          index++
-        ) {
-
-          const item =
-            data.items[index];
-
-
-          const name =
-            item?.name ||
-            item?.title ||
-            "Mahsulot";
-
-
-          const quantity =
-            Number(
-              item?.quantity || 0
-            );
-
-
-          const price =
-            Number(
-              item?.price || 0
-            );
-
-
-          const itemTotal =
-            price * quantity;
-
-
-          itemsText +=
-            `${index + 1}. ${name}\n` +
-            `   ${quantity} dona × ${price.toLocaleString("uz-UZ")} so‘m = ${itemTotal.toLocaleString("uz-UZ")} so‘m\n`;
-        }
-
-
-        const adminMessage =
-`🛒 YANGI BUYURTMA
-
-🔢 Buyurtma: #${orderNumber}
-
-👤 Mijoz:
-${customerName}
-
-📱 ${username}
-☎️ ${phone}
-
-🛍 MAHSULOTLAR:
-${itemsText}
-💰 Jami: ${total.toLocaleString("uz-UZ")} so‘m
-
-💳 To‘lov: ${payment}
-
-📍 Manzil: ${address}
-
-${data.address_extra ? `📝 Qo‘shimcha: ${data.address_extra}\n` : ""}${data.note ? `💬 Izoh: ${data.note}\n` : ""}
-🟡 Holat: Yangi`;
-
-
-        console.log(
-          "🚀 ADMIN TELEGRAMGA YUBORISH BOSHLANDI:",
-          orderNumber
-        );
-
-
-        try {
-
-          await sendAdminTelegram(
-            env,
-            adminMessage
-          );
-
-
-          console.log(
-            "✅ ADMIN TELEGRAMGA BUYURTMA YUBORILDI:",
-            orderNumber
-          );
-
-        } catch (telegramError) {
-
-          console.error(
-            "❌ ADMIN TELEGRAM XATOSI:",
-            telegramError
-          );
-
-        }
-
-
-        // =================================================
         // MINI APP GA JAVOB
         // =================================================
 
@@ -972,7 +937,7 @@ ${data.address_extra ? `📝 Qo‘shimcha: ${data.address_extra}\n` : ""}${data.
       } catch (error) {
 
         console.error(
-          "D1 order error:",
+          "❌ D1 ORDER ERROR:",
           error
         );
 
@@ -1008,7 +973,6 @@ ${data.address_extra ? `📝 Qo‘shimcha: ${data.address_extra}\n` : ""}${data.
 
         const text =
           await response.text();
-
 
         return new Response(
           text,
@@ -1058,7 +1022,6 @@ ${data.address_extra ? `📝 Qo‘shimcha: ${data.address_extra}\n` : ""}${data.
         const text =
           await response.text();
 
-
         return new Response(
           text,
           {
@@ -1103,21 +1066,17 @@ ${data.address_extra ? `📝 Qo‘shimcha: ${data.address_extra}\n` : ""}${data.
             "branch"
           );
 
-
         const page =
           url.searchParams.get(
             "page"
           ) || "1";
-
 
         const limit =
           url.searchParams.get(
             "limit"
           ) || "100";
 
-
         if (!branch) {
-
           return json(
             {
               error:
@@ -1125,9 +1084,7 @@ ${data.address_extra ? `📝 Qo‘shimcha: ${data.address_extra}\n` : ""}${data.
             },
             400
           );
-
         }
-
 
         const response =
           await yesposFetch(
@@ -1140,10 +1097,8 @@ ${data.address_extra ? `📝 Qo‘shimcha: ${data.address_extra}\n` : ""}${data.
             }
           );
 
-
         const text =
           await response.text();
-
 
         return new Response(
           text,
@@ -1187,7 +1142,6 @@ ${data.address_extra ? `📝 Qo‘shimcha: ${data.address_extra}\n` : ""}${data.
         const order =
           await request.json();
 
-
         const response =
           await yesposFetch(
             "/marketplace/order",
@@ -1197,16 +1151,13 @@ ${data.address_extra ? `📝 Qo‘shimcha: ${data.address_extra}\n` : ""}${data.
                 "AppName":
                   "Yulduz Market Mini App"
               },
-
               body:
                 order
             }
           );
 
-
         const text =
           await response.text();
-
 
         return new Response(
           text,
