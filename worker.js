@@ -49,10 +49,15 @@ if (
     if (message) {
 
       const chatId =
-        message.chat?.id;
+  message.chat?.id;
 
-      const user =
-        message.from;
+console.log(
+  "🔥 ADMIN CHAT ID:",
+  chatId
+);
+
+const user =
+  message.from;
 
       // =========================
       // CONTACT → D1
