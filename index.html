@@ -14592,7 +14592,7 @@ try {
    ORDERS
 ========================================================= */
 
-function showOrders() {
+async function showOrders() {
 
     hideAll();
 
@@ -14605,6 +14605,9 @@ function showOrders() {
         .remove("hidden");
 
 
+    await loadOrders();
+
+
     renderOrders();
 
 }
@@ -14614,14 +14617,69 @@ function showOrders() {
    LOAD ORDERS
 ========================================================= */
 
-function loadOrders() {
+async function loadOrders() {
 
-    orders =
-        JSON.parse(
-            localStorage.getItem(
-                "yulduz_orders"
-            ) || "[]"
+    try {
+
+        const telegramId =
+            window.Telegram?.WebApp?.initDataUnsafe?.user?.id;
+
+        if (!telegramId) {
+
+            console.error(
+                "❌ Telegram ID topilmadi"
+            );
+
+            orders = [];
+
+            return;
+        }
+
+        const response =
+            await fetch(
+                `${window.location.origin}/orders?telegram_id=${telegramId}&t=${Date.now()}`,
+                {
+                    method: "GET",
+                    cache: "no-store"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (!response.ok || !data.success) {
+
+            console.error(
+                "❌ BUYURTMALAR YUKLANMADI:",
+                data
+            );
+
+            return;
+        }
+
+        orders =
+            Array.isArray(data.orders)
+                ? data.orders
+                : [];
+
+        console.log(
+            "✅ D1 DAN BUYURTMALAR OLINDI:",
+            orders
         );
+
+        localStorage.setItem(
+            "yulduz_orders",
+            JSON.stringify(orders)
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ LOAD ORDERS ERROR:",
+            error
+        );
+
+    }
 
 }
 
@@ -14845,7 +14903,7 @@ function renderOrders() {
 
                                 <div class="order-history-title">
 
-                                    Buyurtma #${order.id}
+                                    Buyurtma #${order.order_number}
 
                                 </div>
 
@@ -14925,7 +14983,9 @@ function filterOrders(filter) {
    ORDER DETAILS
 ========================================================= */
 
-function openOrderDetails(id) {
+async function openOrderDetails(id) {
+
+    await loadOrders();
 
     const order =
         orders.find(
@@ -14933,7 +14993,6 @@ function openOrderDetails(id) {
             String(item.id) ===
             String(id)
         );
-
 
     if (!order) {
 
@@ -15096,7 +15155,7 @@ function openOrderDetails(id) {
 
                 <div class="order-detail-number">
 
-                    Buyurtma #${order.id}
+                    Buyurtma #${order.order_number}
 
                 </div>
 
@@ -15196,15 +15255,15 @@ const statuses = [
     },
 
     {
-        id: "tayyorlanmoqda",
-        title: "Tayyorlanmoqda",
-        icon: "👨‍🍳"
+        id: "yigilmoqda",
+        title: "Yig‘ilmoqda",
+        icon: "📦"
     },
 
     {
-        id: "tayyor",
-        title: "Tayyor",
-        icon: "📦"
+        id: "yetkazib_berishga_tayyor",
+        title: "Yetkazishga tayyor",
+        icon: "🚚"
     },
 
     {
@@ -15228,6 +15287,13 @@ const statuses = [
 
 function getStatusText(status) {
 
+    if (status === "bekor_qilingan") {
+
+        return "Bekor qilingan";
+
+    }
+
+
     const item =
         statuses.find(
             step =>
@@ -15242,57 +15308,86 @@ function getStatusText(status) {
 }
 
 
-/* =========================================================
-   STATUS TIMELINE
-========================================================= */
+ /* =========================================================
+    STATUS TIMELINE
+ ========================================================= */
 
-function renderStatusTimeline(
-    currentStatus
-) {
+ function renderStatusTimeline(
+     currentStatus
+ ) {
 
-    const currentIndex =
-        statuses.findIndex(
-            step =>
-            step.id === currentStatus
-        );
+     if (currentStatus === "bekor_qilingan") {
+
+         return `
+
+             <div
+                 class="status-step active">
+
+                 <div class="status-circle">
+
+                     ❌
+
+                 </div>
+
+                 <div>
+
+                     <div class="status-title">
+
+                         Bekor qilingan
+
+                     </div>
+
+                 </div>
+
+             </div>
+
+         `;
+
+     }
 
 
-    return statuses
-        .map(
-            (step,index) => `
+     const currentIndex =
+         statuses.findIndex(
+             step =>
+             step.id === currentStatus
+         );
 
-            <div
-                class="status-step
-                ${index <= currentIndex
-                    ? "active"
-                    : ""}">
 
-                <div class="status-circle">
+     return statuses
+         .map(
+             (step,index) => `
 
-                    ${index <= currentIndex
-                        ? "✓"
-                        : step.icon}
+             <div
+                 class="status-step
+                 ${index <= currentIndex
+                     ? "active"
+                     : ""}">
 
-                </div>
+                 <div class="status-circle">
 
-                <div>
+                     ${index <= currentIndex
+                         ? "✓"
+                         : step.icon}
 
-                    <div class="status-title">
+                 </div>
 
-                        ${step.title}
+                 <div>
 
-                    </div>
+                     <div class="status-title">
 
-                </div>
+                         ${step.title}
 
-            </div>
+                     </div>
 
-        `
-        )
-        .join("");
+                 </div>
 
-}
+             </div>
 
+         `
+         )
+         .join("");
+
+ }
 
 /* =========================================================
    PROFILE
