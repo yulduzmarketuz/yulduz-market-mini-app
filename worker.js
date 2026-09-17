@@ -67,45 +67,23 @@ async function sendAdminTelegram(env, text, orderNumber) {
           text,
 
           reply_markup: {
-            inline_keyboard: [
-              [
-                {
-                  text: "✅ Qabul qilish",
-                  callback_data: `order_accept:${orderNumber}`
-                }
-              ],
-              [
-                {
-                  text: "📦 Yig‘ilmoqda",
-                  callback_data: `order_preparing:${orderNumber}`
-                }
-              ],
-              [
-                {
-                  text: "🚚 Yetkazishga tayyor",
-                  callback_data: `order_ready:${orderNumber}`
-                }
-              ],
-              [
-                {
-                  text: "🛵 Yo‘lda",
-                  callback_data: `order_delivering:${orderNumber}`
-                }
-              ],
-              [
-                {
-                  text: "✅ Yetkazildi",
-                  callback_data: `order_delivered:${orderNumber}`
-                }
-              ],
-              [
-                {
-                  text: "❌ Bekor qilish",
-                  callback_data: `order_cancelled:${orderNumber}`
-                }
-              ]
-            ]
-          }
+  inline_keyboard: [
+    [
+      {
+        text: "✅ Qabul qilish",
+        callback_data:
+          `order_accept:${orderNumber}`
+      }
+    ],
+    [
+      {
+        text: "❌ Bekor qilish",
+        callback_data:
+          `order_cancelled:${orderNumber}`
+      }
+    ]
+  ]
+}
         })
       }
     );
