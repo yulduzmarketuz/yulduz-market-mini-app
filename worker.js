@@ -32,6 +32,24 @@ export default {
     const url = new URL(request.url);
 
     // =========================
+// TELEGRAM ADMIN TEST
+// =========================
+if (
+  url.pathname === "/telegram-test"
+) {
+  return json({
+    bot_token_exists: !!env.BOT_TOKEN,
+    bot_token_length: env.BOT_TOKEN?.length || 0,
+    bot_token_has_colon:
+      env.BOT_TOKEN?.includes(":") || false,
+    admin_chat_id_exists:
+      !!env.ADMIN_CHAT_ID,
+    admin_chat_id:
+      env.ADMIN_CHAT_ID || null
+  });
+}
+
+    // =========================
 // TELEGRAM WEBHOOK
 // =========================
 if (
@@ -203,24 +221,7 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
     );
   }
 }
-    // =========================
-// TELEGRAM ADMIN TEST
-// =========================
-if (
-  url.pathname === "/telegram-test" &&
-  request.method === "GET"
-) {
-  return json({
-    bot_token_exists: !!env.BOT_TOKEN,
-    bot_token_length: env.BOT_TOKEN?.length || 0,
-    bot_token_has_colon:
-      env.BOT_TOKEN?.includes(":") || false,
-    admin_chat_id_exists:
-      !!env.ADMIN_CHAT_ID,
-    admin_chat_id:
-      env.ADMIN_CHAT_ID || null
-  });
-}
+    
 
     // =========================
     // D1: SAVE CUSTOMER
