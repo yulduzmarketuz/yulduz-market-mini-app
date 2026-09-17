@@ -210,47 +210,16 @@ if (
   url.pathname === "/telegram-test" &&
   request.method === "GET"
 ) {
-  try {
-
-    const response = await fetch(
-      `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          chat_id: env.ADMIN_CHAT_ID,
-          text: "🔥 YULDUZ MARKET TEST XABARI\n\nTelegram admin tizimi ishlayapti."
-        })
-      }
-    );
-
-    const result =
-      await response.text();
-
-    return new Response(
-      result,
-      {
-        status: response.status,
-        headers: {
-          "Content-Type":
-            "application/json; charset=utf-8"
-        }
-      }
-    );
-
-  } catch (error) {
-
-    return json(
-      {
-        success: false,
-        error: error.message
-      },
-      500
-    );
-
-  }
+  return json({
+    bot_token_exists: !!env.BOT_TOKEN,
+    bot_token_length: env.BOT_TOKEN?.length || 0,
+    bot_token_has_colon:
+      env.BOT_TOKEN?.includes(":") || false,
+    admin_chat_id_exists:
+      !!env.ADMIN_CHAT_ID,
+    admin_chat_id:
+      env.ADMIN_CHAT_ID || null
+  });
 }
 
     // =========================
