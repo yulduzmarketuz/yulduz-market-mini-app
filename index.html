@@ -14682,6 +14682,49 @@ async function loadOrders() {
     }
 
 }
+   /* =========================================================
+   AUTO REFRESH ORDERS
+========================================================= */
+
+let ordersAutoRefreshTimer = null;
+
+function startOrdersAutoRefresh() {
+
+    if (ordersAutoRefreshTimer) {
+        clearInterval(ordersAutoRefreshTimer);
+    }
+
+    ordersAutoRefreshTimer = setInterval(async () => {
+
+        try {
+
+            await loadOrders();
+
+            // Agar buyurtmalar sahifasi ochiq bo‘lsa
+            const ordersPage =
+                document.getElementById("ordersPage");
+
+            if (
+                ordersPage &&
+                !ordersPage.classList.contains("hidden")
+            ) {
+
+                renderOrders();
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "❌ AUTO REFRESH ORDERS ERROR:",
+                error
+            );
+
+        }
+
+    }, 5000);
+
+}
 
    /* =========================================================
    ORDER FILTER
@@ -15812,6 +15855,8 @@ function showToast(message) {
 ========================================================= */
 
 loadOrders();
+
+startOrdersAutoRefresh();
 
 applyDarkMode();
 
