@@ -560,7 +560,8 @@ if (
     ) {
       return json(
         {
-          error: "Buyurtmada mahsulotlar bo‘lishi kerak"
+          error:
+            "Buyurtmada mahsulotlar bo‘lishi kerak"
         },
         400
       );
@@ -572,7 +573,8 @@ if (
     if (total <= 0) {
       return json(
         {
-          error: "Buyurtma summasi noto‘g‘ri"
+          error:
+            "Buyurtma summasi noto‘g‘ri"
         },
         400
       );
@@ -580,6 +582,10 @@ if (
 
     const orderNumber =
       `YLZ-${Date.now()}`;
+
+    // =========================
+    // BUYURTMA D1 GA SAQLANADI
+    // =========================
 
     const result =
       await env.DB.prepare(`
@@ -619,9 +625,11 @@ if (
           total,
 
           data.address_name || "",
+
           data.latitude !== undefined
             ? Number(data.latitude)
             : null,
+
           data.longitude !== undefined
             ? Number(data.longitude)
             : null,
@@ -644,16 +652,158 @@ if (
       telegramId
     );
 
+
+    // =========================
+    // TELEGRAM ADMIN XABARI
+    // =========================
+
+    try {
+
+      const customerName =
+        `${data.first_name || ""} ${data.last_name || ""}`
+          .trim() || "Noma'lum mijoz";
+
+      const username =
+        data.username
+          ? `@${String(data.username).replace(/^@/, "")}`
+          : "Username yo‘q";
+
+      const phone =
+        data.phone || "Telefon yo‘q";
+
+      const address =
+        data.address_name || "Lokatsiya";
+
+      const payment =
+        data.payment_method === "cash"
+          ? "Naqd"
+          : data.payment_method || "Noma'lum";
+
+      let itemsText = "";
+
+      data.items.forEach(
+        (item, index) => {
+
+          const name =
+            item.name ||
+            item.title ||
+            "Mahsulot";
+
+          const quantity =
+            Number(item.quantity || 0);
+
+          const price =
+            Number(item.price || 0);
+
+          const itemTotal =
+            price * quantity;
+
+          itemsText +=
+    `${index + 1}. ${name}\n` +
+    `   ${quantity} dona × ${price.toLocaleString("uz-UZ")} so‘m = ${itemTotal.toLocaleString("uz-UZ")} so‘m\n`;
+
+        }
+      );
+
+
+      const adminMessage =
+`🛒 YANGI BUYURTMA
+
+🔢 Buyurtma: #${orderNumber}
+
+👤 Mijoz:
+${customerName}
+
+📱 ${username}
+☎️ ${phone}
+
+🛍 MAHSULOTLAR:
+${itemsText}
+💰 Jami: ${total.toLocaleString("uz-UZ")} so‘m
+
+💳 To‘lov: ${payment}
+
+📍 Manzil: ${address}
+
+${data.address_extra
+  ? `📝 Qo‘shimcha: ${data.address_extra}\n`
+  : ""}${data.note
+  ? `💬 Izoh: ${data.note}\n`
+  : ""}
+🟡 Holat: Yangi`;
+
+
+      const telegramResponse =
+        await fetch(
+          `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+              chat_id:
+                env.ADMIN_CHAT_ID,
+
+              text:
+                adminMessage
+            })
+          }
+        );
+
+
+      if (!telegramResponse.ok) {
+
+        const telegramError =
+          await telegramResponse.text();
+
+        console.error(
+          "❌ ADMIN TELEGRAM XABAR XATOSI:",
+          telegramError
+        );
+
+      } else {
+
+        console.log(
+          "✅ ADMIN TELEGRAMGA BUYURTMA YUBORILDI:",
+          orderNumber
+        );
+
+      }
+
+    } catch (telegramError) {
+
+      console.error(
+        "❌ Telegram admin notification error:",
+        telegramError
+      );
+
+    }
+
+
+    // =========================
+    // MINI APP GA JAVOB
+    // =========================
+
     return json({
       success: true,
+
       order: {
+
         id:
           result.meta?.last_row_id || null,
+
         order_number:
           orderNumber,
+
         status:
           "yangi"
+
       }
+
     });
 
   } catch (error) {
@@ -667,11 +817,13 @@ if (
       {
         error:
           "Buyurtmani saqlashda xatolik",
+
         message:
           error.message
       },
       500
     );
+
   }
 }
 
