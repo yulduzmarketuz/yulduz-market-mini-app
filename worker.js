@@ -273,35 +273,275 @@ if (update.callback_query) {
     callbackData
   );
 
-  await fetch(
-    `https://api.telegram.org/bot${env.BOT_TOKEN}/answerCallbackQuery`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        callback_query_id:
-          callback.id
-      })
-    }
-  );
 
-  await fetch(
-    `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        chat_id:
-          callbackChatId,
-        text:
-          `🔘 Tugma qabul qilindi:\n${callbackData}`
-      })
-    }
-  );
+  // =================================================
+  // ADMIN TEKSHIRUVI
+  // =================================================
+
+  if (
+    String(callbackChatId) !==
+    String(env.ADMIN_CHAT_ID)
+  ) {
+
+    console.error(
+      "❌ RUXSATSIZ ADMIN TUGMA BOSILISHI"
+    );
+
+    await fetch(
+      `https://api.telegram.org/bot${env.BOT_TOKEN}/answerCallbackQuery`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: JSON.stringify({
+          callback_query_id:
+            callback.id,
+
+          text:
+            "❌ Ruxsat yo‘q",
+
+          show_alert:
+            true
+        })
+      }
+    );
+
+    return new Response("OK");
+  }
+
+
+  // =================================================
+  // CALLBACK MA'LUMOTINI AJRATISH
+  // =================================================
+
+  const parts =
+    callbackData.split(":");
+
+  const action =
+    parts[0] || "";
+
+  const orderNumber =
+    parts.slice(1).join(":");
+
+
+  if (
+    !action ||
+    !orderNumber
+  ) {
+
+    console.error(
+      "❌ CALLBACK DATA NOTO‘G‘RI:",
+      callbackData
+    );
+
+    return new Response("OK");
+  }
+
+
+  // =================================================
+  // STATUS
+  // =================================================
+
+  const statusMap = {
+
+    order_accept:
+      "qabul_qilindi",
+
+    order_preparing:
+      "yigilmoqda",
+
+    order_ready:
+      "yetkazib_berishga_tayyor",
+
+    order_delivering:
+      "yolda",
+
+    order_delivered:
+      "yetkazildi",
+
+    order_cancelled:
+      "bekor_qilingan"
+
+  };
+
+
+  const newStatus =
+    statusMap[action];
+
+
+  if (!newStatus) {
+
+    console.error(
+      "❌ NOMA'LUM BUYURTMA AKSIYASI:",
+      action
+    );
+
+    return new Response("OK");
+  }
+
+
+  // =================================================
+  // D1 STATUSNI YANGILASH
+  // =================================================
+
+  try {
+
+    const result =
+      await env.DB.prepare(`
+        UPDATE orders
+        SET status = ?
+        WHERE order_number = ?
+      `)
+        .bind(
+          newStatus,
+          orderNumber
+        )
+        .run();
+
+
+    console.log(
+      "✅ BUYURTMA STATUSI YANGILANDI:",
+      orderNumber,
+      newStatus,
+      result.meta?.changes
+    );
+
+
+    // =================================================
+    // TELEGRAM CALLBACK JAVOBI
+    // =================================================
+
+    await fetch(
+      `https://api.telegram.org/bot${env.BOT_TOKEN}/answerCallbackQuery`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: JSON.stringify({
+          callback_query_id:
+            callback.id,
+
+          text:
+            `✅ Holat: ${newStatus}`
+        })
+      }
+    );
+
+
+    // =================================================
+    // ADMIN XABARINI YANGILASH
+    // =================================================
+
+    const statusTextMap = {
+
+      qabul_qilindi:
+        "🟢 Qabul qilindi",
+
+      yigilmoqda:
+        "📦 Yig‘ilmoqda",
+
+      yetkazib_berishga_tayyor:
+        "🚚 Yetkazishga tayyor",
+
+      yolda:
+        "🛵 Yo‘lda",
+
+      yetkazildi:
+        "✅ Yetkazildi",
+
+      bekor_qilingan:
+        "❌ Bekor qilingan"
+
+    };
+
+
+    const statusText =
+      statusTextMap[newStatus] ||
+      newStatus;
+
+
+    const oldText =
+      callback.message?.text ||
+      "";
+
+
+    const updatedText =
+      oldText.replace(
+        /🟡 Holat:.*$/s,
+        `${statusText}`
+      );
+
+
+    await fetch(
+      `https://api.telegram.org/bot${env.BOT_TOKEN}/editMessageText`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: JSON.stringify({
+
+          chat_id:
+            callbackChatId,
+
+          message_id:
+            callback.message?.message_id,
+
+          text:
+            updatedText,
+
+          reply_markup: {
+            inline_keyboard: [
+              [
+                {
+                  text:
+                    "📦 Holat yangilandi",
+                  callback_data:
+                    "status_updated"
+                }
+              ]
+            ]
+          }
+
+        })
+      }
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "❌ STATUS YANGILASHDA XATO:",
+      error
+    );
+
+    await fetch(
+      `https://api.telegram.org/bot${env.BOT_TOKEN}/answerCallbackQuery`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+        body: JSON.stringify({
+          callback_query_id:
+            callback.id,
+
+          text:
+            "❌ Statusni yangilashda xatolik",
+
+          show_alert:
+            true
+        })
+      }
+    );
+  }
+
 
   return new Response("OK");
 }
