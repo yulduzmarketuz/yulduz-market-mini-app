@@ -38,7 +38,7 @@ async function yesposFetch(path, env, options = {}) {
 // TELEGRAM ADMIN
 // =====================================================
 
-async function sendAdminTelegram(env, text) {
+async function sendAdminTelegram(env, text, orderNumber) {
 
   console.log("🚀 TELEGRAM ADMIN FUNKSIYASI ISHLADI");
 
@@ -63,7 +63,49 @@ async function sendAdminTelegram(env, text) {
         },
         body: JSON.stringify({
           chat_id: env.ADMIN_CHAT_ID,
-          text
+
+          text,
+
+          reply_markup: {
+            inline_keyboard: [
+              [
+                {
+                  text: "✅ Qabul qilish",
+                  callback_data: `order_accept:${orderNumber}`
+                }
+              ],
+              [
+                {
+                  text: "📦 Yig‘ilmoqda",
+                  callback_data: `order_preparing:${orderNumber}`
+                }
+              ],
+              [
+                {
+                  text: "🚚 Yetkazishga tayyor",
+                  callback_data: `order_ready:${orderNumber}`
+                }
+              ],
+              [
+                {
+                  text: "🛵 Yo‘lda",
+                  callback_data: `order_delivering:${orderNumber}`
+                }
+              ],
+              [
+                {
+                  text: "✅ Yetkazildi",
+                  callback_data: `order_delivered:${orderNumber}`
+                }
+              ],
+              [
+                {
+                  text: "❌ Bekor qilish",
+                  callback_data: `order_cancelled:${orderNumber}`
+                }
+              ]
+            ]
+          }
         })
       }
     );
@@ -206,18 +248,73 @@ export default {
       try {
 
         const update =
-          await request.json();
+  await request.json();
 
-        const message =
-          update.message;
+const message =
+  update.message;
 
-        if (message) {
+// =================================================
+// ADMIN ORDER BUTTONS
+// =================================================
 
-          const chatId =
-            message.chat?.id;
+if (update.callback_query) {
 
-          const user =
-            message.from;
+  const callback =
+    update.callback_query;
+
+  const callbackData =
+    callback.data || "";
+
+  const callbackChatId =
+    callback.message?.chat?.id;
+
+  console.log(
+    "🔘 ADMIN TUGMA BOSILDI:",
+    callbackData
+  );
+
+  await fetch(
+    `https://api.telegram.org/bot${env.BOT_TOKEN}/answerCallbackQuery`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        callback_query_id:
+          callback.id
+      })
+    }
+  );
+
+  await fetch(
+    `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        chat_id:
+          callbackChatId,
+        text:
+          `🔘 Tugma qabul qilindi:\n${callbackData}`
+      })
+    }
+  );
+
+  return new Response("OK");
+}
+
+if (message) {
+
+  const chatId =
+    message.chat?.id;
+
+  const user =
+    message.from;
+
+  // qolgan eski kodingiz...
 
 
           // =================================================
@@ -834,9 +931,10 @@ if (
     );
 
     await sendAdminTelegram(
-      env,
-      adminMessage
-    );
+  env,
+  adminMessage,
+  orderNumber
+);
 
 
     // =================================================
