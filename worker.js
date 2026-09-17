@@ -752,439 +752,207 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
 
 
     // =====================================================
-    // CREATE ORDER
-    // =====================================================
+// CREATE ORDER
+// =====================================================
+
+if (
+  url.pathname === "/orders" &&
+  request.method === "POST"
+) {
+
+  try {
+
+    const data =
+      await request.json();
+
+    const telegramId =
+      data.telegram_id?.toString();
+
+    if (!telegramId) {
+      return json(
+        {
+          error:
+            "telegram_id kerak"
+        },
+        400
+      );
+    }
 
     if (
-      url.pathname === "/orders" &&
-      request.method === "POST"
+      !Array.isArray(data.items) ||
+      data.items.length === 0
     ) {
+      return json(
+        {
+          error:
+            "Buyurtmada mahsulotlar bo‘lishi kerak"
+        },
+        400
+      );
+    }
 
-      try {
+    const total =
+      Number(data.total || 0);
 
-        const data =
-          await request.json();
-
-        const telegramId =
-          data.telegram_id?.toString();
-
-        if (!telegramId) {
-          return json(
-            {
-              error:
-                "telegram_id kerak"
-            },
-            400
-          );
-        }
-
-        if (
-          !Array.isArray(data.items) ||
-          data.items.length === 0
-        ) {
-          return json(
-            {
-              error:
-                "Buyurtmada mahsulotlar bo‘lishi kerak"
-            },
-            400
-          );
-        }
-
-        const total =
-          Number(data.total || 0);
-
-        if (total <= 0) {
-          return json(
-            {
-              error:
-                "Buyurtma summasi noto‘g‘ri"
-            },
-            400
-          );
-        }
+    if (total <= 0) {
+      return json(
+        {
+          error:
+            "Buyurtma summasi noto‘g‘ri"
+        },
+        400
+      );
+    }
 
 
-        // =================================================
-        // ORDER NUMBER
-        // =================================================
+    // =================================================
+    // ORDER NUMBER
+    // =================================================
 
-        const orderNumber =
-          `YLZ-${Date.now()}`;
-
-
-        // =================================================
-        // ADMIN XABARINI TAYYORLASH
-        // =================================================
-
-        const adminMessage =
-          buildAdminOrderMessage(
-            data,
-            orderNumber
-          );
+    const orderNumber =
+      `YLZ-${Date.now()}`;
 
 
-        console.log(
-          "🚀 ADMIN TELEGRAMGA YUBORISH BOSHLANDI:",
-          orderNumber
-        );
+    // =================================================
+    // ADMIN XABARINI TAYYORLASH
+    // =================================================
+
+    const adminMessage =
+      buildAdminOrderMessage(
+        data,
+        orderNumber
+      );
 
 
-        // =================================================
-        // TELEGRAM ADMIN
-        // =================================================
+    // =================================================
+    // TELEGRAM ADMIN
+    // =================================================
 
-        await sendAdminTelegram(
-          env,
-          adminMessage
-        );
+    console.log(
+      "🚀 ADMIN TELEGRAMGA YUBORISH BOSHLANDI:",
+      orderNumber
+    );
 
-
-        // =================================================
-        // BUYURTMA D1 GA SAQLANADI
-        // =================================================
-
-        const result =
-          await env.DB.prepare(`
-            INSERT INTO orders (
-              order_number,
-              telegram_id,
-              first_name,
-              last_name,
-              username,
-              phone,
-              items,
-              total,
-              address_name,
-              latitude,
-              longitude,
-              address_extra,
-              note,
-              payment_method,
-              payment_status,
-              status,
-              yespos_status
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-          `)
-            .bind(
-              orderNumber,
-              telegramId,
-
-              data.first_name || "",
-              data.last_name || "",
-              data.username || "",
-              data.phone || "",
-
-              JSON.stringify(
-                data.items
-              ),
-
-              total,
-
-              data.address_name || "",
-
-              data.latitude !== undefined
-                ? Number(data.latitude)
-                : null,
-
-              data.longitude !== undefined
-                ? Number(data.longitude)
-                : null,
-
-              data.address_extra || "",
-              data.note || "",
-
-              data.payment_method ||
-                "cash",
-
-              data.payment_status ||
-                "pending",
-
-              "yangi",
-
-              "pending"
-            )
-            .run();
+    await sendAdminTelegram(
+      env,
+      adminMessage
+    );
 
 
-        console.log(
-          "✅ BUYURTMA D1 GA SAQLANDI:",
+    // =================================================
+    // BUYURTMA D1 GA SAQLANADI
+    // =================================================
+
+    const result =
+      await env.DB.prepare(`
+        INSERT INTO orders (
+          order_number,
+          telegram_id,
+          first_name,
+          last_name,
+          username,
+          phone,
+          items,
+          total,
+          address_name,
+          latitude,
+          longitude,
+          address_extra,
+          note,
+          payment_method,
+          payment_status,
+          status,
+          yespos_status
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `)
+        .bind(
           orderNumber,
-          telegramId
-        );
+          telegramId,
+
+          data.first_name || "",
+          data.last_name || "",
+          data.username || "",
+          data.phone || "",
+
+          JSON.stringify(
+            data.items
+          ),
+
+          total,
+
+          data.address_name || "",
+
+          data.latitude !== undefined
+            ? Number(data.latitude)
+            : null,
+
+          data.longitude !== undefined
+            ? Number(data.longitude)
+            : null,
+
+          data.address_extra || "",
+          data.note || "",
+
+          data.payment_method ||
+            "cash",
+
+          data.payment_status ||
+            "pending",
+
+          "yangi",
+
+          "pending"
+        )
+        .run();
 
 
-        // =================================================
-        // MINI APP GA JAVOB
-        // =================================================
+    console.log(
+      "✅ BUYURTMA D1 GA SAQLANDI:",
+      orderNumber,
+      telegramId
+    );
 
-        return json({
-          success: true,
-          order: {
-            id:
-              result.meta?.last_row_id ||
-              null,
 
-            order_number:
-              orderNumber,
+    // =================================================
+    // MINI APP GA JAVOB
+    // =================================================
 
-            status:
-              "yangi"
-          }
-        });
+    return json({
+      success: true,
 
-      } catch (error) {
+      order: {
+        id:
+          result.meta?.last_row_id ||
+          null,
 
-        console.error(
-          "❌ D1 ORDER ERROR:",
-          error
-        );
+        order_number:
+          orderNumber,
 
-        return json(
-          {
-            error:
-              "Buyurtmani saqlashda xatolik",
-            message:
-              error.message
-          },
-          500
-        );
+        status:
+          "yangi"
       }
-    }
+    });
 
+  } catch (error) {
 
-    // =====================================================
-    // YESPOS: BRANCH LIST
-    // =====================================================
+    console.error(
+      "❌ D1 ORDER ERROR:",
+      error
+    );
 
-    if (
-      url.pathname === "/yespos-branches" &&
-      request.method === "GET"
-    ) {
+    return json(
+      {
+        error:
+          "Buyurtmani saqlashda xatolik",
 
-      try {
-
-        const response =
-          await yesposFetch(
-            "/branch/list",
-            env
-          );
-
-        const text =
-          await response.text();
-
-        return new Response(
-          text,
-          {
-            status:
-              response.status,
-
-            headers: {
-              "Content-Type":
-                "application/json; charset=utf-8"
-            }
-          }
-        );
-
-      } catch (error) {
-
-        return json(
-          {
-            error:
-              "YESPOS branch xatosi",
-            message:
-              error.message
-          },
-          500
-        );
-      }
-    }
-
-
-    // =====================================================
-    // YESPOS: PRODUCTS
-    // =====================================================
-
-    if (
-      url.pathname === "/yespos-products" &&
-      request.method === "GET"
-    ) {
-
-      try {
-
-        const response =
-          await yesposFetch(
-            "/marketplace/products",
-            env
-          );
-
-        const text =
-          await response.text();
-
-        return new Response(
-          text,
-          {
-            status:
-              response.status,
-
-            headers: {
-              "Content-Type":
-                "application/json; charset=utf-8"
-            }
-          }
-        );
-
-      } catch (error) {
-
-        return json(
-          {
-            error:
-              "YESPOS products xatosi",
-            message:
-              error.message
-          },
-          500
-        );
-      }
-    }
-
-
-    // =====================================================
-    // YESPOS: PRODUCTS INFO
-    // =====================================================
-
-    if (
-      url.pathname === "/yespos-products-info" &&
-      request.method === "GET"
-    ) {
-
-      try {
-
-        const branch =
-          url.searchParams.get(
-            "branch"
-          );
-
-        const page =
-          url.searchParams.get(
-            "page"
-          ) || "1";
-
-        const limit =
-          url.searchParams.get(
-            "limit"
-          ) || "100";
-
-        if (!branch) {
-          return json(
-            {
-              error:
-                "branch kerak"
-            },
-            400
-          );
-        }
-
-        const response =
-          await yesposFetch(
-            `/marketplace/products/info?page=${page}&limit=${limit}`,
-            env,
-            {
-              headers: {
-                "Branch": branch
-              }
-            }
-          );
-
-        const text =
-          await response.text();
-
-        return new Response(
-          text,
-          {
-            status:
-              response.status,
-
-            headers: {
-              "Content-Type":
-                "application/json; charset=utf-8"
-            }
-          }
-        );
-
-      } catch (error) {
-
-        return json(
-          {
-            error:
-              "YESPOS products info xatosi",
-            message:
-              error.message
-          },
-          500
-        );
-      }
-    }
-
-
-    // =====================================================
-    // YESPOS: ORDER
-    // =====================================================
-
-    if (
-      url.pathname === "/yespos-order" &&
-      request.method === "POST"
-    ) {
-
-      try {
-
-        const order =
-          await request.json();
-
-        const response =
-          await yesposFetch(
-            "/marketplace/order",
-            env,
-            {
-              headers: {
-                "AppName":
-                  "Yulduz Market Mini App"
-              },
-              body:
-                order
-            }
-          );
-
-        const text =
-          await response.text();
-
-        return new Response(
-          text,
-          {
-            status:
-              response.status,
-
-            headers: {
-              "Content-Type":
-                "application/json; charset=utf-8"
-            }
-          }
-        );
-
-      } catch (error) {
-
-        return json(
-          {
-            error:
-              "YESPOS order xatosi",
-            message:
-              error.message
-          },
-          500
-        );
-      }
-    }
+        message:
+          error.message
+      },
+      500
+    );
+  }
+}
 
 
     // =====================================================
