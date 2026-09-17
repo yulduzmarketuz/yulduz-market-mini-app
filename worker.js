@@ -737,6 +737,14 @@ ${data.address_extra
   : ""}
 🟡 Holat: Yangi`;
 
+      console.log(
+  "🔍 BOT TOKEN CHECK:",
+  {
+    exists: !!env.BOT_TOKEN,
+    length: env.BOT_TOKEN?.length,
+    hasColon: env.BOT_TOKEN?.includes(":")
+  }
+);
 
       const telegramResponse =
         await fetch(
