@@ -1,3 +1,119 @@
+// =====================================================
+// TELEGRAM ADMIN AUTH
+// =====================================================
+
+async function verifyTelegramAdmin(request, env) {
+
+  try {
+
+    const initData =
+      request.headers.get("X-Telegram-Init-Data");
+
+    if (!initData) {
+      return false;
+    }
+
+    const params =
+      new URLSearchParams(initData);
+
+    const hash =
+      params.get("hash");
+
+    if (!hash) {
+      return false;
+    }
+
+    params.delete("hash");
+
+    const dataCheckString =
+      [...params.entries()]
+        .sort(([a], [b]) =>
+          a.localeCompare(b)
+        )
+        .map(
+          ([key, value]) =>
+            `${key}=${value}`
+        )
+        .join("\n");
+
+    const encoder =
+      new TextEncoder();
+
+    const secretKey =
+      await crypto.subtle.importKey(
+        "raw",
+        encoder.encode("WebAppData"),
+        {
+          name: "HMAC",
+          hash: "SHA-256"
+        },
+        false,
+        ["sign"]
+      );
+
+    const secret =
+      await crypto.subtle.sign(
+        "HMAC",
+        secretKey,
+        encoder.encode(env.BOT_TOKEN)
+      );
+
+    const secretBytes =
+      new Uint8Array(secret);
+
+    const dataKey =
+      await crypto.subtle.importKey(
+        "raw",
+        secretBytes,
+        {
+          name: "HMAC",
+          hash: "SHA-256"
+        },
+        false,
+        ["sign"]
+      );
+
+    const signature =
+      await crypto.subtle.sign(
+        "HMAC",
+        dataKey,
+        encoder.encode(dataCheckString)
+      );
+
+    const calculatedHash =
+      [...new Uint8Array(signature)]
+        .map(
+          byte =>
+            byte
+              .toString(16)
+              .padStart(2, "0")
+        )
+        .join("");
+
+    if (calculatedHash !== hash) {
+      return false;
+    }
+
+    const user =
+      JSON.parse(
+        params.get("user") || "{}"
+      );
+
+    return (
+      String(user.id) ===
+      String(env.ADMIN_CHAT_ID)
+    );
+
+  } catch (error) {
+
+    console.error(
+      "❌ TELEGRAM ADMIN AUTH ERROR:",
+      error
+    );
+
+    return false;
+  }
+}
 const MINI_APP_URL =
   "https://yulduz-market-mini-app.pardayevx055.workers.dev";
 
@@ -1515,6 +1631,22 @@ if (
 
   try {
 
+    const isAdmin =
+      await verifyTelegramAdmin(
+        request,
+        env
+      );
+
+    if (!isAdmin) {
+      return json(
+        {
+          error:
+            "Ruxsat yo‘q"
+        },
+        403
+      );
+    }
+
     const body =
       await request.json();
 
@@ -1634,6 +1766,22 @@ if (
 
   try {
 
+    const isAdmin =
+      await verifyTelegramAdmin(
+        request,
+        env
+      );
+
+    if (!isAdmin) {
+      return json(
+        {
+          error:
+            "Ruxsat yo‘q"
+        },
+        403
+      );
+    }
+
     const id =
       Number(
         url.pathname.split("/").pop()
@@ -1728,6 +1876,22 @@ if (
 ) {
 
   try {
+
+    const isAdmin =
+      await verifyTelegramAdmin(
+        request,
+        env
+      );
+
+    if (!isAdmin) {
+      return json(
+        {
+          error:
+            "Ruxsat yo‘q"
+        },
+        403
+      );
+    }
 
     const id =
       Number(
