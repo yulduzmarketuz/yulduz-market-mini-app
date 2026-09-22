@@ -9981,25 +9981,6 @@ function scoreRecommendationCandidates() {
 
     const history =
         getRecommendationHistory();
-   const purchasedIds = [];
-
-orders.forEach(order => {
-
-    if (!Array.isArray(order.items)) {
-        return;
-    }
-
-    order.items.forEach(item => {
-
-        if (item.id !== undefined) {
-            purchasedIds.push(
-                String(item.id)
-            );
-        }
-
-    });
-
-});
 
     return candidates.map(product => {
 
@@ -10011,37 +9992,6 @@ orders.forEach(order => {
             );
 
         let score = 1;
-
-if (
-    purchasedIds.includes(
-        String(product.id)
-    )
-) {
-
-    score += 20;
-
-}
-
-if (
-    favorites.some(
-        id =>
-            String(id) ===
-            String(product.id)
-    )
-) {
-
-    score += 15;
-
-}
-        id =>
-            String(id) ===
-            String(product.id)
-    )
-) {
-
-    score += 15;
-
-}
 
 if (viewed) {
 
