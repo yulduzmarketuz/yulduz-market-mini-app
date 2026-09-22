@@ -1504,7 +1504,125 @@ if (
       }
     }
 
+// =====================================================
+// PRODUCTS CREATE
+// =====================================================
 
+if (
+  url.pathname === "/products" &&
+  request.method === "POST"
+) {
+
+  try {
+
+    const body =
+      await request.json();
+
+    const {
+      name,
+      category,
+      price,
+      unit,
+      image,
+      icon,
+      visible,
+      related
+    } = body;
+
+
+    if (
+      !name ||
+      !category ||
+      price === undefined
+    ) {
+      return json(
+        {
+          error:
+            "name, category va price kerak"
+        },
+        400
+      );
+    }
+
+
+    const id =
+      Date.now();
+
+
+    await env.DB
+      .prepare(`
+        INSERT INTO products
+        (
+          id,
+          name,
+          category,
+          price,
+          unit,
+          image,
+          icon,
+          visible,
+          related
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `)
+      .bind(
+        id,
+        name,
+        category,
+        Number(price),
+        unit || "dona",
+        image || null,
+        icon || "📦",
+        visible === false ? 0 : 1,
+        JSON.stringify(
+          Array.isArray(related)
+            ? related
+            : []
+        )
+      )
+      .run();
+
+
+    return json({
+      success: true,
+      product: {
+        id,
+        name,
+        category,
+        price: Number(price),
+        unit: unit || "dona",
+        image: image || null,
+        icon: icon || "📦",
+        visible:
+          visible === false
+            ? 0
+            : 1,
+        related:
+          Array.isArray(related)
+            ? related
+            : []
+      }
+    });
+
+
+  } catch (error) {
+
+    console.error(
+      "❌ D1 PRODUCTS CREATE ERROR:",
+      error
+    );
+
+    return json(
+      {
+        error:
+          "Mahsulot qo‘shishda xatolik",
+        message:
+          error.message
+      },
+      500
+    );
+  }
+}
 
 
     // =====================================================
