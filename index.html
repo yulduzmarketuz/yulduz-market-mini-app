@@ -9992,6 +9992,17 @@ function scoreRecommendationCandidates() {
             );
 
         let score = 1;
+       if (
+    favorites.some(
+        id =>
+            String(id) ===
+            String(product.id)
+    )
+) {
+
+    score += 15;
+
+}
 
 if (viewed) {
 
