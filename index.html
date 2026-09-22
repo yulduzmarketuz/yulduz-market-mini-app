@@ -11573,6 +11573,7 @@ function addToCart(id) {
     if (!product) {
         return;
     }
+   saveRecommendationView(product.id);
 
 
     const existing =
