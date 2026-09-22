@@ -1428,6 +1428,83 @@ if (
     );
   }
 }
+        // =====================================================
+    // PRODUCTS GET
+    // =====================================================
+
+    if (
+      url.pathname === "/products" &&
+      request.method === "GET"
+    ) {
+
+      try {
+
+        const result =
+          await env.DB.prepare(`
+            SELECT
+              id,
+              name,
+              category,
+              price,
+              unit,
+              image,
+              icon,
+              visible,
+              related
+            FROM products
+            WHERE visible = 1
+            ORDER BY id ASC
+          `)
+            .all();
+
+
+        const products =
+          (result.results || []).map(product => {
+
+            let related = [];
+
+            try {
+              related =
+                JSON.parse(
+                  product.related || "[]"
+                );
+            } catch (error) {
+              related = [];
+            }
+
+            return {
+              ...product,
+              related
+            };
+
+          });
+
+
+        return json({
+          success: true,
+          products
+        });
+
+      } catch (error) {
+
+        console.error(
+          "❌ D1 PRODUCTS GET ERROR:",
+          error
+        );
+
+        return json(
+          {
+            error:
+              "Mahsulotlarni olishda xatolik",
+            message:
+              error.message
+          },
+          500
+        );
+      }
+    }
+
+
 
 
     // =====================================================
