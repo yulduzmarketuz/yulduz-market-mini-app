@@ -1623,6 +1623,101 @@ if (
     );
   }
 }
+    // =====================================================
+// PRODUCTS UPDATE
+// =====================================================
+
+if (
+  url.pathname.startsWith("/products/") &&
+  request.method === "PUT"
+) {
+
+  try {
+
+    const id =
+      Number(
+        url.pathname.split("/").pop()
+      );
+
+    if (!id) {
+      return json(
+        {
+          error: "Mahsulot ID kerak"
+        },
+        400
+      );
+    }
+
+    const body =
+      await request.json();
+
+    const {
+      name,
+      category,
+      price,
+      unit,
+      image,
+      icon,
+      visible,
+      related
+    } = body;
+
+    await env.DB
+      .prepare(`
+        UPDATE products
+        SET
+          name = ?,
+          category = ?,
+          price = ?,
+          unit = ?,
+          image = ?,
+          icon = ?,
+          visible = ?,
+          related = ?,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `)
+      .bind(
+        name,
+        category,
+        Number(price),
+        unit || "dona",
+        image || null,
+        icon || "📦",
+        visible === false ? 0 : 1,
+        JSON.stringify(
+          Array.isArray(related)
+            ? related
+            : []
+        ),
+        id
+      )
+      .run();
+
+    return json({
+      success: true,
+      message: "Mahsulot yangilandi",
+      id
+    });
+
+  } catch (error) {
+
+    console.error(
+      "❌ D1 PRODUCTS UPDATE ERROR:",
+      error
+    );
+
+    return json(
+      {
+        error:
+          "Mahsulotni yangilashda xatolik",
+        message:
+          error.message
+      },
+      500
+    );
+  }
+}
 
 
     // =====================================================
