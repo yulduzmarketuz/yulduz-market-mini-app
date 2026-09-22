@@ -9070,6 +9070,22 @@ if (searchPageInput) {
 ========================================================= */
 
 const tg = window.Telegram?.WebApp || null;
+   /* =========================================================
+   TELEGRAM INIT DATA
+========================================================= */
+
+function getTelegramInitData() {
+
+    if (
+        !tg ||
+        !tg.initData
+    ) {
+        return "";
+    }
+
+    return tg.initData;
+
+}
 
 if (tg) {
 
@@ -9553,6 +9569,94 @@ async function loadProductsFromAPI() {
     }
 }
    loadProductsFromAPI();
+   async function saveAdminProduct() {
+
+    const id =
+        document.getElementById("adminProductId").value;
+
+    const name =
+        document.getElementById("adminProductName").value.trim();
+
+    const category =
+        document.getElementById("adminProductCategory").value;
+
+    const price =
+        Number(
+            document.getElementById("adminProductPrice").value
+        );
+
+    const unit =
+        document.getElementById("adminProductUnit").value;
+
+    const icon =
+        document.getElementById("adminProductIcon").value.trim();
+
+    const image =
+        document.getElementById("adminProductImage").value.trim();
+
+    const relatedText =
+        document.getElementById("adminProductRelated").value.trim();
+
+    const related =
+        relatedText
+            ? relatedText
+                .split(",")
+                .map(id => Number(id.trim()))
+                .filter(id => !isNaN(id))
+            : [];
+
+    if (!name || !category || !price) {
+        alert("Mahsulot nomi, kategoriya va narxni kiriting.");
+        return;
+    }
+
+    const method = id ? "PUT" : "POST";
+
+    const url =
+        id
+            ? `https://yulduz-market-mini-app.pardayevx055.workers.dev/products/${id}`
+            : "https://yulduz-market-mini-app.pardayevx055.workers.dev/products";
+
+    const response =
+        await fetch(url, {
+            method,
+            headers: {
+                "Content-Type": "application/json",
+                "X-Telegram-Init-Data":
+                    getTelegramInitData()
+            },
+            body: JSON.stringify({
+                name,
+                category,
+                price,
+                unit,
+                icon,
+                image,
+                related
+            })
+        });
+
+    const data =
+        await response.json();
+
+    if (!response.ok || !data.success) {
+        alert(
+            data.error ||
+            "Mahsulotni saqlashda xatolik."
+        );
+        return;
+    }
+
+    alert(
+        id
+            ? "Mahsulot yangilandi."
+            : "Mahsulot qo‘shildi."
+    );
+
+    closeAdminProductForm();
+
+    await loadProductsFromAPI();
+}
 
 /* =========================================================
    CART
