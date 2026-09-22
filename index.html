@@ -9569,6 +9569,989 @@ const translations = {
 
 };
 /* =========================================================
+   YULDUZ MARKET — RECOMMENDATION SYSTEM
+========================================================= */
+
+const RECOMMENDATION_STORAGE =
+    "yulduz_recommendation_history";
+
+
+/* =========================================================
+   GET ALL VISIBLE PRODUCTS
+========================================================= */
+
+function getAllVisibleProducts() {
+
+    const result = [];
+
+    Object.keys(products).forEach(category => {
+
+        products[category].forEach(product => {
+
+            if (product.visible) {
+
+                result.push({
+                    ...product,
+                    category: category
+                });
+
+            }
+
+        });
+
+    });
+
+    return result;
+
+}
+
+
+/* =========================================================
+   SAVE PRODUCT VIEW
+========================================================= */
+
+function saveRecommendationView(productId) {
+
+    try {
+
+        let history =
+            JSON.parse(
+                localStorage.getItem(
+                    RECOMMENDATION_STORAGE
+                ) || "[]"
+            );
+
+        const id =
+            String(productId);
+
+        const existing =
+            history.find(
+                item =>
+                    String(item.id) === id
+            );
+
+        if (existing) {
+
+            existing.count =
+                Number(existing.count || 0) + 1;
+
+            existing.lastViewed =
+                Date.now();
+
+        } else {
+
+            history.push({
+
+                id: id,
+
+                count: 1,
+
+                lastViewed:
+                    Date.now()
+
+            });
+
+        }
+
+        /* Faqat oxirgi 50 ta */
+        history =
+            history
+                .sort(
+                    (a, b) =>
+                        b.lastViewed -
+                        a.lastViewed
+                )
+                .slice(0, 50);
+
+        localStorage.setItem(
+            RECOMMENDATION_STORAGE,
+            JSON.stringify(history)
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Recommendation history xatosi:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD RECOMMENDATION HISTORY
+========================================================= */
+
+function getRecommendationHistory() {
+
+    try {
+
+        const history =
+            JSON.parse(
+                localStorage.getItem(
+                    RECOMMENDATION_STORAGE
+                ) || "[]"
+            );
+
+        return Array.isArray(history)
+            ? history
+            : [];
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+/* =========================================================
+   GET PRODUCT CATEGORY
+========================================================= */
+
+function getProductCategory(productId) {
+
+    for (
+        const category in products
+    ) {
+
+        const found =
+            products[category].find(
+                product =>
+                    String(product.id) ===
+                    String(productId)
+            );
+
+        if (found) {
+
+            return category;
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+/* =========================================================
+   RECOMMEND PRODUCTS
+========================================================= */
+
+function getRecommendedProducts() {
+
+    const allProducts =
+        getAllVisibleProducts();
+
+    if (
+        allProducts.length === 0
+    ) {
+
+        return [];
+
+    }
+
+
+    const history =
+        getRecommendationHistory();
+
+
+    const cartIds =
+        new Set(
+            cart.map(
+                item =>
+                    String(item.id)
+            )
+        );
+
+
+    const favoriteIds =
+        new Set(
+            Array.isArray(favorites)
+                ? favorites.map(
+                    id =>
+                        String(id)
+                )
+                : []
+        );
+
+
+    const scores = [];
+
+
+    allProducts.forEach(product => {
+
+        const productId =
+            String(product.id);
+
+
+        /* Savatdagi mahsulotni tavsiya qilmaymiz */
+        if (
+            cartIds.has(productId)
+        ) {
+
+            return;
+
+        }
+
+
+        let score = 0;
+
+
+        /* =================================================
+           1. KO‘RILGAN MAHSULOT
+        ================================================= */
+
+        const historyItem =
+            history.find(
+                item =>
+                    String(item.id) ===
+                    productId
+            );
+
+
+        if (historyItem) {
+
+            score +=
+                Math.min(
+                    Number(
+                        historyItem.count || 0
+                    ) * 2,
+                    10
+                );
+
+
+            /* Yangiroq ko‘rilgan mahsulotga bonus */
+            const age =
+                Date.now() -
+                Number(
+                    historyItem.lastViewed || 0
+                );
+
+            const oneDay =
+                24 * 60 * 60 * 1000;
+
+
+            if (age < oneDay) {
+
+                score += 5;
+
+            } else if (
+                age < oneDay * 7
+            ) {
+
+                score += 3;
+
+            }
+
+        }
+
+
+        /* =================================================
+           2. RELATED MAHSULOT
+        ================================================= */
+
+        history.forEach(
+            viewed => {
+
+                const viewedProduct =
+                    findProduct(
+                        viewed.id
+                    );
+
+                if (!viewedProduct) {
+                    return;
+                }
+
+
+                if (
+                    Array.isArray(
+                        viewedProduct.related
+                    ) &&
+                    viewedProduct.related
+                        .some(
+                            relatedId =>
+                                String(
+                                    relatedId
+                                ) ===
+                                productId
+                        )
+                ) {
+
+                    score += 10;
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           3. SAVATDAGI MAHSULOT BILAN RELATED
+        ================================================= */
+
+        cart.forEach(
+            cartItem => {
+
+                const cartProduct =
+                    findProduct(
+                        cartItem.id
+                    );
+
+                if (!cartProduct) {
+                    return;
+                }
+
+
+                if (
+                    Array.isArray(
+                        cartProduct.related
+                    ) &&
+                    cartProduct.related
+                        .some(
+                            relatedId =>
+                                String(
+                                    relatedId
+                                ) ===
+                                productId
+                        )
+                ) {
+
+                    score += 12;
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           4. FAVORITE
+        ================================================= */
+
+        if (
+            favoriteIds.has(productId)
+        ) {
+
+            score += 4;
+
+        }
+
+
+        /* =================================================
+           5. OLD BUYURTMALAR
+        ================================================= */
+
+        if (
+            Array.isArray(orders)
+        ) {
+
+            orders.forEach(order => {
+
+                if (
+                    !Array.isArray(
+                        order.items
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                const purchased =
+                    order.items.some(
+                        item =>
+                            String(item.id) ===
+                            productId
+                    );
+
+
+                if (purchased) {
+
+                    score += 3;
+
+                }
+
+            });
+
+        }
+
+
+        /* =================================================
+           6. SAME CATEGORY
+        ================================================= */
+
+        history.forEach(
+            viewed => {
+
+                const viewedCategory =
+                    getProductCategory(
+                        viewed.id
+                    );
+
+                if (
+                    viewedCategory &&
+                    viewedCategory ===
+                    product.category
+                ) {
+
+                    score += 3;
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           RANDOM SMALL BOOST
+           Bir xil tartibda qotib qolmasligi uchun
+        ================================================= */
+
+        score +=
+            Math.random() * 0.5;
+
+
+        scores.push({
+
+            product: product,
+
+            score: score
+
+        });
+
+    });
+
+
+    /* =====================================================
+       SORT
+    ===================================================== */
+
+    scores.sort(
+        (a, b) =>
+            b.score - a.score
+    );
+
+
+    /* =====================================================
+       RESULT
+    ===================================================== */
+
+    const result = [];
+
+    const usedCategories =
+        new Set();
+
+
+    for (
+        const item of scores
+    ) {
+
+        const product =
+            item.product;
+
+
+        /*
+         * Bir xil kategoriyadan
+         * haddan tashqari ko‘p chiqmasin
+         */
+
+        if (
+            usedCategories.has(
+                product.category
+            ) &&
+            result.length < 3
+        ) {
+
+            continue;
+
+        }
+
+
+        result.push(product);
+
+        usedCategories.add(
+            product.category
+        );
+
+
+        if (
+            result.length >= 3
+        ) {
+
+            break;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       FALLBACK
+    ===================================================== */
+
+    if (
+        result.length < 3
+    ) {
+
+        allProducts.forEach(
+            product => {
+
+                if (
+                    result.length >= 3
+                ) {
+
+                    return;
+
+                }
+
+
+                const exists =
+                    result.some(
+                        item =>
+                            String(item.id) ===
+                            String(product.id)
+                    );
+
+
+                if (
+                    !exists &&
+                    !cartIds.has(
+                        String(product.id)
+                    )
+                ) {
+
+                    result.push(product);
+
+                }
+
+            }
+        );
+
+    }
+
+
+    return result.slice(0, 3);
+
+}
+
+/* =========================================================
+   RECOMMENDATION ENGINE
+========================================================= */
+
+const RECOMMENDATION_STORAGE =
+    "yulduz_recommendation_history";
+
+
+function getAllVisibleProducts() {
+
+    const all = [];
+
+    Object.keys(products).forEach(category => {
+
+        products[category].forEach(product => {
+
+            if (product.visible) {
+
+                all.push({
+                    ...product,
+                    category
+                });
+
+            }
+
+        });
+
+    });
+
+    return all;
+}
+
+
+/* =========================================================
+   SAVE PRODUCT INTEREST
+========================================================= */
+
+function saveRecommendationView(productId) {
+
+    let history = [];
+
+    try {
+
+        history =
+            JSON.parse(
+                localStorage.getItem(
+                    RECOMMENDATION_STORAGE
+                )
+            ) || [];
+
+    } catch {
+
+        history = [];
+
+    }
+
+    const id = String(productId);
+
+    const existing =
+        history.find(
+            item =>
+                String(item.id) === id
+        );
+
+    if (existing) {
+
+        existing.count =
+            (Number(existing.count) || 0) + 1;
+
+        existing.lastViewed =
+            Date.now();
+
+    } else {
+
+        history.push({
+
+            id: productId,
+
+            count: 1,
+
+            lastViewed: Date.now()
+
+        });
+
+    }
+
+    /* faqat oxirgi 50 ta */
+    history =
+        history.slice(-50);
+
+    localStorage.setItem(
+        RECOMMENDATION_STORAGE,
+        JSON.stringify(history)
+    );
+
+}
+
+
+/* =========================================================
+   GET HISTORY
+========================================================= */
+
+function getRecommendationHistory() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                RECOMMENDATION_STORAGE
+            )
+        ) || [];
+
+    } catch {
+
+        return [];
+
+    }
+
+}
+
+
+/* =========================================================
+   FIND CATEGORY
+========================================================= */
+
+function getProductCategory(productId) {
+
+    for (const category in products) {
+
+        const found =
+            products[category].find(
+                product =>
+                    String(product.id) ===
+                    String(productId)
+            );
+
+        if (found) {
+
+            return category;
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+/* =========================================================
+   GENERATE RECOMMENDATIONS
+========================================================= */
+
+function getRecommendedProducts() {
+
+    const allProducts =
+        getAllVisibleProducts();
+
+    const history =
+        getRecommendationHistory();
+
+    const cartIds =
+        new Set(
+            cart.map(
+                item =>
+                    String(item.id)
+            )
+        );
+
+    const scores = [];
+
+
+    allProducts.forEach(product => {
+
+        /* savatdagi mahsulotni tavsiya qilmaymiz */
+        if (
+            cartIds.has(
+                String(product.id)
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        let score = 0;
+
+
+        /* =================================================
+           USER HISTORY
+        ================================================= */
+
+        const viewed =
+            history.find(
+                item =>
+                    String(item.id) ===
+                    String(product.id)
+            );
+
+
+        if (viewed) {
+
+            score += Math.min(
+                Number(viewed.count) * 2,
+                10
+            );
+
+
+            const age =
+                Date.now() -
+                Number(viewed.lastViewed || 0);
+
+
+            if (
+                age <
+                24 * 60 * 60 * 1000
+            ) {
+
+                score += 5;
+
+            } else if (
+                age <
+                7 * 24 * 60 * 60 * 1000
+            ) {
+
+                score += 3;
+
+            }
+
+        }
+
+
+        /* =================================================
+           RELATED PRODUCTS
+        ================================================= */
+
+        history.forEach(viewedItem => {
+
+            const viewedProduct =
+                findProduct(
+                    viewedItem.id
+                );
+
+            if (!viewedProduct) return;
+
+
+            if (
+                Array.isArray(
+                    viewedProduct.related
+                ) &&
+                viewedProduct.related
+                    .map(String)
+                    .includes(
+                        String(product.id)
+                    )
+            ) {
+
+                score += 10;
+
+            }
+
+        });
+
+
+        /* =================================================
+           SAME CATEGORY
+        ================================================= */
+
+        history.forEach(viewedItem => {
+
+            const category =
+                getProductCategory(
+                    viewedItem.id
+                );
+
+            if (
+                category &&
+                category ===
+                    product.category
+            ) {
+
+                score += 3;
+
+            }
+
+        });
+
+
+        /* =================================================
+           SMALL RANDOM FACTOR
+        ================================================= */
+
+        score +=
+            Math.random() * 0.5;
+
+
+        scores.push({
+
+            product,
+            score
+
+        });
+
+    });
+
+
+    /* =====================================================
+       SORT
+    ===================================================== */
+
+    scores.sort(
+        (a, b) =>
+            b.score - a.score
+    );
+
+
+    /* =====================================================
+       CATEGORY DIVERSITY
+    ===================================================== */
+
+    const result = [];
+    const categories = new Set();
+
+
+    for (const item of scores) {
+
+        if (
+            result.length >= 3
+        ) {
+
+            break;
+
+        }
+
+
+        if (
+            !categories.has(
+                item.product.category
+            )
+            ||
+            scores.length < 3
+        ) {
+
+            result.push(
+                item.product
+            );
+
+            categories.add(
+                item.product.category
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       FALLBACK
+    ===================================================== */
+
+    if (
+        result.length < 3
+    ) {
+
+        for (
+            const product of allProducts
+        ) {
+
+            if (
+                cartIds.has(
+                    String(product.id)
+                )
+            ) {
+
+                continue;
+
+            }
+
+
+            if (
+                !result.some(
+                    item =>
+                        String(item.id) ===
+                        String(product.id)
+                )
+            ) {
+
+                result.push(product);
+
+            }
+
+
+            if (
+                result.length >= 3
+            ) {
+
+                break;
+
+            }
+
+        }
+
+    }
+
+
+    return result;
+
+}
+
+
+/* =========================================================
    RENDER RECOMMENDED PRODUCTS
 ========================================================= */
 
@@ -9581,80 +10564,83 @@ function renderRecommendedProducts() {
 
     if (!container) return;
 
+
     container.innerHTML = "";
 
-    const recommended = [];
 
-    Object.keys(products).forEach(category => {
+    const recommended =
+        getRecommendedProducts();
 
-        products[category].forEach(product => {
 
-            if (product.visible) {
+    recommended.forEach(product => {
 
-                recommended.push(product);
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "recommended-product-card";
+
+
+        const image =
+            product.image
+            ? `
+                <img
+                    src="${product.image}"
+                    alt="${product.name}">
+              `
+            : `
+                <span class="recommended-product-icon">
+                    ${product.icon || ""}
+                </span>
+              `;
+
+
+        card.innerHTML = `
+
+            <div class="recommended-product-image">
+                ${image}
+            </div>
+
+            <div class="recommended-product-name">
+                ${product.name}
+            </div>
+
+            <div class="recommended-product-price">
+                ${formatPrice(product.price)}
+            </div>
+
+        `;
+
+
+        card.onclick = function () {
+
+            saveRecommendationView(
+                product.id
+            );
+
+
+            if (
+                product.unit === "kg"
+            ) {
+
+                addWeightProduct(
+                    product.id
+                );
+
+            } else {
+
+                addToCart(
+                    product.id
+                );
 
             }
 
-        });
+        };
+
+
+        container.appendChild(card);
 
     });
-
-    recommended
-        .slice(0, 3)
-        .forEach(product => {
-
-            const card =
-                document.createElement("div");
-
-            card.className =
-                "recommended-product-card";
-
-            const image =
-                product.image
-                ? `
-                    <img
-                        src="${product.image}"
-                        alt="${product.name}">
-                  `
-                : `
-                    <span class="recommended-product-icon">
-                        ${product.icon}
-                    </span>
-                  `;
-
-            card.innerHTML = `
-
-                <div class="recommended-product-image">
-                    ${image}
-                </div>
-
-                <div class="recommended-product-name">
-                    ${product.name}
-                </div>
-
-                <div class="recommended-product-price">
-    ${formatPrice(product.price)}
-</div>
-
-            `;
-
-            card.onclick = function () {
-
-                if (product.unit === "kg") {
-
-                    addWeightProduct(product.id);
-
-                } else {
-
-                    addToCart(product.id);
-
-                }
-
-            };
-
-            container.appendChild(card);
-
-        });
 
 }
 
@@ -11507,9 +12493,11 @@ function createFavoriteProductCard(product) {
 
 function addToCart(id) {
 
-    const product =
-        findProduct(id);
+    const product = findProduct(id);
 
+    if (!product) return;
+
+    saveRecommendationView(id);
 
     if (!product) {
         return;
@@ -11548,12 +12536,13 @@ function addToCart(id) {
     }
 
 
-    updateCart();
+    saveRecommendationView(product.id);
 
+updateCart();
 
-    showToast(
-        `${product.name} savatga qo‘shildi! 🛒`
-    );
+showToast(
+    `${product.name} savatga qo‘shildi! 🛒`
+);
 
 }
 
