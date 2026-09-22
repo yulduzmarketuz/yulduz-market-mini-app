@@ -9864,6 +9864,28 @@ function findProduct(id) {
 
 }
    /* =========================================================
+   GET RECOMMENDATION HISTORY
+========================================================= */
+
+function getRecommendationHistory() {
+
+    const key =
+        "yulduz_recommendation_history";
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(key)
+        ) || [];
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+   /* =========================================================
    RECOMMENDATION HISTORY
 ========================================================= */
 
@@ -9920,6 +9942,93 @@ function saveRecommendationView(productId) {
         key,
         JSON.stringify(history)
     );
+
+}
+   /* =========================================================
+   GET RECOMMENDATION CANDIDATES
+========================================================= */
+
+function getRecommendationCandidates() {
+
+    const history =
+        getRecommendationHistory();
+
+    const candidates = [];
+
+    Object.keys(products).forEach(category => {
+
+        products[category].forEach(product => {
+
+            if (!product.visible) {
+                return;
+            }
+
+            candidates.push({
+                ...product,
+                category: category
+            });
+
+        });
+
+    });
+
+    return candidates;
+
+}
+   /* =========================================================
+   SCORE RECOMMENDATION CANDIDATES
+========================================================= */
+
+function scoreRecommendationCandidates() {
+
+    const candidates =
+        getRecommendationCandidates();
+
+    const history =
+        getRecommendationHistory();
+
+    return candidates.map(product => {
+
+        const viewed =
+            history.find(
+                item =>
+                    String(item.id) ===
+                    String(product.id)
+            );
+
+        let score = 0;
+
+        if (viewed) {
+
+            score +=
+                (Number(viewed.count) || 0) * 10;
+
+        }
+
+        return {
+            ...product,
+            recommendationScore: score
+        };
+
+    });
+
+}
+   /* =========================================================
+   GET TOP RECOMMENDATIONS
+========================================================= */
+
+function getTopRecommendations(limit = 3) {
+
+    const scored =
+        scoreRecommendationCandidates();
+
+    return scored
+        .sort(
+            (a, b) =>
+                b.recommendationScore -
+                a.recommendationScore
+        )
+        .slice(0, limit);
 
 }
 
