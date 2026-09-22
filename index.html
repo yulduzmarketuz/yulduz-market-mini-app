@@ -9305,7 +9305,91 @@ const products = {
     "Kiyim va to‘qimachilik": []
 
 };
-   
+   /* =========================================================
+   LOAD PRODUCTS FROM D1
+========================================================= */
+
+async function loadProductsFromAPI() {
+
+    try {
+
+        const response =
+            await fetch(
+                "https://yulduz-market-mini-app.pardayevx055.workers.dev/products"
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            !data.success ||
+            !Array.isArray(data.products)
+        ) {
+            throw new Error(
+                "Mahsulotlar formati noto‘g‘ri"
+            );
+        }
+
+
+        /* =========================================
+           ESKI KATEGORIYA MA'LUMOTLARINI TOZALASH
+        ========================================= */
+
+        Object.keys(products).forEach(
+            category => {
+                products[category] = [];
+            }
+        );
+
+
+        /* =========================================
+           D1 MAHSULOTLARINI KATEGORIYALARGA JOYLASH
+        ========================================= */
+
+        data.products.forEach(
+            product => {
+
+                if (
+                    !products[product.category]
+                ) {
+                    products[product.category] = [];
+                }
+
+                products[product.category].push(
+                    {
+                        id: product.id,
+                        name: product.name,
+                        price: Number(product.price) || 0,
+                        unit: product.unit || "dona",
+                        image: product.image || null,
+                        icon: product.icon || "📦",
+                        visible: Boolean(product.visible),
+                        related: Array.isArray(product.related)
+                            ? product.related
+                            : []
+                    }
+                );
+
+            }
+        );
+
+
+        console.log(
+            "✅ Mahsulotlar D1 dan yuklandi:",
+            data.products
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "❌ Mahsulotlarni D1 dan yuklashda xatolik:",
+            error
+        );
+
+    }
+}
+   loadProductsFromAPI();
 
 /* =========================================================
    CART
