@@ -9572,6 +9572,10 @@ const translations = {
    RENDER RECOMMENDED PRODUCTS
 ========================================================= */
 
+let recommendedProducts = [];
+let recommendedIndex = 0;
+let recommendedTimer = null;
+
 function renderRecommendedProducts() {
 
     const container =
@@ -9581,67 +9585,115 @@ function renderRecommendedProducts() {
 
     if (!container) return;
 
+    recommendedProducts =
+        getTopRecommendations(3);
+
+    recommendedIndex = 0;
+
     container.innerHTML = "";
 
-    const recommended =
-    getTopRecommendations(3);
+    if (!recommendedProducts.length) {
+        return;
+    }
 
-recommended.forEach(product => {
-        
+    renderRecommendedProduct(
+        recommendedProducts[recommendedIndex]
+    );
 
-            const card =
-                document.createElement("div");
+    if (recommendedTimer) {
+        clearInterval(recommendedTimer);
+    }
 
-            card.className =
-                "recommended-product-card";
+    recommendedTimer = setInterval(() => {
 
-            const image =
-                product.image
-                ? `
-                    <img
-                        src="${product.image}"
-                        alt="${product.name}">
-                  `
-                : `
-                    <span class="recommended-product-icon">
-                        ${product.icon}
-                    </span>
-                  `;
+        if (!recommendedProducts.length) {
+            return;
+        }
 
-            card.innerHTML = `
+        recommendedIndex++;
 
-                <div class="recommended-product-image">
-                    ${image}
-                </div>
+        if (
+            recommendedIndex >=
+            recommendedProducts.length
+        ) {
+            recommendedIndex = 0;
+        }
 
-                <div class="recommended-product-name">
-                    ${product.name}
-                </div>
+        renderRecommendedProduct(
+            recommendedProducts[recommendedIndex]
+        );
 
-                <div class="recommended-product-price">
-    ${formatPrice(product.price)}
-</div>
+    }, 5000);
+}
 
-            `;
 
-            card.onclick = function () {
+/* =========================================================
+   RENDER ONE RECOMMENDED PRODUCT
+========================================================= */
 
-                if (product.unit === "kg") {
+function renderRecommendedProduct(product) {
 
-                    addWeightProduct(product.id);
+    const container =
+        document.getElementById(
+            "recommendedProducts"
+        );
 
-                } else {
+    if (!container || !product) {
+        return;
+    }
 
-                    addToCart(product.id);
+    container.innerHTML = "";
 
-                }
+    const card =
+        document.createElement("div");
 
-            };
+    card.className =
+        "recommended-product-card";
 
-            container.appendChild(card);
+    const image =
+        product.image
+        ? `
+            <img
+                src="${product.image}"
+                alt="${product.name}">
+          `
+        : `
+            <span class="recommended-product-icon">
+                ${product.icon}
+            </span>
+          `;
 
-        });
+    card.innerHTML = `
 
+        <div class="recommended-product-image">
+            ${image}
+        </div>
+
+        <div class="recommended-product-name">
+            ${product.name}
+        </div>
+
+        <div class="recommended-product-price">
+            ${formatPrice(product.price)}
+        </div>
+
+    `;
+
+    card.onclick = function () {
+
+        if (product.unit === "kg") {
+
+            addWeightProduct(product.id);
+
+        } else {
+
+            addToCart(product.id);
+
+        }
+
+    };
+
+    container.appendChild(card);
 }
 
 /* =========================================================
