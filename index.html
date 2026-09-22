@@ -4092,7 +4092,6 @@ button {
     font-size: 18px;
     line-height: 1;
 }
-
 .recommended-products {
     width: 100%;
     height: 240px;
@@ -4101,11 +4100,12 @@ button {
     touch-action: pan-y;
     user-select: none;
 }
+
 .recommended-product-card {
     position: absolute;
 
-    top: 50%;
     left: 50%;
+    top: 50%;
 
     width: 42%;
 
@@ -4120,11 +4120,15 @@ button {
         0 8px 24px rgba(0, 0, 0, 0.08);
 
     transition:
-        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-        filter 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+        left 0.68s cubic-bezier(0.22, 1, 0.36, 1),
+        top 0.68s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.68s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.68s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.68s cubic-bezier(0.22, 1, 0.36, 1);
 
     will-change:
+        left,
+        top,
         transform,
         opacity,
         filter;
@@ -4133,8 +4137,9 @@ button {
 
 /* MARKAZ */
 
-.recommended-product-card.is-active {
-    width: 48%;
+.recommended-slot-center {
+    left: 50%;
+    top: 48%;
 
     opacity: 1;
     filter: none;
@@ -4144,38 +4149,77 @@ button {
         scale(1.04)
         translateY(-3px);
 
+    z-index: 5;
+}
+
+
+/* O‘NG */
+
+.recommended-slot-right {
+    left: 74%;
+    top: 51%;
+
+    opacity: 0.48;
+    filter: blur(1px);
+
+    transform:
+        translate(-50%, -50%)
+        scale(0.84);
+
     z-index: 3;
 }
 
 
-/* CHAP / O‘NG */
+/* UZOQ O‘NG */
 
-.recommended-product-card.is-side {
-    width: 29%;
+.recommended-slot-far-right {
+    left: 102%;
+    top: 55%;
 
-    opacity: 0.42;
-    filter: blur(1px);
+    opacity: 0.10;
+    filter: blur(2px);
+
+    transform:
+        translate(-50%, -50%)
+        scale(0.68);
 
     z-index: 1;
 }
 
 
-/* CHAP TOMON */
+/* UZOQ CHAP */
 
-.recommended-product-card.is-prev {
+.recommended-slot-far-left {
+    left: -2%;
+    top: 55%;
+
+    opacity: 0.10;
+    filter: blur(2px);
+
     transform:
-        translate(-145%, -50%)
-        scale(0.86);
+        translate(-50%, -50%)
+        scale(0.68);
+
+    z-index: 1;
 }
 
 
-/* O‘NG TOMON */
+/* CHAP */
 
-.recommended-product-card.is-next {
+.recommended-slot-left {
+    left: 26%;
+    top: 51%;
+
+    opacity: 0.48;
+    filter: blur(1px);
+
     transform:
-        translate(45%, -50%)
-        scale(0.86);
+        translate(-50%, -50%)
+        scale(0.84);
+
+    z-index: 3;
 }
+
 .recommended-product-image {
     width: 100%;
     height: 75px;
@@ -9762,13 +9806,87 @@ recommendedTimer = setInterval(() => {
     });
 }
 
-
 /* =========================================================
-   RENDER RECOMMENDED PRODUCTS
+   CIRCULAR RECOMMENDED PRODUCTS
 ========================================================= */
 
-let recommendedRenderedIndex = -1;
-let recommendedAnimating = false;
+let recommendedCarouselCards = [];
+let recommendedCarouselRenderedIndex = -1;
+let recommendedCarouselAnimating = false;
+
+
+/* =========================================================
+   GET CAROUSEL SLOT
+========================================================= */
+
+function getRecommendedSlotClass(
+    relative,
+    total
+) {
+
+    if (total <= 1) {
+        return "recommended-slot-center";
+    }
+
+    if (relative === 0) {
+        return "recommended-slot-center";
+    }
+
+    if (relative === 1) {
+        return "recommended-slot-right";
+    }
+
+    if (relative === 2) {
+        return "recommended-slot-far-right";
+    }
+
+    if (relative === total - 1) {
+        return "recommended-slot-left";
+    }
+
+    return "recommended-slot-far-left";
+}
+
+
+/* =========================================================
+   APPLY CAROUSEL POSITIONS
+========================================================= */
+
+function applyRecommendedCarouselSlots() {
+
+    const total =
+        recommendedProducts.length;
+
+    recommendedCarouselCards.forEach(
+        (
+            card,
+            productIndex
+        ) => {
+
+            const relative =
+                (
+                    productIndex -
+                    recommendedIndex +
+                    total
+                ) % total;
+
+            const slotClass =
+                getRecommendedSlotClass(
+                    relative,
+                    total
+                );
+
+            card.className =
+                "recommended-product-card " +
+                slotClass;
+        }
+    );
+}
+
+
+/* =========================================================
+   RENDER RECOMMENDED PRODUCT
+========================================================= */
 
 function renderRecommendedProduct() {
 
@@ -9784,230 +9902,131 @@ function renderRecommendedProduct() {
         return;
     }
 
+
     const total =
         recommendedProducts.length;
 
+
     /* =========================================
-       BIRINCHI YARATISH
+       YANGI MAHSULOTLAR YOKI QAYTA YARATISH
     ========================================= */
 
-    if (recommendedRenderedIndex === -1) {
+    if (
+        recommendedCarouselCards.length !==
+        total
+    ) {
 
-        recommendedRenderedIndex =
+        container.innerHTML = "";
+
+        recommendedCarouselCards = [];
+
+
+        recommendedProducts.forEach(
+            (
+                product,
+                index
+            ) => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "recommended-product-card";
+
+
+                card.dataset.productIndex =
+                    index;
+
+
+                /*
+                   MUHIM:
+                   HAR BIR CARD O'Z MAHSULOTIGA
+                   BOG'LANGAN.
+                   KEYINCHALIK KONTENT
+                   ALMASHTIRILMAYDI.
+                */
+
+                updateRecommendedCard(
+                    card,
+                    product
+                );
+
+
+                container.appendChild(
+                    card
+                );
+
+
+                recommendedCarouselCards.push(
+                    card
+                );
+
+            }
+        );
+
+
+        recommendedCarouselRenderedIndex =
             recommendedIndex;
 
-        createRecommendedCards();
+
+        applyRecommendedCarouselSlots();
 
         return;
     }
+
 
     /* =========================================
        ANIMATSIYA KETYAPTI
     ========================================= */
 
-    if (recommendedAnimating) {
+    if (
+        recommendedCarouselAnimating
+    ) {
         return;
     }
 
+
+    /* =========================================
+       INDEX O'ZGARMAGAN
+    ========================================= */
+
     if (
-        recommendedRenderedIndex ===
+        recommendedCarouselRenderedIndex ===
         recommendedIndex
     ) {
         return;
     }
 
-    const oldIndex =
-        recommendedRenderedIndex;
-
-    const newIndex =
-        recommendedIndex;
-
-    const cards =
-        Array.from(
-            container.children
-        );
-
-    if (cards.length !== 3) {
-
-        recommendedRenderedIndex =
-            newIndex;
-
-        createRecommendedCards();
-
-        return;
-    }
-
-    recommendedAnimating = true;
-
-    const leftCard =
-        cards[0];
-
-    const centerCard =
-        cards[1];
-
-    const rightCard =
-        cards[2];
 
     /* =========================================
-       KEYINGA
+       ANIMATSIYA BOSHLASH
     ========================================= */
 
-    if (
-        newIndex ===
-        (oldIndex + 1) % total
-    ) {
+    recommendedCarouselAnimating =
+        true;
 
-        leftCard.className =
-            "recommended-product-card is-side is-next";
 
-        centerCard.className =
-            "recommended-product-card is-side is-prev";
+    applyRecommendedCarouselSlots();
 
-        rightCard.className =
-            "recommended-product-card is-active";
-
-    }
 
     /* =========================================
-       OLDINGA
+       ANIMATSIYA TUGASHI
     ========================================= */
 
-    else {
+    setTimeout(
+        () => {
 
-        leftCard.className =
-            "recommended-product-card is-active";
+            recommendedCarouselRenderedIndex =
+                recommendedIndex;
 
-        centerCard.className =
-            "recommended-product-card is-side is-next";
+            recommendedCarouselAnimating =
+                false;
 
-        rightCard.className =
-            "recommended-product-card is-side is-prev";
-    }
-
-    /* =========================================
-       ANIMATSIYA TUGAGACH
-    ========================================= */
-
-    setTimeout(() => {
-
-        recommendedRenderedIndex =
-            newIndex;
-
-        createRecommendedCards();
-
-        recommendedAnimating = false;
-
-    }, 680);
-}
-
-
-/* =========================================================
-   CREATE RECOMMENDED CARDS
-========================================================= */
-
-function createRecommendedCards() {
-
-    const container =
-        document.getElementById(
-            "recommendedProducts"
-        );
-
-    if (
-        !container ||
-        !recommendedProducts.length
-    ) {
-        return;
-    }
-
-    const total =
-        recommendedProducts.length;
-
-    const prevIndex =
-        (recommendedIndex - 1 + total) % total;
-
-    const nextIndex =
-        (recommendedIndex + 1) % total;
-
-    const cards =
-        Array.from(
-            container.children
-        );
-
-    /* =========================================
-       BIRINCHI MARTA
-    ========================================= */
-
-    if (cards.length !== 3) {
-
-        container.innerHTML = "";
-
-        const leftCard =
-            document.createElement("div");
-
-        const centerCard =
-            document.createElement("div");
-
-        const rightCard =
-            document.createElement("div");
-
-        leftCard.className =
-            "recommended-product-card is-side is-prev";
-
-        centerCard.className =
-            "recommended-product-card is-active";
-
-        rightCard.className =
-            "recommended-product-card is-side is-next";
-
-        updateRecommendedCard(
-            leftCard,
-            recommendedProducts[prevIndex]
-        );
-
-        updateRecommendedCard(
-            centerCard,
-            recommendedProducts[recommendedIndex]
-        );
-
-        updateRecommendedCard(
-            rightCard,
-            recommendedProducts[nextIndex]
-        );
-
-        container.appendChild(leftCard);
-        container.appendChild(centerCard);
-        container.appendChild(rightCard);
-
-        return;
-    }
-
-    /* =========================================
-       ANIMATSIYADAN KEYIN KONTENTNI YANGILASH
-    ========================================= */
-
-    updateRecommendedCard(
-        cards[0],
-        recommendedProducts[prevIndex]
+        },
+        680
     );
-
-    updateRecommendedCard(
-        cards[1],
-        recommendedProducts[recommendedIndex]
-    );
-
-    updateRecommendedCard(
-        cards[2],
-        recommendedProducts[nextIndex]
-    );
-
-    cards[0].className =
-        "recommended-product-card is-side is-prev";
-
-    cards[1].className =
-        "recommended-product-card is-active";
-
-    cards[2].className =
-        "recommended-product-card is-side is-next";
 }
 
 
