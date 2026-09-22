@@ -1718,6 +1718,63 @@ if (
     );
   }
 }
+    // =====================================================
+// PRODUCTS DELETE
+// =====================================================
+
+if (
+  url.pathname.startsWith("/products/") &&
+  request.method === "DELETE"
+) {
+
+  try {
+
+    const id =
+      Number(
+        url.pathname.split("/").pop()
+      );
+
+    if (!id) {
+      return json(
+        {
+          error: "Mahsulot ID kerak"
+        },
+        400
+      );
+    }
+
+    await env.DB
+      .prepare(`
+        DELETE FROM products
+        WHERE id = ?
+      `)
+      .bind(id)
+      .run();
+
+    return json({
+      success: true,
+      message: "Mahsulot o‘chirildi",
+      id
+    });
+
+  } catch (error) {
+
+    console.error(
+      "❌ D1 PRODUCTS DELETE ERROR:",
+      error
+    );
+
+    return json(
+      {
+        error:
+          "Mahsulotni o‘chirishda xatolik",
+        message:
+          error.message
+      },
+      500
+    );
+  }
+}
 
 
     // =====================================================
