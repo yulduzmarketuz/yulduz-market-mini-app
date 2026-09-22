@@ -1544,6 +1544,27 @@ if (
     );
   }
 }
+    // =====================================================
+// TELEGRAM ADMIN CHECK
+// =====================================================
+
+if (
+  url.pathname === "/admin-check" &&
+  request.method === "GET"
+) {
+
+  const isAdmin =
+    await verifyTelegramAdmin(
+      request,
+      env
+    );
+
+  return json({
+    success: true,
+    admin: isAdmin
+  });
+
+}
         // =====================================================
     // PRODUCTS GET
     // =====================================================
