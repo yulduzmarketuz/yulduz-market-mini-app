@@ -4096,19 +4096,18 @@ button {
 .recommended-products {
     width: 100%;
     height: 240px;
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     overflow: hidden;
-    display: block;
+    position: relative;
     touch-action: pan-y;
     user-select: none;
 }
 .recommended-product-card {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
-    width: 42%;
-
+    flex: 0 0 42%;
+    min-width: 0;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 22px;
@@ -4122,42 +4121,35 @@ button {
     transition:
         transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
         opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-        filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-
-    transform:
-        translate(-50%, -50%);
+        filter 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        flex-basis 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .recommended-product-card.is-active {
-    width: 48%;
+    flex-basis: 48%;
     opacity: 1;
     filter: none;
-
-    transform:
-        translate(-50%, -50%)
-        scale(1.04)
-        translateY(-3px);
-
+    transform: scale(1.04) translateY(-3px);
     z-index: 2;
 }
 
 .recommended-product-card.is-side {
-    width: 27%;
+    flex-basis: 27%;
     opacity: 0.45;
     filter: blur(1px);
-
+    transform: scale(0.88);
     z-index: 1;
 }
 
 .recommended-product-card.is-prev {
     transform:
-        translate(-150%, -50%)
+        translateX(-45px)
         scale(0.88);
 }
 
 .recommended-product-card.is-next {
     transform:
-        translate(50%, -50%)
+        translateX(45px)
         scale(0.88);
 }
 .recommended-product-image {
@@ -9751,7 +9743,155 @@ recommendedTimer = setInterval(() => {
    RENDER RECOMMENDED PRODUCTS
 ========================================================= */
 
+let recommendedRenderedIndex = -1;
+let recommendedAnimating = false;
+
 function renderRecommendedProduct() {
+
+    const container =
+        document.getElementById(
+            "recommendedProducts"
+        );
+
+    if (
+        !container ||
+        !recommendedProducts.length
+    ) {
+        return;
+    }
+
+    const total =
+        recommendedProducts.length;
+
+    /* =========================================
+       BIRINCHI RENDER
+    ========================================= */
+
+    if (recommendedRenderedIndex === -1) {
+
+        recommendedRenderedIndex =
+            recommendedIndex;
+
+        container.innerHTML = "";
+
+        createRecommendedCards();
+
+        return;
+    }
+
+    /* =========================================
+       ANIMATSIYA ALLAQACHON KETYAPTI
+    ========================================= */
+
+    if (recommendedAnimating) {
+        return;
+    }
+
+    if (
+        recommendedRenderedIndex ===
+        recommendedIndex
+    ) {
+        return;
+    }
+
+    recommendedAnimating = true;
+
+    const oldIndex =
+        recommendedRenderedIndex;
+
+    const newIndex =
+        recommendedIndex;
+
+    const cards =
+        Array.from(
+            container.children
+        );
+
+    if (cards.length !== 3) {
+
+        recommendedRenderedIndex =
+            recommendedIndex;
+
+        createRecommendedCards();
+
+        recommendedAnimating = false;
+
+        return;
+    }
+
+    const previousCard = cards[0];
+    const activeCard = cards[1];
+    const nextCard = cards[2];
+
+    /* =========================================
+       KEYINGI MAHSULOT
+    ========================================= */
+
+    if (
+        newIndex ===
+        (oldIndex + 1) % total
+    ) {
+
+        /*
+           PREV   -> NEXT
+           ACTIVE -> PREV
+           NEXT   -> ACTIVE
+        */
+
+        previousCard.className =
+            "recommended-product-card is-side is-next";
+
+        activeCard.className =
+            "recommended-product-card is-side is-prev";
+
+        nextCard.className =
+            "recommended-product-card is-active";
+    }
+
+    /* =========================================
+       OLDINGI MAHSULOT
+    ========================================= */
+
+    else {
+
+        /*
+           PREV   -> ACTIVE
+           ACTIVE -> NEXT
+           NEXT   -> PREV
+        */
+
+        previousCard.className =
+            "recommended-product-card is-active";
+
+        activeCard.className =
+            "recommended-product-card is-side is-next";
+
+        nextCard.className =
+            "recommended-product-card is-side is-prev";
+    }
+
+    /* =========================================
+       ANIMATSIYA TUGAGACH
+    ========================================= */
+
+    setTimeout(() => {
+
+        recommendedRenderedIndex =
+            recommendedIndex;
+
+        createRecommendedCards();
+
+        recommendedAnimating = false;
+
+    }, 560);
+}
+
+
+/* =========================================================
+   CREATE RECOMMENDED CARDS
+========================================================= */
+
+function createRecommendedCards() {
 
     const container =
         document.getElementById(
@@ -9795,10 +9935,16 @@ function renderRecommendedProduct() {
         }
     ];
 
-    /* Birinchi marta yaratish */
-    if (
-        container.children.length !== 3
-    ) {
+    const cards =
+        Array.from(
+            container.children
+        );
+
+    /* =========================================
+       BIRINCHI MARTA
+    ========================================= */
+
+    if (cards.length !== 3) {
 
         container.innerHTML = "";
 
@@ -9816,19 +9962,18 @@ function renderRecommendedProduct() {
                     product
                 );
 
-                container.appendChild(card);
-
+                container.appendChild(
+                    card
+                );
             }
         );
 
         return;
     }
 
-    /* Mavjud kartalarni yangi holatga o'tkazish */
-    const cards =
-        Array.from(
-            container.children
-        );
+    /* =========================================
+       ANIMATSIYADAN KEYIN YANGILASH
+    ========================================= */
 
     cards[0].className =
         items[0].className;
