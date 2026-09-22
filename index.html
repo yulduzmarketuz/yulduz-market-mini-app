@@ -4096,61 +4096,85 @@ button {
 .recommended-products {
     width: 100%;
     height: 240px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
     touch-action: pan-y;
     user-select: none;
 }
 .recommended-product-card {
-    flex: 0 0 42%;
-    min-width: 0;
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: 42%;
+
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 22px;
+
     padding: 12px;
     overflow: hidden;
-    cursor: pointer;
 
     box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.08);
 
     transition:
-        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-        filter 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-        flex-basis 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+
+    will-change:
+        transform,
+        opacity,
+        filter;
 }
+
+
+/* MARKAZ */
 
 .recommended-product-card.is-active {
-    flex-basis: 48%;
+    width: 48%;
+
     opacity: 1;
     filter: none;
-    transform: scale(1.04) translateY(-3px);
-    z-index: 2;
+
+    transform:
+        translate(-50%, -50%)
+        scale(1.04)
+        translateY(-3px);
+
+    z-index: 3;
 }
 
+
+/* CHAP / O‘NG */
+
 .recommended-product-card.is-side {
-    flex-basis: 27%;
-    opacity: 0.45;
+    width: 29%;
+
+    opacity: 0.42;
     filter: blur(1px);
-    transform: scale(0.88);
+
     z-index: 1;
 }
 
+
+/* CHAP TOMON */
+
 .recommended-product-card.is-prev {
     transform:
-        translateX(-45px)
-        scale(0.88);
+        translate(-145%, -50%)
+        scale(0.86);
 }
+
+
+/* O‘NG TOMON */
 
 .recommended-product-card.is-next {
     transform:
-        translateX(45px)
-        scale(0.88);
+        translate(45%, -50%)
+        scale(0.86);
 }
 .recommended-product-image {
     width: 100%;
@@ -9780,7 +9804,7 @@ function renderRecommendedProduct() {
     }
 
     /* =========================================
-       ANIMATSIYA ALLAQACHON KETYAPTI
+       ANIMATSIYA KETYAPTI
     ========================================= */
 
     if (recommendedAnimating) {
@@ -9819,12 +9843,17 @@ function renderRecommendedProduct() {
         return;
     }
 
-    const previousCard = cards[0];
-    const activeCard = cards[1];
-    const nextCard = cards[2];
+    const leftCard =
+        cards[0];
+
+    const centerCard =
+        cards[1];
+
+    const rightCard =
+        cards[2];
 
     /* =========================================
-       KEYINGI MAHSULOT
+       KEYINGA — DUMALOQ AYLANISH
     ========================================= */
 
     if (
@@ -9832,41 +9861,29 @@ function renderRecommendedProduct() {
         (oldIndex + 1) % total
     ) {
 
-        /*
-           PREV   -> NEXT
-           ACTIVE -> PREV
-           NEXT   -> ACTIVE
-        */
-
-        previousCard.className =
+        leftCard.className =
             "recommended-product-card is-side is-next";
 
-        activeCard.className =
+        centerCard.className =
             "recommended-product-card is-side is-prev";
 
-        nextCard.className =
+        rightCard.className =
             "recommended-product-card is-active";
     }
 
     /* =========================================
-       OLDINGI MAHSULOT
+       OLDINGA — DUMALOQ AYLANISH
     ========================================= */
 
     else {
 
-        /*
-           PREV   -> ACTIVE
-           ACTIVE -> NEXT
-           NEXT   -> PREV
-        */
-
-        previousCard.className =
+        leftCard.className =
             "recommended-product-card is-active";
 
-        activeCard.className =
+        centerCard.className =
             "recommended-product-card is-side is-next";
 
-        nextCard.className =
+        rightCard.className =
             "recommended-product-card is-side is-prev";
     }
 
@@ -9883,9 +9900,8 @@ function renderRecommendedProduct() {
 
         recommendedAnimating = false;
 
-    }, 560);
+    }, 650);
 }
-
 
 /* =========================================================
    CREATE RECOMMENDED CARDS
