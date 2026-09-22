@@ -8770,6 +8770,169 @@ body.dark .premium-category-arrow {
     </span>
 
 </div>
+   <!-- =====================================================
+     ADMIN PANEL
+===================================================== -->
+
+<div
+    id="adminPage"
+    class="container hidden">
+
+    <div class="search-page-header">
+
+        <button
+            class="search-back-button"
+            onclick="goHome()">
+
+            ←
+        </button>
+
+        <h2>
+            Mahsulotlar boshqaruvi
+        </h2>
+
+    </div>
+
+
+    <button
+        id="adminAddProductButton"
+        class="order-button"
+        type="button"
+        onclick="openAdminProductForm()">
+
+        ➕ Mahsulot qo‘shish
+
+    </button>
+
+
+    <div
+        id="adminProductsList"
+        class="products">
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ADMIN PRODUCT FORM
+===================================================== -->
+
+<div
+    id="adminProductForm"
+    class="container hidden">
+
+    <div class="search-page-header">
+
+        <button
+            class="search-back-button"
+            type="button"
+            onclick="closeAdminProductForm()">
+
+            ←
+        </button>
+
+        <h2 id="adminProductFormTitle">
+            Mahsulot qo‘shish
+        </h2>
+
+    </div>
+
+
+    <input
+        id="adminProductId"
+        type="hidden">
+
+
+    <label>
+        Mahsulot nomi
+    </label>
+
+    <input
+        id="adminProductName"
+        type="text"
+        placeholder="Masalan: Pepsi 1L">
+
+
+    <label>
+        Kategoriya
+    </label>
+
+    <select
+        id="adminProductCategory">
+    </select>
+
+
+    <label>
+        Narx
+    </label>
+
+    <input
+        id="adminProductPrice"
+        type="number"
+        min="0"
+        placeholder="12000">
+
+
+    <label>
+        Birlik
+    </label>
+
+    <select
+        id="adminProductUnit">
+
+        <option value="dona">
+            Dona
+        </option>
+
+        <option value="kg">
+            Kg
+        </option>
+
+    </select>
+
+
+    <label>
+        Icon
+    </label>
+
+    <input
+        id="adminProductIcon"
+        type="text"
+        placeholder="🥤">
+
+
+    <label>
+        Rasm URL
+    </label>
+
+    <input
+        id="adminProductImage"
+        type="text"
+        placeholder="https://...">
+
+
+    <label>
+        Related mahsulot IDlari
+    </label>
+
+    <input
+        id="adminProductRelated"
+        type="text"
+        placeholder="549,550">
+
+
+    <button
+        id="adminProductSaveButton"
+        class="order-button"
+        type="button"
+        onclick="saveAdminProduct()">
+
+        Saqlash
+
+    </button>
+
+</div>
+   
 
 <script>
    /* =========================================================
