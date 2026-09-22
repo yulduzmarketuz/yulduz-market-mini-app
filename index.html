@@ -9657,6 +9657,111 @@ async function loadProductsFromAPI() {
 
     await loadProductsFromAPI();
 }
+   function openAdminProductForm() {
+
+    hideAll();
+
+    const form =
+        document.getElementById("adminProductForm");
+
+    if (!form) return;
+
+    form.classList.remove("hidden");
+
+    document.getElementById("adminProductFormTitle").textContent =
+        "Mahsulot qo‘shish";
+
+    document.getElementById("adminProductId").value = "";
+
+    document.getElementById("adminProductName").value = "";
+
+    document.getElementById("adminProductPrice").value = "";
+
+    document.getElementById("adminProductUnit").value = "dona";
+
+    document.getElementById("adminProductIcon").value = "";
+
+    document.getElementById("adminProductImage").value = "";
+
+    document.getElementById("adminProductRelated").value = "";
+
+    const category =
+        document.getElementById("adminProductCategory");
+
+    category.innerHTML = "";
+
+    Object.keys(products).forEach(categoryName => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = categoryName;
+        option.textContent = categoryName;
+
+        category.appendChild(option);
+
+    });
+
+}
+   function closeAdminProductForm() {
+
+    const form =
+        document.getElementById("adminProductForm");
+
+    if (!form) return;
+
+    form.classList.add("hidden");
+
+    const adminPage =
+        document.getElementById("adminPage");
+
+    if (adminPage) {
+        adminPage.classList.remove("hidden");
+    }
+
+}
+   async function checkAdminAccess() {
+
+    try {
+
+        const response =
+            await fetch(
+                "https://yulduz-market-mini-app.pardayevx055.workers.dev/admin-check",
+                {
+                    headers: {
+                        "X-Telegram-Init-Data":
+                            getTelegramInitData()
+                    }
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (!data.admin) {
+            return;
+        }
+
+        const adminPage =
+            document.getElementById("adminPage");
+
+        if (adminPage) {
+            adminPage.classList.remove("hidden");
+        }
+
+        console.log("✅ Admin tasdiqlandi");
+
+    } catch (error) {
+
+        console.error(
+            "❌ Admin tekshirishda xatolik:",
+            error
+        );
+
+    }
+
+}
+   checkAdminAccess();
 
 /* =========================================================
    CART
