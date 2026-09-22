@@ -4099,11 +4099,12 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 6px;
     overflow: hidden;
     position: relative;
+    touch-action: pan-y;
+    user-select: none;
 }
-
 .recommended-product-card {
     flex: 0 0 42%;
     min-width: 0;
@@ -9702,6 +9703,21 @@ function renderRecommendedProducts() {
         }
 
         renderRecommendedProduct();
+       if (recommendedTimer) {
+    clearInterval(recommendedTimer);
+}
+
+recommendedTimer = setInterval(() => {
+
+    recommendedIndex++;
+
+    if (recommendedIndex >= recommendedProducts.length) {
+        recommendedIndex = 0;
+    }
+
+    renderRecommendedProduct();
+
+}, 5000);
 
         container._touchStartX = undefined;
     });
