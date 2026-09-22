@@ -4121,7 +4121,7 @@ button {
         opacity 0.45s ease,
         filter 0.45s ease;
 }
-
+   
 .recommended-product-card.is-active {
     flex-basis: 48%;
     opacity: 1;
@@ -9742,8 +9742,6 @@ function renderRecommendedProduct() {
         return;
     }
 
-    container.innerHTML = "";
-
     const total =
         recommendedProducts.length;
 
@@ -9774,69 +9772,134 @@ function renderRecommendedProduct() {
         }
     ];
 
-    items.forEach(({ product, className }) => {
+    /* Birinchi marta yaratish */
+    if (
+        container.children.length !== 3
+    ) {
 
-        const card =
-            document.createElement("div");
+        container.innerHTML = "";
 
-        card.className = className;
+        items.forEach(
+            ({ product, className }) => {
 
-        const image =
-            product.image
-            ? `
-                <img
-                    src="${product.image}"
-                    alt="${product.name}">
-              `
-            : `
-                <span class="recommended-product-icon">
-                    ${product.icon}
-                </span>
-              `;
+                const card =
+                    document.createElement("div");
 
-        card.innerHTML = `
+                card.className =
+                    className;
 
-            <div class="recommended-product-image">
-                ${image}
-            </div>
+                updateRecommendedCard(
+                    card,
+                    product
+                );
 
-            <div class="recommended-product-name">
-                ${product.name}
-            </div>
+                container.appendChild(card);
 
-            <div class="recommended-product-price">
-                ${formatPrice(product.price)}
-            </div>
-            <button class="recommended-add-btn">
-    Savatga
-</button>
+            }
+        );
 
-        `;
-
-        const addButton =
-    card.querySelector(
-        ".recommended-add-btn"
-    );
-
-addButton.onclick = function (event) {
-
-    event.stopPropagation();
-
-    if (product.unit === "kg") {
-
-        addWeightProduct(product.id);
-
-    } else {
-
-        addToCart(product.id);
-
+        return;
     }
 
-};
+    /* Mavjud kartalarni yangi holatga o'tkazish */
+    const cards =
+        Array.from(
+            container.children
+        );
 
-        container.appendChild(card);
+    cards[0].className =
+        items[0].className;
 
-    });
+    cards[1].className =
+        items[1].className;
+
+    cards[2].className =
+        items[2].className;
+
+    updateRecommendedCard(
+        cards[0],
+        items[0].product
+    );
+
+    updateRecommendedCard(
+        cards[1],
+        items[1].product
+    );
+
+    updateRecommendedCard(
+        cards[2],
+        items[2].product
+    );
+}
+
+
+/* =========================================================
+   UPDATE RECOMMENDED CARD
+========================================================= */
+
+function updateRecommendedCard(
+    card,
+    product
+) {
+
+    const image =
+        product.image
+        ? `
+            <img
+                src="${product.image}"
+                alt="${product.name}">
+          `
+        : `
+            <span class="recommended-product-icon">
+                ${product.icon}
+            </span>
+          `;
+
+    card.innerHTML = `
+
+        <div class="recommended-product-image">
+            ${image}
+        </div>
+
+        <div class="recommended-product-name">
+            ${product.name}
+        </div>
+
+        <div class="recommended-product-price">
+            ${formatPrice(product.price)}
+        </div>
+
+        <button class="recommended-add-btn">
+            Savatga
+        </button>
+
+    `;
+
+    const addButton =
+        card.querySelector(
+            ".recommended-add-btn"
+        );
+
+    addButton.onclick =
+        function (event) {
+
+            event.stopPropagation();
+
+            if (product.unit === "kg") {
+
+                addWeightProduct(
+                    product.id
+                );
+
+            } else {
+
+                addToCart(
+                    product.id
+                );
+
+            }
+
+        };
 }
 
 /* =========================================================
