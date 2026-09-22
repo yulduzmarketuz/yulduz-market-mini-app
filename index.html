@@ -9583,25 +9583,11 @@ function renderRecommendedProducts() {
 
     container.innerHTML = "";
 
-    const recommended = [];
+    const recommended =
+    getTopRecommendations(3);
 
-    Object.keys(products).forEach(category => {
-
-        products[category].forEach(product => {
-
-            if (product.visible) {
-
-                recommended.push(product);
-
-            }
-
-        });
-
-    });
-
-    recommended
-        .slice(0, 3)
-        .forEach(product => {
+recommended.forEach(product => {
+        
 
             const card =
                 document.createElement("div");
@@ -9982,7 +9968,16 @@ function getRecommendationCandidates() {
 function scoreRecommendationCandidates() {
 
     const candidates =
-        getRecommendationCandidates();
+    getRecommendationCandidates()
+        .filter(
+            product =>
+                !cart.some(
+                    item =>
+                        String(item.id) ===
+                        String(product.id)
+                )
+        );
+   
 
     const history =
         getRecommendationHistory();
@@ -9996,14 +9991,53 @@ function scoreRecommendationCandidates() {
                     String(product.id)
             );
 
-        let score = 0;
+        let score = 1;
 
-        if (viewed) {
+if (viewed) {
 
-            score +=
-                (Number(viewed.count) || 0) * 10;
+    score +=
+        (Number(viewed.count) || 0) * 10;
 
-        }
+}
+       if (viewed && viewed.lastViewed) {
+
+    const daysAgo =
+        (Date.now() - Number(viewed.lastViewed)) /
+        (1000 * 60 * 60 * 24);
+
+    if (daysAgo <= 1) {
+
+        score += 15;
+
+    } else if (daysAgo <= 3) {
+
+        score += 10;
+
+    } else if (daysAgo <= 7) {
+
+        score += 5;
+
+    }
+
+}
+
+history.forEach(item => {
+
+    if (
+        Array.isArray(product.related) &&
+        product.related.some(
+            relatedId =>
+                String(relatedId) ===
+                String(item.id)
+        )
+    ) {
+
+        score +=
+            (Number(item.count) || 0) * 20;
+
+    }
+
+});
 
         return {
             ...product,
@@ -10024,10 +10058,20 @@ function getTopRecommendations(limit = 3) {
 
     return scored
         .sort(
-            (a, b) =>
-                b.recommendationScore -
-                a.recommendationScore
-        )
+    (a, b) => {
+
+        const scoreDifference =
+            b.recommendationScore -
+            a.recommendationScore;
+
+        if (scoreDifference !== 0) {
+            return scoreDifference;
+        }
+
+        return Math.random() - 0.5;
+
+    }
+)
         .slice(0, limit);
 
 }
