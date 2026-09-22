@@ -9796,8 +9796,6 @@ function renderRecommendedProduct() {
         recommendedRenderedIndex =
             recommendedIndex;
 
-        container.innerHTML = "";
-
         createRecommendedCards();
 
         return;
@@ -9818,8 +9816,6 @@ function renderRecommendedProduct() {
         return;
     }
 
-    recommendedAnimating = true;
-
     const oldIndex =
         recommendedRenderedIndex;
 
@@ -9834,14 +9830,14 @@ function renderRecommendedProduct() {
     if (cards.length !== 3) {
 
         recommendedRenderedIndex =
-            recommendedIndex;
+            newIndex;
 
         createRecommendedCards();
 
-        recommendedAnimating = false;
-
         return;
     }
+
+    recommendedAnimating = true;
 
     const leftCard =
         cards[0];
@@ -9853,7 +9849,7 @@ function renderRecommendedProduct() {
         cards[2];
 
     /* =========================================
-       KEYINGA — DUMALOQ AYLANISH
+       KEYINGA
     ========================================= */
 
     if (
@@ -9869,10 +9865,11 @@ function renderRecommendedProduct() {
 
         rightCard.className =
             "recommended-product-card is-active";
+
     }
 
     /* =========================================
-       OLDINGA — DUMALOQ AYLANISH
+       OLDINGA
     ========================================= */
 
     else {
@@ -9894,13 +9891,13 @@ function renderRecommendedProduct() {
     setTimeout(() => {
 
         recommendedRenderedIndex =
-            recommendedIndex;
+            newIndex;
 
         createRecommendedCards();
 
         recommendedAnimating = false;
 
-    }, 650);
+    }, 680);
 }
 
 /* =========================================================
