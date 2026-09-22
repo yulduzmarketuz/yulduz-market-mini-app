@@ -9788,7 +9788,7 @@ function renderRecommendedProduct() {
         recommendedProducts.length;
 
     /* =========================================
-       BIRINCHI RENDER
+       BIRINCHI YARATISH
     ========================================= */
 
     if (recommendedRenderedIndex === -1) {
@@ -9900,6 +9900,7 @@ function renderRecommendedProduct() {
     }, 680);
 }
 
+
 /* =========================================================
    CREATE RECOMMENDED CARDS
 ========================================================= */
@@ -9927,27 +9928,6 @@ function createRecommendedCards() {
     const nextIndex =
         (recommendedIndex + 1) % total;
 
-    const items = [
-        {
-            product:
-                recommendedProducts[prevIndex],
-            className:
-                "recommended-product-card is-side is-prev"
-        },
-        {
-            product:
-                recommendedProducts[recommendedIndex],
-            className:
-                "recommended-product-card is-active"
-        },
-        {
-            product:
-                recommendedProducts[nextIndex],
-            className:
-                "recommended-product-card is-side is-next"
-        }
-    ];
-
     const cards =
         Array.from(
             container.children
@@ -9961,56 +9941,73 @@ function createRecommendedCards() {
 
         container.innerHTML = "";
 
-        items.forEach(
-            ({ product, className }) => {
+        const leftCard =
+            document.createElement("div");
 
-                const card =
-                    document.createElement("div");
+        const centerCard =
+            document.createElement("div");
 
-                card.className =
-                    className;
+        const rightCard =
+            document.createElement("div");
 
-                updateRecommendedCard(
-                    card,
-                    product
-                );
+        leftCard.className =
+            "recommended-product-card is-side is-prev";
 
-                container.appendChild(
-                    card
-                );
-            }
+        centerCard.className =
+            "recommended-product-card is-active";
+
+        rightCard.className =
+            "recommended-product-card is-side is-next";
+
+        updateRecommendedCard(
+            leftCard,
+            recommendedProducts[prevIndex]
         );
+
+        updateRecommendedCard(
+            centerCard,
+            recommendedProducts[recommendedIndex]
+        );
+
+        updateRecommendedCard(
+            rightCard,
+            recommendedProducts[nextIndex]
+        );
+
+        container.appendChild(leftCard);
+        container.appendChild(centerCard);
+        container.appendChild(rightCard);
 
         return;
     }
 
     /* =========================================
-       ANIMATSIYADAN KEYIN YANGILASH
+       ANIMATSIYADAN KEYIN KONTENTNI YANGILASH
     ========================================= */
-
-    cards[0].className =
-        items[0].className;
-
-    cards[1].className =
-        items[1].className;
-
-    cards[2].className =
-        items[2].className;
 
     updateRecommendedCard(
         cards[0],
-        items[0].product
+        recommendedProducts[prevIndex]
     );
 
     updateRecommendedCard(
         cards[1],
-        items[1].product
+        recommendedProducts[recommendedIndex]
     );
 
     updateRecommendedCard(
         cards[2],
-        items[2].product
+        recommendedProducts[nextIndex]
     );
+
+    cards[0].className =
+        "recommended-product-card is-side is-prev";
+
+    cards[1].className =
+        "recommended-product-card is-active";
+
+    cards[2].className =
+        "recommended-product-card is-side is-next";
 }
 
 
