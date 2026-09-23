@@ -9589,6 +9589,165 @@ async function loadProductsFromAPI() {
     }
 }
    loadProductsFromAPI();
+
+   function editAdminProduct(productId) {
+
+    const product =
+        Object.values(products)
+            .flat()
+            .find(
+                item =>
+                    String(item.id) ===
+                    String(productId)
+            );
+
+    if (!product) {
+
+        alert(
+            "Mahsulot topilmadi."
+        );
+
+        return;
+    }
+
+
+    hideAll();
+
+
+    const form =
+        document.getElementById(
+            "adminProductForm"
+        );
+
+    if (!form) {
+        return;
+    }
+
+    form.classList.remove("hidden");
+
+
+    document.getElementById(
+        "adminProductFormTitle"
+    ).textContent =
+        "Mahsulotni tahrirlash";
+
+
+    document.getElementById(
+        "adminProductId"
+    ).value =
+        product.id;
+
+
+    document.getElementById(
+        "adminProductName"
+    ).value =
+        product.name || "";
+
+
+    document.getElementById(
+        "adminProductPrice"
+    ).value =
+        product.price || "";
+
+
+    document.getElementById(
+        "adminProductUnit"
+    ).value =
+        product.unit || "dona";
+
+
+    const category =
+        document.getElementById(
+            "adminProductCategory"
+        );
+
+    category.innerHTML = "";
+
+
+    Object.keys(products).forEach(
+        categoryName => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                categoryName;
+
+            option.textContent =
+                categoryName;
+
+            if (
+                categoryName ===
+                product.category
+            ) {
+                option.selected =
+                    true;
+            }
+
+            category.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    const imageInput =
+        document.getElementById(
+            "adminProductImageFile"
+        );
+
+    if (imageInput) {
+        imageInput.value = "";
+    }
+
+
+    const imageBox =
+        document.getElementById(
+            "adminProductImageBox"
+        );
+
+    const oldPreview =
+        document.getElementById(
+            "adminProductImagePreview"
+        );
+
+    if (oldPreview) {
+        oldPreview.remove();
+    }
+
+
+    if (
+        product.image &&
+        imageBox
+    ) {
+
+        const preview =
+            document.createElement(
+                "img"
+            );
+
+        preview.id =
+            "adminProductImagePreview";
+
+        preview.className =
+            "admin-product-image-preview";
+
+        preview.alt =
+            "Mahsulot rasmi";
+
+        preview.src =
+            product.image;
+
+        imageBox.appendChild(
+            preview
+        );
+
+    }
+
+}
    
    async function saveAdminProduct() {
 
@@ -9647,6 +9806,22 @@ async function loadProductsFromAPI() {
     // =================================================
 
     let image = "";
+
+if (id) {
+
+    const existingProduct =
+        Object.values(products)
+            .flat()
+            .find(
+                product =>
+                    String(product.id) ===
+                    String(id)
+            );
+
+    image =
+        existingProduct?.image || "";
+
+}
 
 
     if (imageFile) {
@@ -10018,29 +10193,38 @@ if (imagePreview) {
 
             card.innerHTML = `
 
-                <div class="product-image">
+    <div class="product-image">
 
-                    ${
-                        product.image
-                            ? `<img
-                                src="${product.image}"
-                                alt="${product.name}">`
-                            : `<span>
-                                ${product.icon || "📦"}
-                              </span>`
-                    }
+        ${
+            product.image
+                ? `<img
+                    src="${product.image}"
+                    alt="${product.name}">`
+                : `<span>
+                    ${product.icon || "📦"}
+                  </span>`
+        }
 
-                </div>
+    </div>
 
-                <strong>
-                    ${product.name}
-                </strong>
+    <strong>
+        ${product.name}
+    </strong>
 
-                <div>
-                    ${Number(product.price).toLocaleString("uz-UZ")} so‘m
-                </div>
+    <div>
+        ${Number(product.price).toLocaleString("uz-UZ")} so‘m
+    </div>
 
-            `;
+    <button
+        type="button"
+        class="order-button"
+        onclick="editAdminProduct(${product.id})">
+
+        ✏️ Tahrirlash
+
+    </button>
+
+`;
 
             container.appendChild(card);
 
