@@ -9593,77 +9593,184 @@ async function loadProductsFromAPI() {
         document.getElementById("adminProductId").value;
 
     const name =
-        document.getElementById("adminProductName").value.trim();
+        document
+            .getElementById("adminProductName")
+            .value
+            .trim();
 
     const category =
-        document.getElementById("adminProductCategory").value;
+        document
+            .getElementById("adminProductCategory")
+            .value;
 
     const price =
         Number(
-            document.getElementById("adminProductPrice").value
+            document
+                .getElementById("adminProductPrice")
+                .value
         );
 
     const unit =
-        document.getElementById("adminProductUnit").value;
+        document
+            .getElementById("adminProductUnit")
+            .value;
 
-    const icon =
-        document.getElementById("adminProductIcon").value.trim();
+    const imageFile =
+        document
+            .getElementById("adminProductImageFile")
+            .files[0];
 
-    const image =
-        document.getElementById("adminProductImage").value.trim();
 
-    const relatedText =
-        document.getElementById("adminProductRelated").value.trim();
+    // =================================================
+    // MA'LUMOTLARNI TEKSHIRISH
+    // =================================================
 
-    const related =
-        relatedText
-            ? relatedText
-                .split(",")
-                .map(id => Number(id.trim()))
-                .filter(id => !isNaN(id))
-            : [];
+    if (
+        !name ||
+        !category ||
+        !price
+    ) {
 
-    if (!name || !category || !price) {
-        alert("Mahsulot nomi, kategoriya va narxni kiriting.");
+        alert(
+            "Mahsulot nomi, kategoriya va narxni kiriting."
+        );
+
         return;
     }
 
-    const method = id ? "PUT" : "POST";
+
+    // =================================================
+    // RASMNI TELEGRAMGA YUKLASH
+    // =================================================
+
+    let image = "";
+
+
+    if (imageFile) {
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "file",
+            imageFile
+        );
+
+
+        const uploadResponse =
+            await fetch(
+                "https://yulduz-market-mini-app.pardayevx055.workers.dev/upload-product-image",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "X-Telegram-Init-Data":
+                            getTelegramInitData()
+                    },
+
+                    body: formData
+                }
+            );
+
+
+        const uploadData =
+            await uploadResponse.json();
+
+
+        if (
+            !uploadResponse.ok ||
+            !uploadData.success
+        ) {
+
+            alert(
+                uploadData.error ||
+                "Rasmni yuklashda xatolik."
+            );
+
+            return;
+        }
+
+
+        image =
+            uploadData.image;
+    }
+
+
+    // =================================================
+    // MAHSULOTNI SAQLASH
+    // =================================================
+
+    const method =
+        id
+            ? "PUT"
+            : "POST";
+
 
     const url =
         id
             ? `https://yulduz-market-mini-app.pardayevx055.workers.dev/products/${id}`
             : "https://yulduz-market-mini-app.pardayevx055.workers.dev/products";
 
+
     const response =
-        await fetch(url, {
-            method,
-            headers: {
-                "Content-Type": "application/json",
-                "X-Telegram-Init-Data":
-                    getTelegramInitData()
-            },
-            body: JSON.stringify({
-                name,
-                category,
-                price,
-                unit,
-                icon,
-                image,
-                related
-            })
-        });
+        await fetch(
+            url,
+            {
+                method,
+
+                headers: {
+                    "Content-Type":
+                        "application/json",
+
+                    "X-Telegram-Init-Data":
+                        getTelegramInitData()
+                },
+
+                body:
+                    JSON.stringify({
+
+                        name,
+
+                        category,
+
+                        price,
+
+                        unit,
+
+                        image,
+
+                        icon:
+                            "📦",
+
+                        related:
+                            []
+
+                    })
+            }
+        );
+
 
     const data =
         await response.json();
 
-    if (!response.ok || !data.success) {
+
+    if (
+        !response.ok ||
+        !data.success
+    ) {
+
         alert(
             data.error ||
             "Mahsulotni saqlashda xatolik."
         );
+
         return;
     }
+
+
+    // =================================================
+    // YAKUN
+    // =================================================
 
     alert(
         id
@@ -9671,9 +9778,12 @@ async function loadProductsFromAPI() {
             : "Mahsulot qo‘shildi."
     );
 
+
     closeAdminProductForm();
 
+
     await loadProductsFromAPI();
+
 }
    function openAdminProductForm() {
 
