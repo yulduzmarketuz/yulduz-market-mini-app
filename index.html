@@ -480,6 +480,33 @@ button {
     position: relative;
 }
 
+   .admin-product-edit-button {
+    position: absolute;
+
+    top: 8px;
+    right: 8px;
+
+    width: 34px;
+    height: 34px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--green);
+
+    color: white;
+
+    font-size: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    z-index: 5;
+}
+
 .product-image {
     height: 110px;
     background: var(--bg);
@@ -10193,6 +10220,16 @@ if (imagePreview) {
 
             card.innerHTML = `
 
+    <button
+        type="button"
+        class="admin-product-edit-button"
+        onclick="editAdminProduct(${product.id})">
+
+        ✏️
+
+    </button>
+
+
     <div class="product-image">
 
         ${
@@ -10207,22 +10244,15 @@ if (imagePreview) {
 
     </div>
 
+
     <strong>
         ${product.name}
     </strong>
 
+
     <div>
         ${Number(product.price).toLocaleString("uz-UZ")} so‘m
     </div>
-
-    <button
-        type="button"
-        class="order-button"
-        onclick="editAdminProduct(${product.id})">
-
-        ✏️ Tahrirlash
-
-    </button>
 
 `;
 
