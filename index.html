@@ -5886,6 +5886,124 @@ body.dark .premium-category-arrow {
     border-color: #16A34A;
     color: #ffffff;
 }
+   /* =========================================================
+   ADMIN PRODUCT IMAGE
+========================================================= */
+
+.admin-product-image-box {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   UPLOAD BUTTON
+========================================================= */
+
+.admin-product-image-button {
+    width: 100%;
+    min-height: 180px;
+
+    border: 2px dashed #16A34A;
+    border-radius: 22px;
+
+    background: rgba(22, 163, 74, 0.04);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    color: #16A34A;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.admin-product-image-button:active {
+    transform: scale(0.98);
+}
+
+
+.admin-product-image-plus {
+    font-size: 42px;
+    line-height: 1;
+    font-weight: 300;
+}
+
+
+.admin-product-image-button small {
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+
+/* =========================================================
+   IMAGE PREVIEW
+========================================================= */
+
+.admin-product-image-preview {
+    width: 100%;
+    height: 220px;
+
+    object-fit: contain;
+
+    display: block;
+
+    border-radius: 22px;
+
+    background: #f5f5f5;
+}
+
+
+/* =========================================================
+   IMAGE ACTIONS
+========================================================= */
+
+.admin-product-image-actions {
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 10px;
+}
+
+
+.admin-product-image-actions button {
+    flex: 1;
+
+    min-height: 44px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #f3f4f6;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+
+.admin-product-image-actions button:last-child {
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   HIDDEN
+========================================================= */
+
+.hidden {
+    display: none !important;
+}
    
 </style>
 </head>
@@ -8821,117 +8939,188 @@ body.dark .premium-category-arrow {
     id="adminProductForm"
     class="container hidden">
 
-    <div class="search-page-header">
-
-        <button
-            class="search-back-button"
-            type="button"
-            onclick="closeAdminProductForm()">
-
-            ←
-        </button>
-
-        <h2 id="adminProductFormTitle">
-            Mahsulot qo‘shish
-        </h2>
-
-    </div>
-
-
-    <input
-        id="adminProductId"
-        type="hidden">
-
-
-    <label>
-        Mahsulot nomi
-    </label>
-
-    <input
-        id="adminProductName"
-        type="text"
-        placeholder="Masalan: Pepsi 1L">
-
-
-    <label>
-        Kategoriya
-    </label>
-
-    <select
-        id="adminProductCategory">
-    </select>
-
-
-    <label>
-        Narx
-    </label>
-
-    <input
-        id="adminProductPrice"
-        type="number"
-        min="0"
-        placeholder="12000">
-
-
-    <label>
-        Birlik
-    </label>
-
-    <select
-        id="adminProductUnit">
-
-        <option value="dona">
-            Dona
-        </option>
-
-        <option value="kg">
-            Kg
-        </option>
-
-    </select>
-
-
-    <label>
-        Icon
-    </label>
-
-    <input
-        id="adminProductIcon"
-        type="text"
-        placeholder="🥤">
-
-
-    <label>
-        Rasm URL
-    </label>
-
-    <input
-        id="adminProductImage"
-        type="text"
-        placeholder="https://...">
-
-
-    <label>
-        Related mahsulot IDlari
-    </label>
-
-    <input
-        id="adminProductRelated"
-        type="text"
-        placeholder="549,550">
-
+```
+<div class="search-page-header">
 
     <button
-        id="adminProductSaveButton"
-        class="order-button"
+        class="search-back-button"
         type="button"
-        onclick="saveAdminProduct()">
+        onclick="closeAdminProductForm()">
 
-        Saqlash
+        ←
 
     </button>
 
+    <h2 id="adminProductFormTitle">
+        Mahsulot qo‘shish
+    </h2>
+
 </div>
+
+
+<input
+    id="adminProductId"
+    type="hidden">
+
+
+<!-- =================================================
+     PRODUCT IMAGE
+================================================== -->
+
+<label>
+    Mahsulot rasmi
+</label>
+
+<div
+    id="adminProductImageBox"
+    class="admin-product-image-box">
+
+    <input
+        id="adminProductImageFile"
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+        hidden
+        onchange="previewAdminProductImage(event)">
+
+    <button
+        id="adminProductImageButton"
+        type="button"
+        class="admin-product-image-button"
+        onclick="document.getElementById('adminProductImageFile').click()">
+
+        <span class="admin-product-image-plus">
+            ＋
+        </span>
+
+        <span>
+            Rasm qo‘shish
+        </span>
+
+        <small>
+            JPG · PNG · WEBP
+        </small>
+
+    </button>
+
+
+    <img
+        id="adminProductImagePreview"
+        class="admin-product-image-preview hidden"
+        alt="Mahsulot rasmi">
+
+
+    <div
+        id="adminProductImageActions"
+        class="admin-product-image-actions hidden">
+
+        <button
+            type="button"
+            onclick="document.getElementById('adminProductImageFile').click()">
+
+            Rasmni almashtirish
+
+        </button>
+
+        <button
+            type="button"
+            onclick="removeAdminProductImage()">
+
+            Rasmni o‘chirish
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =================================================
+     PRODUCT NAME
+================================================== -->
+
+<label>
+    Mahsulot nomi
+</label>
+
+<input
+    id="adminProductName"
+    type="text"
+    placeholder="Masalan: Coca-Cola 1L"
+    autocomplete="off">
+
+
+<!-- =================================================
+     CATEGORY
+================================================== -->
+
+<label>
+    Kategoriya
+</label>
+
+<select
+    id="adminProductCategory">
+</select>
+
+
+<!-- =================================================
+     PRICE
+================================================== -->
+
+<label>
+    Narx
+</label>
+
+<input
+    id="adminProductPrice"
+    type="number"
+    min="0"
+    inputmode="numeric"
+    placeholder="12000">
+
+
+<!-- =================================================
+     UNIT
+================================================== -->
+
+<label>
+    Birlik
+</label>
+
+<select
+    id="adminProductUnit">
+
+    <option value="dona">
+        Dona
+    </option>
+
+    <option value="kg">
+        Kg
+    </option>
+
+    <option value="litr">
+        Litr
+    </option>
+
+</select>
+
+
+<!-- =================================================
+     SAVE
+================================================== -->
+
+<button
+    id="adminProductSaveButton"
+    class="order-button"
+    type="button"
+    onclick="saveAdminProduct()">
+
+    Mahsulotni qo‘shish
+
+</button>
+```
+
+</div>
+
    
 
 <script>
@@ -9571,136 +9760,495 @@ async function loadProductsFromAPI() {
    loadProductsFromAPI();
    async function saveAdminProduct() {
 
-    const id =
-        document.getElementById("adminProductId").value;
+```
+const id =
+    document.getElementById("adminProductId").value;
 
-    const name =
-        document.getElementById("adminProductName").value.trim();
+const name =
+    document.getElementById("adminProductName").value.trim();
 
-    const category =
-        document.getElementById("adminProductCategory").value;
+const category =
+    document.getElementById("adminProductCategory").value;
 
-    const price =
-        Number(
-            document.getElementById("adminProductPrice").value
-        );
+const price =
+    Number(
+        document.getElementById("adminProductPrice").value
+    );
 
-    const unit =
-        document.getElementById("adminProductUnit").value;
+const unit =
+    document.getElementById("adminProductUnit").value;
 
-    const icon =
-        document.getElementById("adminProductIcon").value.trim();
 
-    const image =
-        document.getElementById("adminProductImage").value.trim();
+if (!name) {
 
-    const relatedText =
-        document.getElementById("adminProductRelated").value.trim();
+    alert("Mahsulot nomini kiriting.");
 
-    const related =
-        relatedText
-            ? relatedText
-                .split(",")
-                .map(id => Number(id.trim()))
-                .filter(id => !isNaN(id))
-            : [];
+    return;
 
-    if (!name || !category || !price) {
-        alert("Mahsulot nomi, kategoriya va narxni kiriting.");
-        return;
-    }
+}
 
-    const method = id ? "PUT" : "POST";
 
-    const url =
-        id
-            ? `https://yulduz-market-mini-app.pardayevx055.workers.dev/products/${id}`
-            : "https://yulduz-market-mini-app.pardayevx055.workers.dev/products";
+if (!category) {
 
-    const response =
-        await fetch(url, {
+    alert("Kategoriyani tanlang.");
+
+    return;
+
+}
+
+
+if (!price || price <= 0) {
+
+    alert("Mahsulot narxini kiriting.");
+
+    return;
+
+}
+
+
+const method =
+    id ? "PUT" : "POST";
+
+
+const url =
+    id
+        ? `https://yulduz-market-mini-app.pardayevx055.workers.dev/products/${id}`
+        : "https://yulduz-market-mini-app.pardayevx055.workers.dev/products";
+
+
+const response =
+    await fetch(
+        url,
+        {
             method,
+
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type":
+                    "application/json",
+
                 "X-Telegram-Init-Data":
                     getTelegramInitData()
             },
-            body: JSON.stringify({
-                name,
-                category,
-                price,
-                unit,
-                icon,
-                image,
-                related
-            })
-        });
 
-    const data =
-        await response.json();
+            body:
+                JSON.stringify({
 
-    if (!response.ok || !data.success) {
-        alert(
-            data.error ||
-            "Mahsulotni saqlashda xatolik."
-        );
-        return;
-    }
+                    name,
 
-    alert(
-        id
-            ? "Mahsulot yangilandi."
-            : "Mahsulot qo‘shildi."
+                    category,
+
+                    price,
+
+                    unit,
+
+                    icon: "",
+
+                    image: "",
+
+                    related: []
+
+                })
+        }
     );
 
-    closeAdminProductForm();
 
-    await loadProductsFromAPI();
+const data =
+    await response.json();
+
+
+if (
+    !response.ok ||
+    !data.success
+) {
+
+    alert(
+        data.error ||
+        "Mahsulotni saqlashda xatolik."
+    );
+
+    return;
+
 }
+
+
+alert(
+    id
+        ? "Mahsulot yangilandi."
+        : "Mahsulot qo‘shildi."
+);
+
+
+closeAdminProductForm();
+
+
+await loadProductsFromAPI();
+```
+
+}
+
    function openAdminProductForm() {
 
     hideAll();
 
+
     const form =
-        document.getElementById("adminProductForm");
+        document.getElementById(
+            "adminProductForm"
+        );
 
-    if (!form) return;
 
-    form.classList.remove("hidden");
+    if (!form) {
+        return;
+    }
 
-    document.getElementById("adminProductFormTitle").textContent =
+
+    form.classList.remove(
+        "hidden"
+    );
+
+
+    document.getElementById(
+        "adminProductFormTitle"
+    ).textContent =
         "Mahsulot qo‘shish";
 
-    document.getElementById("adminProductId").value = "";
 
-    document.getElementById("adminProductName").value = "";
+    document.getElementById(
+        "adminProductId"
+    ).value = "";
 
-    document.getElementById("adminProductPrice").value = "";
 
-    document.getElementById("adminProductUnit").value = "dona";
+    document.getElementById(
+        "adminProductName"
+    ).value = "";
 
-    document.getElementById("adminProductIcon").value = "";
 
-    document.getElementById("adminProductImage").value = "";
+    document.getElementById(
+        "adminProductPrice"
+    ).value = "";
 
-    document.getElementById("adminProductRelated").value = "";
+
+    document.getElementById(
+        "adminProductUnit"
+    ).value =
+        "dona";
+
+
+    /* =====================================================
+       RESET IMAGE
+    ===================================================== */
+
+    const imageFile =
+        document.getElementById(
+            "adminProductImageFile"
+        );
+
+
+    const imagePreview =
+        document.getElementById(
+            "adminProductImagePreview"
+        );
+
+
+    const imageButton =
+        document.getElementById(
+            "adminProductImageButton"
+        );
+
+
+    const imageActions =
+        document.getElementById(
+            "adminProductImageActions"
+        );
+
+
+    if (imageFile) {
+
+        imageFile.value = "";
+
+    }
+
+
+    if (imagePreview) {
+
+        imagePreview.src = "";
+
+        imagePreview.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    if (imageButton) {
+
+        imageButton.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    if (imageActions) {
+
+        imageActions.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    /* =====================================================
+       LOAD CATEGORIES
+    ===================================================== */
 
     const category =
-        document.getElementById("adminProductCategory");
+        document.getElementById(
+            "adminProductCategory"
+        );
+
+
+    if (!category) {
+        return;
+    }
+
 
     category.innerHTML = "";
 
-    Object.keys(products).forEach(categoryName => {
 
-        const option =
-            document.createElement("option");
+    Object.keys(products).forEach(
+        categoryName => {
 
-        option.value = categoryName;
-        option.textContent = categoryName;
+            const option =
+                document.createElement(
+                    "option"
+                );
 
-        category.appendChild(option);
 
-    });
+            option.value =
+                categoryName;
+
+
+            option.textContent =
+                categoryName;
+
+
+            category.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+/* =========================================================
+   ADMIN PRODUCT IMAGE PREVIEW
+========================================================= */
+
+function previewAdminProductImage(event) {
+
+    const file =
+        event.target.files &&
+        event.target.files[0];
+
+
+    if (!file) {
+        return;
+    }
+
+
+    /* =====================================================
+       FILE TYPE CHECK
+    ===================================================== */
+
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
+
+
+    if (!allowedTypes.includes(file.type)) {
+
+        alert(
+            "Faqat JPG, PNG yoki WEBP formatdagi rasmni tanlang."
+        );
+
+        event.target.value = "";
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       FILE SIZE CHECK
+    ===================================================== */
+
+    if (file.size > 5 * 1024 * 1024) {
+
+        alert(
+            "Rasm hajmi 5 MB dan oshmasligi kerak."
+        );
+
+        event.target.value = "";
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const preview =
+        document.getElementById(
+            "adminProductImagePreview"
+        );
+
+
+    const button =
+        document.getElementById(
+            "adminProductImageButton"
+        );
+
+
+    const actions =
+        document.getElementById(
+            "adminProductImageActions"
+        );
+
+
+    if (!preview) {
+        return;
+    }
+
+
+    /* =====================================================
+       SHOW PREVIEW
+    ===================================================== */
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function () {
+
+            preview.src =
+                reader.result;
+
+            preview.classList.remove(
+                "hidden"
+            );
+
+
+            if (button) {
+
+                button.classList.add(
+                    "hidden"
+                );
+
+            }
+
+
+            if (actions) {
+
+                actions.classList.remove(
+                    "hidden"
+                );
+
+            }
+
+        };
+
+
+    reader.readAsDataURL(file);
+
+}
+
+
+/* =========================================================
+   REMOVE ADMIN PRODUCT IMAGE
+========================================================= */
+
+function removeAdminProductImage() {
+
+    const fileInput =
+        document.getElementById(
+            "adminProductImageFile"
+        );
+
+
+    const preview =
+        document.getElementById(
+            "adminProductImagePreview"
+        );
+
+
+    const button =
+        document.getElementById(
+            "adminProductImageButton"
+        );
+
+
+    const actions =
+        document.getElementById(
+            "adminProductImageActions"
+        );
+
+
+    /* =====================================================
+       CLEAR FILE
+    ===================================================== */
+
+    if (fileInput) {
+
+        fileInput.value = "";
+
+    }
+
+
+    /* =====================================================
+       CLEAR PREVIEW
+    ===================================================== */
+
+    if (preview) {
+
+        preview.src = "";
+
+        preview.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    /* =====================================================
+       SHOW UPLOAD BUTTON
+    ===================================================== */
+
+    if (button) {
+
+        button.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    /* =====================================================
+       HIDE ACTIONS
+    ===================================================== */
+
+    if (actions) {
+
+        actions.classList.add(
+            "hidden"
+        );
+
+    }
 
 }
    function closeAdminProductForm() {
