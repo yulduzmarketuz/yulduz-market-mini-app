@@ -9807,6 +9807,24 @@ async function loadProductsFromAPI() {
 
     document.getElementById("adminProductUnit").value = "dona";
 
+      const imageInput =
+    document.getElementById(
+        "adminProductImageFile"
+    );
+
+if (imageInput) {
+    imageInput.value = "";
+}
+
+const imagePreview =
+    document.getElementById(
+        "adminProductImagePreview"
+    );
+
+if (imagePreview) {
+    imagePreview.remove();
+}
+
     const category =
         document.getElementById("adminProductCategory");
 
@@ -9970,6 +9988,62 @@ async function loadProductsFromAPI() {
 
 }
    checkAdminAccess();
+   loadAdminProducts();
+
+   async function loadAdminProducts() {
+
+    const container =
+        document.getElementById(
+            "adminProductsList"
+        );
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = "";
+
+    Object.values(products)
+        .flat()
+        .forEach(product => {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "product";
+
+            card.innerHTML = `
+
+                <div class="product-image">
+
+                    ${
+                        product.image
+                            ? `<img
+                                src="${product.image}"
+                                alt="${product.name}">`
+                            : `<span>
+                                ${product.icon || "📦"}
+                              </span>`
+                    }
+
+                </div>
+
+                <strong>
+                    ${product.name}
+                </strong>
+
+                <div>
+                    ${Number(product.price).toLocaleString("uz-UZ")} so‘m
+                </div>
+
+            `;
+
+            container.appendChild(card);
+
+        });
+
+}
 
 /* =========================================================
    CART
