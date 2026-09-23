@@ -8891,24 +8891,42 @@ body.dark .premium-category-arrow {
     </select>
 
 
-    <label>
-        Icon
+        <label>
+        Mahsulot rasmi
     </label>
 
-    <input
-        id="adminProductIcon"
-        type="text"
-        placeholder="🥤">
+    <div
+        id="adminProductImageBox"
+        class="admin-product-image-box">
 
+        <input
+    id="adminProductImageFile"
+    type="file"
+    accept="image/png,image/jpeg,image/webp"
+    hidden
+    onchange="previewAdminProductImage(event)">
 
-    <label>
-        Rasm URL
-    </label>
+        <button
+            id="adminProductImageButton"
+            type="button"
+            class="admin-product-image-button"
+            onclick="document.getElementById('adminProductImageFile').click()">
 
-    <input
-        id="adminProductImage"
-        type="text"
-        placeholder="https://...">
+            <span class="admin-product-image-plus">
+                ＋
+            </span>
+
+            <span>
+                Rasm qo‘shish
+            </span>
+
+            <small>
+                JPG · PNG · WEBP
+            </small>
+
+        </button>
+
+    </div>
 
 
     <label>
@@ -9679,12 +9697,6 @@ async function loadProductsFromAPI() {
 
     document.getElementById("adminProductUnit").value = "dona";
 
-    document.getElementById("adminProductIcon").value = "";
-
-    document.getElementById("adminProductImage").value = "";
-
-    document.getElementById("adminProductRelated").value = "";
-
     const category =
         document.getElementById("adminProductCategory");
 
@@ -9703,6 +9715,92 @@ async function loadProductsFromAPI() {
     });
 
 }
+   function previewAdminProductImage(event) {
+
+    const file =
+        event.target.files &&
+        event.target.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+
+        alert(
+            "Faqat JPG, PNG yoki WEBP formatdagi rasmni tanlang."
+        );
+
+        event.target.value = "";
+
+        return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+
+        alert(
+            "Rasm hajmi 5 MB dan oshmasligi kerak."
+        );
+
+        event.target.value = "";
+
+        return;
+    }
+
+    const box =
+        document.getElementById(
+            "adminProductImageBox"
+        );
+
+    if (!box) {
+        return;
+    }
+
+    const oldPreview =
+        document.getElementById(
+            "adminProductImagePreview"
+        );
+
+    if (oldPreview) {
+        oldPreview.remove();
+    }
+
+    const preview =
+        document.createElement("img");
+
+    preview.id =
+        "adminProductImagePreview";
+
+    preview.className =
+        "admin-product-image-preview";
+
+    preview.alt =
+        "Mahsulot rasmi";
+
+    const reader =
+        new FileReader();
+
+    reader.onload =
+        function () {
+
+            preview.src =
+                reader.result;
+
+            box.appendChild(preview);
+
+        };
+
+    reader.readAsDataURL(file);
+
+}
+
+   
    function closeAdminProductForm() {
 
     const form =
