@@ -9575,6 +9575,8 @@ async function loadProductsFromAPI() {
             "✅ Mahsulotlar D1 dan yuklandi:",
             data.products
         );
+       
+       loadAdminProducts();
 
 
     } catch (error) {
@@ -9587,6 +9589,7 @@ async function loadProductsFromAPI() {
     }
 }
    loadProductsFromAPI();
+   
    async function saveAdminProduct() {
 
     const id =
@@ -9988,7 +9991,7 @@ if (imagePreview) {
 
 }
    checkAdminAccess();
-   loadAdminProducts();
+   
 
    async function loadAdminProducts() {
 
