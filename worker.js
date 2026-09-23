@@ -1565,6 +1565,195 @@ if (
   });
 
 }
+    // =====================================================
+// PRODUCT IMAGE UPLOAD
+// =====================================================
+
+if (
+  url.pathname === "/upload-product-image" &&
+  request.method === "POST"
+) {
+
+  try {
+
+    const isAdmin =
+      await verifyTelegramAdmin(
+        request,
+        env
+      );
+
+    if (!isAdmin) {
+      return json(
+        {
+          error: "Ruxsat yo‘q"
+        },
+        403
+      );
+    }
+
+    const formData =
+      await request.formData();
+
+    const file =
+      formData.get("file");
+
+    if (!file) {
+      return json(
+        {
+          error: "Rasm topilmadi"
+        },
+        400
+      );
+    }
+
+    if (!(file instanceof File)) {
+      return json(
+        {
+          error: "Noto‘g‘ri fayl"
+        },
+        400
+      );
+    }
+
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      return json(
+        {
+          error:
+            "Faqat JPG, PNG yoki WEBP rasm yuklash mumkin."
+        },
+        400
+      );
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      return json(
+        {
+          error:
+            "Rasm hajmi 5 MB dan oshmasligi kerak."
+        },
+        400
+      );
+    }
+
+
+    // =================================================
+    // TELEGRAMGA RASM YUBORISH
+    // =================================================
+
+    const telegramForm =
+      new FormData();
+
+    telegramForm.append(
+      "chat_id",
+      String(env.ADMIN_CHAT_ID)
+    );
+
+    telegramForm.append(
+      "document",
+      file,
+      file.name || "product-image"
+    );
+
+
+    const telegramResponse =
+      await fetch(
+        `https://api.telegram.org/bot${env.BOT_TOKEN}/sendDocument`,
+        {
+          method: "POST",
+          body: telegramForm
+        }
+      );
+
+
+    const telegramData =
+      await telegramResponse.json();
+
+
+    if (
+      !telegramResponse.ok ||
+      !telegramData.ok
+    ) {
+
+      console.error(
+        "❌ TELEGRAM RASM XATOSI:",
+        telegramData
+      );
+
+      return json(
+        {
+          error:
+            "Rasmni Telegramga saqlashda xatolik."
+        },
+        500
+      );
+    }
+
+
+    const document =
+      telegramData.result?.document;
+
+
+    const fileId =
+      document?.file_id;
+
+
+    if (!fileId) {
+
+      console.error(
+        "❌ TELEGRAM FILE_ID TOPILMADI"
+      );
+
+      return json(
+        {
+          error:
+            "Telegram file_id qaytarmadi."
+        },
+        500
+      );
+    }
+
+
+    console.log(
+      "✅ MAHSULOT RASMI TELEGRAMGA SAQLANDI:",
+      fileId
+    );
+
+
+    return json({
+      success: true,
+
+      file_id:
+        fileId,
+
+      image:
+        `/product-images/${encodeURIComponent(fileId)}`
+    });
+
+
+  } catch (error) {
+
+    console.error(
+      "❌ PRODUCT IMAGE UPLOAD ERROR:",
+      error
+    );
+
+    return json(
+      {
+        error:
+          "Rasm yuklashda xatolik.",
+        message:
+          error.message
+      },
+      500
+    );
+  }
+}
         // =====================================================
     // PRODUCTS GET
     // =====================================================
@@ -1957,6 +2146,136 @@ if (
           error.message
       },
       500
+    );
+  }
+}
+    // =====================================================
+// PRODUCT IMAGE GET
+// =====================================================
+
+if (
+  url.pathname.startsWith("/product-images/") &&
+  request.method === "GET"
+) {
+
+  try {
+
+    const fileId =
+      decodeURIComponent(
+        url.pathname.replace(
+          "/product-images/",
+          ""
+        )
+      );
+
+    if (!fileId) {
+      return new Response(
+        "Rasm topilmadi",
+        {
+          status: 404
+        }
+      );
+    }
+
+
+    // =================================================
+    // TELEGRAM FILE PATH OLISH
+    // =================================================
+
+    const fileResponse =
+      await fetch(
+        `https://api.telegram.org/bot${env.BOT_TOKEN}/getFile?file_id=${encodeURIComponent(fileId)}`
+      );
+
+    const fileData =
+      await fileResponse.json();
+
+
+    if (
+      !fileResponse.ok ||
+      !fileData.ok ||
+      !fileData.result?.file_path
+    ) {
+
+      console.error(
+        "❌ TELEGRAM FILE PATH XATOSI:",
+        fileData
+      );
+
+      return new Response(
+        "Rasm topilmadi",
+        {
+          status: 404
+        }
+      );
+    }
+
+
+    const filePath =
+      fileData.result.file_path;
+
+
+    // =================================================
+    // TELEGRAMDAN RASMNI OLISH
+    // =================================================
+
+    const imageResponse =
+      await fetch(
+        `https://api.telegram.org/file/bot${env.BOT_TOKEN}/${filePath}`
+      );
+
+
+    if (!imageResponse.ok) {
+
+      console.error(
+        "❌ TELEGRAM RASMNI OLISHDA XATO:",
+        imageResponse.status
+      );
+
+      return new Response(
+        "Rasmni olishda xatolik",
+        {
+          status: 500
+        }
+      );
+    }
+
+
+    // =================================================
+    // RASMNI MINI APP'GA QAYTARISH
+    // =================================================
+
+    return new Response(
+      imageResponse.body,
+      {
+        status: 200,
+
+        headers: {
+          "Content-Type":
+            imageResponse.headers.get(
+              "Content-Type"
+            ) ||
+            "application/octet-stream",
+
+          "Cache-Control":
+            "public, max-age=31536000"
+        }
+      }
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "❌ PRODUCT IMAGE GET ERROR:",
+      error
+    );
+
+    return new Response(
+      "Rasmni yuklashda xatolik",
+      {
+        status: 500
+      }
     );
   }
 }
