@@ -12986,8 +12986,10 @@ function renderCategories() {
         ru: "Торты и выпечка"
     },
     "Ichimliklar": {
-        uz: "Ichimliklar",
-        ru: "Напитки"
+    uz: "Ichimliklar",
+    ru: "Напитки",
+    descriptionUz: "Kayfiyat uchun",
+    descriptionRu: "Для хорошего настроения"
     },
     "Choy, kofe va kakao": {
         uz: "Choy, kofe va kakao",
@@ -13127,8 +13129,18 @@ const categoryDisplayName =
 </div>
 
                 <div class="premium-category-description">
-                    ${data.description}
-                </div>
+    ${
+        currentLanguage === "ru"
+            ? (
+                categoryTranslations[category]?.descriptionRu
+                || data.description
+            )
+            : (
+                categoryTranslations[category]?.descriptionUz
+                || data.description
+            )
+    }
+</div>
 
             </div>
 
