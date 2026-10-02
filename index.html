@@ -11565,22 +11565,22 @@ function applyTranslations() {
         });
 
 
-    document
-        .getElementById("uzLanguage")
-        .classList
-        .toggle(
-            "active",
-            currentLanguage === "uz"
-        );
+    const uzLanguage = document.getElementById("uzLanguage");
+const ruLanguage = document.getElementById("ruLanguage");
 
+if (uzLanguage) {
+    uzLanguage.classList.toggle(
+        "active",
+        currentLanguage === "uz"
+    );
+}
 
-    document
-        .getElementById("ruLanguage")
-        .classList
-        .toggle(
-            "active",
-            currentLanguage === "ru"
-        );
+if (ruLanguage) {
+    ruLanguage.classList.toggle(
+        "active",
+        currentLanguage === "ru"
+    );
+}
 
 }
 
