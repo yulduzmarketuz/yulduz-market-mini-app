@@ -12967,7 +12967,12 @@ function renderFavorites() {
 
             <button
     class="favorite-empty-button"
-    onclick="hideAll(); document.getElementById('categoriesPage').classList.remove('hidden'); setActiveNav(1)"
+    onclick="
+        hideAll();
+        renderCategories();
+        document.getElementById('categoriesPage').classList.remove('hidden');
+        setActiveNav(1);
+    "
 >
     Mahsulotlarni ko‘rish
 </button>
