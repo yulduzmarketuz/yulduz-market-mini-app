@@ -12465,7 +12465,7 @@ function createProductCard(product) {
 
             ${formatPrice(product.price)}
             /
-            ${product.unit === "kg" ? "kg" : "dona"}
+            ${product.unit === "kg" ? "kg" : translations[currentLanguage].piece}
 
         </div>
 
@@ -12508,7 +12508,7 @@ function createProductCard(product) {
                 class="add-button"
                 onclick="addWeightProduct(${product.id})">
 
-                🛒 Savatga qo‘shish
+                🛒 ${translations[currentLanguage].addToCart}
 
             </button>
 
@@ -12524,7 +12524,7 @@ function createProductCard(product) {
                 class="add-button"
                 onclick="addToCart(${product.id})">
 
-                🛒 Savatga qo‘shish
+                🛒 ${translations[currentLanguage].addToCart}
 
             </button>
 
