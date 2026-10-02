@@ -9026,6 +9026,20 @@ body.dark .premium-category-arrow {
    
 
 <script>
+
+   function openCategoriesPage() {
+
+    document.querySelectorAll(".container").forEach(page => {
+        page.classList.add("hidden");
+    });
+
+    document
+        .getElementById("categoriesPage")
+        .classList.remove("hidden");
+
+    renderCategories();
+}
+   
    /* =========================================================
    OPEN SEARCH PAGE
 ========================================================= */
