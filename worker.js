@@ -502,6 +502,15 @@ if (update.callback_query) {
       result.meta?.changes
     );
 
+    if ((result.meta?.changes || 0) === 0) {
+  console.error(
+    "❌ BUYURTMA TOPILMADI YOKI STATUS O'ZGARMADI:",
+    orderNumber
+  );
+
+  return new Response("OK");
+}
+
 
     // =================================================
     // TELEGRAM CALLBACK JAVOBI
@@ -564,10 +573,10 @@ if (update.callback_query) {
 
 
     const updatedText =
-      oldText.replace(
-        /🟡 Holat:.*$/s,
-        `${statusText}`
-      );
+  oldText.replace(
+    /🟡 Holat:.*$/s,
+    `Holat: ${statusText}`
+  );
 
 
     await fetch(
