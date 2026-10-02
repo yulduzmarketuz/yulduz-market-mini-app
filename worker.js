@@ -236,7 +236,75 @@ async function sendAdminTelegram(env, text, orderNumber) {
     return false;
   }
 }
+// =====================================================
+// TELEGRAM CUSTOMER NOTIFICATION
+// =====================================================
 
+async function sendCustomerTelegram(env, telegramId, text) {
+
+  console.log(
+    "🚀 MIJOZ TELEGRAM XABARI YUBORISH:",
+    telegramId
+  );
+
+  if (!env.BOT_TOKEN) {
+    console.error("❌ BOT_TOKEN YO'Q");
+    return false;
+  }
+
+  if (!telegramId) {
+    console.error("❌ CUSTOMER TELEGRAM ID YO'Q");
+    return false;
+  }
+
+  try {
+
+    const response = await fetch(
+      `https://api.telegram.org/bot${env.BOT_TOKEN}/sendMessage`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: String(telegramId),
+          text
+        })
+      }
+    );
+
+    const result = await response.text();
+
+    console.log(
+      "📨 MIJOZ TELEGRAM JAVOBI:",
+      result
+    );
+
+    if (!response.ok) {
+      console.error(
+        "❌ MIJOZ TELEGRAM XATOSI:",
+        result
+      );
+
+      return false;
+    }
+
+    console.log(
+      "✅ MIJOZGA TELEGRAM XABARI YUBORILDI"
+    );
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "❌ MIJOZ TELEGRAM FETCH XATOSI:",
+      error
+    );
+
+    return false;
+  }
+}
 
 // =====================================================
 // ADMIN BUYURTMA MATNI
@@ -511,6 +579,76 @@ if (update.callback_query) {
   return new Response("OK");
 }
 
+// =================================================
+// CUSTOMER TELEGRAM NOTIFICATION
+// =================================================
+
+const customerOrder =
+  await env.DB.prepare(`
+    SELECT
+      telegram_id,
+      first_name
+    FROM orders
+    WHERE order_number = ?
+    LIMIT 1
+  `)
+    .bind(orderNumber)
+    .first();
+
+const customerStatusMessages = {
+
+  qabul_qilindi:
+    `🟢 Buyurtmangiz qabul qilindi!
+
+Hurmatli ${customerOrder?.first_name || "mijoz"}, buyurtmangiz qabul qilindi va tez orada tayyorlashni boshlaymiz.`,
+
+  yigilmoqda:
+    `📦 Buyurtmangiz yig‘ilmoqda!
+
+Buyurtmangiz hozir tayyorlanmoqda.`,
+
+  yetkazib_berishga_tayyor:
+    `🚚 Buyurtmangiz yetkazib berishga tayyor!
+
+Tez orada kuryerga topshiriladi.`,
+
+  yolda:
+    `🛵 Buyurtmangiz yo‘lda!
+
+Kuryer buyurtmangizni manzilingizga olib bormoqda.`,
+
+  yetkazildi:
+    `✅ Buyurtmangiz yetkazildi!
+
+Xaridingiz uchun rahmat! ⭐ Yulduz Market`,
+
+  bekor_qilingan:
+    `❌ Buyurtmangiz bekor qilindi.
+
+Qo‘shimcha ma’lumot uchun Yulduz Market bilan bog‘lanishingiz mumkin.`
+};
+
+const customerMessage =
+  customerStatusMessages[newStatus];
+
+if (
+  customerOrder?.telegram_id &&
+  customerMessage
+) {
+
+  await sendCustomerTelegram(
+    env,
+    customerOrder.telegram_id,
+    customerMessage
+  );
+
+} else {
+
+  console.error(
+    "❌ MIJOZ TELEGRAM ID TOPILMADI:",
+    orderNumber
+  );
+}    
 
     // =================================================
     // TELEGRAM CALLBACK JAVOBI
