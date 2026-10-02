@@ -12548,9 +12548,9 @@ function openCategory(category) {
 
 
     document
-        .getElementById("productsPage")
-        .classList
-        .remove("hidden");
+    .getElementById("categoryTitle")
+    .textContent =
+    categoryTranslations[category]?.[currentLanguage] || category;
 
 
     document
