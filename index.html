@@ -6305,16 +6305,16 @@ body.dark .premium-category-arrow {
 
             <div class="recommended-header">
 
-                <h3>
-                    Tavsiya etamiz
-                </h3>
+                <h3 data-i18n="recommended">
+    Tavsiya etamiz
+</h3>
 
                 <button
     class="recommended-all"
     onclick="openFavorites()"
     aria-label="Barchasini ko‘rish">
 
-    <span>Barchasi</span>
+    <span data-i18n="all">Barchasi</span>
     <span class="recommended-arrow">→</span>
 
 </button>
@@ -6338,7 +6338,7 @@ body.dark .premium-category-arrow {
 
 <div id="categoriesPage" class="container hidden">
 
-    <h2> Kategoriyalar</h2>
+   <h2 data-i18n="categories">Kategoriyalar</h2>
 
     <div
         id="categoriesContainer"
@@ -10428,7 +10428,8 @@ const translations = {
 
     uz: {
 
-        onlineShopping: "Onlayn xarid",
+        onlineShopping:
+            "Onlayn xarid",
 
         chooseProducts:
             "Kerakli mahsulotlarni tanlang va savatga qo‘shing.",
@@ -10453,6 +10454,9 @@ const translations = {
 
         profile:
             "Profil",
+
+        orders:
+            "Buyurtmalar",
 
         placeOrder:
             "Buyurtma berish",
@@ -10563,7 +10567,187 @@ const translations = {
             "Tez orada operatorimiz siz bilan bog‘lanadi.",
 
         youMayLike:
-            "Sizga yoqishi mumkin"
+            "Sizga yoqishi mumkin",
+
+        all:
+            "Barchasi",
+
+        recommended:
+            "Tavsiya etamiz",
+
+        save:
+            "Saqlash",
+
+        cancel:
+            "Bekor qilish",
+
+        delete:
+            "O‘chirish",
+
+        edit:
+            "Tahrirlash",
+
+        add:
+            "Qo‘shish",
+
+        close:
+            "Yopish",
+
+        yes:
+            "Ha",
+
+        no:
+            "Yo‘q",
+
+        name:
+            "Nomi",
+
+        price:
+            "Narxi",
+
+        unit:
+            "Birlik",
+
+        quantity:
+            "Miqdor",
+
+        product:
+            "Mahsulot",
+
+        products:
+            "Mahsulotlar",
+
+        emptyCart:
+            "Savatingiz bo‘sh.",
+
+        emptyFavorites:
+            "Sevimli mahsulotlar yo‘q.",
+
+        emptyOrders:
+            "Hozircha buyurtmalar yo‘q.",
+
+        noSearchResults:
+            "Mahsulot topilmadi.",
+
+        orderDetails:
+            "Buyurtma tafsilotlari",
+
+        orderStatus:
+            "Buyurtma holati",
+
+        orderAcceptedStatus:
+            "Qabul qilindi",
+
+        orderPreparing:
+            "Yig‘ilmoqda",
+
+        orderReady:
+            "Yetkazishga tayyor",
+
+        orderDelivering:
+            "Yo‘lda",
+
+        orderDelivered:
+            "Yetkazildi",
+
+        orderCancelled:
+            "Bekor qilindi",
+
+        addressName:
+            "Manzil nomi",
+
+        addressNamePlaceholder:
+            "Masalan: Uy, Ish",
+
+        newAddress:
+            "Yangi manzil",
+
+        savedAddresses:
+            "Saqlangan manzillar",
+
+        currentLocation:
+            "Joriy lokatsiya",
+
+        chooseAddress:
+            "Manzilni tanlang",
+
+        noAddress:
+            "Saqlangan manzil yo‘q.",
+
+        supportMessage:
+            "Savolingiz yoki muammoingiz bo‘lsa, biz bilan bog‘laning.",
+
+        admin:
+            "Admin",
+
+        addProduct:
+            "Mahsulot qo‘shish",
+
+        editProduct:
+            "Mahsulotni tahrirlash",
+
+        productName:
+            "Mahsulot nomi",
+
+        category:
+            "Kategoriya",
+
+        image:
+            "Rasm",
+
+        chooseImage:
+            "Rasm tanlash",
+
+        productNotFound:
+            "Mahsulot topilmadi.",
+
+        productAdded:
+            "Mahsulot qo‘shildi.",
+
+        productUpdated:
+            "Mahsulot yangilandi.",
+
+        imageUploadError:
+            "Rasmni yuklashda xatolik.",
+
+        invalidImage:
+            "Faqat JPG, PNG yoki WEBP formatdagi rasmni tanlang.",
+
+        imageTooLarge:
+            "Rasm hajmi 5 MB dan oshmasligi kerak.",
+
+        requiredProductFields:
+            "Mahsulot nomi, kategoriya va narxni kiriting.",
+
+        loading:
+            "Yuklanmoqda...",
+
+        error:
+            "Xatolik yuz berdi.",
+
+        tryAgain:
+            "Qayta urinib ko‘ring.",
+
+        notifications:
+            "Bildirishnomalar",
+
+        noNotifications:
+            "Yangi xabarlar yo‘q.",
+
+        search:
+            "Qidirish",
+
+        clear:
+            "Tozalash",
+
+        kg:
+            "kg",
+
+        gram:
+            "g",
+
+        piece:
+            "dona"
 
     },
 
@@ -10597,6 +10781,9 @@ const translations = {
         profile:
             "Профиль",
 
+        orders:
+            "Заказы",
+
         placeOrder:
             "Оформить заказ",
 
@@ -10607,7 +10794,7 @@ const translations = {
             "Номер телефона",
 
         sendPhone:
-            "Отправить номер телефона через Telegram",
+            "Отправить номер телефона",
 
         deliveryAddress:
             "Адрес доставки",
@@ -10643,10 +10830,10 @@ const translations = {
             "Мой профиль",
 
         myOrders:
-            "Мои заказы",
+            "Заказы",
 
         favorites:
-            "Избранные товары",
+            "Избранное",
 
         myAddresses:
             "Сохранённые адреса",
@@ -10706,11 +10893,191 @@ const translations = {
             "Скоро наш оператор свяжется с вами.",
 
         youMayLike:
-            "Вам может понравиться"
+            "Вам может понравиться",
 
+        all:
+            "Все",
+
+        recommended:
+            "Рекомендуем",
+
+        save:
+            "Сохранить",
+
+        cancel:
+            "Отмена",
+
+        delete:
+            "Удалить",
+
+        edit:
+            "Редактировать",
+
+        add:
+            "Добавить",
+
+        close:
+            "Закрыть",
+
+        yes:
+            "Да",
+
+        no:
+            "Нет",
+
+        name:
+            "Название",
+
+        price:
+            "Цена",
+
+        unit:
+            "Единица",
+
+        quantity:
+            "Количество",
+
+        product:
+            "Товар",
+
+        products:
+            "Товары",
+
+        emptyCart:
+            "Ваша корзина пуста.",
+
+        emptyFavorites:
+            "В избранном пока нет товаров.",
+
+        emptyOrders:
+            "Заказов пока нет.",
+
+        noSearchResults:
+            "Товар не найден.",
+
+        orderDetails:
+            "Детали заказа",
+
+        orderStatus:
+            "Статус заказа",
+
+        orderAcceptedStatus:
+            "Принят",
+
+        orderPreparing:
+            "Собирается",
+
+        orderReady:
+            "Готов к доставке",
+
+        orderDelivering:
+            "В пути",
+
+        orderDelivered:
+            "Доставлен",
+
+        orderCancelled:
+            "Отменён",
+
+        addressName:
+            "Название адреса",
+
+        addressNamePlaceholder:
+            "Например: Дом, Работа",
+
+        newAddress:
+            "Новый адрес",
+
+        savedAddresses:
+            "Сохранённые адреса",
+
+        currentLocation:
+            "Текущее местоположение",
+
+        chooseAddress:
+            "Выберите адрес",
+
+        noAddress:
+            "Сохранённых адресов нет.",
+
+        supportMessage:
+            "Если у вас есть вопрос или проблема, свяжитесь с нами.",
+
+        admin:
+            "Администратор",
+
+        addProduct:
+            "Добавить товар",
+
+        editProduct:
+            "Редактирование товара",
+
+        productName:
+            "Название товара",
+
+        category:
+            "Категория",
+
+        image:
+            "Изображение",
+
+        chooseImage:
+            "Выбрать изображение",
+
+        productNotFound:
+            "Товар не найден.",
+
+        productAdded:
+            "Товар добавлен.",
+
+        productUpdated:
+            "Товар обновлён.",
+
+        imageUploadError:
+            "Ошибка при загрузке изображения.",
+
+        invalidImage:
+            "Выберите изображение в формате JPG, PNG или WEBP.",
+
+        imageTooLarge:
+            "Размер изображения не должен превышать 5 МБ.",
+
+        requiredProductFields:
+            "Введите название товара, категорию и цену.",
+
+        loading:
+            "Загрузка...",
+
+        error:
+            "Произошла ошибка.",
+
+        tryAgain:
+            "Попробуйте ещё раз.",
+
+        notifications:
+            "Уведомления",
+
+        noNotifications:
+            "Новых сообщений нет.",
+
+        search:
+            "Поиск",
+
+        clear:
+            "Очистить",
+
+        kg:
+            "кг",
+
+        gram:
+            "г",
+
+        piece:
+            "шт."
     }
 
 };
+   
 /* =========================================================
    RENDER RECOMMENDED PRODUCTS
 ========================================================= */
@@ -12585,6 +12952,112 @@ function renderCategories() {
                 product => product.visible
             );
 
+       const categoryTranslations = {
+    "Meva va rezavorlar": {
+        uz: "Meva va rezavorlar",
+        ru: "Фрукты и ягоды"
+    },
+    "Sabzavotlar va ko‘katlar": {
+        uz: "Sabzavotlar va ko‘katlar",
+        ru: "Овощи и зелень"
+    },
+    "Go‘sht va go‘sht mahsulotlari": {
+        uz: "Go‘sht va go‘sht mahsulotlari",
+        ru: "Мясо и мясные продукты"
+    },
+    "Sut va sut mahsulotlari": {
+        uz: "Sut va sut mahsulotlari",
+        ru: "Молоко и молочные продукты"
+    },
+    "Tuxum": {
+        uz: "Tuxum",
+        ru: "Яйца"
+    },
+    "Non va non mahsulotlari": {
+        uz: "Non va non mahsulotlari",
+        ru: "Хлеб и хлебобулочные изделия"
+    },
+    "Shirinliklar": {
+        uz: "Shirinliklar",
+        ru: "Сладости"
+    },
+    "Tort va pishiriqlar": {
+        uz: "Tort va pishiriqlar",
+        ru: "Торты и выпечка"
+    },
+    "Ichimliklar": {
+        uz: "Ichimliklar",
+        ru: "Напитки"
+    },
+    "Choy, kofe va kakao": {
+        uz: "Choy, kofe va kakao",
+        ru: "Чай, кофе и какао"
+    },
+    "Konserva mahsulotlari": {
+        uz: "Konserva mahsulotlari",
+        ru: "Консервированные продукты"
+    },
+    "Makaron va yormalar": {
+        uz: "Makaron va yormalar",
+        ru: "Макароны и крупы"
+    },
+    "Moylar va souslar": {
+        uz: "Moylar va souslar",
+        ru: "Масла и соусы"
+    },
+    "Ziravorlar": {
+        uz: "Ziravorlar",
+        ru: "Специи"
+    },
+    "Muzlatilgan mahsulotlar": {
+        uz: "Muzlatilgan mahsulotlar",
+        ru: "Замороженные продукты"
+    },
+    "Baliq va dengiz mahsulotlari": {
+        uz: "Baliq va dengiz mahsulotlari",
+        ru: "Рыба и морепродукты"
+    },
+    "Yarim tayyor mahsulotlar": {
+        uz: "Yarim tayyor mahsulotlar",
+        ru: "Полуфабрикаты"
+    },
+    "Maishiy kimyo": {
+        uz: "Maishiy kimyo",
+        ru: "Бытовая химия"
+    },
+    "Gigiyena va parvarish": {
+        uz: "Gigiyena va parvarish",
+        ru: "Гигиена и уход"
+    },
+    "Uy hayvonlari": {
+        uz: "Uy hayvonlari",
+        ru: "Товары для животных"
+    },
+    "Bolalar mahsulotlari": {
+        uz: "Bolalar mahsulotlari",
+        ru: "Товары для детей"
+    },
+    "Oshxona anjomlari": {
+        uz: "Oshxona anjomlari",
+        ru: "Кухонные принадлежности"
+    },
+    "Maishiy texnika": {
+        uz: "Maishiy texnika",
+        ru: "Бытовая техника"
+    },
+    "Kanselyariya": {
+        uz: "Kanselyariya",
+        ru: "Канцелярские товары"
+    },
+    "Kiyim va to‘qimachilik": {
+        uz: "Kiyim va to‘qimachilik",
+        ru: "Одежда и текстиль"
+    }
+};
+
+const categoryDisplayName =
+    categoryTranslations[category]?.[currentLanguage] || category;
+
 
         const data =
             categoryData[category] || {
@@ -12650,8 +13123,8 @@ function renderCategories() {
                 </div>
 
                 <div class="premium-category-name">
-                    ${category}
-                </div>
+    ${categoryDisplayName}
+</div>
 
                 <div class="premium-category-description">
                     ${data.description}
