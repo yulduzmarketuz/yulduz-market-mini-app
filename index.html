@@ -6292,7 +6292,7 @@ body.dark .premium-category-arrow {
 
 <div id="categoriesPage" class="container hidden">
 
-    <h2>📂 Kategoriyalar</h2>
+    <h2> Kategoriyalar</h2>
 
     <div
         id="categoriesContainer"
@@ -12966,11 +12966,11 @@ function renderFavorites() {
             </div>
 
             <button
-                class="favorite-empty-button"
-                onclick="showPage('categories')"
-            >
-                Mahsulotlarni ko‘rish
-            </button>
+    class="favorite-empty-button"
+    onclick="hideAll(); document.getElementById('categoriesPage').classList.remove('hidden'); setActiveNav(1)"
+>
+    Mahsulotlarni ko‘rish
+</button>
 
         </div>
 
