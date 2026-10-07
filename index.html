@@ -12559,13 +12559,14 @@ function createProductCard(product) {
 
         card.innerHTML += `
 
-            <button
-                class="add-button"
-                onclick="addToCart(${product.id})">
+<button
+    class="add-button"
+    data-product-id="${product.id}"
+    onclick="addToCart(${product.id})">
 
-                <span>+</span>
+    <span>+</span>
 
-            </button>
+</button>
 
         `;
 
@@ -13834,6 +13835,7 @@ function addToCart(id) {
 
     updateCart();
 
+    updateProductButton(id);
 
     showToast(
         `${product.name} savatga qo‘shildi! 🛒`
@@ -13939,6 +13941,49 @@ function addWeightProduct(id) {
         `${product.name} ${amount} ${unit} savatga qo‘shildi! 🛒`
     );
 
+}
+   function updateProductButton(id) {
+
+    const button =
+        document.querySelector(
+            `.add-button[data-product-id="${id}"]`
+        );
+
+    if (!button) {
+        return;
+    }
+
+    const product =
+        findProduct(id);
+
+    if (!product) {
+        return;
+    }
+
+    const item =
+        cart.find(
+            item =>
+                item.id === id &&
+                item.selectedUnit === "dona"
+        );
+
+    const quantity =
+        item
+        ? Number(item.quantity) || 0
+        : 0;
+
+    if (quantity <= 0) {
+
+        button.innerHTML = `<span>+</span>`;
+
+        return;
+    }
+
+    button.innerHTML = `
+        <span class="quantity-minus">−</span>
+        <span class="quantity-value">${quantity} dona</span>
+        <span class="quantity-plus">+</span>
+    `;
 }
 
 /* =========================================================
