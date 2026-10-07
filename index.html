@@ -12384,23 +12384,42 @@ function renderSearchResults(query) {
 
 function createProductCard(product) {
 
-    const card =
-        document.createElement("div");
+    const card = document.createElement("div");
+
+    card.className = "product";
+
+    card.dataset.productId = product.id;
 
 
-    card.className =
-        "product";
-
+    /* =====================================================
+       FAVORITE
+    ===================================================== */
 
     const isFavorite =
         favorites.includes(product.id);
 
 
+    /* =====================================================
+       IMAGE
+    ===================================================== */
+
     const image =
         product.image
-        ? `<img src="${product.image}" alt="${product.name}">`
-        : `<div class="product-icon">${product.icon || "🛒"}</div>`;
+        ? `
+            <img
+                src="${product.image}"
+                alt="${product.name}">
+          `
+        : `
+            <div class="product-icon">
+                ${product.icon || "🛒"}
+            </div>
+          `;
 
+
+    /* =====================================================
+       UNIT
+    ===================================================== */
 
     const unitText =
         product.unit === "kg"
@@ -12408,11 +12427,74 @@ function createProductCard(product) {
         : translations[currentLanguage].piece;
 
 
+    /* =====================================================
+       CURRENT CART QUANTITY
+    ===================================================== */
+
+    const cartItem =
+        cart.find(item =>
+            Number(item.id) === Number(product.id) &&
+            (
+                product.unit === "kg"
+                ? item.unit === "kg"
+                : item.unit === "dona"
+            )
+        );
+
+
+    const currentQuantity =
+        cartItem
+        ? Number(cartItem.quantity) || 0
+        : 0;
+
+
+    /* =====================================================
+       ACTION
+    ===================================================== */
+
+    const actionHTML =
+        currentQuantity > 0
+
+        ? createProductQuantityControl(
+            product,
+            currentQuantity
+          )
+
+        : `
+
+            <div class="product-action">
+
+                <button
+                    class="add-button"
+                    onclick="
+                        event.stopPropagation();
+                        changeProductCardQuantity(
+                            ${product.id},
+                            1
+                        )
+                    ">
+
+                    +
+
+                </button>
+
+            </div>
+
+          `;
+
+
+    /* =====================================================
+       CARD
+    ===================================================== */
+
     card.innerHTML = `
 
         <button
             class="favorite-button"
-            onclick="toggleFavorite(${product.id}, this)"
+            onclick="
+                event.stopPropagation();
+                toggleFavorite(${product.id}, this)
+            "
             aria-label="Sevimliga qo‘shish">
 
             <svg
@@ -12443,6 +12525,8 @@ function createProductCard(product) {
             onclick="openProductDetail(${product.id})">
 
             ${image}
+
+            ${actionHTML}
 
         </div>
 
@@ -12477,66 +12561,216 @@ function createProductCard(product) {
     `;
 
 
-    if (product.unit === "kg") {
+    return card;
+}
 
-        card.innerHTML += `
 
-            <div class="weight-row">
+/* =========================================================
+   QUANTITY CONTROL
+========================================================= */
 
-                <input
-                    id="weight-${product.id}"
-                    class="weight-input"
-                    type="number"
-                    min="1"
-                    value="1">
+function createProductQuantityControl(
+    product,
+    quantity
+) {
 
-                <select
-                    id="unit-${product.id}"
-                    class="unit-select">
+    const unit =
+        product.unit === "kg"
+        ? "kg"
+        : translations[currentLanguage].piece;
 
-                    <option value="kg">
-                        kg
-                    </option>
 
-                    <option value="g">
-                        g
-                    </option>
+    return `
 
-                </select>
+        <div class="product-action">
+
+            <div class="quantity-control">
+
+                <button
+                    class="quantity-minus"
+                    onclick="
+                        event.stopPropagation();
+                        changeProductCardQuantity(
+                            ${product.id},
+                            -1
+                        )
+                    ">
+
+                    −
+
+                </button>
+
+
+                <span class="quantity-value">
+
+                    ${quantity} ${unit}
+
+                </span>
+
+
+                <button
+                    class="quantity-plus"
+                    onclick="
+                        event.stopPropagation();
+                        changeProductCardQuantity(
+                            ${product.id},
+                            1
+                        )
+                    ">
+
+                    +
+
+                </button>
 
             </div>
 
+        </div>
 
-            <button
-                class="add-button"
-                onclick="addWeightProduct(${product.id})">
+    `;
+}
 
-                ${translations[currentLanguage].addToCart}
 
-            </button>
+/* =========================================================
+   CHANGE PRODUCT QUANTITY
+========================================================= */
 
-        `;
+function changeProductCardQuantity(
+    productId,
+    change
+) {
 
-    }
+    const product =
+        findProduct(productId);
 
-    else {
 
-        card.innerHTML += `
-
-            <button
-                class="add-button"
-                onclick="addToCart(${product.id})">
-
-                <span>+</span>
-
-            </button>
-
-        `;
-
+    if (!product) {
+        return;
     }
 
 
-    return card;
+    /* =====================================================
+       FIND EXISTING CART ITEM
+    ===================================================== */
+
+    let existing =
+        cart.find(item =>
+            Number(item.id) === Number(productId) &&
+            (
+                product.unit === "kg"
+                ? item.unit === "kg"
+                : item.unit === "dona"
+            )
+        );
+
+
+    /* =====================================================
+       ADD NEW ITEM
+    ===================================================== */
+
+    if (!existing && change > 0) {
+
+        saveRecommendationView(product.id);
+
+
+        cart.push({
+
+            ...product,
+
+            quantity: change,
+
+            selectedUnit:
+                product.unit === "kg"
+                ? "kg"
+                : "dona",
+
+            unit:
+                product.unit === "kg"
+                ? "kg"
+                : "dona"
+
+        });
+
+    }
+
+
+    /* =====================================================
+       CHANGE EXISTING ITEM
+    ===================================================== */
+
+    else if (existing) {
+
+        existing.quantity =
+            (Number(existing.quantity) || 0)
+            + change;
+
+
+        /* =================================================
+           REMOVE WHEN ZERO
+        ================================================= */
+
+        if (existing.quantity <= 0) {
+
+            const index =
+                cart.indexOf(existing);
+
+            if (index !== -1) {
+
+                cart.splice(index, 1);
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================================
+       UPDATE CART
+    ===================================================== */
+
+    updateCart();
+
+
+    /* =====================================================
+       REFRESH PRODUCT CARD
+    ===================================================== */
+
+    refreshProductCard(productId);
+
+}
+
+
+/* =========================================================
+   REFRESH PRODUCT CARD
+========================================================= */
+
+function refreshProductCard(productId) {
+
+    const product =
+        findProduct(productId);
+
+
+    if (!product) {
+        return;
+    }
+
+
+    const oldCard =
+        document.querySelector(
+            `.product[data-product-id="${productId}"]`
+        );
+
+
+    if (!oldCard) {
+        return;
+    }
+
+
+    const newCard =
+        createProductCard(product);
+
+
+    oldCard.replaceWith(newCard);
 
 }
 
