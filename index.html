@@ -615,10 +615,17 @@ button {
 }
 
 .product-price {
-    font-weight: 800;
-    font-size: 18px;
+    font-weight: 600;
+    font-size: 17px;
     margin-top: 8px;
     line-height: 1.2;
+}
+
+.product-price span {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 3px;
 }
 
 .add-button {
@@ -12477,8 +12484,8 @@ function createProductCard(product) {
 
             <div class="product-price">
 
-                ${formatPrice(product.price)}
-                <span>so‘m</span>
+                ${formatPrice(product.price).replace(/\s*so['’ʻ`]?m\s*$/i, '')}
+<span>so‘m</span>
 
             </div>
 
