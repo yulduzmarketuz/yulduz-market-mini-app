@@ -12379,15 +12379,13 @@ function renderSearchResults(query) {
 
 
 /* =========================================================
-   PRODUCT CARD
+   PREMIUM PRODUCT CARD
 ========================================================= */
 
 function createProductCard(product) {
 
     const card =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     card.className =
@@ -12395,15 +12393,19 @@ function createProductCard(product) {
 
 
     const isFavorite =
-        favorites.includes(
-            product.id
-        );
+        favorites.includes(product.id);
 
 
     const image =
         product.image
-        ? `<img src="${product.image}" alt="">`
-        : product.icon;
+        ? `<img src="${product.image}" alt="${product.name}">`
+        : `<div class="product-icon">${product.icon || "🛒"}</div>`;
+
+
+    const unitText =
+        product.unit === "kg"
+        ? "kg"
+        : translations[currentLanguage].piece;
 
 
     card.innerHTML = `
@@ -12436,34 +12438,46 @@ function createProductCard(product) {
         </button>
 
 
-        <div class="product-image">
+        <div
+            class="product-image"
+            onclick="openProductDetail(${product.id})">
 
             ${image}
 
         </div>
 
 
-        <div class="product-name">
+        <div
+            class="product-info"
+            onclick="openProductDetail(${product.id})">
 
-            ${product.name}
+            <div class="product-price">
 
-        </div>
+                ${formatPrice(product.price)}
+                <span>so‘m</span>
+
+            </div>
 
 
-        <div class="product-unit">
+            <div class="product-name">
 
-            ${formatPrice(product.price)}
-            /
-            ${product.unit === "kg" ? "kg" : translations[currentLanguage].piece}
+                ${product.name}
+
+            </div>
+
+
+            <div class="product-unit">
+
+                ${unitText}
+
+            </div>
 
         </div>
 
     `;
 
 
-    if (
-        product.unit === "kg"
-    ) {
+    if (product.unit === "kg") {
 
         card.innerHTML += `
 
@@ -12497,7 +12511,7 @@ function createProductCard(product) {
                 class="add-button"
                 onclick="addWeightProduct(${product.id})">
 
-                🛒 ${translations[currentLanguage].addToCart}
+                ${translations[currentLanguage].addToCart}
 
             </button>
 
@@ -12513,7 +12527,7 @@ function createProductCard(product) {
                 class="add-button"
                 onclick="addToCart(${product.id})">
 
-                🛒 ${translations[currentLanguage].addToCart}
+                <span>+</span>
 
             </button>
 
