@@ -637,7 +637,7 @@ button {
     color: white;
 
     padding: 0 8px;
-    border-radius: 19px;
+    border-radius: 10px;
     margin: 0;
 
     display: flex;
@@ -13979,13 +13979,6 @@ function addWeightProduct(id) {
         return;
     }
 
-    const product =
-        findProduct(id);
-
-    if (!product) {
-        return;
-    }
-
     const item =
         cart.find(
             item =>
@@ -14002,6 +13995,10 @@ function addWeightProduct(id) {
 
         button.innerHTML = `<span>+</span>`;
 
+        button.onclick = function () {
+            addToCart(id);
+        };
+
         return;
     }
 
@@ -14010,6 +14007,42 @@ function addWeightProduct(id) {
         <span class="quantity-value">${quantity} dona</span>
         <span class="quantity-plus">+</span>
     `;
+
+    button.onclick = function (event) {
+
+        event.stopPropagation();
+
+        const rect =
+            button.getBoundingClientRect();
+
+        const clickX =
+            event.clientX - rect.left;
+
+        if (clickX < rect.width / 3) {
+
+            item.quantity =
+                Math.max(
+                    0,
+                    (Number(item.quantity) || 0) - 1
+                );
+
+        } else {
+
+            item.quantity =
+                (Number(item.quantity) || 0) + 1;
+        }
+
+        cart =
+            cart.filter(
+                item =>
+                    Number(item.quantity) > 0
+            );
+
+        updateCart();
+
+        updateProductButton(id);
+    };
+}
 }
 
 /* =========================================================
