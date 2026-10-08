@@ -12432,6 +12432,7 @@ function renderSearchResults(query) {
 
 }
 
+
 /* =========================================================
    PREMIUM PRODUCT CARD
 ========================================================= */
@@ -12452,8 +12453,8 @@ function createProductCard(product) {
 
     const image =
         product.image
-        ? <img src="${product.image}" alt="${product.name}">
-        : <div class="product-icon">${product.icon || "🛒"}</div>;
+        ? `<img src="${product.image}" alt="${product.name}">`
+        : `<div class="product-icon">${product.icon || "🛒"}</div>`;
 
 
     const unitText =
@@ -12568,7 +12569,6 @@ function createProductCard(product) {
     return card;
 
 }
-
 
 /* =========================================================
    OPEN CATEGORY
