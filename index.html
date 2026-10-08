@@ -12515,19 +12515,20 @@ function createProductCard(product) {
 
     if (product.unit === "kg") {
 
-        card.innerHTML += `
+    card.innerHTML += `
 
-            <button
-                class="add-button"
-                onclick="addWeightProduct(${product.id})">
+        <button
+            class="add-button"
+            data-product-id="${product.id}"
+            onclick="addWeightProduct(${product.id})">
 
-                <span>+</span>
+            <span>+</span>
 
-            </button>
+        </button>
 
-        `;
+    `;
 
-    }
+}
 
     else {
 
