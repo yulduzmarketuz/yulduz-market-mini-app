@@ -12519,8 +12519,7 @@ function createProductCard(product) {
 
         <button
             class="add-button"
-            data-product-id="${product.id}"
-            onclick="addWeightProduct(${product.id})">
+            data-product-id="${product.id}">
 
             <span>+</span>
 
@@ -13929,16 +13928,8 @@ showToast(
 }
    document.addEventListener("click", function (e) {
 
-    const button =
-        e.target.closest(".quantity-plus, .quantity-minus");
-
-    if (!button) {
-        return;
-    }
-
-
     const addButton =
-        button.closest(".add-button");
+        e.target.closest(".add-button");
 
     if (!addButton) {
         return;
@@ -13961,19 +13952,81 @@ showToast(
     }
 
 
-    const item =
-        cart.find(
-            item =>
-                item.id === id &&
-                item.unit === product.unit
-        );
+    const isPlus =
+        e.target.closest(".quantity-plus");
 
-    if (!item) {
-        return;
+    const isMinus =
+        e.target.closest(".quantity-minus");
+
+
+    /* =====================================================
+       FIRST ADD
+    ===================================================== */
+
+    if (!isPlus && !isMinus) {
+
+        if (product.unit === "kg") {
+
+            const existingItem =
+                cart.find(
+                    item =>
+                        item.id === id &&
+                        item.unit === "kg"
+                );
+
+
+            if (existingItem) {
+
+                existingItem.quantity =
+                    (Number(existingItem.quantity) || 0) + 1;
+
+            }
+
+            else {
+
+                cart.push({
+
+                    ...product,
+
+                    quantity: 1,
+
+                    unit: "kg"
+
+                });
+
+            }
+
+        }
+
+        else {
+
+            addToCart(id);
+
+            return;
+
+        }
+
     }
 
 
-    if (button.classList.contains("quantity-plus")) {
+    /* =====================================================
+       PLUS
+    ===================================================== */
+
+    if (isPlus) {
+
+        const item =
+            cart.find(
+                item =>
+                    item.id === id &&
+                    item.unit === product.unit
+            );
+
+
+        if (!item) {
+            return;
+        }
+
 
         item.quantity =
             (Number(item.quantity) || 0) + 1;
@@ -13981,24 +14034,41 @@ showToast(
     }
 
 
-    if (button.classList.contains("quantity-minus")) {
+    /* =====================================================
+       MINUS
+    ===================================================== */
+
+    if (isMinus) {
+
+        const item =
+            cart.find(
+                item =>
+                    item.id === id &&
+                    item.unit === product.unit
+            );
+
+
+        if (!item) {
+            return;
+        }
+
 
         item.quantity =
             (Number(item.quantity) || 0) - 1;
 
-    }
 
+        if (item.quantity <= 0) {
 
-    if (item.quantity <= 0) {
+            cart =
+                cart.filter(
+                    cartItem =>
+                        !(
+                            cartItem.id === id &&
+                            cartItem.unit === product.unit
+                        )
+                );
 
-        cart =
-            cart.filter(
-                cartItem =>
-                    !(
-                        cartItem.id === id &&
-                        cartItem.unit === product.unit
-                    )
-            );
+        }
 
     }
 
