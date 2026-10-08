@@ -12563,20 +12563,19 @@ function createProductCard(product) {
 
     else {
 
-        card.innerHTML += `
+    card.innerHTML += `
 
-            <button
-                class="add-button"
-                data-product-id="${product.id}"
-                onclick="addToCart(${product.id})">
+        <button
+            class="add-button"
+            data-product-id="${product.id}">
 
-                <span>Savatga</span>
+            <span>Savatga</span>
 
-            </button>
+        </button>
 
-        `;
+    `;
 
-    }
+}
 
 
     return card;
