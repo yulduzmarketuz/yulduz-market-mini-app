@@ -13927,6 +13927,87 @@ showToast(
         <span class="quantity-plus">+</span>
     `;
 }
+   document.addEventListener("click", function (e) {
+
+    const button =
+        e.target.closest(".quantity-plus, .quantity-minus");
+
+    if (!button) {
+        return;
+    }
+
+
+    const addButton =
+        button.closest(".add-button");
+
+    if (!addButton) {
+        return;
+    }
+
+
+    const id =
+        Number(addButton.dataset.productId);
+
+    if (!id) {
+        return;
+    }
+
+
+    const product =
+        findProduct(id);
+
+    if (!product) {
+        return;
+    }
+
+
+    const item =
+        cart.find(
+            item =>
+                item.id === id &&
+                item.unit === product.unit
+        );
+
+    if (!item) {
+        return;
+    }
+
+
+    if (button.classList.contains("quantity-plus")) {
+
+        item.quantity =
+            (Number(item.quantity) || 0) + 1;
+
+    }
+
+
+    if (button.classList.contains("quantity-minus")) {
+
+        item.quantity =
+            (Number(item.quantity) || 0) - 1;
+
+    }
+
+
+    if (item.quantity <= 0) {
+
+        cart =
+            cart.filter(
+                cartItem =>
+                    !(
+                        cartItem.id === id &&
+                        cartItem.unit === product.unit
+                    )
+            );
+
+    }
+
+
+    updateCart();
+
+    updateProductButton(id);
+
+});
 
 /* =========================================================
    UPDATE CART
