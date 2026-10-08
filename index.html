@@ -9237,17 +9237,9 @@ if (tg) {
     /* Telegram Mini App tayyor */
     tg.ready();
 
-    /* Faqat mobil qurilmada maksimal kengaytirish */
-    const isMobile =
-        /Android|iPhone|iPad|iPod/i.test(
-            navigator.userAgent
-        );
+    /* Oddiy expand */
+    tg.expand();
 
-    if (isMobile) {
-        tg.expand();
-    }
-
-}
     
 
     /* =====================================================
