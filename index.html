@@ -13964,11 +13964,11 @@ showToast(
 
     if (isPlus || isMinus) {
 
-       if (navigator.vibrate) {
-           navigator.vibrate(50);
-       }
-
+    if (navigator.vibrate) {
+        navigator.vibrate([50, 30, 50]);
     }
+
+}
 
 
     /* =====================================================
