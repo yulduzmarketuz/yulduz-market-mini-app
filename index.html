@@ -681,32 +681,6 @@ button {
     font-weight: 600;
     white-space: nowrap;
 }
-
-.weight-row {
-    display: flex;
-    gap: 5px;
-    margin-top: 10px;
-}
-
-.weight-input {
-    width: 100%;
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--text);
-    border-radius: 9px;
-    padding: 10px;
-    font-size: 16px;
-}
-
-.unit-select {
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    padding: 10px;
-    background: var(--card);
-    color: var(--text);
-}
-
-
 /* =========================================================
    SEARCH RESULTS
 ========================================================= */
@@ -12543,37 +12517,11 @@ function createProductCard(product) {
 
         card.innerHTML += `
 
-            <div class="weight-row">
-
-                <input
-                    id="weight-${product.id}"
-                    class="weight-input"
-                    type="number"
-                    min="1"
-                    value="1">
-
-                <select
-                    id="unit-${product.id}"
-                    class="unit-select">
-
-                    <option value="kg">
-                        kg
-                    </option>
-
-                    <option value="g">
-                        g
-                    </option>
-
-                </select>
-
-            </div>
-
-
             <button
                 class="add-button"
                 onclick="addWeightProduct(${product.id})">
 
-                ${translations[currentLanguage].addToCart}
+                <span>+</span>
 
             </button>
 
@@ -12585,14 +12533,14 @@ function createProductCard(product) {
 
         card.innerHTML += `
 
-<button
-    class="add-button"
-    data-product-id="${product.id}"
-    onclick="addToCart(${product.id})">
+            <button
+                class="add-button"
+                data-product-id="${product.id}"
+                onclick="addToCart(${product.id})">
 
-    <span>+</span>
+                <span>+</span>
 
-</button>
+            </button>
 
         `;
 
@@ -12602,7 +12550,6 @@ function createProductCard(product) {
     return card;
 
 }
-
 
 /* =========================================================
    OPEN CATEGORY
@@ -13883,88 +13830,41 @@ function addWeightProduct(id) {
     if (!product) {
         return;
     }
-
-
-    const weightInput =
-        document.getElementById(
-            `weight-${id}`
+    const existingItem =
+        cart.find(
+            item =>
+                item.id === id &&
+                item.unit === "kg"
         );
 
 
-    const unitInput =
-        document.getElementById(
-            `unit-${id}`
-        );
+    if (existingItem) {
 
-
-    if (
-        !weightInput ||
-        !unitInput
-    ) {
-
-        return;
+        existingItem.quantity =
+            (Number(existingItem.quantity) || 0) + 1;
 
     }
 
+    else {
 
-    const amount =
-        parseFloat(
-            weightInput.value
-        );
+        cart.push({
 
+            ...product,
 
-    const unit =
-        unitInput.value;
+            quantity: 1,
 
+            unit: "kg"
 
-    if (
-        !Number.isFinite(amount) ||
-        amount <= 0
-    ) {
-
-        showToast(
-            "Miqdorni to‘g‘ri kiriting."
-        );
-
-        return;
+        });
 
     }
-
-
-    /* =====================================================
-       CONVERT TO KG
-    ===================================================== */
-
-    const kg =
-        unit === "g"
-        ? amount / 1000
-        : amount;
-
-
-    /* =====================================================
-       ADD TO CART
-    ===================================================== */
-
-    cart.push({
-
-        ...product,
-
-        quantity: kg,
-
-        selectedUnit: unit,
-
-        enteredAmount: amount,
-
-        unit: "kg"
-
-    });
 
 
     updateCart();
 
 
     showToast(
-        `${product.name} ${amount} ${unit} savatga qo‘shildi! 🛒`
+        `${product.name} 1 kg savatga qo‘shildi! 🛒`
     );
 
 }
@@ -13979,6 +13879,7 @@ function addWeightProduct(id) {
         return;
     }
 
+
     const product =
         findProduct(id);
 
@@ -13986,17 +13887,20 @@ function addWeightProduct(id) {
         return;
     }
 
+
     const item =
         cart.find(
             item =>
                 item.id === id &&
-                item.selectedUnit === "dona"
+                item.unit === product.unit
         );
+
 
     const quantity =
         item
         ? Number(item.quantity) || 0
         : 0;
+
 
     if (quantity <= 0) {
 
@@ -14005,9 +13909,18 @@ function addWeightProduct(id) {
         return;
     }
 
+
+    const unitText =
+        product.unit === "kg"
+        ? "kg"
+        : "dona";
+
+
     button.innerHTML = `
         <span class="quantity-minus">−</span>
-        <span class="quantity-value">${quantity} dona</span>
+        <span class="quantity-value">
+            ${quantity} ${unitText}
+        </span>
         <span class="quantity-plus">+</span>
     `;
 }
