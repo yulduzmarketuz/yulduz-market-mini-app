@@ -13958,6 +13958,14 @@ showToast(
     const isMinus =
         e.target.closest(".quantity-minus");
 
+    if (isPlus || isMinus) {
+
+       if (navigator.vibrate) {
+           navigator.vibrate(15);
+       }
+
+    }
+
 
     /* =====================================================
        FIRST ADD
