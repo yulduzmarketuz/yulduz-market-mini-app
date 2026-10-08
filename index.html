@@ -9237,9 +9237,15 @@ if (tg) {
     /* Telegram Mini App tayyor */
     tg.ready();
 
-    /* Oddiy expand */
-    tg.expand();
+    /* Faqat mobil qurilmada expand */
+    const isMobile =
+        /Android|iPhone|iPad|iPod/i.test(
+            navigator.userAgent
+        );
 
+    if (isMobile) {
+        tg.expand();
+    }
     
 
     /* =====================================================
