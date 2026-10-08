@@ -13960,15 +13960,7 @@ showToast(
         e.target.closest(".quantity-plus");
 
     const isMinus =
-        e.target.closest(".quantity-minus");
-
-    if (isPlus || isMinus) {
-
-    if (navigator.vibrate) {
-        navigator.vibrate([50, 30, 50]);
-    }
-
-}
+        e.target.closest(".quantity-minus");  
 
 
     /* =====================================================
@@ -14090,6 +14082,20 @@ showToast(
     updateProductButton(id);
 
 });
+   document.addEventListener("touchstart", function (e) {
+
+    const button =
+        e.target.closest(".quantity-plus, .quantity-minus");
+
+    if (!button) {
+        return;
+    }
+
+    if (navigator.vibrate) {
+        navigator.vibrate(50);
+    }
+
+}, { passive: true });
 
 /* =========================================================
    UPDATE CART
