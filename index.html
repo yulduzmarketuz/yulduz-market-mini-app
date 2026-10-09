@@ -6023,6 +6023,60 @@ body.dark .premium-category-arrow {
     }
 
 }
+   /* =====================================================
+   ADMIN PRODUCT FORM — COMPACT LAYOUT
+===================================================== */
+
+.admin-product-form-compact {
+    padding-bottom: 16px;
+}
+
+.admin-product-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-product-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.admin-product-field label {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.25;
+    font-weight: 600;
+}
+
+.admin-product-field input:not([type="file"]),
+.admin-product-field select {
+    width: 100%;
+    min-width: 0;
+    height: 42px;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 12px;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+.admin-product-field .admin-product-image-box {
+    margin: 0;
+    min-height: 64px;
+}
+
+.admin-product-field .admin-product-image-button {
+    min-height: 64px;
+    padding: 8px 12px;
+}
+
+.admin-product-form-compact #adminProductSaveButton {
+    width: 100%;
+    margin-top: 12px;
+}
    
 </style>
 </head>
@@ -8954,160 +9008,111 @@ body.dark .premium-category-arrow {
 </div>
 
 
+```html
 <!-- =====================================================
      ADMIN PRODUCT FORM
 ===================================================== -->
 
 <div
     id="adminProductForm"
-    class="container hidden">
+    class="container hidden admin-product-form-compact">
 
     <div class="search-page-header">
-
         <button
             class="search-back-button"
             type="button"
             onclick="closeAdminProductForm()">
-
             ←
         </button>
 
         <h2 id="adminProductFormTitle">
             Mahsulot qo‘shish
         </h2>
-
     </div>
 
+    <input id="adminProductId" type="hidden">
 
-    <input
-        id="adminProductId"
-        type="hidden">
+    <div class="admin-product-fields">
 
+        <div class="admin-product-field">
+            <label for="adminProductName">Mahsulot nomi</label>
+            <input
+                id="adminProductName"
+                type="text"
+                placeholder="Masalan: Pepsi 1L">
+        </div>
 
-    <label>
-        Mahsulot nomi
-    </label>
+        <div class="admin-product-field">
+            <label for="adminProductCategory">Kategoriya</label>
+            <select id="adminProductCategory"></select>
+        </div>
 
-    <input
-        id="adminProductName"
-        type="text"
-        placeholder="Masalan: Pepsi 1L">
+        <div class="admin-product-field">
+            <label for="adminProductPrice">Narx</label>
+            <input
+                id="adminProductPrice"
+                type="number"
+                min="0"
+                placeholder="12000">
+        </div>
 
+        <div class="admin-product-field">
+            <label for="adminProductUnit">Birlik</label>
+            <select id="adminProductUnit">
+                <option value="dona">Dona</option>
+                <option value="kg">Kg</option>
+            </select>
+        </div>
 
-    <label>
-        Kategoriya
-    </label>
+        <div class="admin-product-field">
+            <label>Mahsulot rasmi</label>
 
-    <select
-        id="adminProductCategory">
-    </select>
+            <div
+                id="adminProductImageBox"
+                class="admin-product-image-box">
 
+                <input
+                    id="adminProductImageFile"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    hidden
+                    onchange="previewAdminProductImage(event)">
 
-    <label>
-        Narx
-    </label>
+                <button
+                    id="adminProductImageButton"
+                    type="button"
+                    class="admin-product-image-button"
+                    onclick="document.getElementById('adminProductImageFile').click()">
 
-    <input
-        id="adminProductPrice"
-        type="number"
-        min="0"
-        placeholder="12000">
+                    <span class="admin-product-image-plus">＋</span>
+                    <span>Rasm qo‘shish</span>
+                    <small>JPG · PNG · WEBP</small>
+                </button>
+            </div>
+        </div>
 
-
-    <label>
-        Birlik
-    </label>
-
-    <select
-        id="adminProductUnit">
-
-        <option value="dona">
-            Dona
-        </option>
-
-        <option value="kg">
-            Kg
-        </option>
-
-    </select>
-
-
-        <label>
-        Mahsulot rasmi
-    </label>
-
-    <div
-        id="adminProductImageBox"
-        class="admin-product-image-box">
-
-        <input
-    id="adminProductImageFile"
-    type="file"
-    accept="image/png,image/jpeg,image/webp"
-    hidden
-    onchange="previewAdminProductImage(event)">
-
-        <button
-            id="adminProductImageButton"
-            type="button"
-            class="admin-product-image-button"
-            onclick="document.getElementById('adminProductImageFile').click()">
-
-            <span class="admin-product-image-plus">
-                ＋
-            </span>
-
-            <span>
-                Rasm qo‘shish
-            </span>
-
-            <small>
-                JPG · PNG · WEBP
-            </small>
-
-        </button>
+        <div class="admin-product-field">
+            <label for="adminProductRelated">
+                Related mahsulot IDlari
+            </label>
+            <input
+                id="adminProductRelated"
+                type="text"
+                placeholder="549,550">
+        </div>
 
     </div>
-
-
-    <label>
-        Related mahsulot IDlari
-    </label>
-
-    <input
-        id="adminProductRelated"
-        type="text"
-        placeholder="549,550">
-
 
     <button
         id="adminProductSaveButton"
         class="order-button"
         type="button"
         onclick="saveAdminProduct()">
-
         Saqlash
-
     </button>
 
 </div>
-   
-
-<script>
-
-   function openCategoriesPage() {
-
-    document.querySelectorAll(".container").forEach(page => {
-        page.classList.add("hidden");
-    });
-
-    document
-        .getElementById("categoriesPage")
-        .classList.remove("hidden");
-
-    renderCategories();
-}
-   
+  
    /* =========================================================
    OPEN SEARCH PAGE
 ========================================================= */
