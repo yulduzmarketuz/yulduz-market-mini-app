@@ -9128,6 +9128,18 @@ body.dark .premium-category-arrow {
         type="text"
         placeholder="549,550">
 
+  
+<button
+    id="adminProductDeleteButton"
+    type="button"
+    onclick="deleteAdminProduct()"
+    style="display:none; width:100%; margin-bottom:10px; padding:12px; border:0; border-radius:12px; background:#dc2626; color:white; font-weight:700;">
+
+    🗑️ Mahsulotni o‘chirish
+
+</button>
+
+
 
     <button
         id="adminProductSaveButton"
@@ -9814,6 +9826,13 @@ async function loadProductsFromAPI() {
 
     form.classList.remove("hidden");
 
+      const deleteButton =
+    document.getElementById("adminProductDeleteButton");
+
+if (deleteButton) {
+    deleteButton.style.display = "block";
+}
+
 
     document.getElementById(
         "adminProductFormTitle"
@@ -10152,6 +10171,51 @@ if (id) {
     await loadProductsFromAPI();
 
 }
+  
+async function deleteAdminProduct() {
+    const id = document.getElementById("adminProductId").value;
+
+    if (!id) {
+        alert("O‘chirish uchun mahsulot tanlanmagan.");
+        return;
+    }
+
+    const name = document.getElementById("adminProductName").value.trim();
+
+    if (!confirm(`«${name}» mahsulotini butunlay o‘chirmoqchimisiz? Bu amalni ortga qaytarib bo‘lmaydi.`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `https://yulduz-market-mini-app.pardayevx055.workers.dev/products/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "X-Telegram-Init-Data": getTelegramInitData()
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            alert(data.error || "Mahsulotni o‘chirishda xatolik.");
+            return;
+        }
+
+        alert("Mahsulot o‘chirildi.");
+
+        closeAdminProductForm();
+
+        await loadProductsFromAPI();
+
+    } catch (error) {
+        console.error("Mahsulotni o‘chirishda xatolik:", error);
+        alert("Ulanishda xatolik. Mahsulot o‘chirilmagan bo‘lishi mumkin.");
+    }
+}
+
    function openAdminProductForm() {
 
     hideAll();
@@ -10167,6 +10231,13 @@ if (id) {
         "Mahsulot qo‘shish";
 
     document.getElementById("adminProductId").value = "";
+
+    const deleteButton =
+    document.getElementById("adminProductDeleteButton");
+
+      if (deleteButton) {
+      deleteButton.style.display = "none";
+    }  
 
     document.getElementById("adminProductName").value = "";
 
