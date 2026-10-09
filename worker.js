@@ -2014,16 +2014,23 @@ if (
     const body =
       await request.json();
 
-    const {
-      name,
-      category,
-      price,
-      unit,
-      image,
-      icon,
-      visible,
-      related
-    } = body;
+    
+      const {
+        name,
+        category,
+        price,
+        unit,
+        image,
+        icon,
+        visible,
+        related,
+        description,
+        calories,
+        protein,
+        fat,
+        carbs
+     } = body;
+
 
 
     if (
@@ -2045,38 +2052,48 @@ if (
       Date.now();
 
 
-    await env.DB
-      .prepare(`
-        INSERT INTO products
-        (
-          id,
-          name,
-          category,
-          price,
-          unit,
-          image,
-          icon,
-          visible,
-          related
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `)
-      .bind(
-        id,
-        name,
-        category,
-        Number(price),
-        unit || "dona",
-        image || null,
-        icon || "📦",
-        visible === false ? 0 : 1,
-        JSON.stringify(
-          Array.isArray(related)
-            ? related
-            : []
-        )
-      )
-      .run();
+    
+await env.DB
+  .prepare(`
+    INSERT INTO products
+    (
+      id,
+      name,
+      category,
+      price,
+      unit,
+      image,
+      icon,
+      visible,
+      related,
+      description,
+      calories,
+      protein,
+      fat,
+      carbs
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `)
+  .bind(
+    id,
+    name,
+    category,
+    Number(price),
+    unit || "dona",
+    image || null,
+    icon || "📦",
+    visible === false ? 0 : 1,
+    JSON.stringify(
+      Array.isArray(related) ? related : []
+    ),
+    description || null,
+    calories === "" || calories == null ? null : Number(calories),
+    protein === "" || protein == null ? null : Number(protein),
+    fat === "" || fat == null ? null : Number(fat),
+    carbs === "" || carbs == null ? null : Number(carbs)
+  )
+  .run();
+
 
 
     return json({
@@ -2163,48 +2180,63 @@ if (
     const body =
       await request.json();
 
-    const {
-      name,
-      category,
-      price,
-      unit,
-      image,
-      icon,
-      visible,
-      related
-    } = body;
-
-    await env.DB
-      .prepare(`
-        UPDATE products
-        SET
-          name = ?,
-          category = ?,
-          price = ?,
-          unit = ?,
-          image = ?,
-          icon = ?,
-          visible = ?,
-          related = ?,
-          updated_at = CURRENT_TIMESTAMP
-        WHERE id = ?
-      `)
-      .bind(
+    
+      const {
         name,
         category,
-        Number(price),
-        unit || "dona",
-        image || null,
-        icon || "📦",
-        visible === false ? 0 : 1,
-        JSON.stringify(
-          Array.isArray(related)
-            ? related
-            : []
-        ),
-        id
-      )
-      .run();
+        price,
+        unit,
+        image,
+        icon,
+        visible,
+        related,
+        description,
+        calories,
+        protein,
+        fat,
+        carbs
+      } = body;
+
+
+    await env.DB
+  .prepare(`
+    UPDATE products
+    SET
+      name = ?,
+      category = ?,
+      price = ?,
+      unit = ?,
+      image = ?,
+      icon = ?,
+      visible = ?,
+      related = ?,
+      description = ?,
+      calories = ?,
+      protein = ?,
+      fat = ?,
+      carbs = ?,
+      updated_at = CURRENT_TIMESTAMP
+    WHERE id = ?
+  `)
+  .bind(
+    name,
+    category,
+    Number(price),
+    unit || "dona",
+    image || null,
+    icon || "📦",
+    visible === false ? 0 : 1,
+    JSON.stringify(
+      Array.isArray(related) ? related : []
+    ),
+    description || null,
+    calories === "" || calories == null ? null : Number(calories),
+    protein === "" || protein == null ? null : Number(protein),
+    fat === "" || fat == null ? null : Number(fat),
+    carbs === "" || carbs == null ? null : Number(carbs),
+    id
+  )
+  .run();
 
     return json({
       success: true,
