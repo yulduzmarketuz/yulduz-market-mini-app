@@ -1914,17 +1914,24 @@ if (
 
         const result =
           await env.DB.prepare(`
-            SELECT
-              id,
-              name,
-              category,
-              price,
-              unit,
-              image,
-              icon,
-              visible,
-              related
-            FROM products
+            
+        SELECT
+        id,
+        name,
+        category,
+        price,
+        unit,
+        image,
+        icon,
+        visible,
+        related,
+        description,
+        calories,
+        protein,
+        fat,
+        carbs
+        FROM products
+
             WHERE visible = 1
             ORDER BY id ASC
           `)
