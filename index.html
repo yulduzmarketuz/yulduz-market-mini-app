@@ -12702,6 +12702,21 @@ function createProductCard(product) {
     return card;
 
 }
+   
+function openProductDetail(productId) {
+
+    const product = Object.values(products)
+        .flat()
+        .find(item => String(item.id) === String(productId));
+
+    if (!product) {
+        alert("Mahsulot topilmadi.");
+        return;
+    }
+
+    alert(product.name);
+}
+
 
 /* =========================================================
    OPEN CATEGORY
