@@ -9127,6 +9127,58 @@ body.dark .premium-category-arrow {
         id="adminProductRelated"
         type="text"
         placeholder="549,550">
+   <label>
+    Mahsulot tavsifi
+</label>
+
+<textarea
+    id="adminProductDescription"
+    rows="3"
+    placeholder="Mahsulot haqida qisqacha ma’lumot"></textarea>
+
+<label>
+    Kaloriya (100 g uchun)
+</label>
+
+<input
+    id="adminProductCalories"
+    type="number"
+    min="0"
+    step="any"
+    placeholder="Masalan: 250">
+
+<label>
+    Oqsil (100 g uchun)
+</label>
+
+<input
+    id="adminProductProtein"
+    type="number"
+    min="0"
+    step="any"
+    placeholder="Masalan: 8">
+
+<label>
+    Yog‘ (100 g uchun)
+</label>
+
+<input
+    id="adminProductFat"
+    type="number"
+    min="0"
+    step="any"
+    placeholder="Masalan: 12">
+
+<label>
+    Uglevod (100 g uchun)
+</label>
+
+<input
+    id="adminProductCarbs"
+    type="number"
+    min="0"
+    step="any"
+    placeholder="Masalan: 30">
 
 <button
     id="adminProductDeleteButton"
@@ -9765,7 +9817,12 @@ async function loadProductsFromAPI() {
                         visible: Boolean(product.visible),
                         related: Array.isArray(product.related)
                             ? product.related
-                            : []
+                            : [],
+                        description: product.description || "",
+                        calories: product.calories ?? "",
+                        protein: product.protein ?? "",
+                        fat: product.fat ?? "",
+                        carbs: product.carbs ?? ""
                     }
                 );
 
@@ -9857,6 +9914,20 @@ if (deleteButton) {
         "adminProductPrice"
     ).value =
         product.price || "";
+      document.getElementById("adminProductDescription").value =
+    product.description || "";
+
+document.getElementById("adminProductCalories").value =
+    product.calories ?? "";
+
+document.getElementById("adminProductProtein").value =
+    product.protein ?? "";
+
+document.getElementById("adminProductFat").value =
+    product.fat ?? "";
+
+document.getElementById("adminProductCarbs").value =
+    product.carbs ?? "";
 
 
     document.getElementById(
@@ -9985,6 +10056,20 @@ if (deleteButton) {
         document
             .getElementById("adminProductUnit")
             .value;
+      const description =
+    document.getElementById("adminProductDescription").value.trim();
+
+const calories =
+    document.getElementById("adminProductCalories").value;
+
+const protein =
+    document.getElementById("adminProductProtein").value;
+
+const fat =
+    document.getElementById("adminProductFat").value;
+
+const carbs =
+    document.getElementById("adminProductCarbs").value;
 
     const imageFile =
         document
@@ -10118,21 +10203,31 @@ if (id) {
 
                         name,
 
-                        category,
-
-                        price,
-
-                        unit,
-
-                        image,
-
-                        icon:
-                            "📦",
-
-                        related:
-                            []
-
-                    })
+                      category,
+                  
+                      price,
+                  
+                      unit,
+                  
+                      image,
+                  
+                      icon:
+                          "📦",
+                  
+                      related:
+                          [],
+                  
+                      description,
+                  
+                      calories,
+                  
+                      protein,
+                  
+                      fat,
+                  
+                      carbs
+                  
+                  })
             }
         );
 
@@ -10243,6 +10338,16 @@ async function deleteAdminProduct() {
     document.getElementById("adminProductName").value = "";
 
     document.getElementById("adminProductPrice").value = "";
+    
+    document.getElementById("adminProductDescription").value = "";
+
+    document.getElementById("adminProductCalories").value = "";
+   
+    document.getElementById("adminProductProtein").value = "";
+   
+    document.getElementById("adminProductFat").value = "";
+   
+    document.getElementById("adminProductCarbs").value = "";
 
     document.getElementById("adminProductUnit").value = "dona";
 
