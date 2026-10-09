@@ -12809,6 +12809,7 @@ function createProductCard(product) {
 }
    
 
+
 function openProductDetail(productId) {
     const product = Object.values(products)
         .flat()
@@ -12824,12 +12825,21 @@ function openProductDetail(productId) {
     const price = document.getElementById("productDetailPrice");
     const addButton = document.getElementById("productDetailAddButton");
 
-    const safe = value => String(value ?? "---")
+    const safe = value => String(value ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#39;");
+
+    const nutritionValue = (value, unit) => {
+        if (value === "" || value === null || value === undefined) {
+            return "---";
+        }
+
+        const number = Number(value);
+        return Number.isFinite(number) ? `${number} ${unit}` : "---";
+    };
 
     content.innerHTML = `
         <div style="text-align:center;">
@@ -12846,38 +12856,44 @@ function openProductDetail(productId) {
         </h2>
 
         <h3 style="font-size:17px;margin:20px 0 8px;">Mahsulot haqida</h3>
-        <p style="color:#6b7280;line-height:1.6;">---</p>
+        <p style="color:#6b7280;line-height:1.6;white-space:pre-wrap;">${
+            safe(product.description || "Hozircha tavsif kiritilmagan.")
+        }</p>
 
         <h3 style="font-size:17px;margin:20px 0 8px;">100 g tarkibi</h3>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
             <div style="background:#f3f4f6;padding:14px;border-radius:12px;">
                 <div style="color:#6b7280;font-size:13px;">Kaloriya</div>
-                <strong>--- kkal</strong>
+                <strong>${safe(nutritionValue(product.calories, "kkal"))}</strong>
             </div>
             <div style="background:#f3f4f6;padding:14px;border-radius:12px;">
                 <div style="color:#6b7280;font-size:13px;">Oqsil</div>
-                <strong>--- g</strong>
+                <strong>${safe(nutritionValue(product.protein, "g"))}</strong>
             </div>
             <div style="background:#f3f4f6;padding:14px;border-radius:12px;">
                 <div style="color:#6b7280;font-size:13px;">Yog‘</div>
-                <strong>--- g</strong>
+                <strong>${safe(nutritionValue(product.fat, "g"))}</strong>
             </div>
             <div style="background:#f3f4f6;padding:14px;border-radius:12px;">
                 <div style="color:#6b7280;font-size:13px;">Uglevod</div>
-                <strong>--- g</strong>
+                <strong>${safe(nutritionValue(product.carbs, "g"))}</strong>
             </div>
         </div>
 
         <h3 style="font-size:17px;margin:24px 0 10px;">Sizga tavsiya etamiz</h3>
-        <p style="color:#6b7280;">---</p>
+        <p style="color:#6b7280;">Tez orada bu yerda tavsiya etiladigan mahsulotlar chiqadi.</p>
     `;
 
     price.textContent = `${formatPrice(product.price)} so‘m`;
 
     addButton.onclick = function () {
-        alert("Savat tugmasini mavjud savat tizimiga keyingi qadamda ulaymiz.");
-    };
+    if (product.unit === "kg") {
+        addWeightProduct(product.id);
+    } else {
+        addToCart(product.id);
+    }
+};
 
     overlay.style.display = "block";
     document.body.style.overflow = "hidden";
@@ -12887,6 +12903,7 @@ function closeProductDetail() {
     document.getElementById("productDetailOverlay").style.display = "none";
     document.body.style.overflow = "";
 }
+
 
 
 
