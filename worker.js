@@ -326,9 +326,30 @@ function buildAdminOrderMessage(data, orderNumber) {
     data.phone ||
     "Telefon yo‘q";
 
-  const address =
-    data.address_name ||
-    "Lokatsiya";
+  
+  const address = data.address_name || "Lokatsiya";
+
+  const latitude = Number(data.latitude);
+  const longitude = Number(data.longitude);
+
+  const hasCoordinates =
+    data.latitude !== null &&
+    data.latitude !== undefined &&
+    data.latitude !== "" &&
+    data.longitude !== null &&
+    data.longitude !== undefined &&
+    data.longitude !== "" &&
+    Number.isFinite(latitude) &&
+    Number.isFinite(longitude) &&
+    latitude >= -90 &&
+    latitude <= 90 &&
+    longitude >= -180 &&
+    longitude <= 180;
+
+  const locationLink = hasCoordinates
+    ? `https://www.google.com/maps?q=${latitude},${longitude}`
+    : "";
+
 
   const payment =
     data.payment_method === "cash"
@@ -383,7 +404,10 @@ ${itemsText}
 
 💳 To‘lov: ${payment}
 
+
 📍 Manzil: ${address}
+${locationLink ? `🗺 Xarita orqali ochish: ${locationLink}\n` : ""}
+
 
 ${data.address_extra ? `📝 Qo‘shimcha: ${data.address_extra}\n` : ""}${data.note ? `💬 Izoh: ${data.note}\n` : ""}
 🟡 Holat: Yangi`;
