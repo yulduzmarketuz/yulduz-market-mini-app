@@ -677,7 +677,7 @@ button {
     box-shadow: 0 2px 6px rgba(0,0,0,.06);
 }
 
-..quantity-minus,
+.quantity-minus,
 .quantity-plus {
     width: 22px;
     height: 28px;
@@ -14340,8 +14340,10 @@ function updateProductButton(id) {
     const isPlus =
         e.target.closest(".quantity-plus");
 
-    const isMinus =
-        e.target.closest(".quantity-minus");  
+    const isMinus = e.target.closest(".quantity-minus"); 
+      if (isMinus) {
+    console.log("MINUS BOSILDI");
+}
 
 
     /* =====================================================
