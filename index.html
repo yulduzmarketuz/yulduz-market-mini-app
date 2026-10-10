@@ -9812,6 +9812,7 @@ async function loadProductsFromAPI() {
                         category: product.category,
                         name: product.name,
                         price: Number(product.price) || 0,
+                        old_price: Number(product.old_price) || null,
                         unit: product.unit || "dona",
                         image: product.image || null,
                         icon: product.icon || "📦",
@@ -12746,12 +12747,33 @@ function createProductCard(product) {
             class="product-info"
             onclick="openProductDetail(${product.id})">
 
-            <div class="product-price">
+            
+<div class="product-price">
 
-                ${formatPrice(product.price)}
-                <span>so‘m</span>
-
+    ${
+        product.old_price &&
+        Number(product.old_price) > Number(product.price)
+        ? `
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span style="color:#9ca3af;text-decoration:line-through;font-size:12px;font-weight:400;">
+                    ${formatPrice(product.old_price)} so‘m
+                </span>
+                <span style="background:#dcfce7;color:#15803d;padding:2px 5px;border-radius:5px;font-size:11px;font-weight:600;">
+                    -${Math.round((1 - Number(product.price) / Number(product.old_price)) * 100)}%
+                </span>
             </div>
+            <div style="color:#16A34A;font-weight:700;">
+                ${formatPrice(product.price)} <span>so‘m</span>
+            </div>
+        `
+        : `
+            ${formatPrice(product.price)}
+            <span>so‘m</span>
+        `
+    }
+
+</div>
+
 
 
             <div class="product-name">
@@ -12886,7 +12908,33 @@ function openProductDetail(productId) {
         <p style="color:#6b7280;">Tez orada bu yerda tavsiya etiladigan mahsulotlar chiqadi.</p>
     `;
 
+    
+const hasDiscount =
+    product.old_price &&
+    Number(product.old_price) > Number(product.price);
+
+if (hasDiscount) {
+    const discountPercent = Math.round(
+        (1 - Number(product.price) / Number(product.old_price)) * 100
+    );
+
+    price.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;">
+            <span style="color:#9ca3af;text-decoration:line-through;font-size:14px;font-weight:400;">
+                ${formatPrice(product.old_price)} so‘m
+            </span>
+            <span style="background:#dcfce7;color:#15803d;padding:3px 7px;border-radius:6px;font-size:12px;font-weight:600;">
+                -${discountPercent}%
+            </span>
+        </div>
+        <div style="color:#16A34A;font-size:22px;font-weight:700;margin-top:5px;">
+            ${formatPrice(product.price)} so‘m
+        </div>
+    `;
+} else {
     price.textContent = `${formatPrice(product.price)} so‘m`;
+}
+
 
     addButton.onclick = function () {
     if (product.unit === "kg") {
