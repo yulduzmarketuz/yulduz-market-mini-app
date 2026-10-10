@@ -12990,13 +12990,65 @@ if (hasDiscount) {
 }
 
 
-    addButton.onclick = function () {
-    if (product.unit === "kg") {
-        addWeightProduct(product.id);
-    } else {
-        addToCart(product.id);
+    
+function updateDetailAddButton(product) {
+    const addButton = document.getElementById("productDetailAddButton");
+    if (!addButton) return;
+
+    const selectedUnit = product.unit === "kg" ? "kg" : "dona";
+
+    const item = cart.find(cartItem =>
+        String(cartItem.id) === String(product.id) &&
+        (cartItem.selectedUnit || cartItem.unit) === selectedUnit
+    );
+
+    const quantity = item ? Math.max(0, Number(item.quantity) || 0) : 0;
+
+    if (quantity <= 0) {
+        addButton.innerHTML = "Savatga";
+        addButton.onclick = function () {
+            if (selectedUnit === "kg") {
+                addWeightProduct(product.id);
+            } else {
+                addToCart(product.id);
+            }
+            updateDetailAddButton(product);
+        };
+        return;
     }
+
+    addButton.innerHTML = `
+        <span style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:20px;">
+            <span class="quantity-minus" role="button" aria-label="Kamaytirish">−</span>
+            <strong>${quantity}${selectedUnit === "kg" ? " kg" : " dona"}</strong>
+            <span class="quantity-plus" role="button" aria-label="Ko‘paytirish">+</span>
+        </span>
+    `;
+
+    addButton.onclick = function (event) {
+    const target = event.target;
+
+    const index = cart.findIndex(cartItem =>
+        String(cartItem.id) === String(product.id) &&
+        (cartItem.selectedUnit || cartItem.unit) === selectedUnit
+    );
+
+    if (index < 0) return;
+
+    if (target.closest(".quantity-plus")) {
+        increaseCartItem(index);
+    } else if (target.closest(".quantity-minus")) {
+        decreaseCartItem(index);
+    } else {
+        return;
+    }
+
+    updateDetailAddButton(product);
 };
+};
+
+updateDetailAddButton(product);
+
 
     overlay.style.display = "block";
     document.body.style.overflow = "hidden";
