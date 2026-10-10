@@ -9809,6 +9809,7 @@ async function loadProductsFromAPI() {
                 products[product.category].push(
                     {
                         id: product.id,
+                        category: product.category,
                         name: product.name,
                         price: Number(product.price) || 0,
                         unit: product.unit || "dona",
