@@ -12916,9 +12916,66 @@ function openProductDetail(productId) {
             </div>
         </div>
 
-        <h3 style="font-size:17px;margin:24px 0 10px;">Sizga tavsiya etamiz</h3>
-        <p style="color:#6b7280;">Tez orada bu yerda tavsiya etiladigan mahsulotlar chiqadi.</p>
+        
+<h3 style="font-size:17px;margin:24px 0 10px;">Sizga tavsiya etamiz</h3>
+
+<div id="productDetailRecommendations"
+     style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;">
+</div>
+
     `;
+   
+    const recommendationContainer = document.getElementById(
+        "productDetailRecommendations"
+    );
+
+    const currentName = product.name.trim().toLowerCase();
+    const firstWord = currentName.split(/\s+/)[0];
+
+    const recommendedProducts = Object.values(products)
+        .flat()
+        .filter(item => item.visible)
+        .filter(item => String(item.id) !== String(product.id))
+        .filter(item =>
+            item.name.trim().toLowerCase().startsWith(firstWord)
+        )
+        .slice(0, 6);
+
+    recommendationContainer.innerHTML = "";
+
+    recommendedProducts.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "recommendation-card";
+
+        const image = item.image
+            ? `<img src="${item.image}" alt="${item.name}" style="width:100%;height:110px;object-fit:contain;">`
+            : `<div style="font-size:48px;text-align:center;padding:20px 0;">${item.icon || "🛒"}</div>`;
+
+        card.innerHTML = `
+            <div class="recommendation-image">${image}</div>
+            <div class="recommendation-name">${item.name}</div>
+            <div class="recommendation-price">${formatPrice(item.price)} so‘m</div>
+            <button type="button" class="recommendation-add-button">
+                Savatga +
+            </button>
+        `;
+
+        card.querySelector(".recommendation-add-button").onclick = function () {
+            if (item.unit === "kg") {
+                addWeightProduct(item.id);
+            } else {
+                addToCart(item.id);
+            }
+        };
+
+        recommendationContainer.appendChild(card);
+    });
+
+    if (recommendedProducts.length === 0) {
+        recommendationContainer.innerHTML =
+            '<p style="color:#6b7280;grid-column:1/-1;">Hozircha o‘xshash mahsulot topilmadi.</p>';
+    }
+
 
     
 const hasDiscount =
