@@ -13705,46 +13705,41 @@ function showCategoryRecommendations(
     }
 
 
-    let relatedIds = [];
+    
+    const allProducts = Object.values(products)
+        .flat()
+        .filter(product => product.visible);
 
+    const related = [];
 
-    categoryProducts.forEach(
-        product => {
+    categoryProducts.forEach(currentProduct => {
+        const firstWord = currentProduct.name
+            .trim()
+            .split(/\s+/)[0]
+            .toLowerCase();
+
+        if (!firstWord) return;
+
+        allProducts.forEach(product => {
+            if (
+                String(product.id) === String(currentProduct.id)
+            ) return;
+
+            const name = product.name
+                .trim()
+                .toLowerCase();
 
             if (
-                Array.isArray(
-                    product.related
+                name.startsWith(firstWord) &&
+                !related.some(
+                    item => String(item.id) === String(product.id)
                 )
             ) {
-
-                relatedIds =
-                    relatedIds.concat(
-                        product.related
-                    );
-
+                related.push(product);
             }
+        });
+    });
 
-        }
-    );
-
-
-    const related =
-        relatedIds
-        .map(id =>
-            findProduct(id)
-        )
-        .filter(Boolean)
-        .filter(
-            product =>
-            product.visible
-        )
-        .filter(
-            (product,index,array) =>
-            array.findIndex(
-                item =>
-                item.id === product.id
-            ) === index
-        );
 
 
     if (
