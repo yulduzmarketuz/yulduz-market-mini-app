@@ -1920,6 +1920,7 @@ if (
         name,
         category,
         price,
+        old_price,
         unit,
         image,
         icon,
@@ -2197,6 +2198,37 @@ if (
         carbs
       } = body;
 
+    const currentProduct = await env.DB.prepare(`
+  SELECT price, old_price
+  FROM products
+  WHERE id = ?
+`)
+  .bind(id)
+  .first();
+
+if (!currentProduct) {
+  return json({
+    error: "Mahsulot topilmadi"
+  }, 404);
+}
+
+
+const newPrice = Number(price);
+const currentPrice = Number(currentProduct.price);
+const existingOldPrice = Number(currentProduct.old_price || 0);
+
+let oldPrice = null;
+
+if (newPrice < currentPrice) {
+  oldPrice =
+    existingOldPrice > currentPrice
+      ? existingOldPrice
+      : currentPrice;
+} else if (existingOldPrice > newPrice) {
+  oldPrice = existingOldPrice;
+}
+
+
 
     await env.DB
   .prepare(`
@@ -2204,6 +2236,7 @@ if (
     SET
       name = ?,
       category = ?,
+      old_price = ?,
       price = ?,
       unit = ?,
       image = ?,
@@ -2221,6 +2254,7 @@ if (
   .bind(
     name,
     category,
+    oldPrice || null,
     Number(price),
     unit || "dona",
     image || null,
