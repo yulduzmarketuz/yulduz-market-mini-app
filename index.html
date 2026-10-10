@@ -14481,20 +14481,21 @@ const item = cart.find(
     updateProductButton(id);
 
 });
-   document.addEventListener("touchstart", function (e) {
+   
+document.addEventListener("pointerdown", function (e) {
+    const button = e.target.closest(
+        ".quantity-plus, .quantity-minus"
+    );
 
-    const button =
-        e.target.closest(".quantity-plus, .quantity-minus");
+    if (!button) return;
 
-    if (!button) {
-        return;
+    const haptic = window.Telegram?.WebApp?.HapticFeedback;
+
+    if (haptic) {
+        haptic.impactOccurred("light");
     }
-
-    if (navigator.vibrate) {
-        navigator.vibrate(50);
-    }
-
 }, { passive: true });
+
 
 /* =========================================================
    UPDATE CART
