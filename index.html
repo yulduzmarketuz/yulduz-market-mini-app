@@ -12941,40 +12941,25 @@ function openProductDetail(productId) {
         )
         .slice(0, 6);
 
+    
     recommendationContainer.innerHTML = "";
 
-    recommendedProducts.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "recommendation-card";
+    recommendationContainer.style.display = "grid";
+    recommendationContainer.style.gridTemplateColumns =
+        "repeat(3, minmax(0, 1fr))";
+    recommendationContainer.style.gap = "10px";
 
-        const image = item.image
-            ? `<img src="${item.image}" alt="${item.name}" style="width:100%;height:110px;object-fit:contain;">`
-            : `<div style="font-size:48px;text-align:center;padding:20px 0;">${item.icon || "🛒"}</div>`;
+    if (recommendedProducts.length > 0) {
+        recommendedProducts.forEach(item => {
+            const card = createProductCard(item);
 
-        card.innerHTML = `
-            <div class="recommendation-image">${image}</div>
-            <div class="recommendation-name">${item.name}</div>
-            <div class="recommendation-price">${formatPrice(item.price)} so‘m</div>
-            <button type="button" class="recommendation-add-button">
-                Savatga +
-            </button>
-        `;
-
-        card.querySelector(".recommendation-add-button").onclick = function () {
-            if (item.unit === "kg") {
-                addWeightProduct(item.id);
-            } else {
-                addToCart(item.id);
-            }
-        };
-
-        recommendationContainer.appendChild(card);
-    });
-
-    if (recommendedProducts.length === 0) {
+            recommendationContainer.appendChild(card);
+        });
+    } else {
         recommendationContainer.innerHTML =
             '<p style="color:#6b7280;grid-column:1/-1;">Hozircha o‘xshash mahsulot topilmadi.</p>';
     }
+
 
 
     
