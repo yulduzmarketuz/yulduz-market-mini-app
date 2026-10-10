@@ -14275,62 +14275,42 @@ showToast(
 );
 
 }
-   function updateProductButton(id) {
+   
+function updateProductButton(id) {
+    const product = findProduct(id);
+    if (!product) return;
 
-    const button =
-        document.querySelector(
-            `.add-button[data-product-id="${id}"]`
+    document.querySelectorAll(
+        `.add-button[data-product-id="${id}"]`
+    ).forEach(button => {
+        const selectedUnit = product.unit === "kg" ? "kg" : "dona";
+
+        const item = cart.find(cartItem =>
+            cartItem.id === id &&
+            (cartItem.selectedUnit || cartItem.unit) === selectedUnit
         );
 
-    if (!button) {
-        return;
-    }
+        const quantity = item
+            ? Math.max(0, Number(item.quantity) || 0)
+            : 0;
 
-
-    const product =
-        findProduct(id);
-
-    if (!product) {
-        return;
-    }
-
-
-    const item =
-        cart.find(
-            item =>
-                item.id === id &&
-                item.unit === product.unit
-        );
-
-
-    const quantity =
-        item
-        ? Number(item.quantity) || 0
-        : 0;
-
-
-    if (quantity <= 0) {
-
-        button.innerHTML = `<span>+</span>`;
-
-        return;
-    }
-
-
-    const unitText =
-        product.unit === "kg"
-        ? "kg"
-        : "dona";
-
-
-    button.innerHTML = `
-        <span class="quantity-minus">−</span>
-        <span class="quantity-value">
-            ${quantity} ${unitText}
-        </span>
-        <span class="quantity-plus">+</span>
-    `;
+        if (quantity <= 0) {
+    button.innerHTML = `<span>Savatga</span>`;
+    return;
 }
+
+        const unitText = selectedUnit === "kg" ? "kg" : "dona";
+
+        button.innerHTML = `
+            <span class="quantity-minus">−</span>
+            <span class="quantity-value">${quantity} ${unitText}</span>
+            <span class="quantity-plus">+</span>
+        `;
+    });
+}
+
+
+    
    document.addEventListener("click", function (e) {
 
     const addButton =
@@ -14372,12 +14352,11 @@ showToast(
 
         if (product.unit === "kg") {
 
-            const existingItem =
-                cart.find(
-                    item =>
-                        item.id === id &&
-                        item.unit === "kg"
-                );
+            const existingItem = cart.find(
+    item =>
+        item.id === id &&
+        (item.selectedUnit || item.unit) === "kg"
+);
 
 
             if (existingItem) {
@@ -14420,12 +14399,15 @@ showToast(
 
     if (isPlus) {
 
-        const item =
-            cart.find(
-                item =>
-                    item.id === id &&
-                    item.unit === product.unit
-            );
+        
+const selectedUnit = product.unit === "kg" ? "kg" : "dona";
+
+const item = cart.find(
+    item =>
+        item.id === id &&
+        (item.selectedUnit || item.unit) === selectedUnit
+);
+
 
 
         if (!item) {
@@ -14445,12 +14427,15 @@ showToast(
 
     if (isMinus) {
 
-        const item =
-            cart.find(
-                item =>
-                    item.id === id &&
-                    item.unit === product.unit
-            );
+        
+const selectedUnit = product.unit === "kg" ? "kg" : "dona";
+
+const item = cart.find(
+    item =>
+        item.id === id &&
+        (item.selectedUnit || item.unit) === selectedUnit
+);
+
 
 
         if (!item) {
@@ -14464,14 +14449,13 @@ showToast(
 
         if (item.quantity <= 0) {
 
-            cart =
-                cart.filter(
-                    cartItem =>
-                        !(
-                            cartItem.id === id &&
-                            cartItem.unit === product.unit
-                        )
-                );
+            cart = cart.filter(
+    cartItem =>
+        !(
+            cartItem.id === id &&
+            (cartItem.selectedUnit || cartItem.unit) === selectedUnit
+        )
+);
 
         }
 
