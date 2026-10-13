@@ -31,18 +31,6 @@
     --success: #edf9ed;
 }
 
-body.dark {
-    --bg: #111111;
-    --card: #1d1d1d;
-    --text: #f5f5f5;
-    --muted: #aaaaaa;
-    --border: #303030;
-    --button: #f5f5f5;
-    --button-text: #111111;
-    --danger: #351c1c;
-    --success: #193119;
-}
-
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -1805,24 +1793,6 @@ button {
     box-shadow:
         0 4px 12px rgba(22, 163, 74, 0.18);
 }
-
-/* =========================================================
-   DARK MODE
-========================================================= */
-
-@media (prefers-color-scheme: dark) {
-
-    #orderPage .order-section {
-        box-shadow:
-            0 4px 16px rgba(0, 0, 0, 0.15);
-    }
-
-    #orderPage .order-confirm-area {
-        background: var(--bg);
-    }
-
-}
-
 
 /* =========================================================
    MOBILE
@@ -5152,88 +5122,6 @@ button {
     }
 }
 
-
-/* =========================================================
-   DARK MODE
-========================================================= */
-
-body.dark .premium-category-card {
-
-    background:
-        #18201b;
-
-    border-color:
-        rgba(255,255,255,0.08);
-
-    box-shadow:
-        0 6px 20px rgba(0,0,0,0.26);
-}
-
-
-body.dark .premium-category-image::after {
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(0,0,0,0.00) 40%,
-            rgba(0,0,0,0.06) 60%,
-            rgba(0,0,0,0.36) 100%
-        );
-}
-
-
-body.dark .premium-category-glass {
-
-    background:
-        rgba(20,35,26,0.84);
-
-    border-color:
-        rgba(255,255,255,0.10);
-
-    box-shadow:
-        0 6px 20px rgba(0,0,0,0.25);
-}
-
-
-body.dark .premium-category-glass::before {
-
-    background:
-        #16A34A;
-}
-
-
-body.dark .premium-category-name {
-
-    color:
-        rgba(255,255,255,0.94);
-}
-
-
-body.dark .premium-category-description {
-
-    color:
-        rgba(255,255,255,0.65);
-}
-
-
-body.dark .premium-category-icon {
-
-    background:
-        rgba(22,163,74,0.13);
-
-    border-color:
-        rgba(22,163,74,0.16);
-}
-
-
-body.dark .premium-category-arrow {
-
-    background:
-        rgba(255,255,255,0.92);
-
-    color:
-        #123B2A;
-}
    /* =========================================================
    FAVORITES FULL WIDTH EMPTY STATE
 ========================================================= */
@@ -10708,11 +10596,6 @@ let savedAddresses = [];
 let currentLanguage =
     localStorage.getItem("yulduz_language") || "uz";
 
-
-let darkMode =
-    localStorage.getItem("yulduz_dark_mode") === "true";
-
-
 /* =========================================================
    TRANSLATIONS
 ========================================================= */
@@ -10810,12 +10693,6 @@ const translations = {
 
         addAddress:
             "Yangi manzil qo‘shish",
-
-        darkMode:
-            "Tungi rejim",
-
-        darkModeSub:
-            "Qorong‘i mavzu",
 
         language:
             "Til",
@@ -11138,12 +11015,6 @@ const translations = {
 
         addAddress:
             "Добавить адрес",
-
-        darkMode:
-            "Тёмная тема",
-
-        darkModeSub:
-            "Тёмный режим",
 
         language:
             "Язык",
@@ -11876,50 +11747,6 @@ if (ruLanguage) {
 }
 
 }
-
-
-/* =========================================================
-   DARK MODE
-========================================================= */
-
-function applyDarkMode() {
-
-    document
-        .body
-        .classList
-        .toggle(
-            "dark",
-            darkMode
-        );
-
-
-    document
-        .getElementById("darkModeToggle")
-        .checked =
-        darkMode;
-
-}
-
-
-function toggleDarkMode() {
-
-    darkMode =
-        document
-        .getElementById("darkModeToggle")
-        .checked;
-
-
-    localStorage.setItem(
-        "yulduz_dark_mode",
-        darkMode
-    );
-
-
-    applyDarkMode();
-
-}
-
-
 /* =========================================================
    WELCOME
 ========================================================= */
@@ -18531,9 +18358,6 @@ function openSettings() {
         .classList
         .remove("hidden");
 
-
-    applyDarkMode();
-
 }
    /* =========================================================
    OPEN LANGUAGE
@@ -18800,8 +18624,6 @@ function showToast(message) {
 loadOrders();
 
 startOrdersAutoRefresh();
-
-applyDarkMode();
 
 applyTranslations();
 
