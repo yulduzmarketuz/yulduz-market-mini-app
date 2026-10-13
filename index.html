@@ -11339,6 +11339,16 @@ function renderRecommendedProducts() {
 
 recommendedProducts = getTopRecommendations(5) || [];
 
+   console.log(
+    "Tavsiya mahsulotlari:",
+    recommendedProducts.map((product, index) => ({
+        tartib: index + 1,
+        nomi: product.name,
+        id: product.id,
+        ball: product.recommendationScore
+    }))
+);
+
 const previousIndex = recommendedProducts.findIndex(
     product => String(product.id) === String(previousProductId)
 );
@@ -11880,6 +11890,7 @@ function getRecommendationHistory() {
     }
 
 }
+   
    /* =========================================================
    RECOMMENDATION HISTORY
 ========================================================= */
