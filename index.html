@@ -18508,6 +18508,30 @@ function hideAll() {
         button.classList.toggle("active", i === index);
     });
 }
+  
+/* =========================================================
+   GO HOME
+========================================================= */
+
+function goHome() {
+    hideAll();
+
+    const homePage = document.getElementById("homePage");
+
+    if (homePage) {
+        homePage.classList.remove("hidden");
+    }
+
+    const cartBar = document.getElementById("cartBar");
+
+    if (cartBar) {
+        cartBar.classList.remove("hidden");
+    }
+
+    setActiveNav(0);
+    renderRecommendedProducts();
+}
+
 
 /* =========================================================
    OPEN CATEGORIES
