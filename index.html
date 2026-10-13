@@ -11334,8 +11334,16 @@ function renderRecommendedProducts() {
         recommendedTimer = null;
     }
 
-    recommendedProducts = getTopRecommendations(5) || [];
-    recommendedIndex = 0;
+    const previousProductId =
+    recommendedProducts[recommendedIndex]?.id;
+
+recommendedProducts = getTopRecommendations(5) || [];
+
+const previousIndex = recommendedProducts.findIndex(
+    product => String(product.id) === String(previousProductId)
+);
+
+recommendedIndex = previousIndex >= 0 ? previousIndex : 0;
 
     recommendedCarouselCards = [];
     recommendedCarouselRenderedIndex = -1;
