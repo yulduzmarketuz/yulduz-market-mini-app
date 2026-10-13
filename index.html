@@ -11253,107 +11253,73 @@ let recommendedProducts = [];
 let recommendedIndex = 0;
 let recommendedTimer = null;
 
+
 function renderRecommendedProducts() {
-
-    const container =
-        document.getElementById(
-            "recommendedProducts"
-        );
-
+    const container = document.getElementById("recommendedProducts");
     if (!container) return;
-
-    recommendedProducts =
-        getTopRecommendations(5);
-
-    recommendedIndex = 0;
-
-    container.innerHTML = "";
-
-    if (!recommendedProducts.length) {
-        return;
-    }
-
-    renderRecommendedProduct(
-        recommendedProducts[recommendedIndex]
-    );
 
     if (recommendedTimer) {
         clearInterval(recommendedTimer);
+        recommendedTimer = null;
     }
 
-    recommendedTimer = setInterval(() => {
+    recommendedProducts = getTopRecommendations(5) || [];
+    recommendedIndex = 0;
 
-        if (!recommendedProducts.length) {
-            return;
-        }
+    recommendedCarouselCards = [];
+    recommendedCarouselRenderedIndex = -1;
+    recommendedCarouselAnimating = false;
 
-        recommendedIndex++;
+    container.innerHTML = "";
 
-        if (
-            recommendedIndex >=
-            recommendedProducts.length
-        ) {
-            recommendedIndex = 0;
-        }
-
-        renderRecommendedProduct(
-            recommendedProducts[recommendedIndex]
-        );
-
-    }, 5000);
-       container.addEventListener("touchstart", function (event) {
-        container._touchStartX = event.touches[0].clientX;
-    });
-
-    container.addEventListener("touchend", function (event) {
-
-        const startX = container._touchStartX;
-
-        if (startX === undefined) {
-            return;
-        }
-
-        const endX = event.changedTouches[0].clientX;
-        const difference = startX - endX;
-
-        if (Math.abs(difference) < 40) {
-            return;
-        }
-
-        if (difference > 0) {
-            recommendedIndex++;
-        } else {
-            recommendedIndex--;
-        }
-
-        if (recommendedIndex >= recommendedProducts.length) {
-            recommendedIndex = 0;
-        }
-
-        if (recommendedIndex < 0) {
-            recommendedIndex = recommendedProducts.length - 1;
-        }
-
-        renderRecommendedProduct();
-       if (recommendedTimer) {
-    clearInterval(recommendedTimer);
-}
-
-recommendedTimer = setInterval(() => {
-
-    recommendedIndex++;
-
-    if (recommendedIndex >= recommendedProducts.length) {
-        recommendedIndex = 0;
-    }
+    if (!recommendedProducts.length) return;
 
     renderRecommendedProduct();
 
-}, 5000);
+    recommendedTimer = setInterval(() => {
+        if (!recommendedProducts.length) return;
+
+        recommendedIndex =
+            (recommendedIndex + 1) % recommendedProducts.length;
+
+        renderRecommendedProduct();
+    }, 5000);
+
+    container.ontouchstart = function(event) {
+        if (event.touches.length) {
+            container._touchStartX = event.touches[0].clientX;
+        }
+    };
+
+    container.ontouchend = function(event) {
+        if (container._touchStartX === undefined) return;
+
+        const difference =
+            container._touchStartX - event.changedTouches[0].clientX;
 
         container._touchStartX = undefined;
-    });
+
+        if (Math.abs(difference) < 40 || !recommendedProducts.length) return;
+
+        recommendedIndex =
+            (recommendedIndex + (difference > 0 ? 1 : -1)
+                + recommendedProducts.length) % recommendedProducts.length;
+
+        renderRecommendedProduct();
+
+        if (recommendedTimer) clearInterval(recommendedTimer);
+
+        recommendedTimer = setInterval(() => {
+            if (!recommendedProducts.length) return;
+
+            recommendedIndex =
+                (recommendedIndex + 1) % recommendedProducts.length;
+
+            renderRecommendedProduct();
+        }, 5000);
+    };
 }
+
 
 /* =========================================================
    CIRCULAR RECOMMENDED PRODUCTS
