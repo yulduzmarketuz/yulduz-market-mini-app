@@ -5972,6 +5972,33 @@ button {
     color: #111827;
     letter-spacing: 0.1px;
 }
+   
+/* Tavsiya karuseli nuqtachalari */
+.recommended-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    padding: 12px 0 16px;
+}
+
+.recommended-dot {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #D1D5DB;
+    cursor: pointer;
+    transition: background 0.2s ease, width 0.2s ease;
+}
+
+.recommended-dot.active {
+    width: 18px;
+    border-radius: 10px;
+    background: #111827;
+}
+
 
 </style>
 </head>
@@ -11253,6 +11280,50 @@ let recommendedProducts = [];
 let recommendedIndex = 0;
 let recommendedTimer = null;
 
+   
+function updateRecommendedDots() {
+    const container = document.getElementById("recommendedProducts");
+    if (!container) return;
+
+    let dots = document.getElementById("recommendedDots");
+
+    if (!dots) {
+        dots = document.createElement("div");
+        dots.id = "recommendedDots";
+        dots.className = "recommended-dots";
+        container.insertAdjacentElement("afterend", dots);
+    }
+
+    if (dots.children.length !== recommendedProducts.length) {
+        dots.innerHTML = "";
+
+        recommendedProducts.forEach((product, index) => {
+            const dot = document.createElement("button");
+            dot.type = "button";
+            dot.className = "recommended-dot";
+            dot.setAttribute("aria-label", `Tavsiya ${index + 1}`);
+
+            dot.onclick = () => {
+                recommendedIndex = index;
+                renderRecommendedProduct();
+            };
+
+            dots.appendChild(dot);
+        });
+    }
+
+    Array.from(dots.children).forEach((dot, index) => {
+        dot.classList.toggle("active", index === recommendedIndex);
+        dot.setAttribute(
+            "aria-current",
+            index === recommendedIndex ? "true" : "false"
+        );
+    });
+
+    dots.style.display = recommendedProducts.length > 1 ? "flex" : "none";
+}
+
+
 
 function renderRecommendedProducts() {
     const container = document.getElementById("recommendedProducts");
@@ -11272,9 +11343,13 @@ function renderRecommendedProducts() {
 
     container.innerHTML = "";
 
-    if (!recommendedProducts.length) return;
+if (!recommendedProducts.length) {
+    updateRecommendedDots();
+    return;
+}
 
-    renderRecommendedProduct();
+renderRecommendedProduct();
+updateRecommendedDots();
 
     recommendedTimer = setInterval(() => {
         if (!recommendedProducts.length) return;
@@ -11487,8 +11562,9 @@ function renderRecommendedProduct() {
 
 
         applyRecommendedCarouselSlots();
+        updateRecommendedDots();
 
-        return;
+    return;
     }
 
 
@@ -11519,11 +11595,10 @@ function renderRecommendedProduct() {
        ANIMATSIYA BOSHLASH
     ========================================= */
 
-    recommendedCarouselAnimating =
-        true;
-
+    recommendedCarouselAnimating = true;
 
     applyRecommendedCarouselSlots();
+    updateRecommendedDots();
 
 
     /* =========================================
