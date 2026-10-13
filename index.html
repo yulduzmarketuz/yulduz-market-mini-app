@@ -9733,12 +9733,14 @@ async function loadProductsFromAPI() {
 
 
         console.log(
-            "✅ Mahsulotlar D1 dan yuklandi:",
-            data.products
-        );
-       
-       loadAdminProducts();
+    "✅ Mahsulotlar D1 dan yuklandi:",
+    data.products
+);
 
+loadAdminProducts();
+
+// Tavsiya barabanini yangilash
+renderRecommendedProducts();
 
     } catch (error) {
 
@@ -18437,38 +18439,7 @@ function openHelp() {
 }
 
 
-/* =========================================================
-   HOME
-========================================================= */
 
-function goHome() {
-
-    hideAll();
-
-
-    document
-        .getElementById("homePage")
-        .classList
-        .remove("hidden");
-
-
-    const cartBar =
-        document.getElementById("cartBar");
-
-
-    if (cartBar) {
-
-        cartBar.classList.remove("hidden");
-
-    }
-
-
-    setActiveNav(0);
-
-
-    renderRecommendedProducts();
-
-}
 
 
 /* =========================================================
