@@ -5998,6 +5998,49 @@ button {
     border-radius: 10px;
     background: #16A34A;
 }
+   
+/* BUYURTMA STATUSIGA MOS RANGLI CHIZIQ */
+
+.order-history-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.order-history-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    bottom: 10px;
+    width: 4px;
+    border-radius: 0 5px 5px 0;
+    background: #eab308;
+}
+
+.order-history-card.order-status-accepted::before {
+    background: #eab308;
+}
+
+.order-history-card.order-status-packing::before {
+    background: #facc15;
+}
+
+.order-history-card.order-status-ready::before {
+    background: #f59e0b;
+}
+
+.order-history-card.order-status-onway::before {
+    background: #f97316;
+}
+
+.order-history-card.order-status-delivered::before {
+    background: #16a34a;
+}
+
+.order-history-card.order-status-cancelled::before {
+    background: #dc2626;
+}
+
 
 
 </style>
@@ -17718,6 +17761,8 @@ function renderOrders() {
 
     filteredOrders
     .forEach(order => {
+       
+            const statusClass = getOrderStatusClass(order.status);
 
             let total = 0;
 
@@ -17743,8 +17788,8 @@ function renderOrders() {
             list.innerHTML += `
 
                 <div
-                    class="order-history-card"
-                    onclick="openOrderDetails('${order.id}')">
+                   class="order-history-card ${statusClass}"
+                   onclick="openOrderDetails('${order.id}')">
 
                     <div class="order-history-top">
 
@@ -18179,6 +18224,21 @@ function getStatusText(status) {
         : "Qabul qilindi";
 
 }
+   
+function getOrderStatusClass(status) {
+    const statusClasses = {
+        qabul_qilindi: "order-status-accepted",
+        yigilmoqda: "order-status-packing",
+        yetkazib_berishga_tayyor: "order-status-ready",
+        yolda: "order-status-onway",
+        yetkazildi: "order-status-delivered",
+        bekor_qilingan: "order-status-cancelled",
+        cancelled: "order-status-cancelled"
+    };
+
+    return statusClasses[status] || "order-status-accepted";
+}
+
 
 
  /* =========================================================
