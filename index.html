@@ -6044,10 +6044,13 @@ button {
 
 
 
-/* HOME PROMO BANNER — RESPONSIVE */
+
+/* HOME PROMO BANNER — IMAGE RATIO */
 .home-promo-banner {
     width: 100%;
-    aspect-ratio: 2.8 / 1;
+    aspect-ratio: 1376 / 768;
+    height: auto;
+    min-height: 0;
     margin: 16px 0 20px;
     padding: 0;
     overflow: hidden;
@@ -6055,13 +6058,14 @@ button {
 
     background-color: #16a34a;
     background-image: url("./assets/categories/main-banner.jfif");
-    background-size: cover;
+    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
 
     box-sizing: border-box;
     flex-shrink: 0;
 }
+
 
 </style>
 </head>
