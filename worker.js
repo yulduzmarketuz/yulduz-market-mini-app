@@ -385,9 +385,9 @@ function buildAdminOrderMessage(data, orderNumber) {
       `   ${quantity} dona × ${price.toLocaleString("uz-UZ")} so‘m = ${itemTotal.toLocaleString("uz-UZ")} so‘m\n`;
   }
 
-  const total =
-    Number(data.total || 0);
-
+  const subtotal = Number(data.subtotal || 0);
+const deliveryFee = Number(data.delivery_fee || 0);
+const total = subtotal + deliveryFee;
   return `🛒 YANGI BUYURTMA
 
 🔢 Buyurtma: #${orderNumber}
@@ -400,7 +400,9 @@ ${customerName}
 
 🛍 MAHSULOTLAR:
 ${itemsText}
-💰 Jami: ${total.toLocaleString("uz-UZ")} so‘m
+🛍 Mahsulotlar: ${subtotal.toLocaleString("uz-UZ")} so‘m
+🚚 Yetkazib berish: ${deliveryFee === 0 ? "Bepul" : deliveryFee.toLocaleString("uz-UZ") + " so‘m"}
+💰 Yakuniy summa: ${total.toLocaleString("uz-UZ")} so‘m
 
 💳 To‘lov: ${payment}
 
@@ -1450,18 +1452,48 @@ if (
       );
     }
 
-    const total =
-      Number(data.total || 0);
+    
+    // =================================================
+    // BUYURTMA SUMMASI VA YETKAZIB BERISH
+    // =================================================
 
-    if (total <= 0) {
+    let subtotal = 0;
+
+    for (const item of data.items) {
+      const price = Number(item?.price);
+      const quantity = Number(item?.quantity);
+
+      if (
+        !Number.isFinite(price) ||
+        !Number.isFinite(quantity) ||
+        price < 0 ||
+        quantity <= 0
+      ) {
+        return json(
+          {
+            error: "Mahsulot narxi yoki miqdori noto‘g‘ri"
+          },
+          400
+        );
+      }
+
+      subtotal += price * quantity;
+    }
+
+    subtotal = Math.round(subtotal);
+
+    if (subtotal <= 0) {
       return json(
         {
-          error:
-            "Buyurtma summasi noto‘g‘ri"
+          error: "Buyurtma summasi noto‘g‘ri"
         },
         400
       );
     }
+
+    const deliveryFee = subtotal < 75000 ? 5000 : 0;
+    const total = subtotal + deliveryFee;
+
 
 
     // =================================================
@@ -1476,11 +1508,18 @@ if (
     // ADMIN XABARINI TAYYORLASH
     // =================================================
 
-    const adminMessage =
-      buildAdminOrderMessage(
-        data,
-        orderNumber
-      );
+    
+const adminMessage =
+  buildAdminOrderMessage(
+    {
+      ...data,
+      subtotal,
+      delivery_fee: deliveryFee,
+      total
+    },
+    orderNumber
+  );
+
 
 
     // =================================================
@@ -1503,68 +1542,70 @@ if (
     // BUYURTMA D1 GA SAQLANADI
     // =================================================
 
-    const result =
-      await env.DB.prepare(`
-        INSERT INTO orders (
-          order_number,
-          telegram_id,
-          first_name,
-          last_name,
-          username,
-          phone,
-          items,
-          total,
-          address_name,
-          latitude,
-          longitude,
-          address_extra,
-          note,
-          payment_method,
-          payment_status,
-          status,
-          yespos_status
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `)
-        .bind(
-          orderNumber,
-          telegramId,
+    
+const result =
+  await env.DB.prepare(`
+    INSERT INTO orders (
+      order_number,
+      telegram_id,
+      first_name,
+      last_name,
+      username,
+      phone,
+      items,
+      subtotal,
+      delivery_fee,
+      delivery_address_type,
+      total,
+      address_name,
+      latitude,
+      longitude,
+      address_extra,
+      note,
+      payment_method,
+      payment_status,
+      status,
+      yespos_status
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `)
+    .bind(
+      orderNumber,
+      telegramId,
 
-          data.first_name || "",
-          data.last_name || "",
-          data.username || "",
-          data.phone || "",
+      data.first_name || "",
+      data.last_name || "",
+      data.username || "",
+      data.phone || "",
 
-          JSON.stringify(
-            data.items
-          ),
+      JSON.stringify(data.items),
 
-          total,
+      subtotal,
+      deliveryFee,
+      data.delivery_address_type || "",
+      total,
 
-          data.address_name || "",
+      data.address_name || "",
 
-          data.latitude !== undefined
-            ? Number(data.latitude)
-            : null,
+      data.latitude !== undefined
+        ? Number(data.latitude)
+        : null,
 
-          data.longitude !== undefined
-            ? Number(data.longitude)
-            : null,
+      data.longitude !== undefined
+        ? Number(data.longitude)
+        : null,
 
-          data.address_extra || "",
-          data.note || "",
+      data.address_extra || "",
+      data.note || "",
 
-          data.payment_method ||
-            "cash",
+      data.payment_method || "cash",
+      data.payment_status || "pending",
 
-          data.payment_status ||
-            "pending",
+      "yangi",
+      "pending"
+    )
+    .run();
 
-          "yangi",
-
-          "pending"
-        )
-        .run();
 
 
     console.log(
@@ -1650,6 +1691,9 @@ if (
           username,
           phone,
           items,
+          subtotal,
+          delivery_fee,
+          delivery_address_type,
           total,
           address_name,
           latitude,
