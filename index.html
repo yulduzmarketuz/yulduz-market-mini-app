@@ -9895,19 +9895,32 @@ loadAdminProducts();
     }
 
 
-    hideAll();
+    
+hideAll();
 
+const form =
+    document.getElementById("adminProductForm");
 
-    const form =
-        document.getElementById(
-            "adminProductForm"
-        );
+const slot =
+    document.getElementById("adminProductFormSlot");
 
-    if (!form) {
-        return;
-    }
+const adminPage =
+    document.getElementById("adminPage");
 
-    form.classList.remove("hidden");
+if (!form || !slot || !adminPage) {
+    console.error("Admin forma, slot yoki sahifa topilmadi.");
+    return;
+}
+
+// Admin sahifasini ko‘rsatish
+adminPage.classList.remove("hidden");
+
+// Formani tugmaning tagiga joylashtirish
+slot.appendChild(form);
+
+// Formani ochish
+form.classList.remove("hidden");
+
 
       const deleteButton =
     document.getElementById("adminProductDeleteButton");
