@@ -9018,6 +9018,8 @@ button {
         ➕ Mahsulot qo‘shish
 
     </button>
+   
+   <div id="adminProductFormSlot"></div>
 
 
     <div
@@ -9034,7 +9036,7 @@ button {
 
 <div
     id="adminProductForm"
-    class="container hidden">
+class="admin-product-form-inline hidden"
 
     <div class="search-page-header">
 
@@ -9152,14 +9154,17 @@ button {
         id="adminProductRelated"
         type="text"
         placeholder="549,550">
-   <label>
+   
+<label for="adminProductDescription">
     Mahsulot tavsifi
 </label>
 
 <textarea
     id="adminProductDescription"
-    rows="3"
-    placeholder="Mahsulot haqida qisqacha ma’lumot"></textarea>
+    rows="5"
+    placeholder="Mahsulot haqida qisqacha ma’lumot"
+    style="width:100%; box-sizing:border-box; min-height:130px; resize:vertical; padding:12px;"></textarea>
+
 
 <label>
     Kaloriya (100 g uchun)
@@ -10332,15 +10337,17 @@ async function deleteAdminProduct() {
     }
 }
 
-   function openAdminProductForm() {
+   
+function openAdminProductForm() {
+    const form = document.getElementById("adminProductForm");
+    const slot = document.getElementById("adminProductFormSlot");
 
-    hideAll();
+    if (!form || !slot) return;
 
-    const form =
-        document.getElementById("adminProductForm");
+    // Formani tugmaning tagiga joylashtirish
+    slot.appendChild(form);
 
-    if (!form) return;
-
+    // Forma maydonlarini tozalash
     form.classList.remove("hidden");
 
     document.getElementById("adminProductFormTitle").textContent =
@@ -10348,37 +10355,22 @@ async function deleteAdminProduct() {
 
     document.getElementById("adminProductId").value = "";
 
-    const deleteButton =
-    document.getElementById("adminProductDeleteButton");
-
-      if (deleteButton) {
-      deleteButton.style.display = "none";
-    }  
+    const deleteButton = document.getElementById("adminProductDeleteButton");
+    if (deleteButton) deleteButton.style.display = "none";
 
     document.getElementById("adminProductName").value = "";
-
     document.getElementById("adminProductPrice").value = "";
-    
     document.getElementById("adminProductDescription").value = "";
-
     document.getElementById("adminProductCalories").value = "";
-   
     document.getElementById("adminProductProtein").value = "";
-   
     document.getElementById("adminProductFat").value = "";
-   
     document.getElementById("adminProductCarbs").value = "";
-
     document.getElementById("adminProductUnit").value = "dona";
+    document.getElementById("adminProductRelated").value = "";
 
-      const imageInput =
-    document.getElementById(
-        "adminProductImageFile"
-    );
+    const imageInput = document.getElementById("adminProductImageFile");
+    if (imageInput) imageInput.value = "";
 
-if (imageInput) {
-    imageInput.value = "";
-}
 
 const imagePreview =
     document.getElementById(
@@ -10493,23 +10485,21 @@ if (imagePreview) {
 }
 
    
-   function closeAdminProductForm() {
-
-    const form =
-        document.getElementById("adminProductForm");
+   
+function closeAdminProductForm() {
+    const form = document.getElementById("adminProductForm");
 
     if (!form) return;
 
     form.classList.add("hidden");
 
-    const adminPage =
-        document.getElementById("adminPage");
+    const adminPage = document.getElementById("adminPage");
 
     if (adminPage) {
         adminPage.classList.remove("hidden");
     }
-
 }
+
    async function checkAdminAccess() {
 
     try {
