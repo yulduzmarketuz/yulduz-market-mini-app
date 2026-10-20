@@ -10744,9 +10744,9 @@ async function saveAdminSubcategory() {
     }
 }
 
+
 async function loadAdminSubcategoryList() {
-    const container =
-        document.getElementById("adminSubcategoriesList");
+    const container = document.getElementById("adminSubcategoriesList");
 
     const category =
         document.getElementById("adminSubcategoryCategory")?.value;
@@ -10760,28 +10760,35 @@ async function loadAdminSubcategoryList() {
             "https://yulduz-market-mini-app.pardayevx055.workers.dev/subcategories"
         );
 
-        if (!response.ok) {
-            throw new Error("Ro‘yxatni yuklab bo‘lmadi.");
-        }
-
         const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.error || "Ro‘yxatni yuklab bo‘lmadi."
+            );
+        }
 
         const items = (data.subcategories || [])
             .filter(item => item.category === category);
 
+        container.innerHTML = "";
+
         if (items.length === 0) {
-            container.innerHTML =
-                "<p>Bu kategoriyada ichki kategoriyalar hali yo‘q.</p>";
+            container.textContent =
+                "Bu kategoriyada ichki kategoriyalar hali yo‘q.";
             return;
         }
-
-        container.innerHTML = "";
 
         items.forEach(item => {
             const row = document.createElement("div");
 
             row.style.cssText =
-                "display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #e5e7eb;";
+                "display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #e5e7eb;";
+
+            const label = document.createElement("div");
+
+            label.style.cssText =
+                "display:flex;flex-direction:column;gap:4px;min-width:0;";
 
             const name = document.createElement("span");
             name.textContent = item.name;
@@ -10790,66 +10797,166 @@ async function loadAdminSubcategoryList() {
             id.textContent = "#" + item.id;
             id.style.color = "#6b7280";
 
-            
-         const label = document.createElement("div");
-         label.append(name, id);
-         
-         const actions = document.createElement("div");
-         actions.style.cssText =
-             "display:flex; gap:6px; flex-shrink:0;";
-         
-         const editButton = document.createElement("button");
-         editButton.type = "button";
-         editButton.className = "order-button";
-         editButton.textContent = "Tahrirlash";
-         
-         editButton.onclick = async () => {
-             const newName = prompt(
-                 "Yangi ichki kategoriya nomini kiriting:",
-                 item.name
-             );
-         
-             if (newName === null) return;
-         
-             const trimmedName = newName.trim();
-         
-             if (!trimmedName) {
-                 alert("Kategoriya nomi bo‘sh bo‘lishi mumkin emas.");
-                 return;
-             }
-         
-             alert(
-                 "Tahrirlash uchun Worker API ga PUT endpoint qo‘shishimiz kerak. Hozircha nom o‘zgartirilmadi."
-             );
-         };
-         
-         const deleteButton = document.createElement("button");
-         deleteButton.type = "button";
-         deleteButton.className = "order-button";
-         deleteButton.textContent = "O‘chirish";
-         deleteButton.style.background = "#dc2626";
-         deleteButton.style.color = "#fff";
-         
-         deleteButton.onclick = () => {
-             alert(
-                 "O‘chirish uchun Worker API ga DELETE endpoint qo‘shishimiz kerak. Hozircha kategoriya o‘chirilmaydi."
-             );
-         };
-         
-         actions.append(editButton, deleteButton);
-         row.append(label, actions);
-         container.appendChild(row);
+            label.append(name, id);
 
+            const actions = document.createElement("div");
+
+            actions.style.cssText =
+                "display:flex;gap:6px;flex-shrink:0;";
+
+            // TAHRIRLASH
+            const editButton = document.createElement("button");
+            editButton.type = "button";
+            editButton.className = "order-button";
+            editButton.textContent = "Tahrirlash";
+
+            editButton.onclick = async () => {
+                const newName = prompt(
+                    "Yangi ichki kategoriya nomini kiriting:",
+                    item.name
+                );
+
+                if (newName === null) return;
+
+                const trimmedName = newName.trim();
+
+                if (!trimmedName) {
+                    alert("Kategoriya nomi bo‘sh bo‘lishi mumkin emas.");
+                    return;
+                }
+
+                if (trimmedName === item.name) return;
+
+                try {
+                    const response = await fetch(
+                        `https://yulduz-market-mini-app.pardayevx055.workers.dev/subcategories/${item.id}`,
+                        {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-Telegram-Init-Data": getTelegramInitData()
+                            },
+                            body: JSON.stringify({
+                                name: trimmedName
+                            })
+                        }
+                    );
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.success) {
+                        throw new Error(
+                            data.error ||
+                            "Ichki kategoriyani o‘zgartirib bo‘lmadi."
+                        );
+                    }
+
+                    alert("Ichki kategoriya nomi yangilandi.");
+
+                    await loadAdminSubcategoryList();
+
+                    // Mahsulot formasidagi ro‘yxatni ham yangilash
+                    const productCategory =
+                        document.getElementById("adminProductCategory");
+
+                    if (
+                        productCategory &&
+                        productCategory.value === category
+                    ) {
+                        await loadAdminSubcategories(category);
+                    }
+
+                } catch (error) {
+                    console.error(
+                        "Ichki kategoriya tahrirlash xatosi:",
+                        error
+                    );
+
+                    alert(
+                        error.message ||
+                        "Ulanishda xatolik yuz berdi."
+                    );
+                }
+            };
+
+            // O‘CHIRISH
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.className = "order-button";
+            deleteButton.textContent = "O‘chirish";
+            deleteButton.style.background = "#dc2626";
+            deleteButton.style.color = "#fff";
+
+            deleteButton.onclick = async () => {
+                const confirmed = confirm(
+                    `«${item.name}» ichki kategoriyasini o‘chirmoqchimisiz?`
+                );
+
+                if (!confirmed) return;
+
+                try {
+                    const response = await fetch(
+                        `https://yulduz-market-mini-app.pardayevx055.workers.dev/subcategories/${item.id}`,
+                        {
+                            method: "DELETE",
+                            headers: {
+                                "X-Telegram-Init-Data": getTelegramInitData()
+                            }
+                        }
+                    );
+
+                    const data = await response.json();
+
+                    if (!response.ok || !data.success) {
+                        throw new Error(
+                            data.error ||
+                            "Ichki kategoriyani o‘chirib bo‘lmadi."
+                        );
+                    }
+
+                    alert("Ichki kategoriya o‘chirildi.");
+
+                    await loadAdminSubcategoryList();
+
+                    const productCategory =
+                        document.getElementById("adminProductCategory");
+
+                    if (
+                        productCategory &&
+                        productCategory.value === category
+                    ) {
+                        await loadAdminSubcategories(category);
+                    }
+
+                } catch (error) {
+                    console.error(
+                        "Ichki kategoriya o‘chirish xatosi:",
+                        error
+                    );
+
+                    alert(
+                        error.message ||
+                        "Ulanishda xatolik yuz berdi."
+                    );
+                }
+            };
+
+            actions.append(editButton, deleteButton);
+            row.append(label, actions);
+            container.appendChild(row);
         });
 
     } catch (error) {
-        console.error("Ichki kategoriyalar ro‘yxati xatosi:", error);
-        container.textContent = "Ro‘yxatni yuklashda xatolik yuz berdi.";
+        console.error(
+            "Ichki kategoriyalar ro‘yxati xatosi:",
+            error
+        );
+
+        container.textContent =
+            "Ro‘yxatni yuklashda xatolik yuz berdi.";
     }
 }
-
-
-   function previewAdminProductImage(event) {
+    function previewAdminProductImage(event) {
 
     const file =
         event.target.files &&
