@@ -1969,6 +1969,97 @@ if (
     );
   }
 }
+    
+    // =====================================================
+    // SUBCATEGORIES API
+    // =====================================================
+
+    // Ichki toifalarni olish
+    if (
+      url.pathname === "/subcategories" &&
+      request.method === "GET"
+    ) {
+      try {
+        const result = await env.DB.prepare(`
+          SELECT id, category, name
+          FROM subcategories
+          ORDER BY category ASC, name ASC
+        `).all();
+
+        return json({
+          success: true,
+          subcategories: result.results || []
+        });
+      } catch (error) {
+        console.error("SUBCATEGORIES GET ERROR:", error);
+
+        return json({
+          error: "Ichki toifalarni olishda xatolik",
+          message: error.message
+        }, 500);
+      }
+    }
+
+    // Yangi ichki toifa yaratish
+    if (
+      url.pathname === "/subcategories" &&
+      request.method === "POST"
+    ) {
+      try {
+        const isAdmin = await verifyTelegramAdmin(
+          request,
+          env
+        );
+
+        if (!isAdmin) {
+          return json({ error: "Ruxsat yo‘q" }, 403);
+        }
+
+        const body = await request.json();
+
+        const category =
+          typeof body.category === "string"
+            ? body.category.trim()
+            : "";
+
+        const name =
+          typeof body.name === "string"
+            ? body.name.trim()
+            : "";
+
+        if (!category || !name) {
+          return json({
+            error: "Asosiy kategoriya va ichki toifa nomi kerak"
+          }, 400);
+        }
+
+        const result = await env.DB.prepare(`
+          INSERT INTO subcategories (category, name)
+          VALUES (?, ?)
+          ON CONFLICT(category, name) DO NOTHING
+        `).bind(category, name).run();
+
+        const subcategory = await env.DB.prepare(`
+          SELECT id, category, name
+          FROM subcategories
+          WHERE category = ? AND name = ?
+        `).bind(category, name).first();
+
+        return json({
+          success: true,
+          created: Boolean(result.meta?.changes),
+          subcategory
+        });
+      } catch (error) {
+        console.error("SUBCATEGORIES CREATE ERROR:", error);
+
+        return json({
+          error: "Ichki toifani yaratishda xatolik",
+          message: error.message
+        }, 500);
+      }
+    }
+
         // =====================================================
     // PRODUCTS GET
     // =====================================================
