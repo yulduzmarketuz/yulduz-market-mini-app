@@ -2078,6 +2078,7 @@ if (
         id,
         name,
         category,
+        subcategory_id,
         price,
         old_price,
         unit,
@@ -2178,6 +2179,7 @@ if (
       const {
         name,
         category,
+        subcategory_id,
         price,
         unit,
         image,
@@ -2220,6 +2222,7 @@ await env.DB
       id,
       name,
       category,
+      subcategory_id,
       price,
       unit,
       image,
@@ -2232,12 +2235,13 @@ await env.DB
       fat,
       carbs
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
   .bind(
     id,
     name,
     category,
+    subcategory_id || null,
     Number(price),
     unit || "dona",
     image || null,
