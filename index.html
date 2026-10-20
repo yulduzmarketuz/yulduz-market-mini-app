@@ -9063,7 +9063,8 @@ button {
     </span>
 
 </div>
-   <!-- =====================================================
+   
+<!-- =====================================================
      ADMIN PANEL
 ===================================================== -->
 
@@ -9086,6 +9087,7 @@ button {
 
     </div>
 
+    <!-- MAHSULOT QO‘SHISH -->
 
     <button
         id="adminAddProductButton"
@@ -9096,9 +9098,34 @@ button {
         ➕ Mahsulot qo‘shish
 
     </button>
-   
-   <div id="adminProductFormSlot"></div>
 
+    <!-- ICHKI KATEGORIYALAR -->
+
+    <button
+        id="adminSubcategoriesButton"
+        class="order-button"
+        type="button"
+        onclick="openSubcategoryManager()">
+
+        🗂 Ichki kategoriyalarni boshqarish
+
+    </button>
+
+    <div
+        id="adminSubcategoriesSection"
+        class="hidden">
+
+        <div id="adminSubcategoriesForm"></div>
+
+        <div id="adminSubcategoriesList"></div>
+
+    </div>
+
+    <!-- MAHSULOT FORMASI -->
+
+    <div id="adminProductFormSlot"></div>
+
+    <!-- MAHSULOTLAR RO‘YXATI -->
 
     <div
         id="adminProductsList"
@@ -9106,6 +9133,7 @@ button {
     </div>
 
 </div>
+
 
 
 <!-- =====================================================
@@ -9937,6 +9965,7 @@ async function loadProductsFromAPI() {
                     {
                         id: product.id,
                         category: product.category,
+                        subcategory_id: product.subcategory_id ?? null,
                         name: product.name,
                         price: Number(product.price) || 0,
                         old_price: Number(product.old_price) || null,
@@ -9977,7 +10006,7 @@ loadAdminProducts();
 }
    loadProductsFromAPI();
 
-   function editAdminProduct(productId) {
+   async function editAdminProduct(productId) {
 
     const product =
         Object.values(products)
@@ -10113,6 +10142,18 @@ document.getElementById("adminProductCarbs").value =
 
         }
     );
+      
+    // Asosiy kategoriya o‘zgarganda ichki kategoriyalarni yangilash
+    category.onchange = () => {
+        loadAdminSubcategories(category.value);
+    };
+
+    // Mahsulotning avvalgi ichki kategoriyasini tiklash
+    await loadAdminSubcategories(
+        product.category,
+        product.subcategory_id
+    );
+
 
 
     const imageInput =
@@ -10185,6 +10226,12 @@ document.getElementById("adminProductCarbs").value =
         document
             .getElementById("adminProductCategory")
             .value;
+      const subcategory_id =
+    document.getElementById("adminProductSubcategory").value
+        ? Number(
+            document.getElementById("adminProductSubcategory").value
+        )
+        : null;
 
     const price =
         Number(
@@ -10342,9 +10389,11 @@ if (id) {
                 body:
                     JSON.stringify({
 
-                        name,
+                      name,
 
                       category,
+
+                      subcategory_id,
                   
                       price,
                   
@@ -10454,16 +10503,14 @@ async function deleteAdminProduct() {
 }
 
    
-function openAdminProductForm() {
+
+async function openAdminProductForm() {
     const form = document.getElementById("adminProductForm");
     const slot = document.getElementById("adminProductFormSlot");
 
     if (!form || !slot) return;
 
-    // Formani tugmaning tagiga joylashtirish
     slot.appendChild(form);
-
-    // Forma maydonlarini tozalash
     form.classList.remove("hidden");
 
     document.getElementById("adminProductFormTitle").textContent =
@@ -10471,8 +10518,12 @@ function openAdminProductForm() {
 
     document.getElementById("adminProductId").value = "";
 
-    const deleteButton = document.getElementById("adminProductDeleteButton");
-    if (deleteButton) deleteButton.style.display = "none";
+    const deleteButton =
+        document.getElementById("adminProductDeleteButton");
+
+    if (deleteButton) {
+        deleteButton.style.display = "none";
+    }
 
     document.getElementById("adminProductName").value = "";
     document.getElementById("adminProductPrice").value = "";
@@ -10484,37 +10535,116 @@ function openAdminProductForm() {
     document.getElementById("adminProductUnit").value = "dona";
     document.getElementById("adminProductRelated").value = "";
 
-    const imageInput = document.getElementById("adminProductImageFile");
-    if (imageInput) imageInput.value = "";
+    const imageInput =
+        document.getElementById("adminProductImageFile");
 
+    if (imageInput) {
+        imageInput.value = "";
+    }
 
-const imagePreview =
-    document.getElementById(
-        "adminProductImagePreview"
-    );
+    const imagePreview =
+        document.getElementById("adminProductImagePreview");
 
-if (imagePreview) {
-    imagePreview.remove();
-}
+    if (imagePreview) {
+        imagePreview.remove();
+    }
 
     const category =
         document.getElementById("adminProductCategory");
 
+    const subcategory =
+        document.getElementById("adminProductSubcategory");
+
+    if (!category || !subcategory) {
+        console.error("Kategoriya select maydonlari topilmadi.");
+        return;
+    }
+
     category.innerHTML = "";
 
     Object.keys(products).forEach(categoryName => {
-
-        const option =
-            document.createElement("option");
+        const option = document.createElement("option");
 
         option.value = categoryName;
         option.textContent = categoryName;
 
         category.appendChild(option);
-
     });
 
+    // Asosiy kategoriya o'zgarsa, ichki kategoriyalarni yangilash
+    category.onchange = () => {
+        loadAdminSubcategories(category.value);
+    };
+
+    // Birinchi ochilganda ham ichki kategoriyalarni yuklash
+    await loadAdminSubcategories(category.value);
 }
+
+
+}
+   
+async function loadAdminSubcategories(categoryName, selectedId = "") {
+    const select =
+        document.getElementById("adminProductSubcategory");
+
+    if (!select) return;
+
+    select.innerHTML = "";
+    select.disabled = true;
+
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Ichki kategoriya tanlang";
+
+    select.appendChild(defaultOption);
+
+    if (!categoryName) {
+        defaultOption.textContent = "Avval asosiy kategoriyani tanlang";
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            "https://yulduz-market-mini-app.pardayevx055.workers.dev/subcategories"
+        );
+
+        if (!response.ok) {
+            throw new Error("Ichki kategoriyalarni yuklab bo‘lmadi.");
+        }
+
+        const data = await response.json();
+
+        const subcategories = (data.subcategories || [])
+            .filter(item => item.category === categoryName);
+
+        subcategories.forEach(item => {
+            const option = document.createElement("option");
+
+            option.value = String(item.id);
+            option.textContent = item.name;
+
+            select.appendChild(option);
+        });
+
+        select.disabled = false;
+
+        if (selectedId !== "" && selectedId !== null) {
+            select.value = String(selectedId);
+        }
+
+        if (subcategories.length === 0) {
+            defaultOption.textContent =
+                "Bu kategoriyada ichki kategoriya yo‘q";
+        }
+
+    } catch (error) {
+        console.error("Ichki kategoriyalar xatosi:", error);
+
+        defaultOption.textContent =
+            "Ichki kategoriyalarni yuklab bo‘lmadi";
+    }
+}
+
    function previewAdminProductImage(event) {
 
     const file =
