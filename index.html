@@ -10641,6 +10641,213 @@ async function openAdminProductForm() {
             "Ichki kategoriyalarni yuklab bo‘lmadi";
     }
 }
+   
+async function openSubcategoryManager() {
+    const section = document.getElementById("adminSubcategoriesSection");
+    const form = document.getElementById("adminSubcategoriesForm");
+
+    if (!section || !form) return;
+
+    section.classList.remove("hidden");
+
+    form.innerHTML = `
+        <div style="padding:16px 0;">
+            <h3>Ichki kategoriyalar</h3>
+
+            <label for="adminSubcategoryCategory">
+                Asosiy kategoriya
+            </label>
+
+            <select id="adminSubcategoryCategory"
+                style="width:100%; margin-bottom:12px;">
+            </select>
+
+            <label for="adminSubcategoryName">
+                Ichki kategoriya nomi
+            </label>
+
+            <input
+                id="adminSubcategoryName"
+                type="text"
+                placeholder="Masalan: Gazlangan ichimliklar"
+                style="width:100%; box-sizing:border-box; margin-bottom:12px;">
+
+            <button
+                type="button"
+                class="order-button"
+                onclick="saveAdminSubcategory()"
+                style="width:100%;">
+                Ichki kategoriya qo‘shish
+            </button>
+        </div>
+    `;
+
+    const categorySelect =
+        document.getElementById("adminSubcategoryCategory");
+
+    Object.keys(products).forEach(categoryName => {
+        const option = document.createElement("option");
+        option.value = categoryName;
+        option.textContent = categoryName;
+        categorySelect.appendChild(option);
+    });
+
+    categorySelect.onchange = loadAdminSubcategoryList;
+
+    await loadAdminSubcategoryList();
+}
+
+async function saveAdminSubcategory() {
+    const category =
+        document.getElementById("adminSubcategoryCategory")?.value;
+
+    const name =
+        document.getElementById("adminSubcategoryName")?.value.trim();
+
+    if (!category || !name) {
+        alert("Asosiy kategoriya va ichki kategoriya nomini kiriting.");
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            "https://yulduz-market-mini-app.pardayevx055.workers.dev/subcategories",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Telegram-Init-Data": getTelegramInitData()
+                },
+                body: JSON.stringify({ category, name })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || "Saqlash amalga oshmadi.");
+        }
+
+        document.getElementById("adminSubcategoryName").value = "";
+
+        alert(
+            data.created
+                ? "Ichki kategoriya qo‘shildi."
+                : "Bu ichki kategoriya avvaldan mavjud."
+        );
+
+        await loadAdminSubcategoryList();
+
+    } catch (error) {
+        console.error("Ichki kategoriya saqlash xatosi:", error);
+        alert("Xatolik: " + error.message);
+    }
+}
+
+async function loadAdminSubcategoryList() {
+    const container =
+        document.getElementById("adminSubcategoriesList");
+
+    const category =
+        document.getElementById("adminSubcategoryCategory")?.value;
+
+    if (!container) return;
+
+    container.innerHTML = "<p>Yuklanmoqda...</p>";
+
+    try {
+        const response = await fetch(
+            "https://yulduz-market-mini-app.pardayevx055.workers.dev/subcategories"
+        );
+
+        if (!response.ok) {
+            throw new Error("Ro‘yxatni yuklab bo‘lmadi.");
+        }
+
+        const data = await response.json();
+
+        const items = (data.subcategories || [])
+            .filter(item => item.category === category);
+
+        if (items.length === 0) {
+            container.innerHTML =
+                "<p>Bu kategoriyada ichki kategoriyalar hali yo‘q.</p>";
+            return;
+        }
+
+        container.innerHTML = "";
+
+        items.forEach(item => {
+            const row = document.createElement("div");
+
+            row.style.cssText =
+                "display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #e5e7eb;";
+
+            const name = document.createElement("span");
+            name.textContent = item.name;
+
+            const id = document.createElement("small");
+            id.textContent = "#" + item.id;
+            id.style.color = "#6b7280";
+
+            
+         const label = document.createElement("div");
+         label.append(name, id);
+         
+         const actions = document.createElement("div");
+         actions.style.cssText =
+             "display:flex; gap:6px; flex-shrink:0;";
+         
+         const editButton = document.createElement("button");
+         editButton.type = "button";
+         editButton.className = "order-button";
+         editButton.textContent = "Tahrirlash";
+         
+         editButton.onclick = async () => {
+             const newName = prompt(
+                 "Yangi ichki kategoriya nomini kiriting:",
+                 item.name
+             );
+         
+             if (newName === null) return;
+         
+             const trimmedName = newName.trim();
+         
+             if (!trimmedName) {
+                 alert("Kategoriya nomi bo‘sh bo‘lishi mumkin emas.");
+                 return;
+             }
+         
+             alert(
+                 "Tahrirlash uchun Worker API ga PUT endpoint qo‘shishimiz kerak. Hozircha nom o‘zgartirilmadi."
+             );
+         };
+         
+         const deleteButton = document.createElement("button");
+         deleteButton.type = "button";
+         deleteButton.className = "order-button";
+         deleteButton.textContent = "O‘chirish";
+         deleteButton.style.background = "#dc2626";
+         deleteButton.style.color = "#fff";
+         
+         deleteButton.onclick = () => {
+             alert(
+                 "O‘chirish uchun Worker API ga DELETE endpoint qo‘shishimiz kerak. Hozircha kategoriya o‘chirilmaydi."
+             );
+         };
+         
+         actions.append(editButton, deleteButton);
+         row.append(label, actions);
+         container.appendChild(row);
+
+        });
+
+    } catch (error) {
+        console.error("Ichki kategoriyalar ro‘yxati xatosi:", error);
+        container.textContent = "Ro‘yxatni yuklashda xatolik yuz berdi.";
+    }
+}
+
 
    function previewAdminProductImage(event) {
 
