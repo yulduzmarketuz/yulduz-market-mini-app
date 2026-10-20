@@ -2059,8 +2059,149 @@ if (
         }, 500);
       }
     }
+    
+    // Ichki toifa nomini o'zgartirish
+    if (
+      /^\/subcategories\/\d+$/.test(url.pathname) &&
+      request.method === "PUT"
+    ) {
+      try {
+        const isAdmin = await verifyTelegramAdmin(request, env);
 
-        // =====================================================
+        if (!isAdmin) {
+          return json({ error: "Ruxsat yo‘q" }, 403);
+        }
+
+        const id = Number(url.pathname.split("/").pop());
+
+        if (!Number.isSafeInteger(id) || id <= 0) {
+          return json({ error: "Ichki toifa ID noto‘g‘ri" }, 400);
+        }
+
+        const body = await request.json();
+
+        const name =
+          typeof body.name === "string"
+            ? body.name.trim()
+            : "";
+
+        if (!name) {
+          return json({
+            error: "Yangi ichki toifa nomini kiriting"
+          }, 400);
+        }
+
+        const existing = await env.DB.prepare(`
+          SELECT id, category, name
+          FROM subcategories
+          WHERE id = ?
+        `).bind(id).first();
+
+        if (!existing) {
+          return json({ error: "Ichki toifa topilmadi" }, 404);
+        }
+
+        const duplicate = await env.DB.prepare(`
+          SELECT id
+          FROM subcategories
+          WHERE category = ? AND name = ? AND id != ?
+        `).bind(existing.category, name, id).first();
+
+        if (duplicate) {
+          return json({
+            error: "Bu nomdagi ichki toifa allaqachon mavjud"
+          }, 409);
+        }
+
+        await env.DB.prepare(`
+          UPDATE subcategories
+          SET name = ?
+          WHERE id = ?
+        `).bind(name, id).run();
+
+        const subcategory = await env.DB.prepare(`
+          SELECT id, category, name
+          FROM subcategories
+          WHERE id = ?
+        `).bind(id).first();
+
+        return json({
+          success: true,
+          subcategory
+        });
+
+      } catch (error) {
+        console.error("SUBCATEGORY UPDATE ERROR:", error);
+
+        return json({
+          error: "Ichki toifani o‘zgartirishda xatolik",
+          message: error.message
+        }, 500);
+      }
+    }
+
+
+    // Ichki toifani o'chirish
+    if (
+      /^\/subcategories\/\d+$/.test(url.pathname) &&
+      request.method === "DELETE"
+    ) {
+      try {
+        const isAdmin = await verifyTelegramAdmin(request, env);
+
+        if (!isAdmin) {
+          return json({ error: "Ruxsat yo‘q" }, 403);
+        }
+
+        const id = Number(url.pathname.split("/").pop());
+
+        if (!Number.isSafeInteger(id) || id <= 0) {
+          return json({ error: "Ichki toifa ID noto‘g‘ri" }, 400);
+        }
+
+        const existing = await env.DB.prepare(`
+          SELECT id, category, name
+          FROM subcategories
+          WHERE id = ?
+        `).bind(id).first();
+
+        if (!existing) {
+          return json({ error: "Ichki toifa topilmadi" }, 404);
+        }
+
+        const linkedProduct = await env.DB.prepare(`
+          SELECT id
+          FROM products
+          WHERE subcategory_id = ?
+          LIMIT 1
+        `).bind(id).first();
+
+        if (linkedProduct) {
+          return json({
+            error: "Bu ichki toifaga biriktirilgan mahsulotlar bor. Avval mahsulotlarning ichki toifasini o‘zgartiring."
+          }, 409);
+        }
+
+        await env.DB.prepare(`
+          DELETE FROM subcategories
+          WHERE id = ?
+        `).bind(id).run();
+
+        return json({
+          success: true,
+          deletedId: id
+        });
+
+      } catch (error) {
+        console.error("SUBCATEGORY DELETE ERROR:", error);
+
+        return json({
+          error: "Ichki toifani o‘chirishda xatolik",
+          message: error.message
+        }, 500);
+      }
+    }
+    // =====================================================
     // PRODUCTS GET
     // =====================================================
 
