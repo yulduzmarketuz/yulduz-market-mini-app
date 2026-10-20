@@ -9150,13 +9150,22 @@ button {
         placeholder="Masalan: Pepsi 1L">
 
 
-    <label>
-        Kategoriya
-    </label>
+   
+      <label for="adminProductCategory">
+          Asosiy kategoriya
+      </label>
+      
+      <select id="adminProductCategory">
+      </select>
+      
+      <label for="adminProductSubcategory">
+          Ichki kategoriya
+      </label>
+      
+      <select id="adminProductSubcategory" disabled>
+          <option value="">Avval asosiy kategoriyani tanlang</option>
+      </select>
 
-    <select
-        id="adminProductCategory">
-    </select>
 
 
     <label>
@@ -9874,7 +9883,7 @@ const products = {
     "Kiyim va to‘qimachilik": []
 
 };
-   /* =========================================================
+    /* =========================================================
    LOAD PRODUCTS FROM D1
 ========================================================= */
 
