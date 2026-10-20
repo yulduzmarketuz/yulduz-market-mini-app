@@ -2348,6 +2348,7 @@ if (
       const {
         name,
         category,
+        subcategory_id,
         price,
         unit,
         image,
@@ -2399,6 +2400,7 @@ if (newPrice < currentPrice) {
     SET
       name = ?,
       category = ?,
+      subcategory_id = ?,
       old_price = ?,
       price = ?,
       unit = ?,
@@ -2417,6 +2419,7 @@ if (newPrice < currentPrice) {
   .bind(
     name,
     category,
+    subcategory_id || null,
     oldPrice || null,
     Number(price),
     unit || "dona",
