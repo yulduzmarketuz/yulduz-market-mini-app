@@ -13599,53 +13599,136 @@ function closeProductDetail() {
    OPEN CATEGORY
 ========================================================= */
 
-function openCategory(category) {
 
+
+async function openCategory(category) {
     hideAll();
 
+    const page = document.getElementById("productsPage");
+    const title = document.getElementById("categoryTitle");
+    const container = document.getElementById("products");
+    const subcategoriesContainer =
+        document.getElementById("subcategoriesContainer");
 
-    document
-        .getElementById("productsPage")
-        .classList
-        .remove("hidden");
+    if (!page || !title || !container || !subcategoriesContainer) {
+        console.error("Kategoriya sahifasining HTML elementlari topilmadi.");
+        return;
+    }
 
+    page.classList.remove("hidden");
+    title.textContent = category;
 
-    document
-        .getElementById("categoryTitle")
-        .textContent =
-        category;
+    container.innerHTML = "";
+    subcategoriesContainer.innerHTML = "";
+    subcategoriesContainer.classList.add("hidden");
 
+    const visibleProducts = (products[category] || [])
+        .filter(product => product.visible);
 
-    const container =
-        document.getElementById(
-            "products"
+    const subcategories = await loadCustomerSubcategories(category);
+
+    if (subcategories.length === 0) {
+        visibleProducts.forEach(product => {
+            container.appendChild(createProductCard(product));
+        });
+    } else {
+        subcategoriesContainer.classList.remove("hidden");
+
+        subcategories.forEach(subcategory => {
+            const section = document.createElement("section");
+            section.style.cssText = "margin-bottom:24px;";
+
+            const heading = document.createElement("h3");
+            heading.textContent = subcategory.name;
+            heading.style.cssText =
+                "font-size:18px;font-weight:700;margin:18px 0 12px;";
+
+            const grid = document.createElement("div");
+            grid.className = "products";
+
+            const matchingProducts = visibleProducts.filter(
+                product =>
+                    String(product.subcategory_id) === String(subcategory.id)
+            );
+
+            matchingProducts.forEach(product => {
+                grid.appendChild(createProductCard(product));
+            });
+
+            section.appendChild(heading);
+
+            if (matchingProducts.length > 0) {
+                section.appendChild(grid);
+            } else {
+                const emptyMessage = document.createElement("p");
+                emptyMessage.textContent = "Hozircha mahsulot yo‘q.";
+                emptyMessage.style.cssText =
+                    "color:#6b7280;font-size:14px;margin:0;";
+                section.appendChild(emptyMessage);
+            }
+
+            subcategoriesContainer.appendChild(section);
+        });
+
+        // Ichki kategoriyalarga biriktirilmagan mahsulotlar
+        const unassignedProducts = visibleProducts.filter(product =>
+            !subcategories.some(
+                subcategory =>
+                    String(subcategory.id) === String(product.subcategory_id)
+            )
         );
 
+        if (unassignedProducts.length > 0) {
+            const section = document.createElement("section");
+            section.style.cssText = "margin-bottom:24px;";
+
+            const heading = document.createElement("h3");
+            heading.textContent = "Boshqa mahsulotlar";
+            heading.style.cssText =
+                "font-size:18px;font-weight:700;margin:18px 0 12px;";
+
+            const grid = document.createElement("div");
+            grid.className = "products";
+
+            unassignedProducts.forEach(product => {
+                grid.appendChild(createProductCard(product));
+            });
+
+            section.append(heading, grid);
+            subcategoriesContainer.appendChild(section);
+        }
+    }
+
+    showCategoryRecommendations(category);
+}
+ async function loadCustomerSubcategories(categoryName) {
+    const container = document.getElementById("subcategoriesContainer");
+
+    if (!container) return [];
 
     container.innerHTML = "";
 
+    try {
+        const response = await fetch(
+            "https://yulduz-market-mini-app.pardayevx055.workers.dev/subcategories"
+        );
 
-    products[category]
-        .filter(
-            product =>
-            product.visible
-        )
-        .forEach(product => {
+        if (!response.ok) {
+            throw new Error("Ichki kategoriyalarni yuklab bo‘lmadi.");
+        }
 
-            container.appendChild(
-                createProductCard(
-                    product
-                )
-            );
+        const data = await response.json();
 
-        });
+        return (data.subcategories || []).filter(
+            item => item.category === categoryName
+        );
 
-
-    showCategoryRecommendations(
-        category
-    );
-
+    } catch (error) {
+        console.error("Mijoz ichki kategoriyalari xatosi:", error);
+        return [];
+    }
 }
+
    /* =========================================================
    RENDER CATEGORIES — PREMIUM
    YULDUZ MARKET — 25 CATEGORIES
