@@ -14527,9 +14527,9 @@ function showCategoryRecommendations(category) {
         const selectedUnit = isWeightProduct ? "kg" : "dona";
 
         const cartItem = cart.find(item =>
-            String(item.id) === String(product.id) &&
-            (item.selectedUnit || item.unit || "dona") === selectedUnit
-        );
+    String(item.id) === String(product.id) &&
+    (item.selectedUnit || item.unit || "dona") === selectedUnit
+);
 
         const quantity = cartItem
             ? Math.max(0, Number(cartItem.quantity) || 0)
@@ -14538,10 +14538,10 @@ function showCategoryRecommendations(category) {
         let quantityText = "";
 
         if (quantity > 0) {
-            quantityText = isWeightProduct
-                ? `${Number(quantity.toFixed(3))} kg`
-                : `${Math.floor(quantity)}`;
-        }
+    quantityText = isWeightProduct
+        ? `${Number(quantity.toFixed(3))} kg`
+        : `${Math.floor(quantity)} dona`;
+}
 
         card.innerHTML = `
             <div class="recommendation-image">
