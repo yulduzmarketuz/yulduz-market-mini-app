@@ -928,15 +928,16 @@ button {
 .recommendation-card button {
     width: 100%;
     min-height: 36px;
-    border: none;
-    background: #16A34A;
-    color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: #FFFFFF;
+    color: #111827;
     font-size: 15px;
     font-weight: 700;
     padding: 7px 4px;
     border-radius: 9px;
     margin-top: auto;
     cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .recommendation-card button:active {
@@ -6632,9 +6633,27 @@ button {
         id="recommendations"
         class="recommendations hidden">
 
-        <div class="recommendation-title">
-            🛍 <span data-i18n="youMayLike">Sizga yoqishi mumkin</span>
-        </div>
+        
+<div class="recommendation-title">
+    <svg
+        class="recommendation-title-icon"
+        viewBox="0 0 48 48"
+        width="22"
+        height="22"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+    >
+        <path
+            d="M24 3C21.5 15.5 15.5 21.5 3 24C15.5 26.5 21.5 32.5 24 45C26.5 32.5 32.5 26.5 45 24C32.5 21.5 26.5 15.5 24 3Z"
+            fill="#16A34A"
+        />
+        <circle cx="24" cy="24" r="5" fill="#FFFFFF"/>
+    </svg>
+
+    <span data-i18n="youMayLike">Sizga yoqishi mumkin</span>
+</div>
+
 
         <div
             id="recommendationList"
@@ -14549,7 +14568,7 @@ function showCategoryRecommendations(category) {
 
             const button = document.createElement("button");
             button.type = "button";
-            button.textContent = "＋ Savatga";
+            button.textContent = "Savatga";
 
             button.addEventListener("click", () => {
 
