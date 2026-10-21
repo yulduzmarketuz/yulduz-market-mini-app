@@ -6250,6 +6250,39 @@ button {
     color: #4b5563;
     font-size: 11px;
 }
+   .recommendation-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.recommendation-controls > button {
+    margin-top: 0;
+}
+
+.recommendation-quantity {
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.recommendation-quantity > button {
+    width: 34px;
+    min-width: 34px;
+    height: 36px;
+    padding: 0;
+    font-size: 20px;
+}
+
+.recommendation-quantity-value {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
 
 </style>
 </head>
@@ -14391,39 +14424,30 @@ function getCategoryIcon(category) {
 }
 
 
+
 /* =========================================================
-   CATEGORY RECOMMENDATIONS
+   CATEGORY RECOMMENDATIONS — SMART CART
 ========================================================= */
 
-function showCategoryRecommendations(
-    category
-) {
+function showCategoryRecommendations(category) {
 
     const categoryProducts =
-        products[category]
-        .filter(
-            product =>
-            product.visible
-        );
+        (products[category] || [])
+        .filter(product => product.visible);
 
+    const recommendations =
+        document.getElementById("recommendations");
 
-    if (
-        categoryProducts.length === 0
-    ) {
+    const container =
+        document.getElementById("recommendationList");
 
-        document
-            .getElementById(
-                "recommendations"
-            )
-            .classList
-            .add("hidden");
+    if (!recommendations || !container) return;
 
+    if (categoryProducts.length === 0) {
+        recommendations.classList.add("hidden");
         return;
-
     }
 
-
-    
     const allProducts = Object.values(products)
         .flat()
         .filter(product => product.visible);
@@ -14431,6 +14455,7 @@ function showCategoryRecommendations(
     const related = [];
 
     categoryProducts.forEach(currentProduct => {
+
         const firstWord = currentProduct.name
             .trim()
             .split(/\s+/)[0]
@@ -14439,8 +14464,10 @@ function showCategoryRecommendations(
         if (!firstWord) return;
 
         allProducts.forEach(product => {
+
             if (
-                String(product.id) === String(currentProduct.id)
+                String(product.id) ===
+                String(currentProduct.id)
             ) return;
 
             const name = product.name
@@ -14450,7 +14477,9 @@ function showCategoryRecommendations(
             if (
                 name.startsWith(firstWord) &&
                 !related.some(
-                    item => String(item.id) === String(product.id)
+                    item =>
+                        String(item.id) ===
+                        String(product.id)
                 )
             ) {
                 related.push(product);
@@ -14458,90 +14487,139 @@ function showCategoryRecommendations(
         });
     });
 
-
-
-    if (
-        related.length === 0
-    ) {
-
-        document
-            .getElementById(
-                "recommendations"
-            )
-            .classList
-            .add("hidden");
-
+    if (related.length === 0) {
+        recommendations.classList.add("hidden");
         return;
-
     }
-
-
-    const container =
-        document.getElementById(
-            "recommendationList"
-        );
-
 
     container.innerHTML = "";
 
+    related.slice(0, 6).forEach(product => {
 
-    related
-        .slice(0,6)
-        .forEach(product => {
+        const card = document.createElement("div");
+        card.className = "recommendation-card";
 
-            const card =
-                document.createElement(
-                    "div"
+        const image = product.image
+            ? `<img src="${product.image}" alt="">`
+            : (product.icon || "");
+
+        const isWeightProduct = product.unit === "kg";
+
+        const selectedUnit = isWeightProduct ? "kg" : "dona";
+
+        const cartItem = cart.find(item =>
+            String(item.id) === String(product.id) &&
+            (item.selectedUnit || item.unit || "dona") === selectedUnit
+        );
+
+        const quantity = cartItem
+            ? Math.max(0, Number(cartItem.quantity) || 0)
+            : 0;
+
+        let quantityText = "";
+
+        if (quantity > 0) {
+            quantityText = isWeightProduct
+                ? `${Number(quantity.toFixed(3))} kg`
+                : `${Math.floor(quantity)}`;
+        }
+
+        card.innerHTML = `
+            <div class="recommendation-image">
+                ${image}
+            </div>
+
+            <div class="recommendation-name"></div>
+
+            <div class="recommendation-price">
+                ${formatPrice(product.price)}
+                ${isWeightProduct ? " / kg" : ""}
+            </div>
+
+            <div class="recommendation-controls"></div>
+        `;
+
+        card.querySelector(".recommendation-name")
+            .textContent = product.name;
+
+        const controls =
+            card.querySelector(".recommendation-controls");
+
+        if (quantity <= 0) {
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = "＋ Savatga";
+
+            button.addEventListener("click", () => {
+
+                if (isWeightProduct) {
+                    addWeightProduct(product.id);
+                } else {
+                    addToCart(product.id);
+                }
+
+                showCategoryRecommendations(category);
+            });
+
+            controls.appendChild(button);
+
+        } else {
+
+            controls.className =
+                "recommendation-controls recommendation-quantity";
+
+            const minus = document.createElement("button");
+            minus.type = "button";
+            minus.textContent = "−";
+            minus.setAttribute("aria-label", "Miqdorni kamaytirish");
+
+            const value = document.createElement("span");
+            value.className = "recommendation-quantity-value";
+            value.textContent = quantityText;
+
+            const plus = document.createElement("button");
+            plus.type = "button";
+            plus.textContent = "+";
+            plus.setAttribute("aria-label", "Miqdorni oshirish");
+
+            minus.addEventListener("click", () => {
+
+                const index = cart.findIndex(item =>
+                    String(item.id) === String(product.id) &&
+                    (item.selectedUnit || item.unit || "dona") === selectedUnit
                 );
 
+                if (index !== -1) {
+                    decreaseCartItem(index);
+                }
 
-            card.className =
-                "recommendation-card";
+                showCategoryRecommendations(category);
+            });
 
+            plus.addEventListener("click", () => {
 
-            const image =
-                product.image
-                ? `<img src="${product.image}">`
-                : product.icon;
+                const index = cart.findIndex(item =>
+                    String(item.id) === String(product.id) &&
+                    (item.selectedUnit || item.unit || "dona") === selectedUnit
+                );
 
+                if (index !== -1) {
+                    increaseCartItem(index);
+                }
 
-            card.innerHTML = `
+                showCategoryRecommendations(category);
+            });
 
-                <div class="recommendation-image">
-                    ${image}
-                </div>
+            controls.append(minus, value, plus);
+        }
 
-                <div class="recommendation-name">
-                    ${product.name}
-                </div>
+        container.appendChild(card);
+    });
 
-                <div class="recommendation-price">
-                    ${formatPrice(product.price)}
-                </div>
-
-                <button
-                    onclick="addToCart(${product.id})">
-
-                    🛒 +
-
-                </button>
-
-            `;
-
-
-            container.appendChild(card);
-
-        });
-
-
-    document
-        .getElementById(
-            "recommendations"
-        )
-        .classList
-        .remove("hidden");
-
+    recommendations.classList.remove("hidden");
 }
+
 
 
 /* =========================================================
