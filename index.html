@@ -14927,7 +14927,7 @@ function addWeightProduct(id) {
     if (existingItem) {
 
         existingItem.quantity =
-            (Number(existingItem.quantity) || 0) + 1;
+            (Number(existingItem.quantity) || 0) + 0.5;
 
     }
 
@@ -14937,7 +14937,7 @@ function addWeightProduct(id) {
 
             ...product,
 
-            quantity: 1,
+            quantity: 0.5,
 
             unit: "kg"
 
@@ -15045,7 +15045,7 @@ function updateProductButton(id) {
             if (existingItem) {
 
                 existingItem.quantity =
-                    (Number(existingItem.quantity) || 0) + 1;
+                    (Number(existingItem.quantity) || 0) + 0.5;
 
             }
 
@@ -15055,7 +15055,7 @@ function updateProductButton(id) {
 
                     ...product,
 
-                    quantity: 1,
+                    quantity: 0.5,
 
                     unit: "kg"
 
@@ -15098,8 +15098,11 @@ const item = cart.find(
         }
 
 
-        item.quantity =
-            (Number(item.quantity) || 0) + 1;
+        const step =
+    selectedUnit === "kg" ? 0.5 : 1;
+
+item.quantity =
+    (Number(item.quantity) || 0) + step;
 
     }
 
@@ -15126,8 +15129,11 @@ const item = cart.find(
         }
 
 
-        item.quantity =
-            (Number(item.quantity) || 0) - 1;
+        const step =
+    selectedUnit === "kg" ? 0.5 : 1;
+
+item.quantity =
+    (Number(item.quantity) || 0) - step;
 
 
         if (item.quantity <= 0) {
@@ -15832,14 +15838,17 @@ function increaseCartItem(index) {
     ===================================================== */
 
     if (
-        item.selectedUnit === "kg" ||
-        item.selectedUnit === "g"
-    ) {
+    item.selectedUnit === "kg" ||
+    item.selectedUnit === "g"
+) {
 
-        quantity += 0.1;
+    const step =
+        item.selectedUnit === "kg" ? 0.5 : 0.1;
 
-        quantity =
-            Math.round(quantity * 1000) / 1000;
+    quantity += step;
+
+    quantity =
+        Math.round(quantity * 1000) / 1000;
 
 
         if (item.selectedUnit === "g") {
@@ -15918,14 +15927,17 @@ function decreaseCartItem(index) {
     ===================================================== */
 
     if (
-        item.selectedUnit === "kg" ||
-        item.selectedUnit === "g"
-    ) {
+    item.selectedUnit === "kg" ||
+    item.selectedUnit === "g"
+) {
 
-        quantity -= 0.1;
+    const step =
+        item.selectedUnit === "kg" ? 0.5 : 0.1;
 
-        quantity =
-            Math.round(quantity * 1000) / 1000;
+    quantity -= step;
+
+    quantity =
+        Math.round(quantity * 1000) / 1000;
 
 
         if (quantity < 0) {
@@ -16203,9 +16215,9 @@ function restoreCartItem(index) {
 
         } else {
 
-            item.quantity = 0.1;
-            item.enteredAmount = 0.1;
-
+            item.quantity = 0.5;
+            item.enteredAmount = 0.5;
+         
         }
 
     }
