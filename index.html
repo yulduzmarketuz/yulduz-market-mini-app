@@ -6251,20 +6251,57 @@ button {
     color: #4b5563;
     font-size: 11px;
 }
-   .recommendation-controls {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-width: 0;
-    height: 42px;
-    margin-top: 8px;
-    gap: 0;
-    box-sizing: border-box;
+   
+/* =========================================================
+   YULDUZ MARKET — RESPONSIVE CART CONTROLS
+   Moslashtirilgan: recommendation-card
+========================================================= */
+
+/* TAVSIYA MAHSULOTLARI GRID */
+
+.recommendation-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    padding: 0 0 5px;
+    align-items: stretch;
 }
 
-/* SAVATGA */
+/* MAHSULOT KARTASI */
 
-.recommendation-card .recommendation-controls > button {
+.recommendation-card {
+    min-width: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+/* SAVAT BOSHQARUVI */
+
+.recommendation-controls {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    margin-top: auto;
+    padding: 3px;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3px;
+
+    border: 1px solid #E5E7EB;
+    border-radius: 15px;
+    background: #FFFFFF;
+
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* SAVATGA TUGMASI */
+
+.recommendation-card
+.recommendation-controls:not(.recommendation-quantity) > button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -6273,50 +6310,44 @@ button {
     min-width: 0;
     height: 42px;
     min-height: 42px;
+    flex: 1;
+
     margin: 0;
-    padding: 0 5px;
+    padding: 0 4px;
     box-sizing: border-box;
 
-    border: 1px solid #E5E7EB;
-    border-radius: 15px;
+    border: 0;
+    border-radius: 12px;
     background: #FFFFFF;
     color: #111827;
 
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
-    line-height: 1;
+    line-height: 1.2;
 
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    box-shadow: none;
     cursor: pointer;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
 }
 
-/* MIQDOR BLOKI */
-
-.recommendation-controls.recommendation-quantity {
-    justify-content: space-between;
-    gap: 3px;
-    padding: 3px;
-
-    border: 1px solid #E5E7EB;
-    border-radius: 15px;
-    background: #FFFFFF;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-}
-
-/* MINUS VA PLUS */
+/* PLUS VA MINUS */
 
 .recommendation-card
 .recommendation-controls.recommendation-quantity > button {
-    flex: 0 0 30px;
-    width: 30px;
-    min-width: 30px;
-    height: 32px;
-    min-height: 32px;
+    display: grid;
+    place-items: center;
+
+    width: 32px;
+    height: 36px;
+    min-width: 32px;
+    min-height: 36px;
+    flex: 0 0 32px;
+
+    margin: 0;
     padding: 0;
 
-    border: none;
+    border: 0;
     border-radius: 10px;
     background: #F3F4F6;
     color: #111827;
@@ -6324,10 +6355,13 @@ button {
     font-size: 21px;
     font-weight: 500;
     line-height: 1;
+
     box-shadow: none;
+    cursor: pointer;
+    touch-action: manipulation;
 }
 
-/* MIQDOR */
+/* MIQDOR VA O‘LCHOV BIRLIGI */
 
 .recommendation-quantity-value {
     flex: 1;
@@ -6357,22 +6391,67 @@ button {
     background: #E5E7EB;
 }
 
-/* JUDA TOR EKRANLAR */
+/* O‘RTACHA TELEFONLAR */
 
-@media (max-width: 360px) {
-    .recommendation-controls,
-    .recommendation-card .recommendation-controls > button {
-        height: 38px;
-        min-height: 38px;
+@media (min-width: 361px) and (max-width: 430px) {
+    .recommendation-list {
+        gap: 8px;
+    }
+
+    .recommendation-card {
+        padding: 7px;
+    }
+
+    .recommendation-controls {
+        min-height: 42px;
     }
 
     .recommendation-card
     .recommendation-controls.recommendation-quantity > button {
-        flex-basis: 26px;
+        width: 30px;
+        min-width: 30px;
+        flex-basis: 30px;
+        height: 34px;
+        min-height: 34px;
+    }
+
+    .recommendation-quantity-value {
+        font-size: 10px;
+    }
+}
+
+/* JUDA TOR TELEFONLAR */
+
+@media (max-width: 360px) {
+    .recommendation-list {
+        gap: 7px;
+    }
+
+    .recommendation-card {
+        padding: 6px;
+    }
+
+    .recommendation-controls {
+        min-height: 38px;
+        padding: 2px;
+        gap: 2px;
+        border-radius: 12px;
+    }
+
+    .recommendation-card
+    .recommendation-controls:not(.recommendation-quantity) > button {
+        height: 36px;
+        min-height: 36px;
+        font-size: 13px;
+    }
+
+    .recommendation-card
+    .recommendation-controls.recommendation-quantity > button {
         width: 26px;
         min-width: 26px;
-        height: 28px;
-        min-height: 28px;
+        flex-basis: 26px;
+        height: 32px;
+        min-height: 32px;
         border-radius: 8px;
         font-size: 19px;
     }
@@ -6380,11 +6459,8 @@ button {
     .recommendation-quantity-value {
         font-size: 10px;
     }
-
-    .recommendation-card .recommendation-controls > button {
-        font-size: 14px;
-    }
 }
+
 
 </style>
 </head>
