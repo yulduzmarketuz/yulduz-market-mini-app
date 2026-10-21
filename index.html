@@ -6253,64 +6253,145 @@ button {
 }
    .recommendation-controls {
     display: flex;
+    align-items: stretch;
+    width: 100%;
+    min-width: 0;
+    height: 68px;
+    margin-top: 12px;
+    gap: 0;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+/* SAVATGA BUTTON */
+
+.recommendation-card .recommendation-controls > button {
+    box-sizing: border-box;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    margin-top: 10px;
-}
 
-.recommendation-controls > button {
-    margin-top: 0;
-}
-
-.recommendation-quantity {
-    justify-content: space-between;
-    gap: 4px;
-}
-
-.recommendation-quantity > button {
-    width: 34px;
-    min-width: 34px;
-    height: 36px;
-    padding: 0;
-    font-size: 20px;
-}
-
-.recommendation-quantity-value {
-    flex: 1;
+    width: 100%;
     min-width: 0;
-    text-align: center;
-    font-size: 12px;
-    font-weight: 700;
-    overflow-wrap: anywhere;
+    height: 68px;
+    min-height: 68px;
+
+    margin: 0;
+    padding: 0 8px;
+
+    border: 1px solid rgba(17, 24, 39, 0.12);
+    border-radius: 26px;
+
+    background: #FFFFFF;
+    color: #111827;
+
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.2;
+
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.07);
+
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
-   .recommendation-controls {
+
+/* MIQDOR BOSHQARUVI */
+
+.recommendation-controls.recommendation-quantity {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 4px;
-    width: 100%;
-    min-width: 0;
-    margin-top: 10px;
+
+    padding: 4px;
+    border: 1px solid rgba(17, 24, 39, 0.12);
+    border-radius: 26px;
+
+    background: #FFFFFF;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.07);
 }
 
-.recommendation-card .recommendation-quantity > button {
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
-    min-height: 36px;
-    flex: 0 0 36px;
-    margin: 0;
+/* MINUS VA PLUS */
+
+.recommendation-card
+.recommendation-controls.recommendation-quantity > button {
+    flex: 0 0 52px;
+    width: 52px;
+    min-width: 52px;
+    height: 52px;
+    min-height: 52px;
+
     padding: 0;
+    margin: 0;
+
+    border: none;
+    border-radius: 20px;
+    background: #F3F4F6;
+    color: #111827;
+
+    font-size: 27px;
+    font-weight: 500;
+    line-height: 1;
+    box-shadow: none;
 }
+
+/* MIQDOR MATNI */
 
 .recommendation-quantity-value {
     flex: 1;
     min-width: 0;
+    padding: 0 2px;
+
     text-align: center;
     white-space: nowrap;
-    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    color: #111827;
+    font-size: 15px;
     font-weight: 700;
+    line-height: 1.2;
+}
+
+/* BOSILGANDA */
+
+.recommendation-card
+.recommendation-controls > button:active {
+    transform: scale(0.98);
+}
+
+.recommendation-card
+.recommendation-quantity > button:active {
+    background: #E5E7EB;
+}
+
+/* TOR EKRANLAR */
+
+@media (max-width: 360px) {
+    .recommendation-controls,
+    .recommendation-card .recommendation-controls > button {
+        height: 62px;
+        min-height: 62px;
+    }
+
+    .recommendation-card
+    .recommendation-controls.recommendation-quantity > button {
+        flex-basis: 44px;
+        width: 44px;
+        min-width: 44px;
+        height: 48px;
+        min-height: 48px;
+        border-radius: 17px;
+    }
+
+    .recommendation-quantity-value {
+        font-size: 13px;
+    }
+
+    .recommendation-card .recommendation-controls > button {
+        font-size: 19px;
+    }
 }
 
 </style>
@@ -14565,7 +14646,7 @@ function showCategoryRecommendations(category) {
 
         let quantityText = "";
 
-        if (quantity > 0) {
+if (quantity > 0) {
     quantityText = isWeightProduct
         ? `${Number(quantity.toFixed(3))} kg`
         : `${Math.floor(quantity)} dona`;
@@ -14615,21 +14696,20 @@ function showCategoryRecommendations(category) {
 
             controls.className =
                 "recommendation-controls recommendation-quantity";
-
+            
             const minus = document.createElement("button");
             minus.type = "button";
             minus.textContent = "−";
             minus.setAttribute("aria-label", "Miqdorni kamaytirish");
-
+            
             const value = document.createElement("span");
             value.className = "recommendation-quantity-value";
             value.textContent = quantityText;
-
+            
             const plus = document.createElement("button");
             plus.type = "button";
             plus.textContent = "+";
             plus.setAttribute("aria-label", "Miqdorni oshirish");
-
             minus.addEventListener("click", () => {
 
                 const index = cart.findIndex(item =>
