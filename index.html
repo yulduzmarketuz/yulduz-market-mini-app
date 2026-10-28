@@ -9780,7 +9780,7 @@ body.ad-banner-mode #cartBar { display:none !important; }
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
                 <button class="ad-banner-primary" style="flex:1;min-width:180px;" type="button" onclick="downloadAdBanner('png')">⬇ PNG yuklab olish</button>
                 <button class="ad-banner-secondary" style="flex:1;min-width:180px;margin-top:0;" type="button" onclick="downloadAdBanner('jpg')">⬇ JPG yuklab olish</button>
-                <button class="ad-banner-primary" style="width:100%;background:#087F3E;" type="button" onclick="saveAdBannerToGallery()">📲 Galereyaga saqlash</button>
+                <button class="ad-banner-primary" style="width:100%;background:#087F3E;" type="button" onclick="downloadAdBanner('png')">⬇️ Rasmni yuklab olish</button>
             </div>
         </div>
     </div>
@@ -19975,7 +19975,7 @@ function drawAdBannerDesign(ctx, title, priceText, oldPrice, description, weight
     }
 
     // Chegirma foizi — foydalanuvchi yuborgan original yashil cho‘tka PNG.
-    const newPrice = Number(String(priceText).replace(/[^\\d]/g, "")) || 0;
+    const newPrice = Number(String(priceText).replace(/[^\d]/g, "")) || 0;
     if (oldPrice > newPrice && newPrice > 0) {
         const cx = 835, cy = 688;
         const discount = Math.round((oldPrice-newPrice)/oldPrice*100);
@@ -20119,31 +20119,6 @@ document.getElementById("adBannerImageScale")?.addEventListener("input", functio
     if (label) label.textContent = this.value + "%";
     if (adBannerReady) renderAdBanner();
 });
-
-async function saveAdBannerToGallery() {
-    const canvas = document.getElementById("adBannerPreview");
-    const status = document.getElementById("adBannerStatus");
-    if (!canvas || !adBannerReady) {
-        if (status) status.textContent = "Avval mahsulot ma’lumotlarini kiriting va banner tayyorlang.";
-        return;
-    }
-    try {
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
-        if (!blob) throw new Error("PNG yaratilmadi");
-        const file = new File([blob], "yulduz-market-reklama.png", { type: "image/png" });
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-            await navigator.share({ files: [file], title: "Yulduz Market reklama banneri" });
-            if (status) status.textContent = "Ulashish oynasi ochildi. Galereya/Photos saqlash variantini tanlang.";
-        } else {
-            downloadAdBanner("png");
-            if (status) status.textContent = "Bu qurilmada galereyaga bevosita saqlash qo‘llanmaydi — PNG fayl yuklab olinadi.";
-        }
-    } catch (error) {
-        if (error && error.name === "AbortError") return;
-        downloadAdBanner("png");
-        if (status) status.textContent = "Galereyaga saqlash oynasi mavjud emas. PNG fayl yuklab olinadi.";
-    }
-}
 
 function downloadAdBanner(format = "png") {
     const canvas = document.getElementById("adBannerPreview");
