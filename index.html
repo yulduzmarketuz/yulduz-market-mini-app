@@ -6497,6 +6497,55 @@ button {
 }
 
 
+
+/* =========================================================
+   ADMIN REKLAMA BANNERI
+========================================================= */
+#adBannerPage {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 18px 16px 36px;
+}
+.ad-banner-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+.ad-banner-field { display:block; margin-bottom:14px; }
+.ad-banner-field label {
+    display:block; font-size:13px; font-weight:700;
+    color:#374151; margin-bottom:7px;
+}
+.ad-banner-field input,
+.ad-banner-field textarea {
+    width:100%; box-sizing:border-box; border:1px solid #d1d5db;
+    border-radius:11px; padding:12px; font:inherit; font-size:15px;
+    background:#fff; color:#111827;
+}
+.ad-banner-field textarea { min-height:72px; resize:vertical; }
+#adBannerPreview {
+    width:100%; height:auto; display:block; border-radius:14px;
+    background:#f3f4f6; border:1px solid #e5e7eb;
+}
+.ad-banner-primary {
+    width:100%; border:0; border-radius:12px; padding:14px;
+    background:#16A34A; color:#fff; font-size:15px; font-weight:750;
+    margin-top:10px;
+}
+.ad-banner-secondary {
+    width:100%; border:1px solid #d1d5db; border-radius:12px;
+    padding:12px; background:#fff; color:#111827; font-size:14px;
+    font-weight:700; margin-top:8px;
+}
+.ad-banner-note { color:#6b7280; font-size:12px; line-height:1.5; }
+.ad-banner-status { font-size:13px; margin-top:10px; color:#b91c1c; }
+body.ad-banner-mode { background:#f5f7f5; padding-bottom:20px; }
+body.ad-banner-mode .header,
+body.ad-banner-mode .bottom-nav,
+body.ad-banner-mode #cartBar { display:none !important; }
+
 </style>
 </head>
 
@@ -9672,6 +9721,53 @@ button {
 </div>
    
 
+
+<!-- ADMIN REKLAMA BANNERI -->
+<div id="adBannerPage" class="hidden">
+    <div style="display:flex;align-items:center;gap:10px;margin:4px 0 18px;">
+        <div style="width:42px;height:42px;border-radius:13px;background:#E8F7ED;color:#16A34A;display:flex;align-items:center;justify-content:center;font-size:22px;">✦</div>
+        <div>
+            <h2 style="margin:0;font-size:21px;">Reklama banneri</h2>
+            <div style="color:#6b7280;font-size:13px;margin-top:3px;">Yulduz Market · PNG format</div>
+        </div>
+    </div>
+
+    <div id="adBannerDenied" class="ad-banner-card hidden">
+        <strong>Kirishga ruxsat yo‘q</strong>
+        <p>Bu bo‘lim faqat administrator uchun.</p>
+    </div>
+
+    <div id="adBannerEditor" class="hidden">
+        <div class="ad-banner-card">
+            <div class="ad-banner-field">
+                <label for="adBannerTitle">Mahsulot nomi</label>
+                <input id="adBannerTitle" maxlength="70" placeholder="Masalan: Coca-Cola 1,5 L">
+            </div>
+            <div class="ad-banner-field">
+                <label for="adBannerPrice">Narxi (so‘m)</label>
+                <input id="adBannerPrice" inputmode="numeric" maxlength="20" placeholder="Masalan: 12 000">
+            </div>
+            <div class="ad-banner-field">
+                <label for="adBannerDescription">Qo‘shimcha matn (ixtiyoriy)</label>
+                <textarea id="adBannerDescription" maxlength="120" placeholder="Masalan: Har kuni yangi mahsulotlar!"></textarea>
+            </div>
+            <div class="ad-banner-field" style="margin-bottom:4px;">
+                <label for="adBannerImage">Mahsulot rasmi (JPG, PNG yoki WEBP)</label>
+                <input id="adBannerImage" type="file" accept="image/png,image/jpeg,image/webp">
+            </div>
+            <div class="ad-banner-note">Tavsiya: mahsulot rasmi tiniq, foni imkon qadar oq bo‘lsin.</div>
+            <button class="ad-banner-primary" type="button" onclick="renderAdBanner()">Banner tayyorlash</button>
+            <div id="adBannerStatus" class="ad-banner-status" role="status"></div>
+        </div>
+
+        <div class="ad-banner-card">
+            <div style="font-weight:750;margin-bottom:12px;">Banner ko‘rinishi</div>
+            <canvas id="adBannerPreview" width="1080" height="1350" aria-label="Reklama banneri oldindan ko‘rish"></canvas>
+            <button class="ad-banner-primary" type="button" onclick="downloadAdBanner()">⬇ PNG yuklab olish</button>
+        </div>
+    </div>
+</div>
+
 <script>
 
    function openCategoriesPage() {
@@ -11391,7 +11487,20 @@ function closeAdminProductForm() {
         const data =
             await response.json();
 
+        const bannerMode =
+            new URLSearchParams(window.location.search).get("mode") === "ad-banner";
+
         if (!data.admin) {
+            if (bannerMode) {
+                document.body.classList.add("ad-banner-mode");
+                document.getElementById("adBannerPage")?.classList.remove("hidden");
+                document.getElementById("adBannerDenied")?.classList.remove("hidden");
+            }
+            return;
+        }
+
+        if (bannerMode) {
+            openAdBannerPage();
             return;
         }
 
@@ -19773,6 +19882,223 @@ function showToast(message) {
             2200
         );
 
+}
+
+/* =========================================================
+   ADMIN REKLAMA BANNERI — FRONTEND
+========================================================= */
+
+let adBannerImage = null;
+let adBannerReady = false;
+
+function openAdBannerPage() {
+    document.body.classList.add("ad-banner-mode");
+
+    // Savdo interfeysini yashiramiz; buyurtma oqimining kodiga tegilmaydi.
+    document.querySelector(".header")?.classList.add("hidden");
+    document.querySelector(".bottom-nav")?.classList.add("hidden");
+    document.getElementById("cartBar")?.classList.add("hidden");
+
+    [
+        "homePage", "categoriesPage", "productsPage", "cartPage",
+        "orderPage", "profilePage", "favoritesPage", "addressesPage",
+        "settingsPage", "languagePage", "supportPage", "helpPage",
+        "ordersPage", "orderDetailsPage", "successPage", "searchPage",
+        "adminPage", "adminProductForm"
+    ].forEach(id => document.getElementById(id)?.classList.add("hidden"));
+
+    document.getElementById("adBannerPage")?.classList.remove("hidden");
+    document.getElementById("adBannerEditor")?.classList.remove("hidden");
+    drawAdBannerPlaceholder();
+}
+
+function drawAdBannerPlaceholder() {
+    const canvas = document.getElementById("adBannerPreview");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#F3F8F4";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#16A34A";
+    ctx.fillRect(0, 0, canvas.width, 270);
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "bold 66px Arial";
+    ctx.fillText("YULDUZ MARKET", 64, 120);
+    ctx.font = "36px Arial";
+    ctx.fillText("Tezkor xarid · Ishonchli sifat", 66, 190);
+    ctx.fillStyle = "#183B2A";
+    ctx.font = "bold 52px Arial";
+    ctx.fillText("Mahsulot nomi", 64, 365);
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(64, 430, 952, 650);
+    ctx.strokeStyle = "#DDE8DF";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(64, 430, 952, 650);
+    ctx.fillStyle = "#9CA3AF";
+    ctx.font = "36px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("Mahsulot rasmi shu yerda", 540, 760);
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#16A34A";
+    ctx.fillRect(64, 1110, 952, 145);
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "bold 58px Arial";
+    ctx.fillText("Narxi: — so‘m", 100, 1200);
+    ctx.font = "30px Arial";
+    ctx.fillStyle = "#183B2A";
+    ctx.fillText("Yulduz Market — yaqin va qulay!", 64, 1305);
+    adBannerReady = false;
+}
+
+document.getElementById("adBannerImage")?.addEventListener("change", function () {
+    const file = this.files && this.files[0];
+    const status = document.getElementById("adBannerStatus");
+    adBannerImage = null;
+    adBannerReady = false;
+
+    if (!file) {
+        status.textContent = "";
+        drawAdBannerPlaceholder();
+        return;
+    }
+
+    if (!["image/png", "image/jpeg", "image/webp"].includes(file.type)) {
+        status.textContent = "Faqat JPG, PNG yoki WEBP rasm tanlang.";
+        this.value = "";
+        return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+        status.textContent = "Rasm hajmi 5 MB dan oshmasligi kerak.";
+        this.value = "";
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+            adBannerImage = img;
+            status.textContent = "";
+            renderAdBanner();
+        };
+        img.onerror = () => {
+            status.textContent = "Rasmni ochib bo‘lmadi. Boshqa rasm tanlang.";
+        };
+        img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+});
+
+function renderAdBanner() {
+    const canvas = document.getElementById("adBannerPreview");
+    const status = document.getElementById("adBannerStatus");
+    if (!canvas) return;
+
+    const title = document.getElementById("adBannerTitle").value.trim();
+    const rawPrice = document.getElementById("adBannerPrice").value.trim();
+    const description = document.getElementById("adBannerDescription").value.trim();
+
+    if (!title) {
+        status.textContent = "Mahsulot nomini kiriting.";
+        return;
+    }
+    if (!rawPrice || !/\d/.test(rawPrice)) {
+        status.textContent = "Mahsulot narxini kiriting.";
+        return;
+    }
+
+    const priceDigits = rawPrice.replace(/[^\d]/g, "");
+    const price = Number(priceDigits);
+    if (!Number.isFinite(price) || price <= 0) {
+        status.textContent = "Narxni to‘g‘ri kiriting.";
+        return;
+    }
+
+    const ctx = canvas.getContext("2d");
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = "#F3F8F4";
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.fillStyle = "#16A34A";
+    ctx.fillRect(0, 0, W, 270);
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "bold 66px Arial";
+    ctx.fillText("YULDUZ MARKET", 64, 120);
+    ctx.font = "36px Arial";
+    ctx.fillText("Tezkor xarid · Ishonchli sifat", 66, 190);
+
+    ctx.fillStyle = "#183B2A";
+    ctx.font = "bold 52px Arial";
+    let displayTitle = title;
+    while (ctx.measureText(displayTitle).width > W - 128 && displayTitle.length > 8) {
+        displayTitle = displayTitle.slice(0, -2) + "…";
+    }
+    ctx.fillText(displayTitle, 64, 365);
+
+    const x = 64, y = 420, boxW = 952, boxH = 650;
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(x, y, boxW, boxH);
+    ctx.strokeStyle = "#DDE8DF";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(x, y, boxW, boxH);
+
+    if (adBannerImage) {
+        const scale = Math.min((boxW - 60) / adBannerImage.width, (boxH - 60) / adBannerImage.height);
+        const iw = adBannerImage.width * scale, ih = adBannerImage.height * scale;
+        ctx.drawImage(adBannerImage, x + (boxW - iw) / 2, y + (boxH - ih) / 2, iw, ih);
+    } else {
+        ctx.fillStyle = "#6B7280";
+        ctx.font = "36px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("Mahsulot rasmini tanlang", W / 2, y + boxH / 2);
+        ctx.textAlign = "left";
+    }
+
+    ctx.fillStyle = "#16A34A";
+    ctx.fillRect(64, 1100, 952, 155);
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "bold 58px Arial";
+    const priceText = price.toLocaleString("uz-UZ") + " so‘m";
+    ctx.fillText(priceText, 100, 1195);
+
+    if (description) {
+        ctx.fillStyle = "#183B2A";
+        ctx.font = "30px Arial";
+        let desc = description;
+        while (ctx.measureText(desc).width > W - 128 && desc.length > 8) desc = desc.slice(0, -2) + "…";
+        ctx.fillText(desc, 64, 1310);
+    } else {
+        ctx.fillStyle = "#183B2A";
+        ctx.font = "30px Arial";
+        ctx.fillText("Yulduz Market — yaqin va qulay!", 64, 1310);
+    }
+
+    adBannerReady = true;
+    status.textContent = "Banner tayyor. PNG qilib yuklab olishingiz mumkin.";
+}
+
+function downloadAdBanner() {
+    const canvas = document.getElementById("adBannerPreview");
+    const status = document.getElementById("adBannerStatus");
+    if (!canvas || !adBannerReady) {
+        status.textContent = "Avval mahsulot nomi va narxini kiriting, so‘ng banner tayyorlang.";
+        return;
+    }
+
+    canvas.toBlob(blob => {
+        if (!blob) {
+            status.textContent = "PNG yaratishda xatolik yuz berdi.";
+            return;
+        }
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "yulduz-market-reklama.png";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }, "image/png");
 }
 
 /* =========================================================
