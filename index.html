@@ -6512,6 +6512,7 @@ button {
     border-radius: 18px;
     padding: 16px;
     margin-bottom: 16px;
+    box-shadow: 0 5px 20px rgba(22,163,74,.05);
 }
 .ad-banner-field { display:block; margin-bottom:14px; }
 .ad-banner-field label {
@@ -9744,12 +9745,16 @@ body.ad-banner-mode #cartBar { display:none !important; }
                 <input id="adBannerTitle" maxlength="70" placeholder="Masalan: Coca-Cola 1,5 L">
             </div>
             <div class="ad-banner-field">
-                <label for="adBannerPrice">Narxi (so‘m)</label>
+                <label for="adBannerOldPrice">Eski narxi (ixtiyoriy, so‘m)</label>
+                <input id="adBannerOldPrice" inputmode="numeric" maxlength="20" placeholder="Masalan: 15 000">
+            </div>
+            <div class="ad-banner-field">
+                <label for="adBannerPrice">Yangi narxi (so‘m)</label>
                 <input id="adBannerPrice" inputmode="numeric" maxlength="20" placeholder="Masalan: 12 000">
             </div>
             <div class="ad-banner-field">
                 <label for="adBannerDescription">Qo‘shimcha matn (ixtiyoriy)</label>
-                <textarea id="adBannerDescription" maxlength="120" placeholder="Masalan: Har kuni yangi mahsulotlar!"></textarea>
+                <textarea id="adBannerDescription" maxlength="120" placeholder="Masalan: Aksiya muddati cheklangan"></textarea>
             </div>
             <div class="ad-banner-field" style="margin-bottom:4px;">
                 <label for="adBannerImage">Mahsulot rasmi (JPG, PNG yoki WEBP)</label>
@@ -9763,7 +9768,10 @@ body.ad-banner-mode #cartBar { display:none !important; }
         <div class="ad-banner-card">
             <div style="font-weight:750;margin-bottom:12px;">Banner ko‘rinishi</div>
             <canvas id="adBannerPreview" width="1080" height="1350" aria-label="Reklama banneri oldindan ko‘rish"></canvas>
-            <button class="ad-banner-primary" type="button" onclick="downloadAdBanner()">⬇ PNG yuklab olish</button>
+            <div style="display:flex;gap:8px;">
+                <button class="ad-banner-primary" style="flex:1;" type="button" onclick="downloadAdBanner('png')">⬇ PNG yuklab olish</button>
+                <button class="ad-banner-secondary" style="flex:1;margin-top:10px;" type="button" onclick="downloadAdBanner('jpg')">⬇ JPG yuklab olish</button>
+            </div>
         </div>
     </div>
 </div>
@@ -19916,37 +19924,91 @@ function drawAdBannerPlaceholder() {
     const canvas = document.getElementById("adBannerPreview");
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#F3F8F4";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#16A34A";
-    ctx.fillRect(0, 0, canvas.width, 270);
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = "bold 66px Arial";
-    ctx.fillText("YULDUZ MARKET", 64, 120);
-    ctx.font = "36px Arial";
-    ctx.fillText("Tezkor xarid · Ishonchli sifat", 66, 190);
-    ctx.fillStyle = "#183B2A";
-    ctx.font = "bold 52px Arial";
-    ctx.fillText("Mahsulot nomi", 64, 365);
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(64, 430, 952, 650);
-    ctx.strokeStyle = "#DDE8DF";
-    ctx.lineWidth = 3;
-    ctx.strokeRect(64, 430, 952, 650);
-    ctx.fillStyle = "#9CA3AF";
-    ctx.font = "36px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("Mahsulot rasmi shu yerda", 540, 760);
-    ctx.textAlign = "left";
-    ctx.fillStyle = "#16A34A";
-    ctx.fillRect(64, 1110, 952, 145);
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = "bold 58px Arial";
-    ctx.fillText("Narxi: — so‘m", 100, 1200);
-    ctx.font = "30px Arial";
-    ctx.fillStyle = "#183B2A";
-    ctx.fillText("Yulduz Market — yaqin va qulay!", 64, 1305);
+    drawAdBannerDesign(ctx, "Mahsulot nomi", "", 0, "", null);
     adBannerReady = false;
+}
+
+function drawAdBannerDesign(ctx, title, priceText, oldPrice, description, image) {
+    const W = 1080, H = 1350;
+    ctx.clearRect(0, 0, W, H);
+    // Clean white background with Yulduz Market green wave header.
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = "#16A34A";
+    ctx.beginPath();
+    ctx.moveTo(0, 0); ctx.lineTo(W, 0); ctx.lineTo(W, 260);
+    ctx.bezierCurveTo(800, 335, 400, 235, 0, 325); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = "rgba(255,255,255,0.14)";
+    ctx.beginPath(); ctx.ellipse(920, 65, 260, 170, -0.25, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "bold 54px Arial";
+    ctx.fillText("YULDUZ MARKET", 58, 88);
+    ctx.font = "28px Arial";
+    ctx.fillText("Yaqin, qulay va ishonchli", 62, 137);
+
+    // Product title, wrapped to two lines when necessary.
+    ctx.fillStyle = "#173D29";
+    let shownTitle = title || "Mahsulot nomi";
+    ctx.font = "bold 54px Arial";
+    const maxTitleWidth = 950;
+    if (ctx.measureText(shownTitle).width > maxTitleWidth) {
+        const words = shownTitle.split(/\s+/); let lines = [""];
+        for (const word of words) {
+            const candidate = lines[lines.length - 1] ? lines[lines.length - 1] + " " + word : word;
+            if (ctx.measureText(candidate).width > maxTitleWidth && lines.length < 2) lines.push(word);
+            else lines[lines.length - 1] = candidate;
+        }
+        lines.slice(0,2).forEach((line,i) => ctx.fillText(line, 62, 255 + i*60));
+    } else ctx.fillText(shownTitle, 62, 265);
+
+    // Product image sits on a soft rounded-looking light panel.
+    const x = 70, y = 360, boxW = 940, boxH = 570;
+    ctx.fillStyle = "#F4FAF5";
+    ctx.beginPath(); ctx.roundRect(x, y, boxW, boxH, 34); ctx.fill();
+    if (image) {
+        const scale = Math.min((boxW - 70) / image.width, (boxH - 70) / image.height);
+        const iw = image.width * scale, ih = image.height * scale;
+        ctx.drawImage(image, x + (boxW-iw)/2, y + (boxH-ih)/2, iw, ih);
+    } else {
+        ctx.fillStyle = "#8AA392"; ctx.font = "32px Arial"; ctx.textAlign = "center";
+        ctx.fillText("Mahsulot rasmi", W/2, y+boxH/2); ctx.textAlign = "left";
+    }
+
+    // Price panel and automatically calculated discount badge.
+    const panelY = 970;
+    ctx.fillStyle = "#16A34A";
+    ctx.beginPath(); ctx.roundRect(58, panelY, 964, 225, 34); ctx.fill();
+    if (oldPrice > 0 && oldPrice > Number(priceText.replace(/[^\d]/g,""))) {
+        const newPrice = Number(priceText.replace(/[^\d]/g,""));
+        const discount = Math.round((oldPrice-newPrice)/oldPrice*100);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.beginPath(); ctx.roundRect(760, panelY+24, 220, 72, 24); ctx.fill();
+        ctx.fillStyle = "#16A34A"; ctx.font = "bold 38px Arial";
+        ctx.textAlign = "center"; ctx.fillText("-"+discount+"%", 870, panelY+72); ctx.textAlign = "left";
+        ctx.fillStyle = "#E6F7EB"; ctx.font = "32px Arial";
+        ctx.fillText(oldPrice.toLocaleString("uz-UZ")+" so‘m", 96, panelY+67);
+        const oldText = oldPrice.toLocaleString("uz-UZ")+" so‘m";
+        const oldW = ctx.measureText(oldText).width;
+        ctx.strokeStyle = "#FFFFFF"; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(96, panelY+56); ctx.lineTo(96+oldW, panelY+56); ctx.stroke();
+        ctx.fillStyle = "#FFFFFF"; ctx.font = "bold 64px Arial";
+        ctx.fillText(priceText, 96, panelY+157);
+    } else {
+        ctx.fillStyle = "#FFFFFF"; ctx.font = "bold 64px Arial";
+        ctx.fillText(priceText || "Narxi", 96, panelY+130);
+    }
+
+    if (description) {
+        ctx.fillStyle = "#244A32"; ctx.font = "30px Arial";
+        let desc = description;
+        while (ctx.measureText(desc).width > 930 && desc.length > 8) desc = desc.slice(0,-2)+"…";
+        ctx.fillText(desc, 64, 1260);
+    } else {
+        ctx.fillStyle = "#244A32"; ctx.font = "28px Arial";
+        ctx.fillText("Yulduz Market — yaqin va qulay!", 64, 1260);
+    }
+    ctx.fillStyle = "#16A34A"; ctx.fillRect(0, 1315, W, 35);
 }
 
 document.getElementById("adBannerImage")?.addEventListener("change", function () {
@@ -19954,35 +20016,18 @@ document.getElementById("adBannerImage")?.addEventListener("change", function ()
     const status = document.getElementById("adBannerStatus");
     adBannerImage = null;
     adBannerReady = false;
-
-    if (!file) {
-        status.textContent = "";
-        drawAdBannerPlaceholder();
-        return;
-    }
-
+    if (!file) { status.textContent = ""; drawAdBannerPlaceholder(); return; }
     if (!["image/png", "image/jpeg", "image/webp"].includes(file.type)) {
-        status.textContent = "Faqat JPG, PNG yoki WEBP rasm tanlang.";
-        this.value = "";
-        return;
+        status.textContent = "Faqat JPG, PNG yoki WEBP rasm tanlang."; this.value = ""; return;
     }
     if (file.size > 5 * 1024 * 1024) {
-        status.textContent = "Rasm hajmi 5 MB dan oshmasligi kerak.";
-        this.value = "";
-        return;
+        status.textContent = "Rasm hajmi 5 MB dan oshmasligi kerak."; this.value = ""; return;
     }
-
     const reader = new FileReader();
     reader.onload = () => {
         const img = new Image();
-        img.onload = () => {
-            adBannerImage = img;
-            status.textContent = "";
-            renderAdBanner();
-        };
-        img.onerror = () => {
-            status.textContent = "Rasmni ochib bo‘lmadi. Boshqa rasm tanlang.";
-        };
+        img.onload = () => { adBannerImage = img; status.textContent = ""; renderAdBanner(); };
+        img.onerror = () => { status.textContent = "Rasmni ochib bo‘lmadi. Boshqa rasm tanlang."; };
         img.src = reader.result;
     };
     reader.readAsDataURL(file);
@@ -19992,92 +20037,22 @@ function renderAdBanner() {
     const canvas = document.getElementById("adBannerPreview");
     const status = document.getElementById("adBannerStatus");
     if (!canvas) return;
-
     const title = document.getElementById("adBannerTitle").value.trim();
     const rawPrice = document.getElementById("adBannerPrice").value.trim();
+    const rawOldPrice = document.getElementById("adBannerOldPrice").value.trim();
     const description = document.getElementById("adBannerDescription").value.trim();
-
-    if (!title) {
-        status.textContent = "Mahsulot nomini kiriting.";
-        return;
-    }
-    if (!rawPrice || !/\d/.test(rawPrice)) {
-        status.textContent = "Mahsulot narxini kiriting.";
-        return;
-    }
-
-    const priceDigits = rawPrice.replace(/[^\d]/g, "");
-    const price = Number(priceDigits);
-    if (!Number.isFinite(price) || price <= 0) {
-        status.textContent = "Narxni to‘g‘ri kiriting.";
-        return;
-    }
-
-    const ctx = canvas.getContext("2d");
-    const W = canvas.width, H = canvas.height;
-    ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = "#F3F8F4";
-    ctx.fillRect(0, 0, W, H);
-
-    ctx.fillStyle = "#16A34A";
-    ctx.fillRect(0, 0, W, 270);
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = "bold 66px Arial";
-    ctx.fillText("YULDUZ MARKET", 64, 120);
-    ctx.font = "36px Arial";
-    ctx.fillText("Tezkor xarid · Ishonchli sifat", 66, 190);
-
-    ctx.fillStyle = "#183B2A";
-    ctx.font = "bold 52px Arial";
-    let displayTitle = title;
-    while (ctx.measureText(displayTitle).width > W - 128 && displayTitle.length > 8) {
-        displayTitle = displayTitle.slice(0, -2) + "…";
-    }
-    ctx.fillText(displayTitle, 64, 365);
-
-    const x = 64, y = 420, boxW = 952, boxH = 650;
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(x, y, boxW, boxH);
-    ctx.strokeStyle = "#DDE8DF";
-    ctx.lineWidth = 3;
-    ctx.strokeRect(x, y, boxW, boxH);
-
-    if (adBannerImage) {
-        const scale = Math.min((boxW - 60) / adBannerImage.width, (boxH - 60) / adBannerImage.height);
-        const iw = adBannerImage.width * scale, ih = adBannerImage.height * scale;
-        ctx.drawImage(adBannerImage, x + (boxW - iw) / 2, y + (boxH - ih) / 2, iw, ih);
-    } else {
-        ctx.fillStyle = "#6B7280";
-        ctx.font = "36px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText("Mahsulot rasmini tanlang", W / 2, y + boxH / 2);
-        ctx.textAlign = "left";
-    }
-
-    ctx.fillStyle = "#16A34A";
-    ctx.fillRect(64, 1100, 952, 155);
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = "bold 58px Arial";
-    const priceText = price.toLocaleString("uz-UZ") + " so‘m";
-    ctx.fillText(priceText, 100, 1195);
-
-    if (description) {
-        ctx.fillStyle = "#183B2A";
-        ctx.font = "30px Arial";
-        let desc = description;
-        while (ctx.measureText(desc).width > W - 128 && desc.length > 8) desc = desc.slice(0, -2) + "…";
-        ctx.fillText(desc, 64, 1310);
-    } else {
-        ctx.fillStyle = "#183B2A";
-        ctx.font = "30px Arial";
-        ctx.fillText("Yulduz Market — yaqin va qulay!", 64, 1310);
-    }
-
+    if (!title) { status.textContent = "Mahsulot nomini kiriting."; return; }
+    if (!rawPrice || !/\d/.test(rawPrice)) { status.textContent = "Yangi narxni kiriting."; return; }
+    const price = Number(rawPrice.replace(/[^\d]/g, ""));
+    const oldPrice = Number(rawOldPrice.replace(/[^\d]/g, "")) || 0;
+    if (!Number.isFinite(price) || price <= 0) { status.textContent = "Narxni to‘g‘ri kiriting."; return; }
+    if (oldPrice && oldPrice <= price) { status.textContent = "Eski narx yangi narxdan yuqori bo‘lishi kerak."; return; }
+    drawAdBannerDesign(canvas.getContext("2d"), title, price.toLocaleString("uz-UZ")+" so‘m", oldPrice, description, adBannerImage);
     adBannerReady = true;
-    status.textContent = "Banner tayyor. PNG qilib yuklab olishingiz mumkin.";
+    status.textContent = "Banner tayyor. PNG yoki JPG qilib yuklab olishingiz mumkin.";
 }
 
-function downloadAdBanner() {
+function downloadAdBanner(format = "png") {
     const canvas = document.getElementById("adBannerPreview");
     const status = document.getElementById("adBannerStatus");
     if (!canvas || !adBannerReady) {
@@ -20085,20 +20060,21 @@ function downloadAdBanner() {
         return;
     }
 
+    const mimeType = format === "jpg" ? "image/jpeg" : "image/png";
     canvas.toBlob(blob => {
         if (!blob) {
-            status.textContent = "PNG yaratishda xatolik yuz berdi.";
+            status.textContent = "Rasm yaratishda xatolik yuz berdi.";
             return;
         }
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "yulduz-market-reklama.png";
+        link.download = "yulduz-market-reklama." + (format === "jpg" ? "jpg" : "png");
         document.body.appendChild(link);
         link.click();
         link.remove();
         setTimeout(() => URL.revokeObjectURL(url), 1000);
-    }, "image/png");
+    }, mimeType, format === "jpg" ? 0.94 : undefined);
 }
 
 /* =========================================================
