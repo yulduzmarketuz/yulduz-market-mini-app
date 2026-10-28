@@ -991,20 +991,33 @@ Buyurtmangizni tayyorlab, manzilingizga yetkazamiz. 🚚`;
                 body: JSON.stringify({
                   chat_id: chatId,
                   text,
+                  
                   reply_markup: {
                     inline_keyboard: [
                       [
                         {
-                          text:
-                            "🛒 XARIDLARNI BOSHLASH",
+                          text: "🛒 XARIDLARNI BOSHLASH",
                           web_app: {
-                            url:
-                              MINI_APP_URL
+                            url: MINI_APP_URL
                           }
                         }
-                      ]
+                      ],
+                  
+                      ...(String(user?.id) === String(env.ADMIN_CHAT_ID)
+                        ? [
+                            [
+                              {
+                                text: "🎨 Reklama banneri yaratish",
+                                web_app: {
+                                  url: `${MINI_APP_URL}?mode=ad-banner`
+                                }
+                              }
+                            ]
+                          ]
+                        : [])
                     ]
                   }
+
                 })
               }
             );
