@@ -9762,7 +9762,7 @@ body.ad-banner-mode #cartBar { display:none !important; }
             </div>
             <div class="ad-banner-field" style="margin-bottom:4px;">
                 <label for="adBannerImage">Mahsulot rasmi (JPG, PNG yoki WEBP)</label>
-                <input id="adBannerImage" type="file" accept="image/png,image/jpeg,image/webp">
+                <input id="adBannerImage" type="file" accept="image/*">
             </div>
             <div class="ad-banner-field" style="margin-top:12px;">
                 <label for="adBannerImageScale">Mahsulot rasmi kattaligi: <strong id="adBannerImageScaleValue">100%</strong></label>
@@ -20077,9 +20077,22 @@ document.getElementById("adBannerImage")?.addEventListener("change", function ()
     adBannerImage = null;
     adBannerReady = false;
     if (!file) { status.textContent = ""; drawAdBannerPlaceholder(); return; }
-    if (!["image/png", "image/jpeg", "image/webp"].includes(file.type)) {
-        status.textContent = "Faqat JPG, PNG yoki WEBP rasm tanlang."; this.value = ""; return;
-    }
+    const allowedTypes = [
+    "image/png",
+    "image/jpeg",
+    "image/webp",
+    "image/heic",
+    "image/heif"
+];
+
+const fileName = (file.name || "").toLowerCase();
+const allowedExtension = /\.(png|jpe?g|webp|heic|heif)$/i.test(fileName);
+
+if (!allowedTypes.includes(file.type) && !allowedExtension) {
+    status.textContent = "Faqat JPG, PNG, WEBP yoki HEIC rasm tanlang.";
+    this.value = "";
+    return;
+}
     if (file.size > 5 * 1024 * 1024) {
         status.textContent = "Rasm hajmi 5 MB dan oshmasligi kerak."; this.value = ""; return;
     }
@@ -20124,29 +20137,70 @@ document.getElementById("adBannerImageScale")?.addEventListener("input", functio
     if (adBannerReady) renderAdBanner();
 });
 
-function downloadAdBanner(format = "png") {
+async function downloadAdBanner(format = "png") {
     const canvas = document.getElementById("adBannerPreview");
     const status = document.getElementById("adBannerStatus");
+
     if (!canvas || !adBannerReady) {
         status.textContent = "Avval mahsulot nomi va narxini kiriting, so‘ng banner tayyorlang.";
         return;
     }
 
-    const mimeType = format === "jpg" ? "image/jpeg" : "image/png";
-    canvas.toBlob(blob => {
-        if (!blob) {
-            status.textContent = "Rasm yaratishda xatolik yuz berdi.";
+    try {
+        const mimeType = format === "jpg" ? "image/jpeg" : "image/png";
+        const extension = format === "jpg" ? "jpg" : "png";
+
+        const dataUrl = canvas.toDataURL(
+            mimeType,
+            format === "jpg" ? 0.94 : undefined
+        );
+
+        const base64 = dataUrl.split(",")[1];
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+
+        for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+        }
+
+        const file = new File(
+            [bytes],
+            "yulduz-market-reklama." + extension,
+            { type: mimeType }
+        );
+
+        if (
+            navigator.share &&
+            navigator.canShare &&
+            navigator.canShare({ files: [file] })
+        ) {
+            await navigator.share({
+                files: [file],
+                title: "Yulduz Market"
+            });
+
+            status.textContent = "Rasm ulashish oynasi ochildi. Galereyaga saqlashni tanlang.";
             return;
         }
-        const url = URL.createObjectURL(blob);
+
+        const url = URL.createObjectURL(file);
         const link = document.createElement("a");
+
         link.href = url;
-        link.download = "yulduz-market-reklama." + (format === "jpg" ? "jpg" : "png");
+        link.download = file.name;
+
         document.body.appendChild(link);
         link.click();
         link.remove();
+
         setTimeout(() => URL.revokeObjectURL(url), 1000);
-    }, mimeType, format === "jpg" ? 0.94 : undefined);
+
+    } catch (error) {
+        if (error.name === "AbortError") return;
+
+        console.error("Banner saqlash xatosi:", error);
+        status.textContent = "Rasmni saqlashda xatolik yuz berdi.";
+    }
 }
 
 /* =========================================================
